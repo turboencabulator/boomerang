@@ -139,32 +139,6 @@ optimise_DelayCopy(ADDRESS src, ADDRESS dest, int delta)
 }
 
 /**
- * Adds the destination of a branch to the queue of addresses that must be
- * decoded.
- *
- * \param newBB  The new basic block delimited by the branch instruction.
- *               May be null if this block has been built before.
- * \param dest   The destination being branched to.
- * \param cfg    The CFG of the current procedure.
- *
- * \par Side Effects
- * newBB may be changed if the destination of the branch is in the middle of
- * an existing BB.  It will then be changed to point to a new BB beginning
- * with the dest.
- */
-void
-handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg)
-{
-	if (dest < pBF->getLimitTextHigh()) {
-		cfg->addOutEdge(newBB, dest);
-	} else {
-		ostrstream ost;
-		ost << "branch to " << hex << dest << " goes beyond section.";
-		error(str(ost));
-	}
-}
-
-/**
  * Records the fact that there is a procedure at a given address.  Also adds
  * the out edge to the lexical successor of the call site (taking into
  * consideration the delay slot and possible UNIMP instruction).
@@ -384,7 +358,7 @@ case_SD_NCT(ADDRESS &addr, int delta,
 	BB_rtls = nullptr;
 
 	// Visit the destination, and add the out-edge
-	handleBranch(SD_rtl->getFixedDest(), bb, cfg);
+	handleBranch(bb, SD_rtl->getFixedDest(), cfg);
 }
 
 
@@ -556,7 +530,7 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest, bb, cfg);
+		handleBranch(bb, dest, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;           // Skip the SCD only
@@ -582,7 +556,7 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest, bb, cfg);
+		handleBranch(bb, dest, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
 		// Skip the NCT/NOP instruction
@@ -595,7 +569,7 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest - 4, bb, cfg);
+		handleBranch(bb, dest - 4, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;           // Skip branch but not delay
@@ -681,7 +655,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta,
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest - 4, bb, cfg);
+		handleBranch(bb, dest - 4, cfg);
 	} else { // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan
 		// First add the branch.
@@ -852,7 +826,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					// Construct the new basic block and save its destination
 					// address if it hasn't been visited already
 					auto bb = cfg->newBB(BB_rtls, ONEWAY);
-					handleBranch(addr + 8, bb, cfg);
+					handleBranch(bb, addr + 8, cfg);
 
 					// There is no fall through branch.
 					sequentialDecode = false;
@@ -868,7 +842,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				} else {
 					BB_rtls->push_back(rtl_jump);
 					auto bb = cfg->newBB(BB_rtls, ONEWAY);
-					handleBranch(rtl_jump->getFixedDest(), bb, cfg);
+					handleBranch(bb, rtl_jump->getFixedDest(), cfg);
 					addr += inst.numBytes;    // Update address for coverage
 				}
 
@@ -941,7 +915,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 								callList.push_back((HLCall *)inst.rtl);
 							} else {
 								auto bb = cfg->newBB(BB_rtls, ONEWAY);
-								handleBranch(dest, bb, cfg);
+								handleBranch(bb, dest, cfg);
 
 								// There is no fall through branch.
 								sequentialDecode = false;
@@ -1050,7 +1024,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							BB_rtls = nullptr;
 							// Visit the destination of the branch; add "true" leg
 							auto dest = rtl_jump->getFixedDest();
-							handleBranch(dest, bb, cfg);
+							handleBranch(bb, dest, cfg);
 							// Add the "false" leg: point past the delay inst
 							cfg->addOutEdge(bb, addr + 8);
 							addr += 8;          // Skip branch and delay
@@ -1078,7 +1052,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					auto dest = ((HLJump *)rtl)->getFixedDest();
 					auto bb = cfg->newBB(BB_rtls, TWOWAY);
 					BB_rtls = nullptr;
-					handleBranch(dest, bb, cfg);
+					handleBranch(bb, dest, cfg);
 					addr += 4;          // "Delay slot" instruction is next
 					cfg->addOutEdge(bb, addr);  // False leg
 				}

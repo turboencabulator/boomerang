@@ -362,7 +362,7 @@ SparcFrontEnd::case_SD(ADDRESS &addr, const DecodeResult &inst,
 	BB_rtls = nullptr;
 
 	// Visit the destination, and add the out-edge
-	handleBranch(SD_stmt->getFixedDest(), bb, cfg);
+	handleBranch(bb, SD_stmt->getFixedDest(), cfg);
 }
 
 
@@ -495,7 +495,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest, bb, cfg);
+		handleBranch(bb, dest, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;  // Skip the SCD only
@@ -517,7 +517,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest, bb, cfg);
+		handleBranch(bb, dest, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
 		// Skip the NCT/NOP instruction
@@ -529,7 +529,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest - 4, bb, cfg);
+		handleBranch(bb, dest - 4, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;  // Skip branch but not delay
@@ -601,7 +601,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		handleBranch(dest - 4, bb, cfg);
+		handleBranch(bb, dest - 4, cfg);
 	} else {  // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan. First add the branch.
 		BB_rtls->push_back(inst.rtl);
@@ -813,7 +813,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					// Construct the new basic block and save its destination
 					// address if it hasn't been visited already
 					auto bb = cfg->newBB(BB_rtls, ONEWAY);
-					handleBranch(addr + 8, bb, cfg);
+					handleBranch(bb, addr + 8, cfg);
 
 					// There is no fall through branch.
 					sequentialDecode = false;
@@ -827,7 +827,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					BB_rtls->push_back(inst.rtl);
 
 					auto bb = cfg->newBB(BB_rtls, ONEWAY);
-					handleBranch(stmt_jump->getFixedDest(), bb, cfg);
+					handleBranch(bb, stmt_jump->getFixedDest(), cfg);
 
 					// There is no fall through branch.
 					sequentialDecode = false;
@@ -954,7 +954,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 								callList.push_back((CallStatement *)inst.rtl->getList().back());
 							} else {
 								auto bb = cfg->newBB(BB_rtls, ONEWAY);
-								handleBranch(dest, bb, cfg);
+								handleBranch(bb, dest, cfg);
 
 								// There is no fall through branch.
 								sequentialDecode = false;
@@ -1050,7 +1050,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							BB_rtls = nullptr;
 							// Visit the destination of the branch; add "true" leg
 							auto dest = stmt_jump->getFixedDest();
-							handleBranch(dest, bb, cfg);
+							handleBranch(bb, dest, cfg);
 							// Add the "false" leg: point past the delay inst
 							cfg->addOutEdge(bb, addr + 8);
 							addr += 8;          // Skip branch and delay

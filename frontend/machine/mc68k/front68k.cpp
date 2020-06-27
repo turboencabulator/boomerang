@@ -185,18 +185,7 @@ processProc(ADDRESS addr, int delta, UserProc *proc, NJMCDecoder &decoder)
 						BB_rtls->push_back(inst.rtl);
 						auto bb = cfg->newBB(BB_rtls, ONEWAY);
 						sequentialDecode = false;
-
-						// Add the out edge if it is to a destination within the
-						// procedure
-						if (dest < pBF->getLimitTextHigh()) {
-							cfg->addOutEdge(bb, dest);
-						} else {
-							ostrstream ost;
-							ost << "Error: Instruction at " << hex << addr;
-							ost << " branches beyond end of section, to ";
-							ost << dest;
-							error(str(ost));
-						}
+						handleBranch(bb, dest, cfg);
 					}
 				}
 				break;
@@ -231,18 +220,7 @@ processProc(ADDRESS addr, int delta, UserProc *proc, NJMCDecoder &decoder)
 					BB_rtls->push_back(inst.rtl);
 					auto bb = cfg->newBB(BB_rtls, TWOWAY);
 					BB_rtls = nullptr;
-
-					// Add the out edge if it is to a destination within the
-					// procedure
-					if (dest < pBF->getLimitTextHigh()) {
-						cfg->addOutEdge(bb, dest);
-					} else {
-						ostrstream ost;
-						ost << "Error: Instruction at " << hex << addr;
-						ost << " branches beyond end of section, to ";
-						ost << dest;
-						error(str(ost));
-					}
+					handleBranch(bb, dest, cfg);
 
 					// Add the fall-through outedge
 					cfg->addOutEdge(bb, addr + inst.numBytes);

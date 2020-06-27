@@ -748,7 +748,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							auto bb = cfg->newBB(BB_rtls, ONEWAY);
 							BB_rtls = nullptr;  // Clear when make new BB
 							sequentialDecode = false;
-							handleBranch(dest, bb, cfg);
+							handleBranch(bb, dest, cfg);
 						}
 					}
 					break;
@@ -827,7 +827,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 						BB_rtls->push_back(rtl);
 						auto bb = cfg->newBB(BB_rtls, TWOWAY);
 						BB_rtls = nullptr;
-						handleBranch(dest, bb, cfg);
+						handleBranch(bb, dest, cfg);
 
 						// Add the fall-through outedge
 						cfg->addOutEdge(bb, addr + inst.numBytes);
@@ -1103,24 +1103,22 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 }
 
 /**
- * Adds the destination of a branch to the queue of addresses that must be
- * decoded.
+ * Wrapper for Cfg::addOutEdge() that sanity checks the destination address.
  *
- * \param dest       The destination being branched to.
- * \param newBB      The new basic block delimited by the branch instruction.
- *                   May be nullptr if this block has been built before.
- * \param cfg        The CFG of the current procedure.
+ * \param src   The branch BB.
+ * \param dest  The destination being branched to.
+ * \param cfg   The CFG of the current procedure.
  *
  * \par Side Effect
- * newBB may be changed if the destination of the branch is in the middle of
- * an existing BB.  It will then be changed to point to a new BB beginning
- * with the dest.
+ * src may be changed if dest is in the middle of the src BB.
+ * It will then be changed to point to a new BB beginning at dest.
+ * See Cfg::label().
  */
 void
-FrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg)
+FrontEnd::handleBranch(BasicBlock *&src, ADDRESS dest, Cfg *cfg)
 {
 	if (dest < pBF->getLimitTextHigh())
-		cfg->addOutEdge(newBB, dest);
+		cfg->addOutEdge(src, dest);
 	else
 		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
 }
