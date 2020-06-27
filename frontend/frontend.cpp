@@ -1165,7 +1165,6 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 	// The switch statement is emitted assuming one out-edge for each switch value, which is assumed to be iLower+i
 	// for the ith zero-based case. It may be that the code for case 5 above will be a goto to the code for case 3,
 	// but a smarter back end could group them
-	std::list<ADDRESS> dests;
 	int iNum = si->iUpper - si->iLower + 1;
 	for (int i = 0; i < iNum; ++i) {
 		ADDRESS uSwitch;
@@ -1186,9 +1185,8 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 		if (uSwitch < pBF->getLimitTextHigh()) {
 			cfg->addOutEdge(newBB, uSwitch);
 			// Remember to decode the newly discovered switch code arms, if necessary
-			// Don't do it right now, in case there are recursive switch statements (e.g. app7win.exe from
-			// hackthissite.org)
-			dests.push_back(uSwitch);
+			// Don't do it right now, in case there are recursive switch statements
+			// (e.g. app7win.exe from hackthissite.org)
 		} else {
 			LOG << "switch table entry branches to past end of text section 0x" << std::hex << uSwitch << std::dec << "\n";
 #if 1
@@ -1200,12 +1198,11 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 #endif
 		}
 	}
+#if 0 // Only if called outside of the processProc() loop.  See recursion comments after addOutEdge() above.
 	// Decode the newly discovered switch code arms, if any, and if not already decoded
-	int count = 0;
-	for (const auto &dest : dests) {
-		char tmp[1024];
-		sprintf(tmp, "before decoding fragment %i of %i (%x)", ++count, dests.size(), dest);
-		Boomerang::get().alert_decompile_debug_point(proc, tmp);
+	ADDRESS dest;
+	while ((dest = cfg->dequeue()) != NO_ADDRESS) {
 		decodeFragment(proc, dest);
 	}
+#endif
 }
