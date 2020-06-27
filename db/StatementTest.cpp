@@ -67,9 +67,9 @@ StatementTest::testEmpty()
 	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto ls = new std::list<Statement *>;
 	ls->push_back(new ReturnStatement);
@@ -103,10 +103,10 @@ StatementTest::testFlow()
 
 	// create UserProc
 	std::string name = "test";
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto a = new Assign(Location::regOf(24), new Const(5));
@@ -164,10 +164,10 @@ StatementTest::testKill()
 
 	// create UserProc
 	std::string name = "test";
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto e = new Assign(Location::regOf(24), new Const(5));
@@ -227,10 +227,10 @@ StatementTest::testUse()
 
 	// create UserProc
 	std::string name = "test";
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto a = new Assign(Location::regOf(24), new Const(5));
@@ -290,10 +290,10 @@ StatementTest::testUseOverKill()
 
 	// create UserProc
 	std::string name = "test";
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto e = new Assign(Location::regOf(24), new Const(5));
@@ -356,9 +356,9 @@ StatementTest::testUseOverBB()
 	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto a = new Assign(Location::regOf(24), new Const(5));
@@ -424,9 +424,9 @@ StatementTest::testUseKill()
 	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	auto a = new Assign(Location::regOf(24), new Const(5));
@@ -485,9 +485,9 @@ StatementTest::testEndlessLoop()
 	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
-	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
+	auto proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	// r[24] := 5
@@ -657,7 +657,7 @@ StatementTest::testRecursion()
 	// create UserProc
 	auto proc = new UserProc(prog, "test", 0);
 	// create CFG
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
 	auto rtl = new RTL();
 	// push bp
@@ -1163,10 +1163,10 @@ StatementTest::testBypass()
 	bool gotMain;
 	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
-	UserProc *proc = (UserProc *)prog->findProc("foo2");
+	auto proc = (UserProc *)prog->findProc("foo2");
 	assert(proc);
 	proc->promoteSignature();  // Make sure it's a PentiumSignature (needed for bypassing)
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	// Sort by address
 	cfg->sortByAddress();
 	// Initialise statements

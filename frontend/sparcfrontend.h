@@ -44,7 +44,7 @@ private:
 	bool optimise_DelayCopy(ADDRESS, ADDRESS) const;
 	BasicBlock *optimise_CallReturn(CallStatement *, RTL *, RTL *, UserProc *);
 
-	void handleCall(UserProc *, ADDRESS, BasicBlock *callBB, Cfg *, ADDRESS, int = 0);
+	void handleCall(UserProc *, ADDRESS, BasicBlock *callBB, ADDRESS, int = 0);
 
 	static void case_unhandled_stub(ADDRESS);
 

@@ -238,7 +238,7 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
 {
 	auto call_rtl = static_cast<HLCall *>(inst.rtl);
 
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 
 	// Assume that if we find a call in the delay slot, it's actually a pattern
 	// such as move/call/move
@@ -739,7 +739,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 	std::list<CallStatement *> callList;
 
 	// The control flow graph of the current procedure
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 
 	// If this is a speculative decode, the second time we decode the same
 	// address, we get no cfg. Else an error.

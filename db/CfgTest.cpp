@@ -51,7 +51,7 @@ CfgTest::testDominators()
 
 	std::list<Proc *>::iterator it;
 	auto pProc = prog->getFirstUserProc(it);
-	Cfg *cfg = pProc->getCFG();
+	auto cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 	df->dominators(cfg);
 
@@ -113,7 +113,7 @@ CfgTest::testSemiDominators()
 
 	std::list<Proc *>::iterator it;
 	auto pProc = prog->getFirstUserProc(it);
-	Cfg *cfg = pProc->getCFG();
+	auto cfg = pProc->getCFG();
 
 	DataFlow *df = pProc->getDataFlow();
 	df->dominators(cfg);
@@ -163,7 +163,7 @@ CfgTest::testPlacePhi()
 
 	std::list<Proc *>::iterator it;
 	auto pProc = prog->getFirstUserProc(it);
-	Cfg *cfg = pProc->getCFG();
+	auto cfg = pProc->getCFG();
 
 	// Simplify expressions (e.g. m[ebp + -8] -> m[ebp - 8]
 	prog->finishDecode();
@@ -203,7 +203,7 @@ CfgTest::testPlacePhi2()
 
 	std::list<Proc *>::iterator it;
 	auto pProc = prog->getFirstUserProc(it);
-	Cfg *cfg = pProc->getCFG();
+	auto cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 
 	// Simplify expressions (e.g. m[ebp + -8] -> m[ebp - 8]
@@ -262,7 +262,7 @@ CfgTest::testRenameVars()
 
 	std::list<Proc *>::iterator it;
 	auto pProc = prog->getFirstUserProc(it);
-	Cfg *cfg = pProc->getCFG();
+	auto cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 
 	// Simplify expressions (e.g. m[ebp + -8] -> m[ebp - 8]

@@ -1051,7 +1051,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 void
 FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc)
 {
-	auto cfg = proc->getCFG();
 	auto pret = createReturnBlock(proc, nullptr, new RTL(callBB->getLastRtl()->getAddress() + 1, new ReturnStatement()));
 	callBB->addEdge(pret);
 }
@@ -1153,7 +1152,7 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 	// Emit an NWAY BB instead of the COMPJUMP.
 	newBB->updateType(NWAY);
 
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	// Where there are repeated switch cases, we have repeated out-edges from the BB. Example:
 	// switch (x) {
 	//   case 3: case 5:

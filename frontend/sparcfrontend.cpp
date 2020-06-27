@@ -114,7 +114,7 @@ SparcFrontEnd::optimise_DelayCopy(ADDRESS src, ADDRESS dest) const
  * \param call   The RTL for the caller (e.g. "call ProcC" above).
  * \param rtl    Pointer to the RTL for the call instruction.
  * \param delay  The RTL for the delay instruction (e.g. "restore").
- * \param cfg    The CFG of the procedure.
+ * \param proc   The enclosing procedure.
  *
  * \returns The basic block containing the single return instruction if this
  * optimisation applies, nullptr otherwise.
@@ -152,15 +152,15 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
  * the out edge to the lexical successor of the call site (taking into
  * consideration the delay slot and possible UNIMP instruction).
  *
+ * \param proc     The enclosing procedure.
  * \param dest     The address of the callee.
  * \param callBB   The basic block delimited by the call.
- * \param cfg      CFG of the enclosing procedure.
  * \param address  The address of the call instruction.
  * \param offset   the offset from the call instruction to which an outedge
  *                 must be added.  A value of 0 means no edge is to be added.
  */
 void
-SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS address, int offset)
+SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, ADDRESS address, int offset)
 {
 	// If the destination address is the same as this very instruction, we have a call with iDisp30 == 0. Don't treat
 	// this as the start of a real procedure.
@@ -172,8 +172,10 @@ SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg 
 	}
 
 	// Add the out edge if required
-	if (offset != 0)
+	if (offset != 0) {
+		auto cfg = proc->getCFG();
 		cfg->addOutEdge(callBB, address + offset);
+	}
 }
 
 /**
@@ -267,7 +269,7 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 
 		if (returnBB) {
 			// Handle the call but don't add any outedges from it just yet.
-			handleCall(proc, call_stmt->getFixedDest(), callBB, cfg, addr);
+			handleCall(proc, call_stmt->getFixedDest(), callBB, addr);
 
 			// Now add the out edge
 			callBB->addEdge(returnBB);
@@ -297,7 +299,7 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 			}
 
 			// Handle the call (register the destination as a proc) and possibly set the outedge.
-			handleCall(proc, dest, callBB, cfg, addr, offset);
+			handleCall(proc, dest, callBB, addr, offset);
 
 			if (inst.forceOutEdge) {
 				// There is no need to force a goto to the new out-edge, since we will continue decoding from there.
@@ -943,7 +945,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							if (dynamic_cast<CallStatement *>(last)) {
 								auto bb = cfg->newBB(BB_rtls, CALL);
 								BB_rtls = nullptr;
-								handleCall(proc, dest, bb, cfg, addr, 8);
+								handleCall(proc, dest, bb, addr, 8);
 
 								// Set the address of the lexical successor of the call that is to be decoded next.
 								addr += 8;

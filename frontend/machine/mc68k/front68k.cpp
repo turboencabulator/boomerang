@@ -124,7 +124,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 {
 	INSTTYPE type;              // Cfg type of instruction (e.g. IRET)
 
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 
 	// Initialise the queue of control flow targets that have yet to be decoded.
 	cfg->enqueue(addr);
