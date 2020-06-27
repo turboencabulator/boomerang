@@ -699,29 +699,6 @@ Cfg::wellFormCfg()
 }
 
 /**
- * Completes the merge of pb1 and pb2 by adjusting in and out edges.  No
- * checks are made that the merge is valid (hence this is a private function).
- * Removes pb1 from this CFG.
- *
- * \param pb1,pb2  Pointers to the two BBs to merge.
- */
-void
-Cfg::completeMerge(const BasicBlock *pb1, BasicBlock *pb2)
-{
-	// First we replace all of pb1's predecessors' out edges that used to point to pb1 (usually only one of these) with
-	// pb2
-	for (const auto &pred : pb1->m_InEdges)
-		for (auto &succ : pred->m_OutEdges)
-			if (succ == pb1)
-				succ = pb2;
-
-	// Now we replace pb2's in edges by pb1's inedges
-	pb2->m_InEdges = pb1->m_InEdges;
-
-	removeBB(pb1);
-}
-
-/**
  * \brief Amalgamate the RTLs for pb1 and pb2, and place the result into pb2.
  *
  * This is called where a two-way branch is deleted, thereby joining a two-way
@@ -743,7 +720,8 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 		return false;
 	// Prepend the RTLs for pb1 to those of pb2.
 	pb2->m_pRtls->splice(pb2->m_pRtls->begin(), *pb1->m_pRtls);
-	completeMerge(pb1, pb2);  // Mash them together
+	pb1->bypass(pb2);  // Mash them together
+	removeBB(pb1);
 	return true;
 }
 
@@ -800,20 +778,7 @@ Cfg::compressCfg()
 			// Found an only-jump BB
 			auto bbB = bbJ->m_OutEdges.front();
 			bbJ->deleteEdge(bbB);
-			for (const auto &bbA : bbJ->m_InEdges) {
-#if 0
-				std::cout << "outedge to jump detected at " << std::hex << bbA->getLowAddr()
-				          << " to " << bbJ->getLowAddr()
-				          << " to " << bbB->getLowAddr() << std::dec << std::endl;
-#endif
-				auto it = std::find(bbA->m_OutEdges.begin(), bbA->m_OutEdges.end(), bbJ);
-				assert(it != bbA->m_OutEdges.end());
-				// Replace A -> J edge with A -> B.
-				*it = bbB;
-				bbB->addInEdge(bbA);
-			}
-			bbJ->m_InEdges.clear();
-			// Remove J from the CFG
+			bbJ->bypass(bbB);
 			removes.push_back(bbJ);
 		}
 	}

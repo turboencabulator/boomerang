@@ -362,6 +362,23 @@ BasicBlock::getCorrectOutEdge(ADDRESS addr) const
 }
 
 /**
+ * Change all in-edges into this BB to instead point to a successor BB.
+ * Usually called when this BB is being combined with its successor and will
+ * soon be deleted.
+ */
+void
+BasicBlock::bypass(BasicBlock *succ)
+{
+	for (const auto &pred : m_InEdges) {
+		auto it = std::find(pred->m_OutEdges.begin(), pred->m_OutEdges.end(), this);
+		assert(it != pred->m_OutEdges.end());
+		*it = succ;
+		succ->addInEdge(pred);
+	}
+	m_InEdges.clear();
+}
+
+/**
  * \brief Add an in-edge.
  *
  * Add the given in-edge.  Needed for example when duplicating BBs.

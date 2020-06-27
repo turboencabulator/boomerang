@@ -177,6 +177,7 @@ public:
 	        int         whichPred(BasicBlock *) const;
 
 private:
+	        void        bypass(BasicBlock *);
 	        void        addInEdge(BasicBlock *);
 	        void        deleteInEdge(BasicBlock *);
 public:
