@@ -691,11 +691,11 @@ UserProc::initStatements()
 			if (auto call = dynamic_cast<CallStatement *>(stmt)) {
 				call->setSigArguments();
 				if (call->getDestProc()
-				 && call->getDestProc()->isNoReturn()
-				 && bb->getOutEdges().size() == 1) {
-					auto succ = bb->getOutEdge(0);
-					if (succ != cfg->getExitBB() || succ->getInEdges().size() != 1) {
-						bb->deleteEdge(succ);
+				 && call->getDestProc()->isNoReturn()) {
+					const auto &edges = bb->getOutEdges();
+					if (edges.size() == 1
+					 && (edges[0] != cfg->getExitBB() || edges[0]->getInEdges().size() != 1)) {
+						bb->deleteEdge(edges[0]);
 					}
 				}
 			}

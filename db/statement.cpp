@@ -3354,11 +3354,12 @@ BranchStatement::getFallBB() const
 		return nullptr;
 	if (!pbb)
 		return nullptr;
-	if (pbb->getOutEdges().size() != 2)
+	const auto &edges = pbb->getOutEdges();
+	if (edges.size() != 2)
 		return nullptr;
-	if (pbb->getOutEdge(0)->getLowAddr() == a)
-		return pbb->getOutEdge(1);
-	return pbb->getOutEdge(0);
+	if (edges[0]->getLowAddr() == a)
+		return edges[1];
+	return edges[0];
 }
 
 /**
@@ -3373,9 +3374,10 @@ BranchStatement::setFallBB(BasicBlock *bb)
 		return;
 	if (!pbb)
 		return;
-	if (pbb->getOutEdges().size() != 2)
+	const auto &edges = pbb->getOutEdges();
+	if (edges.size() != 2)
 		return;
-	if (pbb->getOutEdge(0)->getLowAddr() == a) {
+	if (edges[0]->getLowAddr() == a) {
 		pbb->setOutEdge(1, bb);
 	} else {
 		pbb->setOutEdge(0, bb);
@@ -3390,11 +3392,12 @@ BranchStatement::getTakenBB() const
 		return nullptr;
 	if (!pbb)
 		return nullptr;
-	if (pbb->getOutEdges().size() != 2)
+	const auto &edges = pbb->getOutEdges();
+	if (edges.size() != 2)
 		return nullptr;
-	if (pbb->getOutEdge(0)->getLowAddr() == a)
-		return pbb->getOutEdge(0);
-	return pbb->getOutEdge(1);
+	if (edges[0]->getLowAddr() == a)
+		return edges[0];
+	return edges[1];
 }
 
 void
@@ -3405,9 +3408,10 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 		return;
 	if (!pbb)
 		return;
-	if (pbb->getOutEdges().size() != 2)
+	const auto &edges = pbb->getOutEdges();
+	if (edges.size() != 2)
 		return;
-	if (pbb->getOutEdge(0)->getLowAddr() == a) {
+	if (edges[0]->getLowAddr() == a) {
 		pbb->setOutEdge(0, bb);
 	} else {
 		pbb->setOutEdge(1, bb);
