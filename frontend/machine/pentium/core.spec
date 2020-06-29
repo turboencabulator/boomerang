@@ -14,7 +14,7 @@ sr16 0:2
 r16 0:2
 r8 0:2
 fieldinfo r32 is [names [ eax ecx edx ebx esp ebp esi edi ]]
-fieldinfo sr16 is [sparse [ cs=1, ss=2, ds=3, es=4, fs=5, gs=6 ] ]
+fieldinfo sr16 is [sparse [ es=0, cs=1, ss=2, ds=3, fs=4, gs=5 ] ]
 fieldinfo r16 is [names [ ax cx dx bx sp bp si di ]]
 fieldinfo r8 is [names [ al cl dl bl ah ch dh bh ]]
 
