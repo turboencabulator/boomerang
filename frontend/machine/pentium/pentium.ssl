@@ -1138,13 +1138,14 @@ ROT    := { "RCL", "RCR", "ROL", "ROR" };
 
 ROLS := { "RCL", "ROL" };
 RORS := { "RCR", "ROR" };
-ROT[IDX].B.EV.1 modrm
+
+ROT[IDX].B.EB.1 modrm
 	*8* tmpb1 := modrm{8}
 	*8* tmpb2 := tmpb1 ROT_OP[IDX] 1
 	*8* modrm := tmpb2;
-ROLS[IDX].B.EV.1 modrm
+ROLS[IDX].B.EB.1 modrm
 	ROLFLAGS8(tmpb2, tmpb1, 1);
-RORS[IDX].B.EV.1 modrm
+RORS[IDX].B.EB.1 modrm
 	RORFLAGS8(tmpb2, tmpb1, 1);
 
 ROT[IDX].B.EV.1OW modrm
@@ -1165,13 +1166,13 @@ ROLS[IDX].B.EV.1OD modrm
 RORS[IDX].B.EV.1OD modrm
 	RORFLAGS32(tmp2, tmp1, 1);
 
-ROT[IDX].B.EV.CL modrm
+ROT[IDX].B.EB.CL modrm
 	*8* tmpb1 := modrm{8}
 	*8* tmpb2 := tmpb1 ROT_OP[IDX] %cl
 	*8* modrm := tmpb2;
-ROLS[IDX].B.EV.CL modrm
+ROLS[IDX].B.EB.CL modrm
 	ROLFLAGS8(tmpb2, tmpb1, %cl);
-RORS[IDX].B.EV.CL modrm
+RORS[IDX].B.EB.CL modrm
 	RORFLAGS8(tmpb2, tmpb1, %cl);
 
 ROT[IDX].B.EV.CLOW modrm
