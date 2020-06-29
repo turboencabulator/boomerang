@@ -1167,30 +1167,30 @@ RORS[IDX].B.EV.1OD modrm
 
 ROT[IDX].B.EV.CL modrm
 	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := tmpb1 ROT_OP[IDX] %ecx
+	*8* tmpb2 := tmpb1 ROT_OP[IDX] %cl
 	*8* modrm := tmpb2;
 ROLS[IDX].B.EV.CL modrm
-	ROLFLAGS8(tmpb2, tmpb1, %ecx);
+	ROLFLAGS8(tmpb2, tmpb1, %cl);
 RORS[IDX].B.EV.CL modrm
-	RORFLAGS8(tmpb2, tmpb1, %ecx);
+	RORFLAGS8(tmpb2, tmpb1, %cl);
 
 ROT[IDX].B.EV.CLOW modrm
 	*16* tmph1 := modrm{16}
-	*16* tmph2 := tmph1 ROT_OP[IDX] %ecx
+	*16* tmph2 := tmph1 ROT_OP[IDX] %cl
 	*16* modrm := tmph2;
 ROLS[IDX].B.EV.CLOW modrm
-	ROLFLAGS16(tmph2, tmph1, %ecx);
+	ROLFLAGS16(tmph2, tmph1, %cl);
 RORS[IDX].B.EV.CLOW modrm
-	RORFLAGS16(tmph2, tmph1, %ecx);
+	RORFLAGS16(tmph2, tmph1, %cl);
 
 ROT[IDX].B.EV.CLOD modrm
 	*32* tmp1 := modrm{32}
-	*32* tmp2 := tmp1 ROT_OP[IDX] %ecx
+	*32* tmp2 := tmp1 ROT_OP[IDX] %cl
 	*32* modrm := tmp2;
 ROLS[IDX].B.EV.CLOD modrm
-	ROLFLAGS32(tmp2, tmp1, %ecx);
+	ROLFLAGS32(tmp2, tmp1, %cl);
 RORS[IDX].B.EV.CLOD modrm
-	RORFLAGS32(tmp2, tmp1, %ecx);
+	RORFLAGS32(tmp2, tmp1, %cl);
 
 ROT[IDX].B.EB.IB modrm, i8
 	*8* tmpb1 := modrm{8}
@@ -1325,33 +1325,33 @@ SAR.B.EV.1OD modrm
 
 SHIFT[IDX].B.EB.CL modrm
 	*8* tmpb := modrm{8}
-	*8* modrm := modrm{8} SHIFT_OP[IDX] %ecx;
+	*8* modrm := modrm{8} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EB.CL modrm
-	SALFLAGS8(modrm{8}, tmpb, %ecx);
+	SALFLAGS8(modrm{8}, tmpb, %cl);
 SHR.B.EB.CL modrm
-	SHRFLAGS8(modrm{8}, tmpb, %ecx);
+	SHRFLAGS8(modrm{8}, tmpb, %cl);
 SAR.B.EB.CL modrm
-	SARFLAGS(modrm{8}, tmpb, %ecx);
+	SARFLAGS(modrm{8}, tmpb, %cl);
 
 SHIFT[IDX].B.EV.CLOW modrm
 	*16* tmph := modrm{16}
-	*16* modrm := modrm{16} SHIFT_OP[IDX] %ecx;
+	*16* modrm := modrm{16} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EV.CLOW modrm
-	SALFLAGS16(modrm{16}, tmph, %ecx);
+	SALFLAGS16(modrm{16}, tmph, %cl);
 SHR.B.EV.CLOW modrm
-	SHRFLAGS16(modrm{16}, tmph, %ecx);
+	SHRFLAGS16(modrm{16}, tmph, %cl);
 SAR.B.EV.CLOW modrm
-	SARFLAGS(modrm{16}, tmph, %ecx);
+	SARFLAGS(modrm{16}, tmph, %cl);
 
 SHIFT[IDX].B.EV.CLOD modrm
 	*32* tmp1 := modrm{32}
-	*32* modrm := modrm{32} SHIFT_OP[IDX] %ecx;
+	*32* modrm := modrm{32} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EV.CLOD modrm
-	SALFLAGS32(modrm, tmp1, %ecx);
+	SALFLAGS32(modrm, tmp1, %cl);
 SHR.B.EV.CLOD modrm
-	SHRFLAGS32(modrm, tmp1, %ecx);
+	SHRFLAGS32(modrm, tmp1, %cl);
 SAR.B.EV.CLOD modrm
-	SARFLAGS(modrm, tmp1, %ecx);
+	SARFLAGS(modrm, tmp1, %cl);
 
 SHIFT[IDX].B.EB.IB modrm, i8
 	*8* tmpb := modrm{8}
