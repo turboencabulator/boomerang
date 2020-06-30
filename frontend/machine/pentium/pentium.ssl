@@ -1100,14 +1100,13 @@ PUSH.EVOD modrm
 	*32* m[%esp - 4] := modrm{32}
 	*32* %esp := %esp - 4;
 
-PUSH.IXOB i8
-	*32* m[%esp - 4] := sgnex(8, 32, i8)
-	*32* %esp := %esp - 4;
-
-# Note: 66 6A nn: 8 bit immediate operand (nn), but 16 bit push!
-PUSH.IXOW i8
+PUSH.IBOW i8
 	*16* m[%esp - 2] := sgnex(8, 16, i8)
 	*32* %esp := %esp - 2;
+
+PUSH.IBOD i8
+	*32* m[%esp - 4] := sgnex(8, 32, i8)
+	*32* %esp := %esp - 4;
 
 PUSH.IVOW i16
 	*16* m[%esp - 2] := i16

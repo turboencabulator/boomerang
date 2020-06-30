@@ -41,7 +41,7 @@ arith is any of [ ADD OR
 regops is any of [ INC  DEC 
                    PUSH POP ], which is row = [4 5] & page = [0 1]
 [ PUSHA   POPA    BOUND   ARPL    SEG.FS  SEG.GS   OpPrefix AddrPrefix 
-  PUSH.Iv IMUL.Iv PUSH.Ix IMUL.Ib INSB    INSv     OUTSB    OUTSv      
+  PUSH.Iv IMUL.Iv PUSH.Ib IMUL.Ib INSB    INSv     OUTSB    OUTSv      
 ] is page = [0 1] & row = 6 & col = {0 to 7} 
 Jb is row = 7
 cond is any of [ .O .NO .B .NB .Z .NZ .BE .NBE .S .NS .P .NP .L .NL .LE .NLE ], 
@@ -167,7 +167,6 @@ FSTs.st is FST.st | FSTP.st
 patterns ow is OpPrefix
          od is epsilon
          ov is ow | od
-         ob is epsilon      # For PUSH.Ix only
 patterns aw is AddrPrefix
          ad is epsilon
          av is aw | ad
@@ -468,9 +467,7 @@ POPs
 POPv^ov  is  ov; POPv
 PUSH.Ev^ov  Eaddr  is  ov; (grp5; Eaddr) & PUSH.Ev
 PUSH^ov     r32    is  ov; PUSH & r32
-#PUSH.Ib    i8!    is      PUSH.Ib; i8
-PUSH.Ix^ob  i8!    is  ob; PUSH.Ix; i8
-PUSH.Ix^ow  i8!    is  ow; PUSH.Ix; i8
+PUSH.Ib^ov  i8!    is  ov; PUSH.Ib; i8
 PUSH.Iv^ow  i16!   is  ow; PUSH.Iv; i16
 PUSH.Iv^od  i32!   is  od; PUSH.Iv; i32
    constructors

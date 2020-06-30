@@ -186,7 +186,7 @@ pc
   static const char *MATCH_name_page_164[] = {"INCow", "DECow", };
   static const char *MATCH_name_page_165[] = {"PUSHow", "POPow", };
   static const char *MATCH_name_col_166[] = {
-    "PUSH.Ivow", "CWD", "PUSH.Ixow", "Jv.NBod", "Jv.Zod", "Jv.NZod", 
+    "PUSH.Ivow", "CWD", "PUSH.Ibow", "Jv.NBod", "Jv.Zod", "Jv.NZod", 
     "Jv.BEod", "Jv.NBEod", 
   };
   static const char *MATCH_name_page_238[] = {"XCHGeAXow", "TEST.eAX.Ivow", };
@@ -200,7 +200,7 @@ pc
   static const char *MATCH_name_page_243[] = {"CMPSvow", "MOViw", };
   static const char *MATCH_name_page_310[] = {"REPNE.MOVSB", "JMP.Jvow", };
   static const char *MATCH_name_col_341[] = {
-    "PUSH.Ivod", "CDQ", "PUSH.Ixob", "WAIT", "Jb.Z", "Jb.NZ", "PUSH.CS", 
+    "PUSH.Ivod", "CDQ", "PUSH.Ibod", "WAIT", "Jb.Z", "Jb.NZ", "PUSH.CS", 
     "CMPSvod", 
   };
   static const char *MATCH_name_col_426[] = {

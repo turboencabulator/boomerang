@@ -813,10 +813,10 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| PUSH.Ivow(i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| PUSH.Ixob(i8) [name] =>
+	| PUSH.Ibod(i8) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| PUSH.Ixow(i8) [name] =>
+	| PUSH.Ibow(i8) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I8);
 
 	| PUSHod(r32) [name] =>
