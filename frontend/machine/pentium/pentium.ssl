@@ -1107,7 +1107,7 @@ PUSH.IXOB i8
 # Note: 66 6A nn: 8 bit immediate operand (nn), but 16 bit push!
 PUSH.IXOW i8
 	*16* m[%esp - 2] := sgnex(8, 16, i8)
-	*16* %esp := %esp - 2;
+	*32* %esp := %esp - 2;
 
 PUSH.IVOW i16
 	*16* m[%esp - 2] := i16
