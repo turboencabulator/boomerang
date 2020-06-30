@@ -1092,6 +1092,26 @@ POP.OD reg32
 	*32* reg32 := m[%esp]{32}
 	*32* %esp := %esp + 4;
 
+POP.ES
+	*16* %es := m[%esp]{16}
+	*32* %esp := %esp + 2;
+
+POP.SS
+	*16* %ss := m[%esp]{16}
+	*32* %esp := %esp + 2;
+
+POP.DS
+	*16* %ds := m[%esp]{16}
+	*32* %esp := %esp + 2;
+
+POP.FS
+	*16* %fs := m[%esp]{16}
+	*32* %esp := %esp + 2;
+
+POP.GS
+	*16* %gs := m[%esp]{16}
+	*32* %esp := %esp + 2;
+
 PUSH.EVOW modrm
 	*16* m[%esp - 2] := modrm{16}
 	*32* %esp := %esp - 2;
@@ -1124,15 +1144,29 @@ PUSH.OD reg32
 	*32* m[%esp - 4] := reg32
 	*32* %esp := %esp - 4;
 
-# Just fix up the stack for selector pushes.
+PUSH.ES
+	*16* m[%esp - 2] := %es
+	*32* %esp := %esp - 2;
+
 PUSH.CS
-	*32* %esp := %esp - 4;
+	*16* m[%esp - 2] := %cs
+	*32* %esp := %esp - 2;
+
+PUSH.SS
+	*16* m[%esp - 2] := %ss
+	*32* %esp := %esp - 2;
 
 PUSH.DS
-	*32* %esp := %esp - 4;
+	*16* m[%esp - 2] := %ds
+	*32* %esp := %esp - 2;
 
-PUSH.ES
-	*32* %esp := %esp - 4;
+PUSH.FS
+	*16* m[%esp - 2] := %fs
+	*32* %esp := %esp - 2;
+
+PUSH.GS
+	*16* m[%esp - 2] := %gs
+	*32* %esp := %esp - 2;
 
 ROT_OP := { "rlc", "rrc", "rl",  "rr"  };
 ROT    := { "RCL", "RCR", "ROL", "ROR" };
