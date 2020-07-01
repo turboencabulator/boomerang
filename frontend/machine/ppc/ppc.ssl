@@ -270,7 +270,7 @@ NEG'q'  rd, ra
 NEGq rd, ra
 	SETFLAGS0(rd);
 
-LOGOP := { "&",      "|",    "^"     };
+LOGOP := { &,        |,      ^       };
 LOG   := { "AND",    "OR",   "XOR"   };  # All logicals with uncomplemented operands
 NLOG  := { "NAND",   "NOR",  "EQV"   };  # All negated logicals
                                          # Note: NXOR is called EQV
@@ -309,7 +309,7 @@ LOGC[IDX]"q"  rd, ra, rb
 
 # Shifts
 SHIFTS   := { "SLW", "SRW", "SRAW", "SRAWI" };
-SHIFT_OP := { "<<",  ">>",  ">>A",  ">>A"   };
+SHIFT_OP := { <<,    >>,    >>A,    >>A     };
 
 SHIFTS[IDX]'q'  Rd, Rs, op2
 	*32* Rd := Rs SHIFT_OP[IDX] op2;
@@ -598,9 +598,9 @@ FDIV'S''q'  fd, fa, fb
 # conditional branch
 # MVE: Not sure if I have the bit numbers round the right way (is LT 3 or 0?)
 CONDBR  := {
-	"%CR0@[3:3]", "~%CR0@[2:2]",  "%CR0@[1:1]", "~%CR0@[3:3]",
-	"%CR0@[2:2]", "~%CR0@[3:3]", "~%CR0@[1:1]", "~%CR0@[2:2]",
-	"%CR0@[0:0]", "~%CR0@[0:0]",  "%CR0@[0:0]", "~%CR0@[0:0]"
+	%CR0@[3:3], ~%CR0@[2:2],  %CR0@[1:1], ~%CR0@[3:3],
+	%CR0@[2:2], ~%CR0@[3:3], ~%CR0@[1:1], ~%CR0@[2:2],
+	%CR0@[0:0], ~%CR0@[0:0],  %CR0@[0:0], ~%CR0@[0:0]
 };
 BRCONDS := {
 	"lt", "le", "eq", "ge",

@@ -293,7 +293,7 @@ SETFFLAGS(op1, op2) {
 	*1* %C2 := 0 # [op1 > op2 ? 1 : 0]
 };
 
-ARITH_OP := { "+",   "-"   };
+ARITH_OP := { +,     -     };
 ARITH    := { "ADD", "SUB" };
 
 ARITH[IDX]^"IAL" i8
@@ -471,7 +471,7 @@ CMP.RMOD reg32, modrm
 	*32* tmp1 := reg32 - modrm{32}
 	SUBFLAGS32(reg32, modrm{32}, tmp1);
 
-LOGIC_OP := { "&",   "|",  "^"   };
+LOGIC_OP := { &,     |,    ^     };
 LOGIC    := { "AND", "OR", "XOR" };
 
 LOGIC[IDX]^"IAL" i8
@@ -870,22 +870,22 @@ INT3
 	_;      # Not expected to be seen in correct code, but decode anyway
 
 JCOND := {
-	"~%CF & ~%ZF",         "%CF | %ZF",
-	"%CF | %ZF",           "~%CF & ~%ZF",
-	"%CF",                 "~%CF",
-	"~%CF",                "%CF",
-	"~(%NF ^ %OF) & ~%ZF", "(%NF ^ %ZF) | %ZF",
-	"(%NF ^ %OF) | %ZF",   "~(%NF ^ %OF) & ~%ZF",
-	"%NF ^ %OF",           "~(%NF ^ %OF)",
-	"~(%NF ^ %OF)",        "%NF ^ %OF",
-	"%ZF",                 "~%ZF",
-	"%ZF",                 "~%ZF",
-	"%CF",                 "~%CF",
-	"%OF",                 "~%OF",
-	"%NF",                 "~%NF",
-	"%PF",                 "~%PF",
-	"%PF",                 "~%PF",
-	"~%cx"
+	~%CF & ~%ZF,          %CF |  %ZF,
+	 %CF |  %ZF,         ~%CF & ~%ZF,
+	 %CF,                ~%CF,
+	~%CF,                 %CF,
+	~(%NF ^ %OF) & ~%ZF,  (%NF ^ %ZF) |  %ZF,
+	 (%NF ^ %OF) |  %ZF, ~(%NF ^ %OF) & ~%ZF,
+	  %NF ^ %OF,         ~(%NF ^ %OF),
+	~(%NF ^ %OF),          %NF ^ %OF,
+	%ZF,                 ~%ZF,
+	%ZF,                 ~%ZF,
+	%CF,                 ~%CF,
+	%OF,                 ~%OF,
+	%NF,                 ~%NF,
+	%PF,                 ~%PF,
+	%PF,                 ~%PF,
+	~%cx
 };
 JUMPS := {
 	"A",  "NA",
@@ -945,9 +945,9 @@ LEAVE
 	*32* %esp := %esp + 4;
 
 LCOND := {
-	"%ecx ~= 0 & %ZF", "%ecx ~= 0 & ~%ZF",
-	"%ecx ~= 0 & %ZF", "%ecx ~= 0 & ~%ZF",
-	"%ecx ~= 0"
+	%ecx ~= 0 & %ZF,  %ecx ~= 0 & ~%ZF,
+	%ecx ~= 0 & %ZF,  %ecx ~= 0 & ~%ZF,
+	%ecx ~= 0
 };
 LOOPS := {
 	"LOOPE", "LOOPNE",
@@ -1168,7 +1168,7 @@ PUSH.GS
 	*16* m[%esp - 2] := %gs
 	*32* %esp := %esp - 2;
 
-ROT_OP := { "rlc", "rrc", "rl",  "rr"  };
+ROT_OP := { rlc,   rrc,   rl,    rr    };
 ROT    := { "RCL", "RCR", "ROL", "ROR" };
 
 ROLS := { "RCL", "ROL" };
@@ -1326,7 +1326,7 @@ SETB.LE modrm
 SETB.NLE modrm
 	*8* modrm := [~%ZF & (%NF = %OF) ? 1 : 0];
 
-SHIFT_OP := { "<<",     ">>",  ">>A" };
+SHIFT_OP := { <<,       >>,    >>A   };
 SHIFT    := { "SHLSAL", "SHR", "SAR" };
 
 SHIFT[IDX].B.EB.1 modrm
@@ -1672,7 +1672,7 @@ F2XM1
 FABS
 	*f80* %st := fabs(%st);
 
-FARITH_OP := { "+f",   "-f"   };
+FARITH_OP := { +f,     -f     };
 FARITH    := { "FADD", "FSUB" };
 
 FARITH[IDX].r32 modrm

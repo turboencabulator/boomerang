@@ -161,8 +161,8 @@
 %type <strlist> list_parameter func_parameter
 %type <namedeque> str_term str_expr str_array
 %type <explist> flag_list
-%type <opdeque> opstr_array opstr_expr
-%type <expdeque> expstr_array expstr_expr
+%type <opdeque> binop_array
+%type <expdeque> exp_array
 %type <explist> list_actualparameter
 %type <rtlist> rt_list
 
@@ -385,9 +385,9 @@ constants
 		delete $1;
 	  }
 
-	| NAME EQUATE str_expr    { NameTable[*$1] = $3; }
-	| NAME EQUATE opstr_expr  { OpTable[*$1]   = $3; }
-	| NAME EQUATE expstr_expr { ExpTable[*$1]  = $3; }
+	| NAME EQUATE str_expr            { NameTable[*$1] = $3; }
+	| NAME EQUATE '{' binop_array '}' { OpTable[*$1]   = $4; }
+	| NAME EQUATE '{' exp_array '}'   { ExpTable[*$1]  = $4; }
 	;
 
 str_expr
@@ -439,14 +439,10 @@ str_array
 	| str_expr              { $$ = $1; }
 	;
 
-/* Example: OP2 := { "<<",  ">>",  ">>A" }; */
-opstr_expr
-	: '{' opstr_array '}' { $$ = $2; }
-	;
-
-opstr_array
-	: opstr_array ',' '"' bin_oper '"' { $$ = $1; $$->push_back($4); }
-	| '"' bin_oper '"'           { $$ = new std::deque<OPER>(1, $2); }
+/* Binary infix operators only.  Example: OP2 := { <<, >>, >>A }; */
+binop_array
+	: binop_array ',' bin_oper { $$ = $1; $$->push_back($3); }
+	| bin_oper           { $$ = new std::deque<OPER>(1, $1); }
 	;
 
 bin_oper
@@ -455,14 +451,10 @@ bin_oper
 	| FARITH_OP { $$ = $1; }
 	;
 
-/* Example: COND1_C := { "~%ZF", "%ZF", "~(%ZF | (%NF ^ %OF))", ... }; */
-expstr_expr
-	: '{' expstr_array '}' { $$ = $2; }
-	;
-
-expstr_array
-	: expstr_array ',' '"' exp '"' { $$ = $1; $$->push_back($4); }
-	| '"' exp '"'           { $$ = new std::deque<Exp *>(1, $2); }
+/* Example: COND1_C := { ~%ZF, %ZF, ~(%ZF | (%NF ^ %OF)), ... }; */
+exp_array
+	: exp_array ',' exp { $$ = $1; $$->push_back($3); }
+	| exp        { $$ = new std::deque<Exp *>(1, $1); }
 	;
 
 instr
@@ -757,7 +749,7 @@ exp
 	| exp LOG_OP    exp { $$ = new Binary($2, $1, $3); }
 
 	/* See comment above re "%prec TABLE_OP"
-	 * Example: OP1[IDX] where OP1 := {  "&",  "|", "^", ... }; */
+	 * Example: OP1[IDX] where OP1 := { &, |, ^, ... }; */
 	| exp NAME_LOOKUP NAME ']' exp %prec TABLE_OP {
 		auto ir = indexrefmap.find(*$3);
 		auto it = OpTable.find(*$2);

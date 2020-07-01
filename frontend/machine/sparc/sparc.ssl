@@ -280,7 +280,7 @@ SWAP eaddr, rd
 
 # Logical operators - use OP1 (table) to map the correct operator.
 
-OP1     := { "&",    "|",   "^"    };
+OP1     := { &,      |,     ^      };
 LOG_N   := { "AND",  "OR",  "XOR"  };
 LOG_NOT := { "ANDN", "ORN", "XNOR" };
 LOG     := { $LOG_N, $LOG_NOT };
@@ -306,7 +306,7 @@ STBAR
 
 # Shift operators- again uses OP2 table for correct operator.
 
-OP2    := { "<<",  ">>",  ">>A" };
+OP2    := { <<,    >>,    >>A   };
 SHIFTS := { "SLL", "SRL", "SRA" };
 SHIFTS[IDX] rs1, reg_or_imm, rd
 	*32* rd := rs1 OP2[IDX] reg_or_imm;
@@ -314,7 +314,7 @@ SHIFTS[IDX] rs1, reg_or_imm, rd
 
 # Arithmetic operators- uses OP3 table for correct operator.
 
-OP3   := { "+",   "-",   "+",     "-",     "+",      "-"      };
+OP3   := { +,     -,     +,       -,       +,        -        };
 ARITH := { "ADD", "SUB", "ADDCC", "SUBCC", "TADDCC", "TSUBCC" };
 
 ARITH[IDX] rs1, reg_or_imm, rd
@@ -333,7 +333,7 @@ TADDCC rs1, reg_or_imm, rd
 TSUBCC rs1, reg_or_imm, rd
 	TSUBFLAGS(tmp, reg_or_imm, rd);
 
-OP4     := { "+",    "-"    };
+OP4     := { +,      -      };
 ARITH_C := { "ADDX", "SUBX" };
 
 ARITH_C[idx]'CC' rs1, reg_or_imm, rd
@@ -514,14 +514,14 @@ RETURN addr
 # Always executes delay instr. on branch
 
 COND := {
-	"%ZF",               "~(%ZF)",
-	"%ZF | (%NF ^ %OF)", "~(%ZF | (%NF ^ %OF))",
-	"%NF ^ %OF",         "~(%NF ^ %OF)",
-	"%CF | %ZF",         "~(%CF | %ZF)",
-	"%CF",               "~(%CF)",
-	"%NF",               "~(%NF)",
-	"%OF",               "~(%OF)",
-	"1",                 "0"
+	%ZF,               ~(%ZF),
+	%ZF | (%NF ^ %OF), ~(%ZF | (%NF ^ %OF)),
+	%NF ^ %OF,         ~(%NF ^ %OF),
+	%CF | %ZF,         ~(%CF | %ZF),
+	%CF,               ~(%CF),
+	%NF,               ~(%NF),
+	%OF,               ~(%OF),
+	1,                 0
 };
 JUMPS_C := {
 	"E",   "NE",
@@ -658,7 +658,7 @@ FABSs fs2s, fds
 
 # Shamelessly borrowed from integers
 
-OP5     := { "+f",    "-f",    "/f",    "*f",    "*f"     };
+OP5     := { +f,      -f,      /f,      *f,      *f       };
 FARITHS := { "FADDs", "FSUBs", "FDIVs", "FMULs"           };
 FARITHD := { "FADDd", "FSUBd", "FDIVd", "FMULd", "FsMULd" };
 FARITHQ := { "FADDq", "FSUBq", "FDIVq", "FMULq", "FdMULq" };
@@ -738,14 +738,14 @@ FCMP'E'"q" fs1q, fs2q
 # operators exist and have been setup correctly as at 14/12/1998
 
 FCOND := {
-	"%FZF",               "~(%FZF)",
-	"%FGF | %FLF",        "~(%FGF | %FLF)",
-	"%FZF | %FGF",        "~(%FZF | %FGF)",
-	"%FLF",               "~(%FLF)",
-	"%FZF | %FLF",        "~(%FZF | %FLF)",
-	"%FGF",               "~(%FGF)",
-	"%FZF | %FGF | %FLF", "~(%FZF | %FGF | %FLF)",
-	"1",                  "0"
+	%FZF,               ~(%FZF),
+	%FGF | %FLF,        ~(%FGF | %FLF),
+	%FZF | %FGF,        ~(%FZF | %FGF),
+	%FLF,               ~(%FLF),
+	%FZF | %FLF,        ~(%FZF | %FLF),
+	%FGF,               ~(%FGF),
+	%FZF | %FGF | %FLF, ~(%FZF | %FGF | %FLF),
+	1,                  0
 };
 FJUMPS_C := {
 	"E",  "NE",
