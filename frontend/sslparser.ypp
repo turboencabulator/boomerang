@@ -443,17 +443,6 @@ name_expand
 		}
 		delete $2;
 	  }
-
-	| NAME {
-		// try and expand $1 from table of names. if fail, expand using '"' NAME '"' rule
-		auto it = NameTable.find(*$1);
-		if (it == NameTable.end()) {
-			$$ = new std::deque<std::string>(1, *$1);
-		} else {
-			$$ = new std::deque<std::string>(*it->second);
-		}
-		delete $1;
-	  }
 	;
 
 /* Example: OP2 := { "<<",  ">>",  ">>A" }; */

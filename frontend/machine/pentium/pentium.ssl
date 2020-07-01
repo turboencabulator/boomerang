@@ -1473,30 +1473,30 @@ STI
 	*1* %IF := 1;
 
 # The string instructions
-REPS  := { "REP", "REPNE" };                # Repeat prefixes
-OREPS := { REPS, "" };                      # Optional repeat prefixes
-ALLSZ := { "B", "VOW", "VOD" };             # All size suffixes
+REPS  := { "REP", "REPNE" };     # Repeat prefixes
+OREPS := { $REPS, "" };          # Optional repeat prefixes
+ALLSZ := { "B", "VOW", "VOD" };  # All size suffixes
 
 # String instructions, not repeated
 STRS := { "CMPS", "LODS", "MOVS", "SCAS", "STOS" };
 
 # String instructions, repeated
-STRS_R := REPS STRS;
+STRS_R := $REPS $STRS;
 
 # String instructions, optionally repeated
-STRS_OR := OREPS STRS;
+STRS_OR := $OREPS $STRS;
 
-STRFL :=       { "CMPS", "SCAS"};                   # Update flags
-STRNF :=       { "LODS", "MOVS", "STOS"};           # No update flags
-STRSI := OREPS { "CMPS", "LODS", "MOVS" };          # Update esi
-STRDI := OREPS { "CMPS", "MOVS", "SCAS", "STOS" };  # Update edi
-STRFL_OR := OREPS STRFL;                            # Optionally repeated; flags
+STRFL :=        { "CMPS", "SCAS"};                   # Update flags
+STRNF :=        { "LODS", "MOVS", "STOS" };          # No update flags
+STRSI := $OREPS { "CMPS", "LODS", "MOVS" };          # Update esi
+STRDI := $OREPS { "CMPS", "MOVS", "SCAS", "STOS" };  # Update edi
+STRFL_OR := $OREPS $STRFL;                           # Optionally repeated; flags
 
-CMPS_OR := OREPS CMPS;      # Compare with optional repeat
-LODS_OR := OREPS LODS;      # Load with optional repeat
-MOVS_OR := OREPS MOVS;      # Move with optional repeat
-SCAS_OR := OREPS SCAS;      # Scan with optional repeat
-STOS_OR := OREPS STOS;      # Store with optional repeat
+CMPS_OR := $OREPS "CMPS";  # Compare with optional repeat
+LODS_OR := $OREPS "LODS";  # Load with optional repeat
+MOVS_OR := $OREPS "MOVS";  # Move with optional repeat
+SCAS_OR := $OREPS "SCAS";  # Scan with optional repeat
+STOS_OR := $OREPS "STOS";  # Store with optional repeat
 
 # All repeated string instructions
 STRS_R[X]ALLSZ[Y]
@@ -1558,15 +1558,15 @@ STRS_R[X]ALLSZ[Y]
 	*32* %ecx := %ecx - 1;
 
 # Do the repeat logic
-REPIFZ := REP STRFL;
+REPIFZ := "REP" $STRFL;
 REPIFZ[X]ALLSZ[Y]
 	*1* %RPT := %ZF;
 
-REPIFNZ := REPNE STRFL;
+REPIFNZ := "REPNE" $STRFL;
 REPIFNZ[X]ALLSZ[Y]
 	*1* %RPT := ~%ZF;
 
-REPALL := REPS STRNF;
+REPALL := $REPS $STRNF;
 REPALL[X]ALLSZ[Y]
 	*1* %RPT := 1;
 

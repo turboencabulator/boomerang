@@ -283,7 +283,7 @@ SWAP eaddr, rd
 OP1     := { "&",    "|",   "^"    };
 LOG_N   := { "AND",  "OR",  "XOR"  };
 LOG_NOT := { "ANDN", "ORN", "XNOR" };
-LOG     := { LOG_N, LOG_NOT };
+LOG     := { $LOG_N, $LOG_NOT };
 
 LOG_N[IDX]'CC' rs1, reg_or_imm, rd
 	*32* rd := rs1 OP1[IDX] reg_or_imm;
@@ -532,7 +532,7 @@ JUMPS_C := {
 	"NEG", "POS",
 	"VS",  "VC"
 };
-JUMPS := { JUMPS_C, "A", "N" };
+JUMPS := { $JUMPS_C, "A", "N" };
 
 "B"JUMPS[idx] reloc
 	*32* %pc  := %npc
@@ -756,7 +756,7 @@ FJUMPS_C := {
 	"G",  "ULE",
 	"O",  "U"
 };
-FJUMPS := { FJUMPS_C, "A", "N" };
+FJUMPS := { $FJUMPS_C, "A", "N" };
 
 "FB"FJUMPS[idx] reloc
 	*32* %pc  := %npc
