@@ -446,7 +446,9 @@ binop_array
 	;
 
 bin_oper
-	: BIT_OP    { $$ = $1; }
+	: LOG_OP    { $$ = $1; }
+	| COND_OP   { $$ = $1; }
+	| BIT_OP    { $$ = $1; }
 	| ARITH_OP  { $$ = $1; }
 	| FARITH_OP { $$ = $1; }
 	;
