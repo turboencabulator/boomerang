@@ -159,7 +159,7 @@
 %type <insel> name_contract instr_elem instr_name
 %type <strlist> reg_table
 %type <strlist> list_parameter func_parameter
-%type <namedeque> name_expand str_term str_expr str_array
+%type <namedeque> str_term str_expr str_array
 %type <explist> flag_list
 %type <opdeque> opstr_array opstr_expr
 %type <expdeque> expstr_array expstr_expr
@@ -392,7 +392,7 @@ constants
 
 str_expr
 	: str_expr str_term {
-		// cross-product of two str_expr's
+		// cross-product of two str_terms
 		$$ = new std::deque<std::string>;
 		for (const auto &i : *$1)
 			for (const auto &j : *$2)
@@ -405,32 +405,16 @@ str_expr
 
 str_term
 	: '{' str_array '}' { $$ = $2; }
-	| name_expand       { $$ = $1; }
-	;
-
-str_array
-	: str_array ',' str_expr {
-		$$ = $1;
-		$$->insert($$->end(), $3->begin(), $3->end());  // append $3
-		delete $3;
-	  }
-	| str_array ',' '"' '"' { $1->push_back(""); }
-	| str_expr              { $$ = $1; }
-	;
-
-name_expand
-	: '\'' NAME '\'' {
+	| '\'' NAME '\'' {
 		$$ = new std::deque<std::string>;
 		$$->push_back("");
 		$$->push_back(*$2);
 		delete $2;
 	  }
-
 	| '"' NAME '"' {
 		$$ = new std::deque<std::string>(1, *$2);
 		delete $2;
 	  }
-
 	| '$' NAME {
 		// expand $2 from table of names
 		auto it = NameTable.find(*$2);
@@ -443,6 +427,16 @@ name_expand
 		}
 		delete $2;
 	  }
+	;
+
+str_array
+	: str_array ',' str_expr {
+		$$ = $1;
+		$$->insert($$->end(), $3->begin(), $3->end());  // append $3
+		delete $3;
+	  }
+	| str_array ',' '"' '"' { $1->push_back(""); }
+	| str_expr              { $$ = $1; }
 	;
 
 /* Example: OP2 := { "<<",  ">>",  ">>A" }; */
