@@ -385,7 +385,7 @@ constants
 		delete $1;
 	  }
 
-	| NAME EQUATE str_expr            { NameTable[*$1] = $3; }
+	| NAME EQUATE '{' str_array '}'   { NameTable[*$1] = $4; }
 	| NAME EQUATE '{' binop_array '}' { OpTable[*$1]   = $4; }
 	| NAME EQUATE '{' exp_array '}'   { ExpTable[*$1]  = $4; }
 	;
