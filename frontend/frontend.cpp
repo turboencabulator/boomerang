@@ -679,26 +679,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 			if (Boomerang::get().printRtl)
 				LOG << *rtl;
 
-			// For each Statement in the RTL
-			//std::list<Statement*>& sl = rtl->getList();
-			std::list<Statement *> sl = rtl->getList();
-			// Make a copy (!) of the list. This is needed temporarily to work around the following problem.
-			// We are currently iterating an RTL, which could be a return instruction. The RTL is passed to
-			// createReturnBlock; if this is not the first return statement, it will get cleared, and this will
-			// cause problems with the current iteration. The effects seem to be worse for MSVC/Windows.
-			// This problem will likely be easier to cope with when the RTLs are removed, and there are special
-			// Statements to mark the start of instructions (and their native address).
-			// FIXME: However, this workaround breaks logic below where a GOTO is changed to a CALL followed by a return
-			// if it points to the start of a known procedure
-#if 1
-			for (auto ss = sl.begin(); ss != sl.end(); ++ss) { // }
-#else
-			// The counter is introduced because ss != sl.end() does not work as it should
-			// FIXME: why? Does this really fix the problem?
-			int counter = sl.size();
-			for (auto ss = sl.begin(); counter > 0; ++ss, --counter) {
-#endif
-				Statement *s = *ss;
+			for (auto &s : *rtl) {
 				s->setProc(proc);  // let's do this really early!
 				auto it = refHints.find(rtl->getAddress());
 				if (it != refHints.end()) {
@@ -723,17 +704,26 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 						}
 						if (destProc && destProc != (Proc *)-1) {
 							auto call = new CallStatement(dest);
-							s = call;
 							call->setDestProc(destProc);
 							call->setReturnAfterCall(true);
-							// also need to change it in the actual RTL
-							assert(ss == --sl.end());
-							rtl->replaceLastStmt(s);
-							*ss = s;
+							s = call;  // FIXME:  jump is leaked
 						}
 					}
 				}
+			}
 
+			// For each Statement in the RTL
+			//std::list<Statement*>& sl = rtl->getList();
+			std::list<Statement *> sl = rtl->getList();
+			// Make a copy (!) of the list. This is needed temporarily to work around the following problem.
+			// We are currently iterating an RTL, which could be a return instruction. The RTL is passed to
+			// createReturnBlock; if this is not the first return statement, it will get cleared, and this will
+			// cause problems with the current iteration. The effects seem to be worse for MSVC/Windows.
+			// This problem will likely be easier to cope with when the RTLs are removed, and there are special
+			// Statements to mark the start of instructions (and their native address).
+			// FIXME:  Do we really need to iterate over all Statements?
+			for (auto ss = sl.begin(); ss != sl.end(); ++ss) {
+				Statement *s = *ss;
 				switch (s->getKind()) {
 
 				case STMT_GOTO:
@@ -771,14 +761,13 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// jump to a library function
 							// replace with a call ret
 							std::string func = pBF->getDynamicProcName(((Const *)dest->getSubExp1())->getAddr());
-							auto call = new CallStatement;
-							call->setDest(dest->clone());
+							auto call = new CallStatement(dest->clone());
 							LibProc *lp = proc->getProg()->getLibraryProc(func);
 							if (!lp)
 								LOG << "getLibraryProc returned nullptr, aborting\n";
 							assert(lp);
 							call->setDestProc(lp);
-							BB_rtls->push_back(new RTL(rtl->getAddress(), call));
+							BB_rtls->push_back(new RTL(rtl->getAddress(), call));  // FIXME:  Assumes no other semantics (or intentionally discards them), leaks them along with jump
 							auto bb = cfg->newBB(BB_rtls, CALL);
 							BB_rtls = nullptr;
 							sequentialDecode = false;
