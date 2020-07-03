@@ -712,18 +712,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				}
 			}
 
-			// For each Statement in the RTL
-			//std::list<Statement*>& sl = rtl->getList();
-			std::list<Statement *> sl = rtl->getList();
-			// Make a copy (!) of the list. This is needed temporarily to work around the following problem.
-			// We are currently iterating an RTL, which could be a return instruction. The RTL is passed to
-			// createReturnBlock; if this is not the first return statement, it will get cleared, and this will
-			// cause problems with the current iteration. The effects seem to be worse for MSVC/Windows.
-			// This problem will likely be easier to cope with when the RTLs are removed, and there are special
-			// Statements to mark the start of instructions (and their native address).
-			// FIXME:  Do we really need to iterate over all Statements?
-			for (auto ss = sl.begin(); ss != sl.end(); ++ss) {
-				Statement *s = *ss;
+			if (auto s = rtl->getHlStmt()) {
 				switch (s->getKind()) {
 
 				case STMT_GOTO:
@@ -781,7 +770,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 								Boomerang::get().alert_update_signature(proc);
 							}
 							callList.push_back(call);
-							ss = sl.end(); --ss;  // get out of the loop
 						} else {  // We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
 							BB_rtls->push_back(rtl);
 							auto bb = cfg->newBB(BB_rtls, COMPJUMP);
