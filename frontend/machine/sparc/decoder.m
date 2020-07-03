@@ -64,122 +64,227 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 #endif
 
 /**
- * Create an RTL for a Bx instruction.
+ * Create a HL Statement for a Bx instruction.  Instantiates a GotoStatement
+ * for the unconditional branches, or a BranchStatement for the rest.
  *
  * \param pc    The location counter.
  * \param dest  The branch destination address.
  *
- * \returns  Pointer to newly created RTL, or nullptr if invalid.
+ * \returns  Pointer to newly created Statement, or null if invalid.
  */
-RTL *
-SparcDecoder::createBranchRtl(ADDRESS pc, ADDRESS dest, const BinaryFile *bf)
+Statement *
+SparcDecoder::createBranch(ADDRESS pc, ADDRESS dest, const BinaryFile *bf)
 {
-	auto br = new BranchStatement(dest);
 	match pc to
-	| BE =>
+	| BN =>
+		return new GotoStatement(dest);
+	| BA =>
+		return new GotoStatement(dest);
+	| BE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JE);
-	| BNE =>
+		return br;
+	}
+	| BNE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JNE);
-	| BLE =>
+		return br;
+	}
+	| BLE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSLE);
-	| BG =>
+		return br;
+	}
+	| BG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSG);
-	| BL =>
+		return br;
+	}
+	| BL => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSL);
-	| BGE =>
+		return br;
+	}
+	| BGE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSGE);
-	| BLEU =>
+		return br;
+	}
+	| BLEU => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JULE);
-	| BGU =>
+		return br;
+	}
+	| BGU => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUG);
-	| BCS =>
+		return br;
+	}
+	| BCS => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUL);
-	| BCC =>
+		return br;
+	}
+	| BCC => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUGE);
-	| BNEG =>
+		return br;
+	}
+	| BNEG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JMI);
-	| BPOS =>
+		return br;
+	}
+	| BPOS => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JPOS);
-	// should never see these now
-	| BVS [name] =>
-		std::cerr << "Decoded " << name << " instruction\n";
-	| BVC [name] =>
-		std::cerr << "Decoded " << name << " instruction\n";
+		return br;
+	}
+	| BVS =>
+		return new GotoStatement(dest);
+	| BVC =>
+		return new GotoStatement(dest);
 
 	// Predicted branches are handled identically.
-	| BPE =>
+	| BPN =>
+		return new GotoStatement(dest);
+	| BPA =>
+		return new GotoStatement(dest);
+	| BPE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JE);
-	| BPNE =>
+		return br;
+	}
+	| BPNE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JNE);
-	| BPLE =>
+		return br;
+	}
+	| BPLE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSLE);
-	| BPG =>
+		return br;
+	}
+	| BPG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSG);
-	| BPL =>
+		return br;
+	}
+	| BPL => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSL);
-	| BPGE =>
+		return br;
+	}
+	| BPGE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSGE);
-	| BPLEU =>
+		return br;
+	}
+	| BPLEU => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JULE);
-	| BPGU =>
+		return br;
+	}
+	| BPGU => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUG);
-	| BPCS =>
+		return br;
+	}
+	| BPCS => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUL);
-	| BPCC =>
+		return br;
+	}
+	| BPCC => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JUGE);
-	| BPNEG =>
+		return br;
+	}
+	| BPNEG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JMI);
-	| BPPOS =>
+		return br;
+	}
+	| BPPOS => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JPOS);
-	| BPVS [name] =>
-		std::cerr << "Decoded " << name << " instruction\n";
-	| BPVC [name] =>
-		std::cerr << "Decoded " << name << " instruction\n";
+		return br;
+	}
+	| BPVS =>
+		return new GotoStatement(dest);
+	| BPVC =>
+		return new GotoStatement(dest);
 
-	| FBLG =>
+	| FBLG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JNE, true);
-	| FBE =>
+		return br;
+	}
+	| FBE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JE, true);
-	| FBL =>
+		return br;
+	}
+	| FBL => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSL, true);
-	| FBGE =>
+		return br;
+	}
+	| FBGE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSGE, true);
-	| FBLE =>
+		return br;
+	}
+	| FBLE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSLE, true);
-	| FBG =>
+		return br;
+	}
+	| FBG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSG, true);
+		return br;
+	}
 
 	// Just ignore unordered (for now)
-	| FBNE =>
+	| FBNE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JNE, true);
-	| FBUE =>
+		return br;
+	}
+	| FBUE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JE, true);
-	| FBUL =>
+		return br;
+	}
+	| FBUL => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSL, true);
-	| FBUGE =>
+		return br;
+	}
+	| FBUGE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSGE, true);
-	| FBULE =>
+		return br;
+	}
+	| FBULE => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSLE, true);
-	| FBUG =>
+		return br;
+	}
+	| FBUG => {
+		auto br = new BranchStatement(dest);
 		br->setCondType(BRANCH_JSG, true);
+		return br;
+	}
 
-	| FBA [name] =>
-		std::cerr << "unknown float branch " << name << "\n";
-		return nullptr;
-	| FBN [name] =>
-		std::cerr << "unknown float branch " << name << "\n";
-		return nullptr;
-	| FBU [name] =>
-		std::cerr << "unknown float branch " << name << "\n";
-		return nullptr;
-	| FBO [name] =>
-		std::cerr << "unknown float branch " << name << "\n";
-		return nullptr;
-
-	else
-		std::cerr << "unknown non-float branch\n";
+	else {
+		// FBA, FBN, FBU, FBO are unhandled.
+		// CBxxx branches (branches that depend on co-processor
+		// instructions) are invalid, as far as we are concerned.
+	}
 	endmatch
-	return new RTL(pc, br);
+	return nullptr;
 }
 
 /**
@@ -263,24 +368,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Anulled branch
 		 */
-
-		// First, check for CBxxx branches (branches that depend on co-processor instructions). These are invalid,
-		// as far as we are concerned
-		if (name[0] == 'C') {
+		auto br = createBranch(pc, tgt, bf);
+		if (!br) {
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-
-		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else {
-			result.rtl = createBranchRtl(pc, tgt, bf);
-		}
+		result.rtl = new RTL(pc, br);
 
 		// The class of this instruction depends on whether or not
 		// it is one of the 'unconditional' conditional branches
@@ -299,20 +394,15 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Anulled, predicted branch (treat as for non predicted)
 		 */
-
-		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
+		/* If 64 bit cc used, can't handle */
+		if (strcmp(name, "BPA,a") != 0 && strcmp(name, "BPN,a") != 0 && cc01 != 0) {
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
-		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else {
-			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
+		auto br = createBranch(pc, tgt, bf);
+		result.rtl = new RTL(pc, br);
 
 		// The class of this instruction depends on whether or not
 		// it is one of the 'unconditional' conditional branches
@@ -331,24 +421,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Non anulled branch
 		 */
-
-		// First, check for CBxxx branches (branches that depend on co-processor instructions). These are invalid,
-		// as far as we are concerned
-		if (name[0] == 'C') {
+		auto br = createBranch(pc, tgt, bf);
+		if (!br) {
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-
-		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
-		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else {
-			result.rtl = createBranchRtl(pc, tgt, bf);
-		}
+		result.rtl = new RTL(pc, br);
 
 		// The class of this instruction depends on whether or not
 		// it is one of the 'unconditional' conditional branches
@@ -363,18 +443,15 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		DEBUG_STMTS
 
 	| pbranch(cc01, tgt) [name] =>
-		if (strcmp(name, "BPA") == 0 || strcmp(name, "BPN") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
+		/* If 64 bit cc used, can't handle */
+		if (strcmp(name, "BPA") != 0 && strcmp(name, "BPN") != 0 && cc01 != 0) {
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
-		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
-		} else {
-			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
+		auto br = createBranch(pc, tgt, bf);
+		result.rtl = new RTL(pc, br);
 
 		// The class of this instruction depends on whether or not
 		// it is one of the 'unconditional' conditional branches
@@ -625,8 +702,7 @@ SparcDecoder::dis_RegImm(ADDRESS pc, const BinaryFile *bf)
 {
 	match pc to
 	| imode(i) =>
-		Exp *expr = new Const(i);
-		return expr;
+		return new Const(i);
 	| rmode(rs2) =>
 		return dis_RegRhs(rs2);
 	endmatch
@@ -701,8 +777,7 @@ bool
 SparcDecoder::isRestore(ADDRESS pc, const BinaryFile *bf)
 {
 	match pc to
-	| RESTORE(_, _, _) =>
-	//| RESTORE(a, b, c) =>
+	| RESTORE =>
 		return true;
 	else
 		return false;
