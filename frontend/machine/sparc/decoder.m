@@ -66,118 +66,120 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 /**
  * Create an RTL for a Bx instruction.
  *
- * \param pc     The location counter.
- * \param name   Instruction name (e.g. "BNE,a", or "BPNE").
+ * \param pc    The location counter.
+ * \param dest  The branch destination address.
  *
  * \returns  Pointer to newly created RTL, or nullptr if invalid.
  */
 RTL *
-SparcDecoder::createBranchRtl(ADDRESS pc, const char *name)
+SparcDecoder::createBranchRtl(ADDRESS pc, ADDRESS dest, const BinaryFile *bf)
 {
-	auto br = new BranchStatement();
-	auto res = new RTL(pc, br);
-	if (name[0] == 'F') {
-		// fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
-		//                     FBA FBE  FBUE FBGE FBUGE FBLE FBULE FBO ],
-		// fbranches are not the same as ibranches, so need a whole different set of tests
-		if (name[2] == 'U')
-			name++;  // Just ignore unordered (for now)
-		switch (name[2]) {
-		case 'E':
-			br->setCondType(BRANCH_JE, true);  // FBE
-			break;
-		case 'L':
-			if (name[3] == 'G')
-				br->setCondType(BRANCH_JNE, true);   // FBLG
-			else if (name[3] == 'E')
-				br->setCondType(BRANCH_JSLE, true);  // FBLE
-			else
-				br->setCondType(BRANCH_JSL, true);   // FBL
-			break;
-		case 'G':
-			if (name[3] == 'E')
-				br->setCondType(BRANCH_JSGE, true);  // FBGE
-			else
-				br->setCondType(BRANCH_JSG, true);   // FBG
-			break;
-		case 'N':
-			if (name[3] == 'E')
-				br->setCondType(BRANCH_JNE, true);   // FBNE
-			// Else it's FBN!
-			break;
-		default:
-			std::cerr << "unknown float branch " << name << std::endl;
-			delete res;
-			res = nullptr;
-		}
-		return res;
-	}
+	auto br = new BranchStatement(dest);
+	match pc to
+	| BE =>
+		br->setCondType(BRANCH_JE);
+	| BNE =>
+		br->setCondType(BRANCH_JNE);
+	| BLE =>
+		br->setCondType(BRANCH_JSLE);
+	| BG =>
+		br->setCondType(BRANCH_JSG);
+	| BL =>
+		br->setCondType(BRANCH_JSL);
+	| BGE =>
+		br->setCondType(BRANCH_JSGE);
+	| BLEU =>
+		br->setCondType(BRANCH_JULE);
+	| BGU =>
+		br->setCondType(BRANCH_JUG);
+	| BCS =>
+		br->setCondType(BRANCH_JUL);
+	| BCC =>
+		br->setCondType(BRANCH_JUGE);
+	| BNEG =>
+		br->setCondType(BRANCH_JMI);
+	| BPOS =>
+		br->setCondType(BRANCH_JPOS);
+	// should never see these now
+	| BVS [name] =>
+		std::cerr << "Decoded " << name << " instruction\n";
+	| BVC [name] =>
+		std::cerr << "Decoded " << name << " instruction\n";
 
-	// ibranch is any of [ BN BE  BLE BL  BLEU BCS BNEG BVS
-	//                     BA BNE BG  BGE BGU  BCC BPOS BVC ],
-	// Note: BPN, BPE, etc handled below
-	switch (name[1]) {
-	case 'E':
-		br->setCondType(BRANCH_JE);  // BE
-		break;
-	case 'L':
-		if (name[2] == 'E') {
-			if (name[3] == 'U')
-				br->setCondType(BRANCH_JULE);  // BLEU
-			else
-				br->setCondType(BRANCH_JSLE);  // BLE
-		} else {
-			br->setCondType(BRANCH_JSL);  // BL
-		}
-		break;
-	case 'N':
-		// BNE, BNEG (won't see BN)
-		if (name[3] == 'G')
-			br->setCondType(BRANCH_JMI);  // BNEG
-		else
-			br->setCondType(BRANCH_JNE);  // BNE
-		break;
-	case 'C':
-		// BCC, BCS
-		if (name[2] == 'C')
-			br->setCondType(BRANCH_JUGE);  // BCC
-		else
-			br->setCondType(BRANCH_JUL);   // BCS
-		break;
-	case 'V':
-		// BVC, BVS; should never see these now
-		if (name[2] == 'C')
-			std::cerr << "Decoded BVC instruction\n";  // BVC
-		else
-			std::cerr << "Decoded BVS instruction\n";  // BVS
-		break;
-	case 'G':
-		// BGE, BG, BGU
-		if (name[2] == 'E')
-			br->setCondType(BRANCH_JSGE);  // BGE
-		else if (name[2] == 'U')
-			br->setCondType(BRANCH_JUG);   // BGU
-		else
-			br->setCondType(BRANCH_JSG);   // BG
-		break;
-	case 'P':
-		if (name[2] == 'O') {
-			br->setCondType(BRANCH_JPOS);  // BPOS
-			break;
-		}
-		// Else, it's a BPXX; remove the P (for predicted) and try again
-		// (recurse)
-		// B P P O S ...
-		// 0 1 2 3 4 ...
-		char temp[8];
-		temp[0] = 'B';
-		strcpy(temp + 1, name + 2);
-		delete res;
-		return createBranchRtl(pc, temp);
-	default:
-		std::cerr << "unknown non-float branch " << name << std::endl;
-	}
-	return res;
+	// Predicted branches are handled identically.
+	| BPE =>
+		br->setCondType(BRANCH_JE);
+	| BPNE =>
+		br->setCondType(BRANCH_JNE);
+	| BPLE =>
+		br->setCondType(BRANCH_JSLE);
+	| BPG =>
+		br->setCondType(BRANCH_JSG);
+	| BPL =>
+		br->setCondType(BRANCH_JSL);
+	| BPGE =>
+		br->setCondType(BRANCH_JSGE);
+	| BPLEU =>
+		br->setCondType(BRANCH_JULE);
+	| BPGU =>
+		br->setCondType(BRANCH_JUG);
+	| BPCS =>
+		br->setCondType(BRANCH_JUL);
+	| BPCC =>
+		br->setCondType(BRANCH_JUGE);
+	| BPNEG =>
+		br->setCondType(BRANCH_JMI);
+	| BPPOS =>
+		br->setCondType(BRANCH_JPOS);
+	| BPVS [name] =>
+		std::cerr << "Decoded " << name << " instruction\n";
+	| BPVC [name] =>
+		std::cerr << "Decoded " << name << " instruction\n";
+
+	| FBLG =>
+		br->setCondType(BRANCH_JNE, true);
+	| FBE =>
+		br->setCondType(BRANCH_JE, true);
+	| FBL =>
+		br->setCondType(BRANCH_JSL, true);
+	| FBGE =>
+		br->setCondType(BRANCH_JSGE, true);
+	| FBLE =>
+		br->setCondType(BRANCH_JSLE, true);
+	| FBG =>
+		br->setCondType(BRANCH_JSG, true);
+
+	// Just ignore unordered (for now)
+	| FBNE =>
+		br->setCondType(BRANCH_JNE, true);
+	| FBUE =>
+		br->setCondType(BRANCH_JE, true);
+	| FBUL =>
+		br->setCondType(BRANCH_JSL, true);
+	| FBUGE =>
+		br->setCondType(BRANCH_JSGE, true);
+	| FBULE =>
+		br->setCondType(BRANCH_JSLE, true);
+	| FBUG =>
+		br->setCondType(BRANCH_JSG, true);
+
+	| FBA [name] =>
+		std::cerr << "unknown float branch " << name << "\n";
+		return nullptr;
+	| FBN [name] =>
+		std::cerr << "unknown float branch " << name << "\n";
+		return nullptr;
+	| FBU [name] =>
+		std::cerr << "unknown float branch " << name << "\n";
+		return nullptr;
+	| FBO [name] =>
+		std::cerr << "unknown float branch " << name << "\n";
+		return nullptr;
+
+	else
+		std::cerr << "unknown non-float branch\n";
+	endmatch
+	return new RTL(pc, br);
 }
 
 /**
@@ -277,9 +279,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
-			result.rtl = createBranchRtl(pc, name);
-			auto jump = (GotoStatement *)result.rtl->getList().back();
-			jump->setDest(tgt);
+			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
 
 		// The class of this instruction depends on whether or not
@@ -311,9 +311,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
-			result.rtl = createBranchRtl(pc, name);
-			auto jump = (GotoStatement *)result.rtl->getList().back();
-			jump->setDest(tgt);
+			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
 
 		// The class of this instruction depends on whether or not
@@ -349,9 +347,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
-			result.rtl = createBranchRtl(pc, name);
-			auto jump = (BranchStatement *)result.rtl->getList().back();
-			jump->setDest(tgt);
+			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
 
 		// The class of this instruction depends on whether or not
@@ -377,10 +373,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
-			result.rtl = createBranchRtl(pc, name);
-			// The BranchStatement will be the last Stmt of the rtl
-			auto jump = (GotoStatement *)result.rtl->getList().back();
-			jump->setDest(tgt);
+			result.rtl = createBranchRtl(pc, tgt, bf);
 		}
 
 		// The class of this instruction depends on whether or not

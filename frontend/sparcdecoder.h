@@ -42,7 +42,7 @@ private:
 	static Exp *dis_RegRhs(unsigned r);
 	/** \} */
 
-	static RTL *createBranchRtl(ADDRESS pc, const char *name);
+	static RTL *createBranchRtl(ADDRESS, ADDRESS, const BinaryFile *);
 	//bool isFuncPrologue(ADDRESS hostPC);
 };
 
