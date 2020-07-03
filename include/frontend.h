@@ -151,10 +151,9 @@ private:
 
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
 
-	void appendSyntheticReturn(BasicBlock *, UserProc *);
-
 protected:
-	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
+	void appendSyntheticReturn(BasicBlock *, UserProc *);
+	BasicBlock *createReturnBlock(std::list<RTL *> *, UserProc *);
 
 	void handleBranch(BasicBlock *&, ADDRESS, Cfg *);
 	void processSwitch(BasicBlock *&, UserProc *);

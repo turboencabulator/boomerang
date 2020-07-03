@@ -960,7 +960,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 
 				case STMT_RET:
 					{
-						auto bb = createReturnBlock(proc, BB_rtls, rtl);
+						BB_rtls->push_back(rtl);
+						auto bb = createReturnBlock(BB_rtls, proc);
 						BB_rtls = nullptr;
 						sequentialDecode = false;
 					}
@@ -1051,54 +1052,59 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 void
 FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc)
 {
-	auto pret = createReturnBlock(proc, nullptr, new RTL(callBB->getLastRtl()->getAddress() + 1, new ReturnStatement()));
+	auto rtls = new std::list<RTL *>();
+	rtls->push_back(new RTL(callBB->getLastRtl()->getAddress() + 1, new ReturnStatement()));
+	auto pret = createReturnBlock(rtls, proc);
 	callBB->addEdge(pret);
 }
 
 /**
  * \brief Create a Return or a Oneway BB if a return statement already exists.
  *
+ * This is a wrapper for Cfg::newBB() that enforces only one return per CFG.
+ *
+ * \param BB_rtls  List of RTLs for the to-be-created BB.  Its last RTL should
+ *                 have the semantics for the return instruction as well as
+ *                 the ReturnStatement, which may be replaced with a
+ *                 GotoStatement.
  * \param proc     The enclosing UserProc.
- * \param BB_rtls  List of RTLs for the current BB (not including rtl).
- * \param rtl      The current RTL with the semantics for the return statement
- *                 (including a ReturnStatement as the last statement)
  * \returns        Pointer to the newly created BB.
  */
 BasicBlock *
-FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
+FrontEnd::createReturnBlock(std::list<RTL *> *BB_rtls, UserProc *proc)
 {
 	auto cfg = proc->getCFG();
-	BasicBlock *bb;
-	// Add the RTL to the list; this has the semantics for the return instruction as well as the ReturnStatement
-	// The last Statement may get replaced with a GotoStatement
-	if (!BB_rtls) BB_rtls = new std::list<RTL *>;  // In case no other semantics
-	BB_rtls->push_back(rtl);
+	auto rtl = BB_rtls->back();
+
 	auto s = proc->getTheReturnStatement();
 	if (!s) {
 		s = (ReturnStatement *)rtl->getList().back();
 		proc->setTheReturnStatement(s);
-		bb = cfg->newBB(BB_rtls, RET);
-	} else {
-		// We want to replace the *whole* RTL with a branch to THE first return's RTL. There can sometimes be extra
-		// semantics associated with a return (e.g. Pentium return adds to the stack pointer before setting %pc and
-		// branching). Other semantics (e.g. SPARC returning a value as part of the restore instruction) are assumed to
-		// appear in a previous RTL. It is assumed that THE return statement will have the same semantics (NOTE: may
-		// not always be valid). To avoid this assumption, we need branches to statements, not just to native addresses
-		// (RTLs).
-		auto retBB = cfg->findRetNode();
-		assert(retBB);
-		auto retRTL = retBB->getRTLWithStatement(s);
-		assert(retRTL);
-		auto retAddr = retRTL->getAddress();
-		if (retRTL->getList().size() == 1)
-			// ret node has no semantics, clearly we need to keep ours
-			rtl->deleteLastStmt();
-		else
-			rtl->clear();
-		rtl->appendStmt(new GotoStatement(retAddr));
-		bb = cfg->newBB(BB_rtls, ONEWAY);
-		cfg->addOutEdge(bb, retAddr);
+		return cfg->newBB(BB_rtls, RET);
 	}
+
+	// We want to replace the *whole* RTL with a branch to THE first
+	// return's RTL.  There can sometimes be extra semantics associated
+	// with a return (e.g. Pentium return adds to the stack pointer before
+	// setting %pc and branching).  Other semantics (e.g. SPARC returning
+	// a value as part of the restore instruction) are assumed to appear
+	// in a previous RTL.  It is assumed that THE return statement will
+	// have the same semantics (NOTE: may not always be valid).  To avoid
+	// this assumption, we need branches to statements, not just to native
+	// addresses (RTLs).
+	auto retBB = cfg->findRetNode();
+	assert(retBB);
+	auto retRTL = retBB->getRTLWithStatement(s);
+	assert(retRTL);
+	auto retAddr = retRTL->getAddress();
+	if (retRTL->getList().size() == 1)
+		// ret node has no semantics, clearly we need to keep ours
+		rtl->deleteLastStmt();
+	else
+		rtl->clear();
+	rtl->appendStmt(new GotoStatement(retAddr));
+	auto bb = cfg->newBB(BB_rtls, ONEWAY);
+	cfg->addOutEdge(bb, retAddr);
 	return bb;
 }
 

@@ -132,16 +132,13 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 			if (auto as = dynamic_cast<Assign *>(stmts.front()))
 				if (as->getLeft()->isRegN(15))
 					ls.push_back(as);
-		ls.push_back(new ReturnStatement);
+		ls.push_back(new ReturnStatement());
+		// TODO:  Consider using appendSyntheticReturn to handle everything below
 		auto r = new RTL(rtl->getAddress() + 1);
 		r->splice(ls);
-#if 0
 		auto rtls = new std::list<RTL *>();
 		rtls->push_back(r);
-		auto cfg = proc->getCFG();
-		return cfg->newBB(rtls, RET);
-#endif
-		return createReturnBlock(proc, nullptr, r);
+		return createReturnBlock(rtls, proc);
 	} else
 		// May want to put code here that checks whether or not the delay instruction redefines %o7
 		return nullptr;
@@ -411,7 +408,8 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 		newBB = cfg->newBB(BB_rtls, COMPCALL);
 		break;
 	case STMT_RET:
-		newBB = createReturnBlock(proc, BB_rtls, inst.rtl);
+		BB_rtls->push_back(inst.rtl);
+		newBB = createReturnBlock(BB_rtls, proc);
 		bRet = false;
 		break;
 	case STMT_CASE:
