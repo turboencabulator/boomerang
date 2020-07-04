@@ -36,7 +36,7 @@ private:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	static Exp *dis_Eaddr(ADDRESS, const BinaryFile *, int size = 0);
+	static Exp *dis_Eaddr(ADDRESS, const BinaryFile *);
 	static Exp *dis_RegImm(ADDRESS, const BinaryFile *);
 	static Exp *dis_RegLhs(unsigned r);
 	static Exp *dis_RegRhs(unsigned r);

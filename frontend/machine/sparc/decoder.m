@@ -701,8 +701,8 @@ Exp *
 SparcDecoder::dis_RegImm(ADDRESS pc, const BinaryFile *bf)
 {
 	match pc to
-	| imode(i) =>
-		return new Const(i);
+	| imode(simm13) =>
+		return new Const(simm13);
 	| rmode(rs2) =>
 		return dis_RegRhs(rs2);
 	endmatch
@@ -712,32 +712,27 @@ SparcDecoder::dis_RegImm(ADDRESS pc, const BinaryFile *bf)
  * Converts a dynamic address to a Exp* expression.
  * E.g. %o7 --> r[ 15 ]
  *
- * \param pc      The instruction stream address of the dynamic address.
- * \param ignore  Redundant parameter on SPARC.
+ * \param pc  The instruction stream address of the dynamic address.
  *
  * \returns  The Exp* representation of the given address.
  */
 Exp *
-SparcDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int ignore /* = 0 */)
+SparcDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf)
 {
-	Exp *expr;
-
 	match pc to
 	| indirectA(rs1) =>
-		expr = Location::regOf(rs1);
+		return Location::regOf(rs1);
 	| indexA(rs1, rs2) =>
-		expr = new Binary(opPlus,
+		return new Binary(opPlus,
 		                  Location::regOf(rs1),
 		                  Location::regOf(rs2));
-	| absoluteA(i) =>
-		expr = new Const((int)i);
-	| dispA(rs1, i) =>
-		expr = new Binary(opPlus,
+	| absoluteA(simm13) =>
+		return new Const((int)simm13);
+	| dispA(rs1, simm13) =>
+		return new Binary(opPlus,
 		                  Location::regOf(rs1),
-		                  new Const((int)i));
+		                  new Const((int)simm13));
 	endmatch
-
-	return expr;
 }
 
 #if 0 // Cruft?
