@@ -63,7 +63,7 @@ class Proc;
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
 
 
-static DecodeResult &genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
+
 
 static RTL *
 SETS(ADDRESS pc, const std::string &name, Exp *dest, BRANCH_TYPE cond)
@@ -68532,13 +68532,11 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 }
 #endif
 
-static int BSFRstate = 0;  // State number for this state machine
-
 /**
  * Generates statements for the BSF and BSR series (Bit Scan Forward/Reverse).
  *
  * \param pc        Native PC address (start of the BSF/BSR instruction).
- * \param reg       An expression for the destination register.
+ * \param dest      An expression for the destination register.
  * \param modrm     An expression for the operand being scanned.
  * \param init      Initial value for the dest register.
  * \param size      sizeof(modrm) (in bits).
@@ -68548,8 +68546,8 @@ static int BSFRstate = 0;  // State number for this state machine
  *
  * \returns  true if have to exit early (not in last state).
  */
-static DecodeResult &
-genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes)
+DecodeResult &
+PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes)
 {
 	// Note the horrible hack needed here. We need initialisation code, and an extra branch, so the %SKIP/%RPT won't
 	// work. We need to emit 6 statements, but these need to be in 3 RTLs, since the destination of a branch has to be
@@ -68557,14 +68555,14 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 	// instruction ends up emitting three RTLs, each with the semantics we need.
 	// Note: we don't use pentium.SSL for these.
 	// BSFR1:
-	//  pc+0:   zf := 1
-	//  pc+0:   branch exit condition modrm = 0
+	//  pc+0: *1* %ZF := 1
+	//  pc+0: branch exit condition modrm = 0
 	// BSFR2:
-	//  pc+1:   zf := 0
-	//  pc+1:   dest := init
+	//  pc+1: *1* %ZF := 0
+	//  pc+1: dest := init
 	// BSFR3:
 	//  pc+2: dest := dest op 1
-	//  pc+2: branch pc+2 condition modrm@[dest:dest]=0
+	//  pc+2: branch pc+2 condition modrm@[dest:dest] = 0
 	// exit:
 
 	auto stmts = std::list<Statement *>();
@@ -68643,5 +68641,5 @@ PentiumDecoder::addReloc(Exp *e)
 	return e;
 }
 
-#line 68647 "pentiumdecoder.cpp"
+#line 68645 "pentiumdecoder.cpp"
 

@@ -15,6 +15,7 @@
 #define PENTIUMDECODER_H
 
 #include "decoder.h"
+#include "operator.h"
 
 /**
  * \brief Instruction decoder for Pentium.
@@ -39,6 +40,9 @@ private:
 	//bool isFuncPrologue(ADDRESS hostPC);
 
 	unsigned lastDwordLc;
+
+	int BSFRstate = 0;
+	DecodeResult &genBSFR(ADDRESS, Exp *, Exp *, int, int, OPER, int);
 };
 
 #endif
