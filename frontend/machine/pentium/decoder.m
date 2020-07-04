@@ -2182,7 +2182,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		// m[r[reg] + i8]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_REG32,
-		                                  addReloc(DIS_I8)));
+		                                  DIS_I8));
 	| Index(base, index, ss) =>
 		// m[r[base] + (r[index] << ss)]
 		return Location::memOf(new Binary(opPlus,
@@ -2209,7 +2209,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		                                  DIS_BASE,
 		                                  new Binary(opPlus,
 		                                             DIS_INDEX,
-		                                             addReloc(DIS_I8))));
+		                                             DIS_I8)));
 	| Base8(i8, base) =>
 		// m[r[base] + i8]
 		return Location::memOf(new Binary(opPlus,

@@ -68410,7 +68410,7 @@ pc
 		                                  DIS_BASE,
 		                                  new Binary(opPlus,
 		                                             DIS_INDEX,
-		                                             addReloc(DIS_I8))));
+		                                             DIS_I8)));
 
 #line 68416 "pentiumdecoder.cpp"
 
@@ -68432,7 +68432,7 @@ pc
 		// m[r[reg] + i8]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_REG32,
-		                                  addReloc(DIS_I8)));
+		                                  DIS_I8));
 
 #line 68438 "pentiumdecoder.cpp"
 
