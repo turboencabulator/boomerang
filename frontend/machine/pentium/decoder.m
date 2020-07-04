@@ -28,15 +28,17 @@
 
 class Proc;
 
-#define DIS_R8    (dis_Reg(r8  +  8))
-#define DIS_R16   (dis_Reg(r16 +  0))
-#define DIS_R32   (dis_Reg(r32 + 24))
-#define DIS_REG8  (dis_Reg(reg +  8))
-#define DIS_REG16 (dis_Reg(reg +  0))
-#define DIS_REG32 (dis_Reg(reg + 24))
-#define DIS_SR16  (dis_Reg(sr16 + 16))
-#define DIS_IDX   (dis_Reg(idx + 32))
-#define DIS_IDXP1 (dis_Reg((idx + 1) % 7 + 32))
+#define DIS_R8      (dis_Reg(r8  +  8))
+#define DIS_R16     (dis_Reg(r16 +  0))
+#define DIS_R32     (dis_Reg(r32 + 24))
+#define DIS_REG8    (dis_Reg(reg +  8))
+#define DIS_REG16   (dis_Reg(reg +  0))
+#define DIS_REG32   (dis_Reg(reg + 24))
+#define DIS_SR16    (dis_Reg(sr16 + 16))
+#define DIS_IDX     (dis_Reg(idx + 32))
+#define DIS_IDXP1   (dis_Reg((idx + 1) % 7 + 32))
+#define DIS_BASE    (dis_Reg(base + 24))
+#define DIS_INDEX   (new Binary(opMult, dis_Reg(index + 24), new Const(1 << ss)))
 
 #define DIS_EADDR32 (dis_Eaddr(Eaddr, bf, 32))
 #define DIS_EADDR16 (dis_Eaddr(Eaddr, bf, 16))
@@ -57,8 +59,6 @@ class Proc;
 #define fetch8(pc)  bf->readNative1(pc)
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
-
-
 
 
 static RTL *
@@ -2127,7 +2127,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
 	 * 0    4       ss  index!4  base!5         Index [base][index * ss]      m[r[base] + (r[index] << ss)      ]
 	 * 0    5                            i32=a  Abs32 [a]                     m[                             i32]
 	 * 0    reg!45                              Indir [reg]                   m[r[reg]                          ]
-	 * 1    4       ?   4        base    i8=d   Base8 d![base]                m[r[base]                    + i8 ]
+	 * 1    4       ?   4        base    i8     Base8 i8![base]               m[r[base]                    + i8 ]
 	 * 1    4       ss  index!4  base    i8     Index8 i8![base][index * ss]  m[r[base] + (r[index] << ss) + i8 ]
 	 * 1    reg!4                        i8     Disp8 i8![reg]                m[r[reg]                     + i8 ]
 	 * 2    4       ?   4        base    i32=d  Base32 d[base]                m[r[base]                    + i32]
@@ -2160,86 +2160,73 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
  * Converts a dynamic address to a Exp* expression.
  * E.g. [1000] --> m[, 1000
  *
- * \param pc    The address of the Eaddr part of the instr.
- * \param expr  The expression that will be built.
+ * \param pc  The address of the Eaddr part of the instr.
  *
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 {
-	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
 
 	match pc to
-	| Abs32(a) =>
-		// m[a]
-		expr = Location::memOf(addReloc(new Const(a)));
-	| Disp32(d, base) =>
-		// m[r[base] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  addReloc(new Const(d))));
-	| Disp8(d, r32) =>
-		// m[r[r32] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + r32),
-		                                  addReloc(new Const(d))));
+	| Abs32(i32) =>
+		// m[i32]
+		return Location::memOf(DIS_I32);
+	| Disp32(i32, base) =>
+		// m[r[base] + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I32));
+	| Disp8(i8, reg) =>
+		// m[r[reg] + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_REG32,
+		                                  addReloc(DIS_I8)));
 	| Index(base, index, ss) =>
 		// m[r[base] + (r[index] << ss)]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  new Binary(opMult,
-		                                             dis_Reg(24 + index),
-		                                             new Const(1 << ss))));
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_INDEX));
 	| Base(base) =>
 		// m[r[base]]
-		expr = Location::memOf(dis_Reg(24 + base));
-	| Index32(d, base, index, ss) =>
-		// m[r[base] + (r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
+		return Location::memOf(DIS_BASE);
+	| Index32(i32, base, index, ss) =>
+		// m[r[base] + (r[index] << ss) + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
 		                                  new Binary(opPlus,
-		                                             new Binary(opMult,
-		                                                        dis_Reg(24 + index),
-		                                                        new Const(1 << ss)),
-		                                             addReloc(new Const(d)))));
-	| Base32(d, base) =>
-		// m[r[base] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  addReloc(new Const(d))));
-	| Index8(d, base, index, ss) =>
-		// m[r[base] + (r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
+		                                             DIS_INDEX,
+		                                             DIS_I32)));
+	| Base32(i32, base) =>
+		// m[r[base] + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I32));
+	| Index8(i8, base, index, ss) =>
+		// m[r[base] + (r[index] << ss) + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
 		                                  new Binary(opPlus,
-		                                             new Binary(opMult,
-		                                                        dis_Reg(24 + index),
-		                                                        new Const(1 << ss)),
-		                                             addReloc(new Const(d)))));
-	| Base8(d, base) =>
-		// m[r[base] + d]
-		// Note: d should be sign extended; we do it here manually
-		signed char ds8 = d;
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  new Const(ds8)));
+		                                             DIS_INDEX,
+		                                             addReloc(DIS_I8))));
+	| Base8(i8, base) =>
+		// m[r[base] + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I8));
 	| Indir(base) =>
 		// m[r[base]]
-		expr = Location::memOf(dis_Reg(24 + base));
-	| ShortIndex(d, index, ss) =>
-		// m[(r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  new Binary(opMult,
-		                                             dis_Reg(24 + index),
-		                                             new Const(1 << ss)),
-		                                  addReloc(new Const(d))));
-	| IndirMem(d) =>
-		// m[d] (Same as Abs32 using SIB)
-		expr = Location::memOf(addReloc(new Const(d)));
+		return Location::memOf(DIS_BASE);
+	| ShortIndex(i32, index, ss) =>
+		// m[(r[index] << ss) + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_INDEX,
+		                                  DIS_I32));
+	| IndirMem(i32) =>
+		// m[i32] (Same as Abs32 using SIB)
+		return Location::memOf(DIS_I32);
 	endmatch
-	return expr;
 }
 
 #if 0 // Cruft?

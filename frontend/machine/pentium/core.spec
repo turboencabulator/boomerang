@@ -200,8 +200,8 @@ constructors
                         mod = 0 & r_m = 4; index = 4 & base
   Index8 i8![base][index * ss]: Mem { index != 4 } is 
                         mod = 1 & r_m = 4; index & base     & ss; i8
-  Base8   d![base]           : Mem  is
-                        mod = 1 & r_m = 4; index = 4 & base;      i8  = d
+  Base8  i8![base]           : Mem  is
+                        mod = 1 & r_m = 4; index = 4 & base;      i8
   Index32 d[base][index * ss] : Mem { index != 4 } is 
                         mod = 2 & r_m = 4; index & base     & ss; i32 = d
   Base32  d[base]             : Mem is

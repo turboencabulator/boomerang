@@ -32,15 +32,17 @@
 
 class Proc;
 
-#define DIS_R8    (dis_Reg(r8  +  8))
-#define DIS_R16   (dis_Reg(r16 +  0))
-#define DIS_R32   (dis_Reg(r32 + 24))
-#define DIS_REG8  (dis_Reg(reg +  8))
-#define DIS_REG16 (dis_Reg(reg +  0))
-#define DIS_REG32 (dis_Reg(reg + 24))
-#define DIS_SR16  (dis_Reg(sr16 + 16))
-#define DIS_IDX   (dis_Reg(idx + 32))
-#define DIS_IDXP1 (dis_Reg((idx + 1) % 7 + 32))
+#define DIS_R8      (dis_Reg(r8  +  8))
+#define DIS_R16     (dis_Reg(r16 +  0))
+#define DIS_R32     (dis_Reg(r32 + 24))
+#define DIS_REG8    (dis_Reg(reg +  8))
+#define DIS_REG16   (dis_Reg(reg +  0))
+#define DIS_REG32   (dis_Reg(reg + 24))
+#define DIS_SR16    (dis_Reg(sr16 + 16))
+#define DIS_IDX     (dis_Reg(idx + 32))
+#define DIS_IDXP1   (dis_Reg((idx + 1) % 7 + 32))
+#define DIS_BASE    (dis_Reg(base + 24))
+#define DIS_INDEX   (new Binary(opMult, dis_Reg(index + 24), new Const(1 << ss)))
 
 #define DIS_EADDR32 (dis_Eaddr(Eaddr, bf, 32))
 #define DIS_EADDR16 (dis_Eaddr(Eaddr, bf, 16))
@@ -61,8 +63,6 @@ class Proc;
 #define fetch8(pc)  bf->readNative1(pc)
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
-
-
 
 
 static RTL *
@@ -68155,7 +68155,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
 	 * 0    4       ss  index!4  base!5         Index [base][index * ss]      m[r[base] + (r[index] << ss)      ]
 	 * 0    5                            i32=a  Abs32 [a]                     m[                             i32]
 	 * 0    reg!45                              Indir [reg]                   m[r[reg]                          ]
-	 * 1    4       ?   4        base    i8=d   Base8 d![base]                m[r[base]                    + i8 ]
+	 * 1    4       ?   4        base    i8     Base8 i8![base]               m[r[base]                    + i8 ]
 	 * 1    4       ss  index!4  base    i8     Index8 i8![base][index * ss]  m[r[base] + (r[index] << ss) + i8 ]
 	 * 1    reg!4                        i8     Disp8 i8![reg]                m[r[reg]                     + i8 ]
 	 * 2    4       ?   4        base    i32=d  Base32 d[base]                m[r[base]                    + i32]
@@ -68233,27 +68233,25 @@ pc
  * Converts a dynamic address to a Exp* expression.
  * E.g. [1000] --> m[, 1000
  *
- * \param pc    The address of the Eaddr part of the instr.
- * \param expr  The expression that will be built.
+ * \param pc  The address of the Eaddr part of the instr.
  *
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 {
-	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
 
 
-#line 68249 "pentiumdecoder.cpp"
+#line 68247 "pentiumdecoder.cpp"
 
-#line 2174 "machine/pentium/decoder.m"
+#line 2172 "machine/pentium/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 2174 "machine/pentium/decoder.m"
+#line 2172 "machine/pentium/decoder.m"
 pc
-#line 68257 "pentiumdecoder.cpp"
+#line 68255 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -68271,12 +68269,12 @@ pc
                 { 
                   unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
                   
-#line 2228 "machine/pentium/decoder.m"
+#line 2218 "machine/pentium/decoder.m"
 
 		// m[r[base]]
-		expr = Location::memOf(dis_Reg(24 + base));
+		return Location::memOf(DIS_BASE);
 
-#line 68280 "pentiumdecoder.cpp"
+#line 68278 "pentiumdecoder.cpp"
 
                   
                 }
@@ -68288,14 +68286,14 @@ pc
                   if ((MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */ == 4) { 
                     MATCH_w_32_16 = fetch32(2 + MATCH_p); 
                     { 
-                      unsigned d = MATCH_w_32_16 /* i32 at 16 */;
+                      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                       
-#line 2238 "machine/pentium/decoder.m"
+#line 2226 "machine/pentium/decoder.m"
 
-		// m[d] (Same as Abs32 using SIB)
-		expr = Location::memOf(addReloc(new Const(d)));
+		// m[i32] (Same as Abs32 using SIB)
+		return Location::memOf(DIS_I32);
 
-#line 68299 "pentiumdecoder.cpp"
+#line 68297 "pentiumdecoder.cpp"
 
                       
                     }
@@ -68304,21 +68302,19 @@ pc
                   else { 
                     MATCH_w_32_16 = fetch32(2 + MATCH_p); 
                     { 
-                      unsigned d = MATCH_w_32_16 /* i32 at 16 */;
+                      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                       unsigned index = 
                         (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                       unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                       
-#line 2231 "machine/pentium/decoder.m"
+#line 2221 "machine/pentium/decoder.m"
 
-		// m[(r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  new Binary(opMult,
-		                                             dis_Reg(24 + index),
-		                                             new Const(1 << ss)),
-		                                  addReloc(new Const(d))));
+		// m[(r[index] << ss) + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_INDEX,
+		                                  DIS_I32));
 
-#line 68322 "pentiumdecoder.cpp"
+#line 68318 "pentiumdecoder.cpp"
 
                       
                     }
@@ -68328,12 +68324,12 @@ pc
                   if ((MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */ == 4) { 
                     unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                     
-#line 2195 "machine/pentium/decoder.m"
+#line 2191 "machine/pentium/decoder.m"
 
 		// m[r[base]]
-		expr = Location::memOf(dis_Reg(24 + base));
+		return Location::memOf(DIS_BASE);
 
-#line 68337 "pentiumdecoder.cpp"
+#line 68333 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/
@@ -68343,16 +68339,14 @@ pc
                       (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                     unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                     
-#line 2188 "machine/pentium/decoder.m"
+#line 2186 "machine/pentium/decoder.m"
 
 		// m[r[base] + (r[index] << ss)]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  new Binary(opMult,
-		                                             dis_Reg(24 + index),
-		                                             new Const(1 << ss))));
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_INDEX));
 
-#line 68356 "pentiumdecoder.cpp"
+#line 68350 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -68361,14 +68355,14 @@ pc
               case 5: 
                 MATCH_w_32_8 = fetch32(1 + MATCH_p); 
                 { 
-                  unsigned a = MATCH_w_32_8 /* i32 at 8 */;
+                  unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                   
-#line 2175 "machine/pentium/decoder.m"
+#line 2173 "machine/pentium/decoder.m"
 
-		// m[a]
-		expr = Location::memOf(addReloc(new Const(a)));
+		// m[i32]
+		return Location::memOf(DIS_I32);
 
-#line 68372 "pentiumdecoder.cpp"
+#line 68366 "pentiumdecoder.cpp"
 
                   
                 }
@@ -68384,18 +68378,17 @@ pc
               MATCH_w_8_16 = fetch8(2 + MATCH_p); 
               { 
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
-                unsigned d = (MATCH_w_8_16 & 0xff) /* i8 at 16 */;
+                int /* [~128..127] */ i8 = 
+                  sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
                 
-#line 2221 "machine/pentium/decoder.m"
+#line 2213 "machine/pentium/decoder.m"
 
-		// m[r[base] + d]
-		// Note: d should be sign extended; we do it here manually
-		signed char ds8 = d;
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  new Const(ds8)));
+		// m[r[base] + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I8));
 
-#line 68399 "pentiumdecoder.cpp"
+#line 68392 "pentiumdecoder.cpp"
 
                 
               }
@@ -68405,23 +68398,21 @@ pc
               MATCH_w_8_16 = fetch8(2 + MATCH_p); 
               { 
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
-                int /* [~128..127] */ d = 
+                int /* [~128..127] */ i8 = 
                   sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2212 "machine/pentium/decoder.m"
+#line 2206 "machine/pentium/decoder.m"
 
-		// m[r[base] + (r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
+		// m[r[base] + (r[index] << ss) + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
 		                                  new Binary(opPlus,
-		                                             new Binary(opMult,
-		                                                        dis_Reg(24 + index),
-		                                                        new Const(1 << ss)),
-		                                             addReloc(new Const(d)))));
+		                                             DIS_INDEX,
+		                                             addReloc(DIS_I8))));
 
-#line 68425 "pentiumdecoder.cpp"
+#line 68416 "pentiumdecoder.cpp"
 
                 
               }
@@ -68432,18 +68423,18 @@ pc
           else { 
             MATCH_w_8_8 = fetch8(1 + MATCH_p); 
             { 
-              int /* [~128..127] */ d = 
+              int /* [~128..127] */ i8 = 
                 sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
-              unsigned r32 = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
+              unsigned reg = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               
-#line 2183 "machine/pentium/decoder.m"
+#line 2181 "machine/pentium/decoder.m"
 
-		// m[r[r32] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + r32),
-		                                  addReloc(new Const(d))));
+		// m[r[reg] + i8]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_REG32,
+		                                  addReloc(DIS_I8)));
 
-#line 68447 "pentiumdecoder.cpp"
+#line 68438 "pentiumdecoder.cpp"
 
               
             }
@@ -68457,16 +68448,16 @@ pc
               MATCH_w_32_16 = fetch32(2 + MATCH_p); 
               { 
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
-                unsigned d = MATCH_w_32_16 /* i32 at 16 */;
+                unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                 
-#line 2207 "machine/pentium/decoder.m"
+#line 2201 "machine/pentium/decoder.m"
 
-		// m[r[base] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  addReloc(new Const(d))));
+		// m[r[base] + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I32));
 
-#line 68470 "pentiumdecoder.cpp"
+#line 68461 "pentiumdecoder.cpp"
 
                 
               }
@@ -68476,22 +68467,20 @@ pc
               MATCH_w_32_16 = fetch32(2 + MATCH_p); 
               { 
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
-                unsigned d = MATCH_w_32_16 /* i32 at 16 */;
+                unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2198 "machine/pentium/decoder.m"
+#line 2194 "machine/pentium/decoder.m"
 
-		// m[r[base] + (r[index] << ss) + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
+		// m[r[base] + (r[index] << ss) + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
 		                                  new Binary(opPlus,
-		                                             new Binary(opMult,
-		                                                        dis_Reg(24 + index),
-		                                                        new Const(1 << ss)),
-		                                             addReloc(new Const(d)))));
+		                                             DIS_INDEX,
+		                                             DIS_I32)));
 
-#line 68495 "pentiumdecoder.cpp"
+#line 68484 "pentiumdecoder.cpp"
 
                 
               }
@@ -68503,16 +68492,16 @@ pc
             MATCH_w_32_8 = fetch32(1 + MATCH_p); 
             { 
               unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
-              unsigned d = MATCH_w_32_8 /* i32 at 8 */;
+              unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
               
-#line 2178 "machine/pentium/decoder.m"
+#line 2176 "machine/pentium/decoder.m"
 
-		// m[r[base] + d]
-		expr = Location::memOf(new Binary(opPlus,
-		                                  dis_Reg(24 + base),
-		                                  addReloc(new Const(d))));
+		// m[r[base] + i32]
+		return Location::memOf(new Binary(opPlus,
+		                                  DIS_BASE,
+		                                  DIS_I32));
 
-#line 68516 "pentiumdecoder.cpp"
+#line 68505 "pentiumdecoder.cpp"
 
               
             }
@@ -68529,10 +68518,9 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 68533 "pentiumdecoder.cpp"
+#line 68522 "pentiumdecoder.cpp"
 
-#line 2242 "machine/pentium/decoder.m"
-	return expr;
+#line 2230 "machine/pentium/decoder.m"
 }
 
 #if 0 // Cruft?
@@ -68668,5 +68656,5 @@ PentiumDecoder::addReloc(Exp *e)
 	return e;
 }
 
-#line 68672 "pentiumdecoder.cpp"
+#line 68660 "pentiumdecoder.cpp"
 
