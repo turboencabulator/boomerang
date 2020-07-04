@@ -237,15 +237,15 @@ ADDXL src, dst
 	*32* dst := dst + src + %CF
 	ADDFLAGS32(r[tmp1], src, dst);
 
-OP1 := { "+",   "-",   "&",   "|",  "^"   };
+OP1 := { +,     -,     &,     |,    ^     };
 ALU := { "ADD", "SUB", "AND", "OR", "EOR" };
 
 ALU_0_ := { "ADD" };
-OP1_0_ := { "+"   };
+OP1_0_ := { +     };
 ALU_1_ := { "SUB" };
-OP1_1_ := { "-"   };
+OP1_1_ := { -     };
 ALU_2_ := { "AND", "OR", "EOR" };
-OP1_2_ := { "&",   "|",  "^"   };
+OP1_2_ := { &,     |,    ^     };
 ALU[IDX]^"b" src, dst
 	_;
 ALU_0_[IDX]^"b"   src, dst
@@ -267,11 +267,11 @@ ALU[IDX]^"b" src, dst
 	_;
 
 ALU_3_ := { "ADD" };
-OP1_3_ := { "+"   };
+OP1_3_ := { +     };
 ALU_4_ := { "SUB" };
-OP1_4_ := { "-"   };
+OP1_4_ := { -     };
 ALU_5_ := { "AND", "OR", "EOR" };
-OP1_5_ := { "&",   "|",  "^"   };
+OP1_5_ := { &,     |,    ^     };
 ALU[IDX]^"w" src, dst
 	_;
 ALU_3_[IDX]^"w" src, dst
@@ -293,11 +293,11 @@ ALU[IDX]^"w" src, dst
 	_;
 
 ALU_6_ := { "ADD" };
-OP1_6_ := { "+"   };
+OP1_6_ := { +     };
 ALU_7_ := { "SUB" };
-OP1_7_ := { "-"   };
+OP1_7_ := { -     };
 ALU_8_ := { "AND", "OR", "EOR" };
-OP1_8_ := { "&",   "|",  "^"   };
+OP1_8_ := { &,     |,    ^     };
 ALU[IDX]^"l" src, dst
 	_;
 ALU_6_[IDX]^"l" src, dst
@@ -318,13 +318,13 @@ ALU_8_[IDX]^"l" src, dst
 ALU[IDX]^"l" src, dst
 	_;
 
-OP9   := { "+",     "-"     };
+OP9   := { +,       -       };
 ALUQA := { "ADDQA", "SUBQA" };
 
 ALUQA[IDX] src, dst
 	*32* dst := dst OP9[IDX] src;
 
-OP2 := { "*!",   "*"    };
+OP2 := { *!,     *      };
 MUL := { "MULS", "MULU" };
 
 MUL[IDX]^"w" src, dst
@@ -358,13 +358,13 @@ CMPl src, dst
 	*32* r[tmp1] := dst - src
 	SUBFLAGS32(dst, src, r[tmp1]);
 
-OP3    := { ">>A", "<<",  ">>",  "rl",  "rl",  "rlc",  "rrc"  };
+OP3    := { >>A,   <<,    >>,    rl,    rr,    rlc,    rrc    };
 SHIFTS := { "ASR", "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
 
 SHIFTS_9_  := { "ASR" };
-OP3_9_     := { ">>A" };
+OP3_9_     := { >>A   };
 SHIFTS_10_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
-OP3_10_    := { "<<",  ">>",  "rl",  "rl",  "rlc",  "rrc"  };
+OP3_10_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
 SHIFTS[IDX]^"b" cnt, dst
 	*8* r[tmp1] := dst{8}
 	*8* dst := dst{8} OP3[IDX] cnt{8}
@@ -379,9 +379,9 @@ SHIFTS[IDX]^"b" cnt, dst
 	_;
 
 SHIFTS_11_ := { "ASR" };
-OP3_11_    := { ">>A" };
+OP3_11_    := { >>A   };
 SHIFTS_12_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
-OP3_12_    := { "<<",  ">>",  "rl",  "rl",  "rlc",  "rrc"  };
+OP3_12_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
 SHIFTS[IDX]^"w" cnt, dst
 	*16* r[tmp1] := dst{16}
 	*16* dst := dst{16} OP3[IDX] cnt{16}
@@ -396,9 +396,9 @@ SHIFTS[IDX]^"w" cnt, dst
 	_;
 
 SHIFTS_13_ := { "ASR" };
-OP3_13_    := { ">>A" };
+OP3_13_    := { >>A   };
 SHIFTS_14_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
-OP3_14_    := { "<<",  ">>",  "rl",  "rl",  "rlc",  "rrc"  };
+OP3_14_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
 SHIFTS[IDX]^"l" cnt, dst
 	*32* r[tmp1] := dst{32}
 	*32* dst := dst{32} OP3[IDX] cnt{32}
@@ -412,8 +412,8 @@ SHIFTS_14_[IDX]^"l" cnt, dst
 SHIFTS[IDX]^"l" cnt, dst
 	_;
 
-COND1    := { "1",   "~%CF & ~%ZF", "%CF | %ZF", "~%CF", "%CF", "~%ZF", "%ZF", "~%OF", "%OF", "~%NF", "~%NF", "~(%NF ^ %OF)", "%NF ^ %OF", "~(%ZF | (%NF ^ %OF))", "%ZF | (%NF ^ %OF)" };
-BRANCHES := { "BRA", "BHI",         "BLS",       "BCC",  "BCS", "BNE",  "BEQ", "BVC",  "BVS", "BPL",  "BMI",  "BGE",          "BLT",       "BGT",                  "BLE"               };
+COND1    := { 1,     ~%CF & ~%ZF, %CF | %ZF, ~%CF,  %CF,   ~%ZF,  %ZF,   ~%OF,  %OF,   ~%NF,  ~%NF,  ~(%NF ^ %OF), %NF ^ %OF, ~(%ZF | (%NF ^ %OF)), %ZF | (%NF ^ %OF) };
+BRANCHES := { "BRA", "BHI",       "BLS",     "BCC", "BCS", "BNE", "BEQ", "BVC", "BVS", "BPL", "BMI", "BGE",        "BLT",     "BGT",                "BLE"             };
 
 BRANCHES[IDX] dst
 	*32* %pc := [COND1[IDX] = 1 ? dst : %pc];
@@ -521,8 +521,8 @@ TAS dst
 	*1* dst@[7:7] := 1
 	COMMONFLAGS8(r[tmp1]);
 
-COND2 := { "1",   "~%CF & ~%ZF", "%CF | %ZF", "~%CF", "%CF",  "~%ZF", "%ZF",  "~%OF", "%OF",  "~%NF", "~%NF", "~(%NF ^ %OF)", "%NF ^ %OF", "~(%ZF | (%NF ^ %OF))", "%ZF | (%NF ^ %OF)", "0"   };
-DBCCS := { "DBT", "DBHI",        "DBLS",      "DBCC", "DBCS", "DBNE", "DBEQ", "DBVC", "DBVS", "DBPL", "DBMI", "DBGE",         "DBLT",      "DBGT",                 "DBLE",              "DBF" };
+COND2 := { 1,     ~%CF & ~%ZF, %CF | %ZF, ~%CF,   %CF,    ~%ZF,   %ZF,    ~%OF,   %OF,    ~%NF,   ~%NF,   ~(%NF ^ %OF), %NF ^ %OF, ~(%ZF | (%NF ^ %OF)), %ZF | (%NF ^ %OF), 0     };
+DBCCS := { "DBT", "DBHI",      "DBLS",    "DBCC", "DBCS", "DBNE", "DBEQ", "DBVC", "DBVS", "DBPL", "DBMI", "DBGE",       "DBLT",    "DBGT",               "DBLE",            "DBF" };
 
 DBCCS[IDX]   dn, dst
 	*32* dn := [COND2[IDX] ? dn : dn - 1]
@@ -751,8 +751,8 @@ STOREMl an, mask
 	*32* an   := [mask@[0:0]   ? an - 4 : an]
 	*32* r[0] := [mask@[0:0]   ? m[an]{32} : r[15]];
 
-COND3 := { "1",  "0",  "~%CF ^ ~%ZF", "%CF | %ZF", "~%CF", "%CF", "~%ZF", "%ZF", "~%OF", "%OF", "~%NF", "%NF", "%NF ^ %OF | ~%NF ^ ~%OF", "%NF ^ ~%OF | ~%NF ^ %OF", "%NF ^ %OF ^ ~%ZF | ~%NF ^ ~%OF ^ ~%ZF", "%ZF | %NF ^ ~%OF | ~%NF ^ %OF" };
-SCCS  := { "ST", "SF", "SHI",         "SLS",       "SCC",  "SCS", "SNE",  "SEQ", "SVC",  "SVS", "SPL",  "SMI", "SGE",                     "SLT",                     "SGT",                                   "SLE"                           };
+COND3 := { 1,    0,    ~%CF ^ ~%ZF, %CF | %ZF, ~%CF,  %CF,   ~%ZF,  %ZF,   ~%OF,  %OF,   ~%NF,  %NF,   %NF ^ %OF | ~%NF ^ ~%OF, %NF ^ ~%OF | ~%NF ^ %OF, %NF ^ %OF ^ ~%ZF | ~%NF ^ ~%OF ^ ~%ZF, %ZF | %NF ^ ~%OF | ~%NF ^ %OF };
+SCCS  := { "ST", "SF", "SHI",       "SLS",     "SCC", "SCS", "SNE", "SEQ", "SVC", "SVS", "SPL", "SMI", "SGE",                   "SLT",                   "SGT",                                 "SLE"                         };
 
 SCCS[IDX] dst
 	*8* dst := [COND3[IDX] = 1 ? 1 : 0];
