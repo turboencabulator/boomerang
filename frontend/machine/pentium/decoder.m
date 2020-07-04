@@ -2106,6 +2106,58 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 /**
  * Converts a dynamic address to a Exp* expression.
+ * E.g. %ecx --> r[ 25 ]
+ *
+ * \param pc    The instruction stream address of the dynamic address.
+ * \param size  Size of the operand (important if a register).
+ *
+ * \returns  The Exp* representation of the given Eaddr.
+ */
+Exp *
+PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
+{
+	/*
+	 * pc is currently at the Mod R/M byte.
+	 * Encoding quick-reference:
+	 * mod  r_m     ss  index    base    imm    constructor                   exp
+	 * -----------  -------------------  -----  ----------------------------  -----------------------------------
+	 * 0    4       ?   4        5       i32=d  IndirMem [d]                  m[                             i32]
+	 * 0    4       ss  index!4  5       i32=d  ShortIndex d[index * ss]      m[          (r[index] << ss) + i32]
+	 * 0    4       ?   4        base!5         Base [base]                   m[r[base]                         ]
+	 * 0    4       ss  index!4  base!5         Index [base][index * ss]      m[r[base] + (r[index] << ss)      ]
+	 * 0    5                            i32=a  Abs32 [a]                     m[                             i32]
+	 * 0    reg!45                              Indir [reg]                   m[r[reg]                          ]
+	 * 1    4       ?   4        base    i8=d   Base8 d![base]                m[r[base]                    + i8 ]
+	 * 1    4       ss  index!4  base    i8     Index8 i8![base][index * ss]  m[r[base] + (r[index] << ss) + i8 ]
+	 * 1    reg!4                        i8     Disp8 i8![reg]                m[r[reg]                     + i8 ]
+	 * 2    4       ?   4        base    i32=d  Base32 d[base]                m[r[base]                    + i32]
+	 * 2    4       ss  index!4  base    i32=d  Index32 d[base][index * ss]   m[r[base] + (r[index] << ss) + i32]
+	 * 2    reg!4                        i32=d  Disp32 d[reg]                 m[r[reg]                     + i32]
+	 * 3    reg                                 Reg reg                         r[reg]
+	 *
+	 * All but the last row refer to a memory location and are handed off
+	 * to dis_Mem().
+	 *
+	 * Most special characters in the constructor are just decoration
+	 * (with the exception of ! for sign-extend); the parameters are
+	 * passed to constructors in the order they appear.
+	 */
+
+	match pc to
+	| E(Mem) =>
+		return DIS_MEM;
+	| Reg(reg) =>
+		switch (size) {
+		case  8: return DIS_REG8;
+		case 16: return DIS_REG16;
+		default:
+		case 32: return DIS_REG32;
+		}
+	endmatch
+}
+
+/**
+ * Converts a dynamic address to a Exp* expression.
  * E.g. [1000] --> m[, 1000
  *
  * \param pc    The address of the Eaddr part of the instr.
@@ -2121,30 +2173,30 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 
 	match pc to
 	| Abs32(a) =>
-		// [a]
+		// m[a]
 		expr = Location::memOf(addReloc(new Const(a)));
 	| Disp32(d, base) =>
-		// m[ r[ base] + d]
+		// m[r[base] + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 	| Disp8(d, r32) =>
-		// m[ r[ r32] + d]
+		// m[r[r32] + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + r32),
 		                                  addReloc(new Const(d))));
 	| Index(base, index, ss) =>
-		// m[ r[base] + r[index] * ss]
+		// m[r[base] + (r[index] << ss)]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  new Binary(opMult,
 		                                             dis_Reg(24 + index),
 		                                             new Const(1 << ss))));
 	| Base(base) =>
-		// m[ r[base] ]
+		// m[r[base]]
 		expr = Location::memOf(dis_Reg(24 + base));
 	| Index32(d, base, index, ss) =>
-		// m[ r[ base ] + r[ index ] * ss + d ]
+		// m[r[base] + (r[index] << ss) + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  new Binary(opPlus,
@@ -2153,12 +2205,12 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 	| Base32(d, base) =>
-		// m[ r[ base] + d ]
+		// m[r[base] + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 	| Index8(d, base, index, ss) =>
-		// m[ r[ base ] + r[ index ] * ss + d ]
+		// m[r[base] + (r[index] << ss) + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  new Binary(opPlus,
@@ -2167,52 +2219,27 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 	| Base8(d, base) =>
-		// m[ r[ base] + d ]
+		// m[r[base] + d]
 		// Note: d should be sign extended; we do it here manually
 		signed char ds8 = d;
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  new Const(ds8)));
 	| Indir(base) =>
-		// m[ r[base] ]
+		// m[r[base]]
 		expr = Location::memOf(dis_Reg(24 + base));
 	| ShortIndex(d, index, ss) =>
-		// m[ r[index] * ss + d ]
+		// m[(r[index] << ss) + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  new Binary(opMult,
 		                                             dis_Reg(24 + index),
 		                                             new Const(1 << ss)),
 		                                  addReloc(new Const(d))));
 	| IndirMem(d) =>
-		// [d] (Same as Abs32 using SIB)
+		// m[d] (Same as Abs32 using SIB)
 		expr = Location::memOf(addReloc(new Const(d)));
 	endmatch
 	return expr;
-}
-
-/**
- * Converts a dynamic address to a Exp* expression.
- * E.g. %ecx --> r[ 25 ]
- *
- * \param pc    The instruction stream address of the dynamic address.
- * \param size  Size of the operand (important if a register).
- *
- * \returns  The Exp* representation of the given Eaddr.
- */
-Exp *
-PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
-{
-	match pc to
-	| E(Mem) =>
-		return DIS_MEM;
-	| Reg(reg) =>
-		switch (size) {
-		case  8: return DIS_REG8;
-		case 16: return DIS_REG16;
-		default:
-		case 32: return DIS_REG32;
-		}
-	endmatch
 }
 
 #if 0 // Cruft?
