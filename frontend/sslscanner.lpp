@@ -164,7 +164,6 @@ _?[A-Za-z][A-Za-z0-9_]*"(" { yylval.str = new std::string(yytext, yyleng - 1); r
 _?[A-Za-z][A-Za-z0-9_]*"[" { yylval.str = new std::string(yytext, yyleng - 1); return SSLParser::NAME_LOOKUP; }
 _?[A-Za-z][A-Za-z0-9_]*    { yylval.str = new std::string(yytext, yyleng); return SSLParser::NAME; }
 "."[A-Za-z][A-Za-z.0-9]*   { yylval.str = new std::string(yytext, yyleng); return SSLParser::DECOR; }
-"^"\"[A-Za-z][A-Za-z]*\"   { yylval.str = new std::string(yytext + 2, yyleng - 3); return SSLParser::DECOR; }
 
 [?:,{}()'"] |
 "]"         |

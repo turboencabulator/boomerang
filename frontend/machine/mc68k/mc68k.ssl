@@ -246,24 +246,24 @@ ALU_1_ := { "SUB" };
 OP1_1_ := { -     };
 ALU_2_ := { "AND", "OR", "EOR" };
 OP1_2_ := { &,     |,    ^     };
-ALU[IDX]^"b" src, dst
+ALU[IDX]"b" src, dst
 	_;
-ALU_0_[IDX]^"b"   src, dst
+ALU_0_[IDX]"b"   src, dst
 	*8* r[tmp1] := dst{8}
 	*8* dst := dst{8} OP1_0_[IDX] src{8}
 	ADDFLAGS8(r[tmp1], src, dst);
-ALU[IDX]^"b" src, dst _
+ALU[IDX]"b" src, dst _
 	_;
-ALU_1_[IDX]^"b" src, dst
+ALU_1_[IDX]"b" src, dst
 	*8* r[tmp1] := dst{8}
 	*8* dst := dst{8} OP1_1_[IDX] src{8}
 	SUBFLAGS8(r[tmp1], src, dst);
-ALU[IDX]^"b" src, dst _
+ALU[IDX]"b" src, dst _
 	_;
-ALU_2_[IDX]^"b" src, dst
+ALU_2_[IDX]"b" src, dst
 	*8* dst := dst{8} OP1_2_[IDX] src{8}
 	LOGICALFLAGS8(dst);
-ALU[IDX]^"b" src, dst
+ALU[IDX]"b" src, dst
 	_;
 
 ALU_3_ := { "ADD" };
@@ -272,24 +272,24 @@ ALU_4_ := { "SUB" };
 OP1_4_ := { -     };
 ALU_5_ := { "AND", "OR", "EOR" };
 OP1_5_ := { &,     |,    ^     };
-ALU[IDX]^"w" src, dst
+ALU[IDX]"w" src, dst
 	_;
-ALU_3_[IDX]^"w" src, dst
+ALU_3_[IDX]"w" src, dst
 	*16* r[tmp1] := dst{16}
 	*16* dst := dst{16} OP1_3_[IDX] src{16}
 	ADDFLAGS16(r[tmp1], src, dst);
-ALU[IDX]^"w" src, dst _
+ALU[IDX]"w" src, dst _
 	_;
-ALU_4_[IDX]^"w" src, dst
+ALU_4_[IDX]"w" src, dst
 	*16* r[tmp1] := dst{16}
 	*16* dst := dst{16} OP1_4_[IDX] src{16}
 	SUBFLAGS16(r[tmp1], src, dst);
-ALU[IDX]^"w" src, dst _
+ALU[IDX]"w" src, dst _
 	_;
-ALU_5_[IDX]^"w" src, dst
+ALU_5_[IDX]"w" src, dst
 	*16* dst := dst{16} OP1_5_[IDX] src{16}
 	LOGICALFLAGS16(dst);
-ALU[IDX]^"w" src, dst
+ALU[IDX]"w" src, dst
 	_;
 
 ALU_6_ := { "ADD" };
@@ -298,24 +298,24 @@ ALU_7_ := { "SUB" };
 OP1_7_ := { -     };
 ALU_8_ := { "AND", "OR", "EOR" };
 OP1_8_ := { &,     |,    ^     };
-ALU[IDX]^"l" src, dst
+ALU[IDX]"l" src, dst
 	_;
-ALU_6_[IDX]^"l" src, dst
+ALU_6_[IDX]"l" src, dst
 	*32* r[tmp1] := dst{32}
 	*32* dst := dst{32} OP1_6_[IDX] src{32}
 	ADDFLAGS32(r[tmp1], src, dst);
-ALU[IDX]^"l" src, dst _
+ALU[IDX]"l" src, dst _
 	_;
-ALU_7_[IDX]^"l" src, dst
+ALU_7_[IDX]"l" src, dst
 	*32* r[tmp1] := dst{32}
 	*32* dst := dst{32} OP1_7_[IDX] src{32}
 	SUBFLAGS32(r[tmp1], src, dst);
-ALU[IDX]^"l" src, dst _
+ALU[IDX]"l" src, dst _
 	_;
-ALU_8_[IDX]^"l" src, dst
+ALU_8_[IDX]"l" src, dst
 	*32* dst := dst{32} OP1_8_[IDX] src{32}
 	LOGICALFLAGS32(dst);
-ALU[IDX]^"l" src, dst
+ALU[IDX]"l" src, dst
 	_;
 
 OP9   := { +,       -       };
@@ -327,7 +327,7 @@ ALUQA[IDX] src, dst
 OP2 := { *!,     *      };
 MUL := { "MULS", "MULU" };
 
-MUL[IDX]^"w" src, dst
+MUL[IDX]"w" src, dst
 	*32* r[tmp1] := dst{16}
 	*32* dst := dst{16} OP2[IDX] src{16}
 	COMPLEXARITHFLAGS32(r[tmp1], src, dst);
@@ -365,51 +365,51 @@ SHIFTS_9_  := { "ASR" };
 OP3_9_     := { >>A   };
 SHIFTS_10_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
 OP3_10_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
-SHIFTS[IDX]^"b" cnt, dst
+SHIFTS[IDX]"b" cnt, dst
 	*8* r[tmp1] := dst{8}
 	*8* dst := dst{8} OP3[IDX] cnt{8}
 	_;
-SHIFTS_9_[IDX]^"b" cnt, dst
+SHIFTS_9_[IDX]"b" cnt, dst
 	ARITHSHIFTFLAGS8(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"b" cnt, dst _
+SHIFTS[IDX]"b" cnt, dst _
 	_;
-SHIFTS_10_[IDX]^"b" cnt, dst
+SHIFTS_10_[IDX]"b" cnt, dst
 	LOGSHIFTFLAGS8(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"b" cnt, dst
+SHIFTS[IDX]"b" cnt, dst
 	_;
 
 SHIFTS_11_ := { "ASR" };
 OP3_11_    := { >>A   };
 SHIFTS_12_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
 OP3_12_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
-SHIFTS[IDX]^"w" cnt, dst
+SHIFTS[IDX]"w" cnt, dst
 	*16* r[tmp1] := dst{16}
 	*16* dst := dst{16} OP3[IDX] cnt{16}
 	_;
-SHIFTS_11_[IDX]^"w" cnt, dst
+SHIFTS_11_[IDX]"w" cnt, dst
 	ARITHSHIFTFLAGS16(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"w" cnt, dst _
+SHIFTS[IDX]"w" cnt, dst _
 	_;
-SHIFTS_12_[IDX]^"w"   cnt, dst
+SHIFTS_12_[IDX]"w"   cnt, dst
 	LOGSHIFTFLAGS16(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"w" cnt, dst
+SHIFTS[IDX]"w" cnt, dst
 	_;
 
 SHIFTS_13_ := { "ASR" };
 OP3_13_    := { >>A   };
 SHIFTS_14_ := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
 OP3_14_    := { <<,    >>,    rl,    rr,    rlc,    rrc    };
-SHIFTS[IDX]^"l" cnt, dst
+SHIFTS[IDX]"l" cnt, dst
 	*32* r[tmp1] := dst{32}
 	*32* dst := dst{32} OP3[IDX] cnt{32}
 	_;
-SHIFTS_13_[IDX]^"l" cnt, dst
+SHIFTS_13_[IDX]"l" cnt, dst
 	ARITHSHIFTFLAGS32(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"l" cnt, dst _
+SHIFTS[IDX]"l" cnt, dst _
 	_;
-SHIFTS_14_[IDX]^"l" cnt, dst
+SHIFTS_14_[IDX]"l" cnt, dst
 	LOGSHIFTFLAGS32(dst, r[tmp1], cnt);
-SHIFTS[IDX]^"l" cnt, dst
+SHIFTS[IDX]"l" cnt, dst
 	_;
 
 COND1    := { 1,     ~%CF & ~%ZF, %CF | %ZF, ~%CF,  %CF,   ~%ZF,  %ZF,   ~%OF,  %OF,   ~%NF,  ~%NF,  ~(%NF ^ %OF), %NF ^ %OF, ~(%ZF | (%NF ^ %OF)), %ZF | (%NF ^ %OF) };
