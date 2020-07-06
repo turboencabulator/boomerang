@@ -53,17 +53,17 @@ class Proc;
 #define DIS_MEM64   (dis_Mem(Mem64, bf))    // Probably needs changing
 #define DIS_MEM80   (dis_Mem(Mem80, bf))    // Probably needs changing
 
-#define DIS_I32     (addReloc(new Const(i32)))
+#define DIS_I32     (new Const(i32))
 #define DIS_I16     (new Const(i16))
 #define DIS_I8      (new Const(i8))
 #define DIS_COUNT   (new Const(count))
-#define DIS_OFF     (addReloc(new Const(off)))
+#define DIS_OFF     (new Const(off))
 
 #define addressToPC(pc) (pc)
 #define fetch8(pc)  bf->readNative1(pc)
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
-
+#define addReloc(e) (prog->addReloc(e, lastDwordLc))
 
 static RTL *
 SETS(ADDRESS pc, const std::string &name, Exp *dest, BRANCH_TYPE cond)
@@ -121,7 +121,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	// Clear the result structure;
 	result.reset();
-
+	ADDRESS lastDwordLc = NO_ADDRESS;
 	ADDRESS nextPC = NO_ADDRESS;
 
 #line 128 "pentiumdecoder.cpp"
@@ -924,7 +924,7 @@ pc
                     
 #line 1668 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 931 "pentiumdecoder.cpp"
@@ -7683,7 +7683,7 @@ pc
                     
 #line 1662 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 7690 "pentiumdecoder.cpp"
@@ -8142,7 +8142,7 @@ pc
                     
 #line 1656 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 8149 "pentiumdecoder.cpp"
@@ -8596,7 +8596,7 @@ pc
                     
 #line 1650 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 8603 "pentiumdecoder.cpp"
@@ -8675,7 +8675,7 @@ pc
                     
 #line 810 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 8682 "pentiumdecoder.cpp"
@@ -8745,7 +8745,7 @@ pc
                             
 #line 1144 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 8752 "pentiumdecoder.cpp"
@@ -9842,7 +9842,7 @@ pc
                     
 #line 392 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 9849 "pentiumdecoder.cpp"
@@ -9975,7 +9975,7 @@ pc
               
 #line 979 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_R32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_R32, addReloc(DIS_I32));
 
 
 #line 9982 "pentiumdecoder.cpp"
@@ -19515,7 +19515,7 @@ pc
                     
 #line 1671 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 19522 "pentiumdecoder.cpp"
@@ -19974,7 +19974,7 @@ pc
                     
 #line 1665 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 19981 "pentiumdecoder.cpp"
@@ -20433,7 +20433,7 @@ pc
                     
 #line 1659 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 20440 "pentiumdecoder.cpp"
@@ -20887,7 +20887,7 @@ pc
                     
 #line 1653 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 
 #line 20894 "pentiumdecoder.cpp"
@@ -29658,7 +29658,7 @@ pc
                                   
 #line 1000 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
 #line 29665 "pentiumdecoder.cpp"
@@ -29703,7 +29703,7 @@ pc
                                   
 #line 991 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
 #line 29710 "pentiumdecoder.cpp"
@@ -34759,7 +34759,7 @@ pc
                                   
 #line 1599 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 34766 "pentiumdecoder.cpp"
@@ -34866,7 +34866,7 @@ pc
                                   
 #line 1596 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 34873 "pentiumdecoder.cpp"
@@ -34973,7 +34973,7 @@ pc
                                   
 #line 1593 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 34980 "pentiumdecoder.cpp"
@@ -35080,7 +35080,7 @@ pc
                                   
 #line 1590 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 35087 "pentiumdecoder.cpp"
@@ -35187,7 +35187,7 @@ pc
                                   
 #line 1587 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 35194 "pentiumdecoder.cpp"
@@ -35294,7 +35294,7 @@ pc
                                   
 #line 1584 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 35301 "pentiumdecoder.cpp"
@@ -35401,7 +35401,7 @@ pc
                                   
 #line 1581 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 35408 "pentiumdecoder.cpp"
@@ -35508,7 +35508,7 @@ pc
                                   
 #line 1578 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 35515 "pentiumdecoder.cpp"
@@ -36888,7 +36888,7 @@ pc
                     
 #line 1003 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 //	| MOV.Sw.Ew(Mem, sr16) [name] =>
 //		result.rtl = instantiate(pc, name, DIS_MEM, DIS_SR16);
@@ -36914,7 +36914,7 @@ pc
                     
 #line 997 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
 #line 36921 "pentiumdecoder.cpp"
@@ -36934,7 +36934,7 @@ pc
                     
 #line 994 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
 #line 36941 "pentiumdecoder.cpp"
@@ -36954,7 +36954,7 @@ pc
                     
 #line 988 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
 #line 36961 "pentiumdecoder.cpp"
@@ -39065,7 +39065,7 @@ pc
                               
 #line 970 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 39072 "pentiumdecoder.cpp"
@@ -43483,7 +43483,7 @@ pc
                                   
 #line 383 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 43490 "pentiumdecoder.cpp"
@@ -52876,7 +52876,7 @@ pc
       
 #line 1599 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52883 "pentiumdecoder.cpp"
@@ -52894,7 +52894,7 @@ pc
       
 #line 1599 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52901 "pentiumdecoder.cpp"
@@ -52912,7 +52912,7 @@ pc
       
 #line 1599 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52919 "pentiumdecoder.cpp"
@@ -52930,7 +52930,7 @@ pc
       
 #line 1599 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52937 "pentiumdecoder.cpp"
@@ -52948,7 +52948,7 @@ pc
       
 #line 1596 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52955 "pentiumdecoder.cpp"
@@ -52966,7 +52966,7 @@ pc
       
 #line 1596 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52973 "pentiumdecoder.cpp"
@@ -52984,7 +52984,7 @@ pc
       
 #line 1596 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 52991 "pentiumdecoder.cpp"
@@ -53002,7 +53002,7 @@ pc
       
 #line 1596 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53009 "pentiumdecoder.cpp"
@@ -53020,7 +53020,7 @@ pc
       
 #line 1593 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53027 "pentiumdecoder.cpp"
@@ -53038,7 +53038,7 @@ pc
       
 #line 1593 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53045 "pentiumdecoder.cpp"
@@ -53056,7 +53056,7 @@ pc
       
 #line 1593 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53063 "pentiumdecoder.cpp"
@@ -53074,7 +53074,7 @@ pc
       
 #line 1593 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53081 "pentiumdecoder.cpp"
@@ -53092,7 +53092,7 @@ pc
       
 #line 1590 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53099 "pentiumdecoder.cpp"
@@ -53110,7 +53110,7 @@ pc
       
 #line 1590 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53117 "pentiumdecoder.cpp"
@@ -53128,7 +53128,7 @@ pc
       
 #line 1590 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53135 "pentiumdecoder.cpp"
@@ -53146,7 +53146,7 @@ pc
       
 #line 1590 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53153 "pentiumdecoder.cpp"
@@ -53164,7 +53164,7 @@ pc
       
 #line 1587 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53171 "pentiumdecoder.cpp"
@@ -53182,7 +53182,7 @@ pc
       
 #line 1587 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53189 "pentiumdecoder.cpp"
@@ -53200,7 +53200,7 @@ pc
       
 #line 1587 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53207 "pentiumdecoder.cpp"
@@ -53218,7 +53218,7 @@ pc
       
 #line 1587 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53225 "pentiumdecoder.cpp"
@@ -53236,7 +53236,7 @@ pc
       
 #line 1584 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53243 "pentiumdecoder.cpp"
@@ -53254,7 +53254,7 @@ pc
       
 #line 1584 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53261 "pentiumdecoder.cpp"
@@ -53272,7 +53272,7 @@ pc
       
 #line 1584 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53279 "pentiumdecoder.cpp"
@@ -53290,7 +53290,7 @@ pc
       
 #line 1584 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53297 "pentiumdecoder.cpp"
@@ -53308,7 +53308,7 @@ pc
       
 #line 1581 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53315 "pentiumdecoder.cpp"
@@ -53326,7 +53326,7 @@ pc
       
 #line 1581 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53333 "pentiumdecoder.cpp"
@@ -53344,7 +53344,7 @@ pc
       
 #line 1581 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53351 "pentiumdecoder.cpp"
@@ -53362,7 +53362,7 @@ pc
       
 #line 1581 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53369 "pentiumdecoder.cpp"
@@ -53380,7 +53380,7 @@ pc
       
 #line 1578 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53387 "pentiumdecoder.cpp"
@@ -53398,7 +53398,7 @@ pc
       
 #line 1578 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53405 "pentiumdecoder.cpp"
@@ -53416,7 +53416,7 @@ pc
       
 #line 1578 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53423 "pentiumdecoder.cpp"
@@ -53434,7 +53434,7 @@ pc
       
 #line 1578 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 53441 "pentiumdecoder.cpp"
@@ -55608,7 +55608,7 @@ pc
       
 #line 970 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 55615 "pentiumdecoder.cpp"
@@ -55626,7 +55626,7 @@ pc
       
 #line 970 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 55633 "pentiumdecoder.cpp"
@@ -55644,7 +55644,7 @@ pc
       
 #line 970 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 55651 "pentiumdecoder.cpp"
@@ -55662,7 +55662,7 @@ pc
       
 #line 970 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 55669 "pentiumdecoder.cpp"
@@ -58132,7 +58132,7 @@ pc
       
 #line 383 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 58139 "pentiumdecoder.cpp"
@@ -58150,7 +58150,7 @@ pc
       
 #line 383 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 58157 "pentiumdecoder.cpp"
@@ -58168,7 +58168,7 @@ pc
       
 #line 383 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 58175 "pentiumdecoder.cpp"
@@ -58186,7 +58186,7 @@ pc
       
 #line 383 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 58193 "pentiumdecoder.cpp"
@@ -63225,7 +63225,7 @@ pc
       
 #line 1144 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 63232 "pentiumdecoder.cpp"
@@ -63244,7 +63244,7 @@ pc
       
 #line 1144 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 63251 "pentiumdecoder.cpp"
@@ -63263,7 +63263,7 @@ pc
       
 #line 1144 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 63270 "pentiumdecoder.cpp"
@@ -63282,7 +63282,7 @@ pc
       
 #line 1144 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
 #line 63289 "pentiumdecoder.cpp"
@@ -68240,7 +68240,7 @@ pc
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 {
-	lastDwordLc = (unsigned)-1;
+	ADDRESS lastDwordLc = NO_ADDRESS;
 
 
 #line 68247 "pentiumdecoder.cpp"
@@ -68291,7 +68291,7 @@ pc
 #line 2226 "machine/pentium/decoder.m"
 
 		// m[i32] (Same as Abs32 using SIB)
-		return Location::memOf(DIS_I32);
+		return Location::memOf(addReloc(DIS_I32));
 
 #line 68297 "pentiumdecoder.cpp"
 
@@ -68312,7 +68312,7 @@ pc
 		// m[(r[index] << ss) + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_INDEX,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 
 #line 68318 "pentiumdecoder.cpp"
 
@@ -68360,7 +68360,7 @@ pc
 #line 2173 "machine/pentium/decoder.m"
 
 		// m[i32]
-		return Location::memOf(DIS_I32);
+		return Location::memOf(addReloc(DIS_I32));
 
 #line 68366 "pentiumdecoder.cpp"
 
@@ -68455,7 +68455,7 @@ pc
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 
 #line 68461 "pentiumdecoder.cpp"
 
@@ -68478,7 +68478,7 @@ pc
 		                                  DIS_BASE,
 		                                  new Binary(opPlus,
 		                                             DIS_INDEX,
-		                                             DIS_I32)));
+		                                             addReloc(DIS_I32))));
 
 #line 68484 "pentiumdecoder.cpp"
 
@@ -68499,7 +68499,7 @@ pc
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 
 #line 68505 "pentiumdecoder.cpp"
 
@@ -68648,13 +68648,5 @@ PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, O
 	return result;
 }
 
-Exp *
-PentiumDecoder::addReloc(Exp *e)
-{
-	if (lastDwordLc != (unsigned)-1)
-		e = prog->addReloc(e, lastDwordLc);
-	return e;
-}
-
-#line 68660 "pentiumdecoder.cpp"
+#line 68652 "pentiumdecoder.cpp"
 

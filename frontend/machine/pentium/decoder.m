@@ -49,17 +49,17 @@ class Proc;
 #define DIS_MEM64   (dis_Mem(Mem64, bf))    // Probably needs changing
 #define DIS_MEM80   (dis_Mem(Mem80, bf))    // Probably needs changing
 
-#define DIS_I32     (addReloc(new Const(i32)))
+#define DIS_I32     (new Const(i32))
 #define DIS_I16     (new Const(i16))
 #define DIS_I8      (new Const(i8))
 #define DIS_COUNT   (new Const(count))
-#define DIS_OFF     (addReloc(new Const(off)))
+#define DIS_OFF     (new Const(off))
 
 #define addressToPC(pc) (pc)
 #define fetch8(pc)  bf->readNative1(pc)
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
-
+#define addReloc(e) (prog->addReloc(e, lastDwordLc))
 
 static RTL *
 SETS(ADDRESS pc, const std::string &name, Exp *dest, BRANCH_TYPE cond)
@@ -117,7 +117,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	// Clear the result structure;
 	result.reset();
-
+	ADDRESS lastDwordLc = NO_ADDRESS;
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
 
@@ -381,7 +381,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 	| TEST.Ed.Id(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| TEST.Ew.Iw(Eaddr, i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
@@ -390,7 +390,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 	| TEST.eAX.Ivod(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| TEST.eAX.Ivow(i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I16);
@@ -808,7 +808,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name);
 
 	| PUSH.Ivod(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| PUSH.Ivow(i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I16);
@@ -968,7 +968,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 //		result.rtl = instantiate(pc, "UNIMP");
 
 	| MOV.Ed.Ivod(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| MOV.Ew.Ivow(Eaddr, i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
@@ -977,7 +977,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 	| MOVid(r32, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_R32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_R32, addReloc(DIS_I32));
 
 	| MOViw(r16, i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_I16);  // Check!
@@ -986,22 +986,22 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_I8);
 
 	| MOV.Ov.eAXod(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 	| MOV.Ov.eAXow(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 	| MOV.Ob.AL(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 	| MOV.eAX.Ovod(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 	| MOV.eAX.Ovow(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 	| MOV.AL.Ob(off) [name] =>
-		result.rtl = instantiate(pc, name, DIS_OFF);
+		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 //	| MOV.Sw.Ew(Mem, sr16) [name] =>
 //		result.rtl = instantiate(pc, name, DIS_MEM, DIS_SR16);
@@ -1142,7 +1142,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 	| IMUL.Ivd(reg, Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 	| IMUL.Ivw(reg, Eaddr, i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
@@ -1576,28 +1576,28 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 	| CMPid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| XORid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| SUBid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| ANDid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| SBBid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| ADCid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| ORid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| ADDid(Eaddr, i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 	| CMPiw(Eaddr, i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
@@ -1648,28 +1648,28 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 	| CMPiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| XORiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| SUBiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| ANDiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| SBBiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| ADCiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| ORiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| ADDiEAX(i32) [name] =>
-		result.rtl = instantiate(pc, name, DIS_I32);
+		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
 	| CMPiAX(i16) [name] =>
 		result.rtl = instantiate(pc, name, DIS_I16);
@@ -2167,17 +2167,17 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 {
-	lastDwordLc = (unsigned)-1;
+	ADDRESS lastDwordLc = NO_ADDRESS;
 
 	match pc to
 	| Abs32(i32) =>
 		// m[i32]
-		return Location::memOf(DIS_I32);
+		return Location::memOf(addReloc(DIS_I32));
 	| Disp32(i32, base) =>
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 	| Disp8(i8, reg) =>
 		// m[r[reg] + i8]
 		return Location::memOf(new Binary(opPlus,
@@ -2197,12 +2197,12 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		                                  DIS_BASE,
 		                                  new Binary(opPlus,
 		                                             DIS_INDEX,
-		                                             DIS_I32)));
+		                                             addReloc(DIS_I32))));
 	| Base32(i32, base) =>
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 	| Index8(i8, base, index, ss) =>
 		// m[r[base] + (r[index] << ss) + i8]
 		return Location::memOf(new Binary(opPlus,
@@ -2222,10 +2222,10 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 		// m[(r[index] << ss) + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_INDEX,
-		                                  DIS_I32));
+		                                  addReloc(DIS_I32)));
 	| IndirMem(i32) =>
 		// m[i32] (Same as Abs32 using SIB)
-		return Location::memOf(DIS_I32);
+		return Location::memOf(addReloc(DIS_I32));
 	endmatch
 }
 
@@ -2352,12 +2352,4 @@ PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, O
 	if (++BSFRstate == 3)
 		BSFRstate = 0;  // Ready for next time
 	return result;
-}
-
-Exp *
-PentiumDecoder::addReloc(Exp *e)
-{
-	if (lastDwordLc != (unsigned)-1)
-		e = prog->addReloc(e, lastDwordLc);
-	return e;
 }

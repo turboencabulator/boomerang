@@ -34,12 +34,9 @@ private:
 	 */
 	Exp *dis_Eaddr(ADDRESS, const BinaryFile *, int size = 0);
 	Exp *dis_Mem(ADDRESS, const BinaryFile *);
-	Exp *addReloc(Exp *e);
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-
-	unsigned lastDwordLc;
 
 	int BSFRstate = 0;
 	DecodeResult &genBSFR(ADDRESS, Exp *, Exp *, int, int, OPER, int);
