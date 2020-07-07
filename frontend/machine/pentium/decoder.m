@@ -2114,7 +2114,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
+PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size) const
 {
 	/*
 	 * pc is currently at the Mod R/M byte.
@@ -2165,7 +2165,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
+PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf) const
 {
 	ADDRESS lastDwordLc = NO_ADDRESS;
 
@@ -2268,7 +2268,7 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
  * \returns  true if have to exit early (not in last state).
  */
 DecodeResult &
-PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes)
+PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes) const
 {
 	// Note the horrible hack needed here. We need initialisation code, and an extra branch, so the %SKIP/%RPT won't
 	// work. We need to emit 6 statements, but these need to be in 3 RTLs, since the destination of a branch has to be
@@ -2289,7 +2289,7 @@ PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, O
 	auto stmts = std::list<Statement *>();
 	Statement *s;
 	BranchStatement *b;
-	switch (BSFRstate) {
+	switch (result.reDecode) {
 	case 0:
 		s = new Assign(new IntegerType(1),
 		               new Terminal(opZF),
@@ -2331,25 +2331,23 @@ PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, O
 		break;
 	default:
 		// Should never happen
-		assert(BSFRstate - BSFRstate);
+		assert(result.reDecode - result.reDecode);
 	}
-	result.rtl = new RTL(pc + BSFRstate);
+	result.rtl = new RTL(pc + result.reDecode);
 	result.rtl->splice(stmts);
+	if (DEBUG_DECODER)
+		std::cout << std::hex << pc + result.reDecode << std::dec << ": "
+		          << "BS" << (init == -1 ? "F" : "R") << (size == 32 ? ".od" : ".ow")
+		          << result.reDecode + 1 << "\n";
 	// Keep numBytes == 0 until the last state, so we re-decode this instruction 3 times
-	if (BSFRstate != 3 - 1) {
+	if (result.reDecode < 2) {
 		// Let the number of bytes be 1. This is important at least for setting the fallthrough address for the branch
 		// (in the first RTL), which should point to the next RTL
 		result.numBytes = 1;
-		result.reDecode = true;  // Decode this instruction again
+		result.reDecode += 1;
 	} else {
 		result.numBytes = numBytes;
-		result.reDecode = false;
+		result.reDecode = 0;
 	}
-	if (DEBUG_DECODER)
-		std::cout << std::hex << pc+BSFRstate << std::dec << ": "
-		          << "BS" << (init == -1 ? "F" : "R") << (size == 32 ? ".od" : ".ow")
-		          << BSFRstate + 1 << "\n";
-	if (++BSFRstate == 3)
-		BSFRstate = 0;  // Ready for next time
 	return result;
 }

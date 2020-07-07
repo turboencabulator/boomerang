@@ -64,17 +64,17 @@ struct DecodeResult {
 	/**
 	 * The number of bytes decoded in the main instruction.
 	 */
-	int numBytes;
+	int numBytes = 0;
 
 	/**
 	 * The RTL constructed (if any).
 	 */
-	RTL *rtl;
+	RTL *rtl = nullptr;
 
 	/**
 	 * Indicates whether or not a valid instruction was decoded.
 	 */
-	bool valid;
+	bool valid = true;
 
 	/**
 	 * The class of the instruction decoded.  Will be one of the classes
@@ -82,7 +82,7 @@ struct DecodeResult {
 	 * Delayed Branches" (plus two more HPPA specific entries).  Ignored
 	 * by machines with no delay slots.
 	 */
-	ICLASS type;
+	ICLASS type = NCT;
 
 	/**
 	 * If true, don't add numBytes and decode there; instead, re-decode
@@ -90,14 +90,14 @@ struct DecodeResult {
 	 * BSF/BSR, which emit branches (so numBytes needs to be carefully set
 	 * for the fall through out edge after the branch).
 	 */
-	bool reDecode;
+	int reDecode = 0;
 
 	/**
 	 * If non zero, this field represents a new native address to be used
 	 * as the out-edge for this instruction's BB.  At present, only used
 	 * for the SPARC call/add caller prologue.
 	 */
-	ADDRESS forceOutEdge;
+	ADDRESS forceOutEdge = 0;
 };
 
 /**

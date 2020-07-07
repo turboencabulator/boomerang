@@ -202,7 +202,7 @@ DecodeResult::reset()
 	type = NCT;
 	valid = true;
 	rtl = nullptr;
-	reDecode = false;
+	//reDecode = 0;  // Decoder will use this as a state variable
 	forceOutEdge = 0;
 }
 

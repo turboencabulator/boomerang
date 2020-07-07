@@ -32,14 +32,13 @@ private:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	Exp *dis_Eaddr(ADDRESS, const BinaryFile *, int size = 0);
-	Exp *dis_Mem(ADDRESS, const BinaryFile *);
+	Exp *dis_Eaddr(ADDRESS, const BinaryFile *, int size = 0) const;
+	Exp *dis_Mem(ADDRESS, const BinaryFile *) const;
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
 
-	int BSFRstate = 0;
-	DecodeResult &genBSFR(ADDRESS, Exp *, Exp *, int, int, OPER, int);
+	DecodeResult &genBSFR(ADDRESS, Exp *, Exp *, int, int, OPER, int) const;
 };
 
 #endif
