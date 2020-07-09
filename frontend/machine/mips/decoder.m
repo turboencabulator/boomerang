@@ -37,30 +37,10 @@ MIPSDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 }
 #endif
 
-/**
- * Attempt to decode the high level instruction at a given address and return
- * the corresponding HL type (e.g. CallStatement, GotoStatement etc).  If no
- * high level instruction exists at the given address, then simply return the
- * RTL for the low level instruction at this address.  There is an option to
- * also include the low level statements for a HL instruction.
- *
- * \param pc     The native address of the pc.
- * \param delta  The difference between the above address and the host address
- *               of the pc (i.e. the address that the pc is at in the loaded
- *               object file).
- * \param proc   The enclosing procedure.  This can be nullptr for those of us
- *               who are using this method in an interpreter.
- *
- * \returns  A DecodeResult structure containing all the information gathered
- *           during decoding.
- */
-
 // Stub from PPC...
-DecodeResult &
-MIPSDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
+void
+MIPSDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf)
 {
-	static DecodeResult result;
-
 	// Clear the result structure;
 	result.reset();
 }

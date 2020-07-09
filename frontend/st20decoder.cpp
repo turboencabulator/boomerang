@@ -49,40 +49,23 @@ ST20Decoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 }
 #endif
 
-static DecodeResult result;
-
-/**
- * Decodes a machine instruction and returns an RTL instance.  In all cases a
- * single instruction is decoded.
- *
- * \param pc       The native address of the pc.
- * \param delta    The difference between the above address and the host
- *                 address of the pc (i.e. the address that the pc is at in
- *                 the loaded object file).
- * \param RTLDict  The dictionary of RTL templates used to instantiate the RTL
- *                 for the instruction being decoded.
- * \param proc     The enclosing procedure.
- *
- * \returns  A DecodeResult structure containing all the information gathered
- *           during decoding.
- */
-DecodeResult &
-ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
+void
+ST20Decoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
 
-#line 78 "st20decoder.cpp"
+#line 61 "st20decoder.cpp"
 
-#line 72 "machine/st20/decoder.m"
+#line 55 "machine/st20/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 72 "machine/st20/decoder.m"
+#line 55 "machine/st20/decoder.m"
 pc + result.numBytes++
-#line 86 "st20decoder.cpp"
+#line 69 "st20decoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
@@ -101,13 +84,13 @@ pc + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 86 "machine/st20/decoder.m"
+#line 69 "machine/st20/decoder.m"
 
 			total += oper;
 			result.rtl = unconditionalJump(pc, name, pc + result.numBytes + total);
 
 
-#line 111 "st20decoder.cpp"
+#line 94 "st20decoder.cpp"
 
             
           }
@@ -121,13 +104,13 @@ pc + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 82 "machine/st20/decoder.m"
+#line 65 "machine/st20/decoder.m"
 
 			total += oper;
 			result.rtl = instantiate(pc, name, new Const(total));
 
 
-#line 131 "st20decoder.cpp"
+#line 114 "st20decoder.cpp"
 
             
           }
@@ -137,13 +120,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 74 "machine/st20/decoder.m"
+#line 57 "machine/st20/decoder.m"
 
 			total = (total + oper) << 4;
 			continue;
 
 
-#line 147 "st20decoder.cpp"
+#line 130 "st20decoder.cpp"
 
             
           }
@@ -153,13 +136,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 78 "machine/st20/decoder.m"
+#line 61 "machine/st20/decoder.m"
 
 			total = (total + ~oper) << 4;
 			continue;
 
 
-#line 163 "st20decoder.cpp"
+#line 146 "st20decoder.cpp"
 
             
           }
@@ -172,7 +155,7 @@ pc + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 90 "machine/st20/decoder.m"
+#line 73 "machine/st20/decoder.m"
 
 			total += oper;
 			result.rtl = instantiate(pc, name, new Const(total));
@@ -181,7 +164,7 @@ pc + result.numBytes++
 			result.rtl->appendStmt(newCall);
 
 
-#line 185 "st20decoder.cpp"
+#line 168 "st20decoder.cpp"
 
             
           }
@@ -191,7 +174,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 97 "machine/st20/decoder.m"
+#line 80 "machine/st20/decoder.m"
 
 			total += oper;
 			auto br = new BranchStatement(pc + result.numBytes + total);
@@ -201,7 +184,7 @@ pc + result.numBytes++
 			result.rtl = new RTL(pc, br);
 
 
-#line 205 "st20decoder.cpp"
+#line 188 "st20decoder.cpp"
 
             
           }
@@ -211,7 +194,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 105 "machine/st20/decoder.m"
+#line 88 "machine/st20/decoder.m"
 
 			total |= oper;
 			const char *name = nullptr;
@@ -394,7 +377,7 @@ pc + result.numBytes++
 			}
 
 
-#line 398 "st20decoder.cpp"
+#line 381 "st20decoder.cpp"
 
             
           }
@@ -408,16 +391,15 @@ pc + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 412 "st20decoder.cpp"
+#line 395 "st20decoder.cpp"
 
-#line 287 "machine/st20/decoder.m"
+#line 270 "machine/st20/decoder.m"
 		break;
 	}
 
 	if (result.valid && !result.rtl)
 		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
-	return result;
 }
 
-#line 423 "st20decoder.cpp"
+#line 405 "st20decoder.cpp"
 

@@ -287,28 +287,9 @@ SparcDecoder::createBranch(ADDRESS pc, ADDRESS dest, const BinaryFile *bf)
 	return nullptr;
 }
 
-/**
- * Attempt to decode the high level instruction at a given address and return
- * the corresponding HL type (e.g. CallStatement, GotoStatement etc).  If no
- * high level instruction exists at the given address, then simply return the
- * RTL for the low level instruction at this address.  There is an option to
- * also include the low level statements for a HL instruction.
- *
- * \param pc     The native address of the pc.
- * \param delta  The difference between the above address and the host address
- *               of the pc (i.e. the address that the pc is at in the loaded
- *               object file).
- * \param proc   The enclosing procedure.  This can be nullptr for those of us
- *               who are using this method in an interpreter.
- *
- * \returns  A DecodeResult structure containing all the information gathered
- *           during decoding.
- */
-DecodeResult &
-SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
+void
+SparcDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf)
 {
-	static DecodeResult result;
-
 	// Clear the result structure;
 	result.reset();
 
@@ -373,7 +354,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
-			return result;
+			return;
 		}
 		result.rtl = new RTL(pc, br);
 
@@ -399,7 +380,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
-			return result;
+			return;
 		}
 		auto br = createBranch(pc, tgt, bf);
 		result.rtl = new RTL(pc, br);
@@ -426,7 +407,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
-			return result;
+			return;
 		}
 		result.rtl = new RTL(pc, br);
 
@@ -448,7 +429,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
-			return result;
+			return;
 		}
 		auto br = createBranch(pc, tgt, bf);
 		result.rtl = new RTL(pc, br);
@@ -659,7 +640,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	if (result.valid && !result.rtl)
 		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
-	return result;
 }
 
 /**

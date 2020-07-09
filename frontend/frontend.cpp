@@ -474,17 +474,16 @@ FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 	}
 }
 
-DecodeResult &
-FrontEnd::decodeInstruction(ADDRESS pc)
+void
+FrontEnd::decodeInstruction(DecodeResult &r, ADDRESS pc)
 {
 	if (!pBF->getSectionInfoByAddr(pc)) {
 		LOG << "ERROR: attempted to decode outside any known segment 0x" << std::hex << pc << std::dec << "\n";
-		static DecodeResult invalid;
-		invalid.reset();
-		invalid.valid = false;
-		return invalid;
+		r.reset();
+		r.valid = false;
+		return;
 	}
-	return getDecoder().decodeInstruction(pc, pBF);
+	return getDecoder().decodeInstruction(r, pc, pBF);
 }
 
 /**
@@ -622,7 +621,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				LOG << "*0x" << std::hex << addr << std::dec << "\t";
 
 			// Decode the inst at addr.
-			auto inst = decodeInstruction(addr);
+			DecodeResult inst;
+			decodeInstruction(inst, addr);
 
 			// If invalid and we are speculating, just exit
 			if (spec && !inst.valid)
@@ -836,7 +836,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// It should not be in the PLT either, but getLimitTextHigh() takes this into account
 							if (callAddr < pBF->getLimitTextHigh()) {
 								// Decode it.
-								auto decoded = decodeInstruction(callAddr);
+								DecodeResult decoded;
+								decodeInstruction(decoded, callAddr);
 								if (decoded.valid) { // is the instruction decoded succesfully?
 									// Yes, it is. Create a Statement from it.
 									auto first_statement = decoded.rtl->getList().front();

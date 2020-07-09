@@ -128,7 +128,7 @@ public:
 	virtual ADDRESS getMainEntryPoint(bool &);
 	std::vector<ADDRESS> getEntryPoints();
 
-	virtual DecodeResult &decodeInstruction(ADDRESS);
+	virtual void decodeInstruction(DecodeResult &, ADDRESS);
 
 	void decode();
 	void decode(ADDRESS);

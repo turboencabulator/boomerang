@@ -46,7 +46,8 @@ FrontSparcTest::test1()
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	// Decode first instruction
-	DecodeResult inst = fe->decodeInstruction(addr);
+	DecodeResult inst;
+	fe->decodeInstruction(inst, addr);
 	CPPUNIT_ASSERT(inst.rtl);
 
 	std::string expected("00010684    0 *32* tmp := r14 - 112\n"
@@ -78,12 +79,12 @@ FrontSparcTest::test1()
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr += inst.numBytes;
-	inst = fe->decodeInstruction(addr);
+	fe->decodeInstruction(inst, addr);
 	expected = std::string("00010688    0 *32* r8 := 0x10400\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr += inst.numBytes;
-	inst = fe->decodeInstruction(addr);
+	fe->decodeInstruction(inst, addr);
 	expected = std::string("0001068c    0 *32* r8 := r8 | 848\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -103,7 +104,7 @@ FrontSparcTest::test2()
 	CPPUNIT_ASSERT(fe);
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
-	inst = fe->decodeInstruction(0x10690);
+	fe->decodeInstruction(inst, 0x10690);
 	// This call is to out of range of the program's text limits (to the Program Linkage Table (PLT), calling printf)
 	// This is quite normal.
 	expected = std::string("00010690    0 CALL printf(\n"
@@ -112,15 +113,15 @@ FrontSparcTest::test2()
 	                       "              Live variables: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x10694);
+	fe->decodeInstruction(inst, 0x10694);
 	expected = std::string("00010694\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x10698);
+	fe->decodeInstruction(inst, 0x10698);
 	expected = std::string("00010698    0 *32* r8 := 0\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x1069c);
+	fe->decodeInstruction(inst, 0x1069c);
 	expected = std::string("0001069c    0 *32* r24 := r8\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -140,17 +141,17 @@ FrontSparcTest::test3()
 	CPPUNIT_ASSERT(fe);
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
-	inst = fe->decodeInstruction(0x106a0);
+	fe->decodeInstruction(inst, 0x106a0);
 	expected = std::string("000106a0\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x106a4);
+	fe->decodeInstruction(inst, 0x106a4);
 	expected = std::string("000106a4    0 RET\n"
 	                       "              Modifieds: \n"
 	                       "              Reaching definitions: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x106a8);
+	fe->decodeInstruction(inst, 0x106a8);
 	expected = std::string("000106a8    0 *32* tmp := 0\n"
 	                       "            0 *32* r8 := r24\n"
 	                       "            0 *32* r9 := r25\n"
@@ -198,19 +199,19 @@ FrontSparcTest::testBranch()
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
 	// bne
-	inst = fe->decodeInstruction(0x10ab0);
+	fe->decodeInstruction(inst, 0x10ab0);
 	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bg
-	inst = fe->decodeInstruction(0x10af8);
+	fe->decodeInstruction(inst, 0x10af8);
 	expected = std::string("00010af8    0 BRANCH 0x10b10, condition signed greater\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bleu
-	inst = fe->decodeInstruction(0x10b44);
+	fe->decodeInstruction(inst, 0x10b44);
 	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());

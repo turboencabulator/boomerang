@@ -91,36 +91,15 @@ PentiumDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 }
 #endif
 
-static DecodeResult result;
-
-/**
- * Decodes a machine instruction and returns an RTL instance.  In most cases a
- * single instruction is decoded.  However, if a higher level construct that
- * may consist of multiple instructions is matched, then there may be a need
- * to return more than one RTL.  The caller_prologue2 is an example of such a
- * construct which encloses an abritary instruction that must be decoded into
- * its own RTL.
- *
- * \param pc       The native address of the pc.
- * \param delta    The difference between the above address and the host
- *                 address of the pc (i.e. the address that the pc is at in
- *                 the loaded object file).
- * \param RTLDict  The dictionary of RTL templates used to instantiate the RTL
- *                 for the instruction being decoded.
- * \param proc     The enclosing procedure.
- *
- * \returns  A DecodeResult structure containing all the information gathered
- *           during decoding.
- */
-DecodeResult &
-PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
+void
+PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf)
 {
 	// Clear the result structure;
 	result.reset();
+
 	ADDRESS lastDwordLc = NO_ADDRESS;
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
-
 	| CALL.Evod(Eaddr) [name] =>
 		/*
 		 * Register call
@@ -1340,22 +1319,26 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| BSRod(reg, Eaddr) =>
 	//| BSRod(reg, Eaddr) [name] =>
 		//result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
-		return genBSFR(pc, DIS_REG32, DIS_EADDR32, 32, 32, opMinus, nextPC - pc);
+		genBSFR(result, pc, DIS_REG32, DIS_EADDR32, 32, 32, opMinus, nextPC - pc);
+		return;
 
 	| BSRow(reg, Eaddr) =>
 	//| BSRow(reg, Eaddr) [name] =>
 		//result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
-		return genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - pc);
+		genBSFR(result, pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - pc);
+		return;
 
 	| BSFod(reg, Eaddr) =>
 	//| BSFod(reg, Eaddr) [name] =>
 		//result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
-		return genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - pc);
+		genBSFR(result, pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - pc);
+		return;
 
 	| BSFow(reg, Eaddr) =>
 	//| BSFow(reg, Eaddr) [name] =>
 		//result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
-		return genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - pc);
+		genBSFR(result, pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - pc);
+		return;
 
 	// Not "user" instructions:
 //	| BOUNDod(reg, Mem) [name] =>
@@ -2101,7 +2084,6 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	if (result.valid && !result.rtl)
 		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
-	return result;
 }
 
 /**
@@ -2256,19 +2238,20 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 /**
  * Generates statements for the BSF and BSR series (Bit Scan Forward/Reverse).
  *
- * \param pc        Native PC address (start of the BSF/BSR instruction).
- * \param dest      An expression for the destination register.
- * \param modrm     An expression for the operand being scanned.
- * \param init      Initial value for the dest register.
- * \param size      sizeof(modrm) (in bits).
- * \param incdec    Either opPlus for Forward scans,
- *                  or opMinus for Reverse scans.
- * \param numBytes  Number of bytes this instruction.
- *
- * \returns  true if have to exit early (not in last state).
+ * \param[in,out] result  Contains all the information gathered during
+ *                        decoding.
+ * \param[in] pc          Native PC address (start of the BSF/BSR
+ *                        instruction).
+ * \param[in] dest        An expression for the destination register.
+ * \param[in] modrm       An expression for the operand being scanned.
+ * \param[in] init        Initial value for the dest register.
+ * \param[in] size        sizeof(modrm) (in bits).
+ * \param[in] incdec      Either opPlus for Forward scans,
+ *                        or opMinus for Reverse scans.
+ * \param[in] numBytes    Number of bytes this instruction.
  */
-DecodeResult &
-PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes) const
+void
+PentiumDecoder::genBSFR(DecodeResult &result, ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes)
 {
 	// Note the horrible hack needed here. We need initialisation code, and an extra branch, so the %SKIP/%RPT won't
 	// work. We need to emit 6 statements, but these need to be in 3 RTLs, since the destination of a branch has to be
@@ -2349,5 +2332,4 @@ PentiumDecoder::genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, O
 		result.numBytes = numBytes;
 		result.reDecode = 0;
 	}
-	return result;
 }

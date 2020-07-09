@@ -21,7 +21,7 @@ class ST20Decoder : public NJMCDecoder {
 public:
 	ST20Decoder(Prog *prog);
 
-	DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) override;
+	void decodeInstruction(DecodeResult &, ADDRESS, const BinaryFile *) override;
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 };
 

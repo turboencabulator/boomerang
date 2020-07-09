@@ -45,25 +45,8 @@ ST20Decoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 }
 #endif
 
-static DecodeResult result;
-
-/**
- * Decodes a machine instruction and returns an RTL instance.  In all cases a
- * single instruction is decoded.
- *
- * \param pc       The native address of the pc.
- * \param delta    The difference between the above address and the host
- *                 address of the pc (i.e. the address that the pc is at in
- *                 the loaded object file).
- * \param RTLDict  The dictionary of RTL templates used to instantiate the RTL
- *                 for the instruction being decoded.
- * \param proc     The enclosing procedure.
- *
- * \returns  A DecodeResult structure containing all the information gathered
- *           during decoding.
- */
-DecodeResult &
-ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
+void
+ST20Decoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
 	unsigned total = 0;  // Total value from all prefixes
@@ -289,5 +272,4 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 	if (result.valid && !result.rtl)
 		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
-	return result;
 }

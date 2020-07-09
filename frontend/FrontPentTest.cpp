@@ -48,19 +48,20 @@ FrontPentTest::test1()
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	// Decode first instruction
-	DecodeResult inst = fe->decodeInstruction(addr);
+	DecodeResult inst;
+	fe->decodeInstruction(inst, addr);
 
 	std::string expected("08048328    0 *32* m[r28 - 4] := r29\n"
 	                     "            0 *32* r28 := r28 - 4\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr += inst.numBytes;
-	inst = fe->decodeInstruction(addr);
+	fe->decodeInstruction(inst, addr);
 	expected = std::string("08048329    0 *32* r29 := r28\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr = 0x804833b;
-	inst = fe->decodeInstruction(addr);
+	fe->decodeInstruction(inst, addr);
 	expected = std::string("0804833b    0 *32* m[r28 - 4] := 0x80483fc\n"
 	                       "            0 *32* r28 := r28 - 4\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
@@ -81,17 +82,17 @@ FrontPentTest::test2()
 	CPPUNIT_ASSERT(fe);
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
 
-	inst = fe->decodeInstruction(0x8048345);
+	fe->decodeInstruction(inst, 0x8048345);
 	expected = std::string("08048345    0 *32* tmp1 := r28\n"
 	                       "            0 *32* r28 := r28 + 16\n"
 	                       "            0 *v* %flags := ADDFLAGS32(tmp1, 16, r28)\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x8048348);
+	fe->decodeInstruction(inst, 0x8048348);
 	expected = std::string("08048348    0 *32* r24 := 0\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x8048329);
+	fe->decodeInstruction(inst, 0x8048329);
 	expected = std::string("08048329    0 *32* r29 := r28\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -111,13 +112,13 @@ FrontPentTest::test3()
 	CPPUNIT_ASSERT(fe);
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
 
-	inst = fe->decodeInstruction(0x804834d);
+	fe->decodeInstruction(inst, 0x804834d);
 	expected = std::string("0804834d    0 *32* r28 := r29\n"
 	                       "            0 *32* r29 := m[r28]\n"
 	                       "            0 *32* r28 := r28 + 4\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = fe->decodeInstruction(0x804834e);
+	fe->decodeInstruction(inst, 0x804834e);
 	expected = std::string("0804834e    0 *32* %pc := m[r28]\n"
 	                       "            0 *32* r28 := r28 + 4\n"
 	                       "            0 RET\n"
@@ -143,19 +144,19 @@ FrontPentTest::testBranch()
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
 
 	// jne
-	inst = fe->decodeInstruction(0x8048979);
+	fe->decodeInstruction(inst, 0x8048979);
 	expected = std::string("08048979    0 BRANCH 0x8048988, condition not equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// jg
-	inst = fe->decodeInstruction(0x80489c1);
+	fe->decodeInstruction(inst, 0x80489c1);
 	expected = std::string("080489c1    0 BRANCH 0x80489d5, condition signed greater\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// jbe
-	inst = fe->decodeInstruction(0x8048a1b);
+	fe->decodeInstruction(inst, 0x8048a1b);
 	expected = std::string("08048a1b    0 BRANCH 0x8048a2a, condition unsigned less or equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());

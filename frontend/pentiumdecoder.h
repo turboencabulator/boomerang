@@ -24,7 +24,7 @@ class PentiumDecoder : public NJMCDecoder {
 public:
 	PentiumDecoder(Prog *prog);
 
-	DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) override;
+	void decodeInstruction(DecodeResult &, ADDRESS, const BinaryFile *) override;
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
@@ -38,7 +38,7 @@ private:
 
 	//bool isFuncPrologue(ADDRESS hostPC);
 
-	DecodeResult &genBSFR(ADDRESS, Exp *, Exp *, int, int, OPER, int) const;
+	static void genBSFR(DecodeResult &, ADDRESS, Exp *, Exp *, int, int, OPER, int);
 };
 
 #endif

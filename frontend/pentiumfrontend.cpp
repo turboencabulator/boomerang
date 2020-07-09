@@ -577,7 +577,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	// a push of eax and then the call to main.  Or a call to __libc_start_main
 	ADDRESS dest;
 	do {
-		DecodeResult inst = decodeInstruction(addr);
+		DecodeResult inst;
+		decodeInstruction(inst, addr);
 		if (!inst.rtl)
 			// Must have gotten out of step
 			break;
@@ -593,14 +594,14 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			          << pBF->getDynamicProcName(((Const *)cs->getDest()->getSubExp1())->getAddr()) << std::endl;
 #endif
 			int oNumBytes = inst.numBytes;
-			inst = decodeInstruction(addr + oNumBytes);
+			decodeInstruction(inst, addr + oNumBytes);
 			if (inst.valid && inst.rtl->getList().size() == 2) {
 				auto a = dynamic_cast<Assign *>(inst.rtl->getList().back());
 				if (a && a->getRight()->isRegN(24)) {
 #if 0
 					std::cerr << "is followed by push eax.. " << "good" << std::endl;
 #endif
-					inst = decodeInstruction(addr + oNumBytes + inst.numBytes);
+					decodeInstruction(inst, addr + oNumBytes + inst.numBytes);
 					if (!inst.rtl->getList().empty()) {
 						auto toMain = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 						if (toMain && toMain->getFixedDest() != NO_ADDRESS) {
@@ -624,7 +625,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				// This is a gcc 3 pattern. The first parameter will be a pointer to main.
 				// Assume it's the 5 byte push immediately preceeding this instruction
 				// Note: the RTL changed recently from esp = esp-4; m[esp] = K tp m[esp-4] = K; esp = esp-4
-				inst = decodeInstruction(addr - 5);
+				decodeInstruction(inst, addr - 5);
 				assert(inst.valid);
 				assert(inst.rtl->getList().size() == 2);
 				auto a = (Assign *)inst.rtl->getList().front();  // Get m[esp-4] = K
@@ -937,10 +938,9 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		bb->overlappedRegProcessingDone = true;
 }
 
-DecodeResult &
-PentiumFrontEnd::decodeInstruction(ADDRESS pc)
+void
+PentiumFrontEnd::decodeInstruction(DecodeResult &r, ADDRESS pc)
 {
-	static DecodeResult r;
 	int n = pBF->readNative1(pc);
 	if (n == (int)(char)0xee) {
 		// out dx, al
@@ -951,7 +951,7 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		r.reset();
 		r.numBytes = 1;
 		r.rtl = new RTL(pc, call);
-		return r;
+		return;
 	}
 	if (n == (int)(char)0x0f && pBF->readNative1(pc + 1) == (int)(char)0x0b) {
 		auto call = new CallStatement();
@@ -959,9 +959,9 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		r.reset();
 		r.numBytes = 2;
 		r.rtl = new RTL(pc, call);
-		return r;
+		return;
 	}
-	return FrontEnd::decodeInstruction(pc);
+	FrontEnd::decodeInstruction(r, pc);
 }
 
 /**

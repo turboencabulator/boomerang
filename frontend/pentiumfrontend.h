@@ -68,7 +68,7 @@ private:
 	static void bumpRegisterAll(Exp *, int, int, int, int);
 
 protected:
-	DecodeResult &decodeInstruction(ADDRESS) override;
+	void decodeInstruction(DecodeResult &, ADDRESS) override;
 	void extraProcessCall(CallStatement *, std::list<RTL *> *) override;
 };
 

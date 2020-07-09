@@ -709,7 +709,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				inst.valid = true;
 				inst.type = DD;  // E.g. decode the delay slot instruction
 			} else
-				inst = decodeInstruction(addr);
+				decodeInstruction(inst, addr);
 
 			// If invalid and we are speculating, just exit
 			if (spec && !inst.valid)
@@ -829,7 +829,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 			case SD:
 				{
 					// This includes "call" and "ba". If a "call", it might be a move_call_move idiom, or a call to .stret4
-					auto delay_inst = decodeInstruction(addr + 4);
+					DecodeResult delay_inst;
+					decodeInstruction(delay_inst, addr + 4);
 					if (Boomerang::get().traceDecoder)
 						LOG << "*0x" << std::hex << addr + 4 << std::dec << "\t\n";
 					if (auto call = dynamic_cast<CallStatement *>(last)) {
@@ -966,7 +967,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					DecodeResult delay_inst;
 					if (inst.numBytes == 4) {
 						// Ordinary instruction. Look at the delay slot
-						delay_inst = decodeInstruction(addr + 4);
+						decodeInstruction(delay_inst, addr + 4);
 					} else {
 						// Must be a prologue or epilogue or something.
 						delay_inst = nop_inst;
@@ -999,7 +1000,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					// instruction just before the target; if so, we can branch to that and not need the orphan.  We do
 					// just a binary comparison; that may fail to make this optimisation if the instr has relative fields.
 
-					auto delay_inst = decodeInstruction(addr + 4);
+					DecodeResult delay_inst;
+					decodeInstruction(delay_inst, addr + 4);
 
 					// Display low level RTL representation if asked
 					if (Boomerang::get().printRtl && delay_inst.rtl)
@@ -1026,7 +1028,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				{
 					// Execute the delay instruction if the branch is taken; skip (anull) the delay instruction if branch
 					// not taken.
-					auto delay_inst = decodeInstruction(addr + 4);
+					DecodeResult delay_inst;
+					decodeInstruction(delay_inst, addr + 4);
 
 					// Display RTL representation if asked
 					if (Boomerang::get().printRtl && delay_inst.rtl)

@@ -85,7 +85,7 @@ struct DecodeResult {
 	ICLASS type = NCT;
 
 	/**
-	 * If true, don't add numBytes and decode there; instead, re-decode
+	 * If nonzero, don't add numBytes and decode there; instead, re-decode
 	 * the current instruction.  Needed for instructions like the Pentium
 	 * BSF/BSR, which emit branches (so numBytes needs to be carefully set
 	 * for the fall through out edge after the branch).
@@ -112,10 +112,18 @@ public:
 	virtual ~NJMCDecoder() = default;
 
 	/**
-	 * Decodes the machine instruction at pc and returns an RTL instance
-	 * for the instruction.
+	 * Attempt to decode the machine instruction at pc.  Returns an RTL
+	 * instance (via result) for the instruction.  In most cases a single
+	 * RTL is returned.  However, if a higher level instruction is
+	 * matched, there may be a need to return more than one RTL.  When
+	 * result.reDecode is nonzero, call again with the same result object
+	 * and pc to get the next RTL.
+	 *
+	 * \param[in,out] result  Contains all the information gathered during
+	 *                        decoding.
+	 * \param[in] pc          The native address of the pc.
 	 */
-	virtual DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) = 0;
+	virtual void decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile *bf) = 0;
 
 #if 0 // Cruft?
 	/**
