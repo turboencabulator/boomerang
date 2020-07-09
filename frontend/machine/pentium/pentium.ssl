@@ -666,13 +666,16 @@ CALL.Jvod reloc32
 	*32* m[%esp] := %pc
 	*32* %pc := reloc32;
 
+# Decode as a NOP.  We see these in startup code, and anywhere
+# that calls the OS (as lcall 7, 0)
 CALL.APOD seg, off
-	*32* %esp := %esp - 2
-	*32* m[%esp] := %cs
-	*32* %cs := seg
-	*32* %esp := %esp - 4
-	*16* m[%esp] := %pc
-	*16* %pc := off;
+	_;
+	#*32* %esp := %esp - 2
+	#*32* m[%esp] := %cs
+	#*32* %cs := seg
+	#*32* %esp := %esp - 4
+	#*16* m[%esp] := %pc
+	#*16* %pc := off;
 
 CALL.EVOW modrm
 	*32* %esp := %esp - 2
@@ -1269,11 +1272,16 @@ SAHF
 	*1* %PF := %ah@[2:2]
 	*1* %CF := %ah@[0:0];
 
+# For now, treat these as NOP
 SEG.CS
 	_;          # Sometimes used for extended NOP
 SEG.DS
 	_;
 SEG.ES
+	_;
+SEG.FS
+	_;
+SEG.GS
 	_;
 SEG.SS
 	_;

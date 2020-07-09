@@ -99,6 +99,7 @@ PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const Binary
 
 	ADDRESS lastDwordLc = NO_ADDRESS;
 	ADDRESS nextPC = NO_ADDRESS;
+
 	match [nextPC] pc to
 	| CALL.Evod(Eaddr) [name] =>
 		/*
@@ -302,23 +303,23 @@ PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const Binary
 	| NOP() [name] =>
 		result.rtl = instantiate(pc, name);
 
-	| SEG.CS() =>  // For now, treat seg.cs as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.CS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SEG.DS() =>  // For now, treat seg.ds as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.DS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SEG.ES() =>  // For now, treat seg.es as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.ES() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SEG.FS() =>  // For now, treat seg.fs as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.FS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SEG.GS() =>  // For now, treat seg.gs as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.GS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SEG.SS() =>  // For now, treat seg.ss as a 1 byte NOP
-		result.rtl = instantiate(pc, "NOP");
+	| SEG.SS() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| XCHGeAXod(r32) [name] =>
 		result.rtl = instantiate(pc, name, DIS_R32);
@@ -1243,11 +1244,8 @@ PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const Binary
 	| CBW() [name] =>
 		result.rtl = instantiate(pc, name);
 
-	/* Decode the following as a NOP. We see these in startup code, and anywhere
-	 * that calls the OS (as lcall 7, 0) */
-	| CALL.aPod(_, _) =>
-	//| CALL.aPod(seg, off) =>
-		result.rtl = instantiate(pc, "NOP");
+	| CALL.aPod(seg, off) [name] =>
+		result.rtl = instantiate(pc, name, new Const(seg), new Const(off));
 
 	| CALL.Jvod(relocd) [name] =>
 		result.rtl = instantiate(pc, name, dis_Num(relocd));
