@@ -148,6 +148,7 @@ NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 		result = result->searchReplaceAll(formal, actual, change);
 		delete formal;
 	}
+	va_end(args);
 	return result;
 }
 
@@ -190,6 +191,7 @@ NJMCDecoder::substituteCallArgs(const std::string &name, Exp *&exp, ...)
 		exp = exp->searchReplaceAll(formal, actual, change);
 		delete formal;
 	}
+	va_end(args);
 }
 
 /**
