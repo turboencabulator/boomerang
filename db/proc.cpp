@@ -463,6 +463,7 @@ UserProc::setDecoded()
 	printDecodedXML();
 }
 
+#if 0 // Cruft?
 /**
  * \brief Removes the decoded bit and throws away all the current information
  * about this procedure.
@@ -473,6 +474,7 @@ UserProc::unDecode()
 	cfg->clear();
 	setStatus(PROC_UNDECODED);
 }
+#endif
 
 /**
  * Get the BB with the entry point address for this procedure (not always the

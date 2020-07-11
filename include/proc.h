@@ -300,7 +300,7 @@ public:
 	           ~UserProc() override;
 
 	void        setDecoded();
-	void        unDecode();
+	//void        unDecode();
 
 	/**
 	 * Returns a pointer to the CFG object.
