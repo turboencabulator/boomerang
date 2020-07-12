@@ -149,6 +149,7 @@ PPCDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile
 		case 9:
 			result.rtl = instantiate(pc, "MTCTR", DIS_RS); break;
 		default:
+			result.rtl = new RTL(pc);  // Return a NOP.  FIXME:  This and mfspr should return invalid when uimm not in (1,8,9).
 			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
 		}
 
@@ -313,8 +314,6 @@ PPCDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile
 		result.valid = false;
 	endmatch
 
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
 }
 

@@ -396,10 +396,7 @@ pc + result.numBytes++
 #line 270 "machine/st20/decoder.m"
 		break;
 	}
-
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 }
 
-#line 405 "st20decoder.cpp"
+#line 402 "st20decoder.cpp"
 

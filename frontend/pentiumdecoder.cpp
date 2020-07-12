@@ -886,7 +886,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1697 "machine/pentium/decoder.m"
+#line 1700 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -906,7 +906,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1649 "machine/pentium/decoder.m"
+#line 1652 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -7647,7 +7647,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1691 "machine/pentium/decoder.m"
+#line 1694 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -7667,7 +7667,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1643 "machine/pentium/decoder.m"
+#line 1646 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -8106,7 +8106,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1685 "machine/pentium/decoder.m"
+#line 1688 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -8126,7 +8126,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1637 "machine/pentium/decoder.m"
+#line 1640 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -8565,7 +8565,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1679 "machine/pentium/decoder.m"
+#line 1682 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -8585,7 +8585,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1631 "machine/pentium/decoder.m"
+#line 1634 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -9898,7 +9898,7 @@ pc
                     const char *name = MATCH_name;
                     nextPC = 1 + MATCH_p; 
                     
-#line 1709 "machine/pentium/decoder.m"
+#line 1712 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -9917,7 +9917,7 @@ pc
                     const char *name = MATCH_name;
                     nextPC = 1 + MATCH_p; 
                     
-#line 1703 "machine/pentium/decoder.m"
+#line 1706 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -10169,7 +10169,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1719 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10220,7 +10220,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1719 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10264,7 +10264,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1725 "machine/pentium/decoder.m"
+#line 1728 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10293,7 +10293,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1913 "machine/pentium/decoder.m"
+#line 1916 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10344,7 +10344,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1913 "machine/pentium/decoder.m"
+#line 1916 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10388,7 +10388,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1919 "machine/pentium/decoder.m"
+#line 1922 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10417,7 +10417,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1752 "machine/pentium/decoder.m"
+#line 1755 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10468,7 +10468,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1752 "machine/pentium/decoder.m"
+#line 1755 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10512,7 +10512,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1770 "machine/pentium/decoder.m"
+#line 1773 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10541,7 +10541,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1764 "machine/pentium/decoder.m"
+#line 1767 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10592,7 +10592,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1764 "machine/pentium/decoder.m"
+#line 1767 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10636,7 +10636,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1773 "machine/pentium/decoder.m"
+#line 1776 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10665,7 +10665,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2003 "machine/pentium/decoder.m"
+#line 2006 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10716,7 +10716,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 2003 "machine/pentium/decoder.m"
+#line 2006 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10760,7 +10760,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2009 "machine/pentium/decoder.m"
+#line 2012 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10789,7 +10789,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2024 "machine/pentium/decoder.m"
+#line 2027 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10840,7 +10840,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 2024 "machine/pentium/decoder.m"
+#line 2027 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10884,7 +10884,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2030 "machine/pentium/decoder.m"
+#line 2033 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -10913,7 +10913,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1797 "machine/pentium/decoder.m"
+#line 1800 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -10964,7 +10964,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1797 "machine/pentium/decoder.m"
+#line 1800 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11008,7 +11008,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1803 "machine/pentium/decoder.m"
+#line 1806 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -11037,7 +11037,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1818 "machine/pentium/decoder.m"
+#line 1821 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11088,7 +11088,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1818 "machine/pentium/decoder.m"
+#line 1821 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11132,7 +11132,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1824 "machine/pentium/decoder.m"
+#line 1827 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -11169,7 +11169,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1869 "machine/pentium/decoder.m"
+#line 1872 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11220,7 +11220,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1869 "machine/pentium/decoder.m"
+#line 1872 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11264,7 +11264,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1883 "machine/pentium/decoder.m"
+#line 1886 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDXP1);
 
@@ -11286,7 +11286,7 @@ pc
                             unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                             nextPC = 2 + MATCH_p; 
                             
-#line 2066 "machine/pentium/decoder.m"
+#line 2069 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -11316,7 +11316,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1970 "machine/pentium/decoder.m"
+#line 1973 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11367,7 +11367,7 @@ pc
                                   unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1970 "machine/pentium/decoder.m"
+#line 1973 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11412,7 +11412,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 1934 "machine/pentium/decoder.m"
+#line 1937 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11497,7 +11497,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1976 "machine/pentium/decoder.m"
+#line 1979 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -11614,7 +11614,7 @@ pc
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1910 "machine/pentium/decoder.m"
+#line 1913 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
@@ -11671,7 +11671,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1746 "machine/pentium/decoder.m"
+#line 1749 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11690,7 +11690,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1716 "machine/pentium/decoder.m"
+#line 1719 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11711,7 +11711,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2045 "machine/pentium/decoder.m"
+#line 2048 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11730,7 +11730,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2063 "machine/pentium/decoder.m"
+#line 2066 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11814,7 +11814,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1907 "machine/pentium/decoder.m"
+#line 1910 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -11871,7 +11871,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1886 "machine/pentium/decoder.m"
+#line 1889 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11890,7 +11890,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1889 "machine/pentium/decoder.m"
+#line 1892 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11909,7 +11909,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1892 "machine/pentium/decoder.m"
+#line 1895 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11928,7 +11928,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1895 "machine/pentium/decoder.m"
+#line 1898 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11947,7 +11947,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1898 "machine/pentium/decoder.m"
+#line 1901 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11966,7 +11966,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1901 "machine/pentium/decoder.m"
+#line 1904 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -11985,7 +11985,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1904 "machine/pentium/decoder.m"
+#line 1907 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12070,7 +12070,7 @@ pc
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1994 "machine/pentium/decoder.m"
+#line 1997 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
@@ -12127,7 +12127,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1713 "machine/pentium/decoder.m"
+#line 1716 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12146,7 +12146,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2072 "machine/pentium/decoder.m"
+#line 2075 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12165,7 +12165,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1946 "machine/pentium/decoder.m"
+#line 1949 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12184,7 +12184,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1937 "machine/pentium/decoder.m"
+#line 1940 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12203,7 +12203,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2069 "machine/pentium/decoder.m"
+#line 2072 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12222,7 +12222,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1943 "machine/pentium/decoder.m"
+#line 1946 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12241,7 +12241,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1794 "machine/pentium/decoder.m"
+#line 1797 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12327,7 +12327,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1991 "machine/pentium/decoder.m"
+#line 1994 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -12384,7 +12384,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1940 "machine/pentium/decoder.m"
+#line 1943 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12403,7 +12403,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2075 "machine/pentium/decoder.m"
+#line 2078 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12422,7 +12422,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1967 "machine/pentium/decoder.m"
+#line 1970 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12441,7 +12441,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1964 "machine/pentium/decoder.m"
+#line 1967 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12460,7 +12460,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1949 "machine/pentium/decoder.m"
+#line 1952 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12479,7 +12479,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1958 "machine/pentium/decoder.m"
+#line 1961 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12498,7 +12498,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1961 "machine/pentium/decoder.m"
+#line 1964 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12517,7 +12517,7 @@ pc
                                       const char *name = MATCH_name;
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1791 "machine/pentium/decoder.m"
+#line 1794 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -12609,7 +12609,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1734 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -12727,7 +12727,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1928 "machine/pentium/decoder.m"
+#line 1931 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -12845,7 +12845,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1758 "machine/pentium/decoder.m"
+#line 1761 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -12963,7 +12963,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1776 "machine/pentium/decoder.m"
+#line 1779 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13081,7 +13081,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2015 "machine/pentium/decoder.m"
+#line 2018 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13199,7 +13199,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2036 "machine/pentium/decoder.m"
+#line 2039 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13254,7 +13254,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 2054 "machine/pentium/decoder.m"
+#line 2057 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -13339,7 +13339,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1812 "machine/pentium/decoder.m"
+#line 1815 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13457,7 +13457,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1830 "machine/pentium/decoder.m"
+#line 1833 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13583,7 +13583,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1845 "machine/pentium/decoder.m"
+#line 1848 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13703,7 +13703,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1857 "machine/pentium/decoder.m"
+#line 1860 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13821,7 +13821,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1863 "machine/pentium/decoder.m"
+#line 1866 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
@@ -13885,7 +13885,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 1749 "machine/pentium/decoder.m"
+#line 1752 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -13908,7 +13908,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 1851 "machine/pentium/decoder.m"
+#line 1854 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -13993,7 +13993,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1875 "machine/pentium/decoder.m"
+#line 1878 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -14052,7 +14052,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2057 "machine/pentium/decoder.m"
+#line 2060 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -14074,7 +14074,7 @@ pc
                             unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                             nextPC = 2 + MATCH_p; 
                             
-#line 1785 "machine/pentium/decoder.m"
+#line 1788 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -14156,7 +14156,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1982 "machine/pentium/decoder.m"
+#line 1985 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -14282,7 +14282,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1722 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14336,7 +14336,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1728 "machine/pentium/decoder.m"
+#line 1731 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -14417,7 +14417,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1916 "machine/pentium/decoder.m"
+#line 1919 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14471,7 +14471,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1922 "machine/pentium/decoder.m"
+#line 1925 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -14552,7 +14552,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1755 "machine/pentium/decoder.m"
+#line 1758 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14670,7 +14670,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1767 "machine/pentium/decoder.m"
+#line 1770 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14788,7 +14788,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2006 "machine/pentium/decoder.m"
+#line 2009 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14842,7 +14842,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2033 "machine/pentium/decoder.m"
+#line 2036 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -14923,7 +14923,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2027 "machine/pentium/decoder.m"
+#line 2030 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -14977,7 +14977,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2012 "machine/pentium/decoder.m"
+#line 2015 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15058,7 +15058,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1800 "machine/pentium/decoder.m"
+#line 1803 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -15112,7 +15112,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1827 "machine/pentium/decoder.m"
+#line 1830 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15193,7 +15193,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1821 "machine/pentium/decoder.m"
+#line 1824 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -15247,7 +15247,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1806 "machine/pentium/decoder.m"
+#line 1809 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15336,7 +15336,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1872 "machine/pentium/decoder.m"
+#line 1875 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -15390,7 +15390,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1839 "machine/pentium/decoder.m"
+#line 1842 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15473,7 +15473,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1973 "machine/pentium/decoder.m"
+#line 1976 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -15527,7 +15527,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1985 "machine/pentium/decoder.m"
+#line 1988 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15608,7 +15608,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1979 "machine/pentium/decoder.m"
+#line 1982 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -15662,7 +15662,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1988 "machine/pentium/decoder.m"
+#line 1991 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15742,7 +15742,7 @@ pc
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1952 "machine/pentium/decoder.m"
+#line 1955 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
@@ -15796,7 +15796,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2048 "machine/pentium/decoder.m"
+#line 2051 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15818,7 +15818,7 @@ pc
                             unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                             nextPC = 2 + MATCH_p; 
                             
-#line 2051 "machine/pentium/decoder.m"
+#line 2054 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -15899,7 +15899,7 @@ pc
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1955 "machine/pentium/decoder.m"
+#line 1958 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
@@ -16017,7 +16017,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1997 "machine/pentium/decoder.m"
+#line 2000 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16143,7 +16143,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1737 "machine/pentium/decoder.m"
+#line 1740 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16197,7 +16197,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1731 "machine/pentium/decoder.m"
+#line 1734 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -16278,7 +16278,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1931 "machine/pentium/decoder.m"
+#line 1934 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16332,7 +16332,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1925 "machine/pentium/decoder.m"
+#line 1928 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -16413,7 +16413,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1761 "machine/pentium/decoder.m"
+#line 1764 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16531,7 +16531,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1779 "machine/pentium/decoder.m"
+#line 1782 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16586,7 +16586,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 1782 "machine/pentium/decoder.m"
+#line 1785 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -16671,7 +16671,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2018 "machine/pentium/decoder.m"
+#line 2021 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16725,7 +16725,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2042 "machine/pentium/decoder.m"
+#line 2045 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -16806,7 +16806,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 2039 "machine/pentium/decoder.m"
+#line 2042 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16860,7 +16860,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2021 "machine/pentium/decoder.m"
+#line 2024 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -16941,7 +16941,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1815 "machine/pentium/decoder.m"
+#line 1818 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -16995,7 +16995,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1836 "machine/pentium/decoder.m"
+#line 1839 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -17076,7 +17076,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1833 "machine/pentium/decoder.m"
+#line 1836 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -17130,7 +17130,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1809 "machine/pentium/decoder.m"
+#line 1812 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -17219,7 +17219,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1842 "machine/pentium/decoder.m"
+#line 1845 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -17339,7 +17339,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1854 "machine/pentium/decoder.m"
+#line 1857 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -17457,7 +17457,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1860 "machine/pentium/decoder.m"
+#line 1863 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
@@ -17575,7 +17575,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1740 "machine/pentium/decoder.m"
+#line 1743 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -17630,7 +17630,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 2000 "machine/pentium/decoder.m"
+#line 2003 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -17715,7 +17715,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1848 "machine/pentium/decoder.m"
+#line 1851 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -17769,7 +17769,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2060 "machine/pentium/decoder.m"
+#line 2063 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -17850,7 +17850,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1743 "machine/pentium/decoder.m"
+#line 1746 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -17904,7 +17904,7 @@ pc
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1788 "machine/pentium/decoder.m"
+#line 1791 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
@@ -17985,7 +17985,7 @@ pc
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 4 + MATCH_p; 
                                       
-#line 1866 "machine/pentium/decoder.m"
+#line 1869 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
@@ -19497,7 +19497,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1700 "machine/pentium/decoder.m"
+#line 1703 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -19517,7 +19517,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1652 "machine/pentium/decoder.m"
+#line 1655 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -19956,7 +19956,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1694 "machine/pentium/decoder.m"
+#line 1697 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -19976,7 +19976,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1646 "machine/pentium/decoder.m"
+#line 1649 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -20415,7 +20415,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1688 "machine/pentium/decoder.m"
+#line 1691 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -20435,7 +20435,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1640 "machine/pentium/decoder.m"
+#line 1643 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -20874,7 +20874,7 @@ pc
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1682 "machine/pentium/decoder.m"
+#line 1685 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I8);
 
@@ -20894,7 +20894,7 @@ pc
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1634 "machine/pentium/decoder.m"
+#line 1637 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, addReloc(DIS_I32));
 
@@ -21473,7 +21473,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1673 "machine/pentium/decoder.m"
+#line 1676 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -21497,7 +21497,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1676 "machine/pentium/decoder.m"
+#line 1679 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -25328,7 +25328,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1667 "machine/pentium/decoder.m"
+#line 1670 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -25352,7 +25352,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1670 "machine/pentium/decoder.m"
+#line 1673 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -25830,7 +25830,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1661 "machine/pentium/decoder.m"
+#line 1664 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -25854,7 +25854,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1664 "machine/pentium/decoder.m"
+#line 1667 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -26332,7 +26332,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1655 "machine/pentium/decoder.m"
+#line 1658 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -26356,7 +26356,7 @@ pc
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1658 "machine/pentium/decoder.m"
+#line 1661 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_I16);
 
@@ -26968,7 +26968,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1604 "machine/pentium/decoder.m"
+#line 1607 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27097,7 +27097,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1601 "machine/pentium/decoder.m"
+#line 1604 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27226,7 +27226,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1598 "machine/pentium/decoder.m"
+#line 1601 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27355,7 +27355,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1595 "machine/pentium/decoder.m"
+#line 1598 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27484,7 +27484,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1592 "machine/pentium/decoder.m"
+#line 1595 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27613,7 +27613,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1589 "machine/pentium/decoder.m"
+#line 1592 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27742,7 +27742,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1586 "machine/pentium/decoder.m"
+#line 1589 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -27871,7 +27871,7 @@ pc
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1583 "machine/pentium/decoder.m"
+#line 1586 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
@@ -28122,7 +28122,7 @@ pc
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1556 "machine/pentium/decoder.m"
+#line 1559 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
@@ -28251,7 +28251,7 @@ pc
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1550 "machine/pentium/decoder.m"
+#line 1553 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
@@ -28380,7 +28380,7 @@ pc
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1544 "machine/pentium/decoder.m"
+#line 1547 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
@@ -28509,7 +28509,7 @@ pc
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1538 "machine/pentium/decoder.m"
+#line 1541 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
@@ -28638,7 +28638,7 @@ pc
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1532 "machine/pentium/decoder.m"
+#line 1535 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
@@ -29748,7 +29748,7 @@ pc
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 1706 "machine/pentium/decoder.m"
+#line 1709 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name);
 
@@ -33903,7 +33903,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1628 "machine/pentium/decoder.m"
+#line 1631 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34012,7 +34012,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1625 "machine/pentium/decoder.m"
+#line 1628 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34121,7 +34121,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1622 "machine/pentium/decoder.m"
+#line 1625 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34230,7 +34230,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1619 "machine/pentium/decoder.m"
+#line 1622 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34339,7 +34339,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1616 "machine/pentium/decoder.m"
+#line 1619 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34448,7 +34448,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1613 "machine/pentium/decoder.m"
+#line 1616 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34557,7 +34557,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1610 "machine/pentium/decoder.m"
+#line 1613 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34666,7 +34666,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1607 "machine/pentium/decoder.m"
+#line 1610 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
@@ -34781,7 +34781,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1580 "machine/pentium/decoder.m"
+#line 1583 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -34888,7 +34888,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1577 "machine/pentium/decoder.m"
+#line 1580 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -34995,7 +34995,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1574 "machine/pentium/decoder.m"
+#line 1577 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35102,7 +35102,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1571 "machine/pentium/decoder.m"
+#line 1574 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35209,7 +35209,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1568 "machine/pentium/decoder.m"
+#line 1571 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35316,7 +35316,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1565 "machine/pentium/decoder.m"
+#line 1568 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35423,7 +35423,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1562 "machine/pentium/decoder.m"
+#line 1565 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35530,7 +35530,7 @@ pc
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1559 "machine/pentium/decoder.m"
+#line 1562 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
@@ -35649,7 +35649,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1553 "machine/pentium/decoder.m"
+#line 1556 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
@@ -35758,7 +35758,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1547 "machine/pentium/decoder.m"
+#line 1550 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
@@ -35867,7 +35867,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1541 "machine/pentium/decoder.m"
+#line 1544 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
@@ -35976,7 +35976,7 @@ pc
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1535 "machine/pentium/decoder.m"
+#line 1538 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
@@ -36089,11 +36089,14 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 
-#line 36097 "pentiumdecoder.cpp"
+#line 36100 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -36202,7 +36205,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 36206 "pentiumdecoder.cpp"
+#line 36209 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -36311,7 +36314,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 36315 "pentiumdecoder.cpp"
+#line 36318 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -36420,7 +36423,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 36424 "pentiumdecoder.cpp"
+#line 36427 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -36525,7 +36528,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 36529 "pentiumdecoder.cpp"
+#line 36532 "pentiumdecoder.cpp"
 
                             
                           }
@@ -36622,7 +36625,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 36626 "pentiumdecoder.cpp"
+#line 36629 "pentiumdecoder.cpp"
 
                             
                           }
@@ -36719,7 +36722,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 36723 "pentiumdecoder.cpp"
+#line 36726 "pentiumdecoder.cpp"
 
                             
                           }
@@ -36816,7 +36819,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 36820 "pentiumdecoder.cpp"
+#line 36823 "pentiumdecoder.cpp"
 
                             
                           }
@@ -36871,7 +36874,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 36875 "pentiumdecoder.cpp"
+#line 36878 "pentiumdecoder.cpp"
 
                 
               }
@@ -36890,7 +36893,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32);
 
 
-#line 36894 "pentiumdecoder.cpp"
+#line 36897 "pentiumdecoder.cpp"
 
                 
               }
@@ -36921,7 +36924,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_MEM, DIS_SR16);
 
 
-#line 36925 "pentiumdecoder.cpp"
+#line 36928 "pentiumdecoder.cpp"
 
                     
                   }
@@ -36941,7 +36944,7 @@ pc
 		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
-#line 36945 "pentiumdecoder.cpp"
+#line 36948 "pentiumdecoder.cpp"
 
                     
                   }
@@ -36961,7 +36964,7 @@ pc
 		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
-#line 36965 "pentiumdecoder.cpp"
+#line 36968 "pentiumdecoder.cpp"
 
                     
                   }
@@ -36981,7 +36984,7 @@ pc
 		result.rtl = instantiate(pc, name, addReloc(DIS_OFF));
 
 
-#line 36985 "pentiumdecoder.cpp"
+#line 36988 "pentiumdecoder.cpp"
 
                     
                   }
@@ -37015,7 +37018,7 @@ pc
 //		result.rtl = instantiate(pc, "UNIMP");
 
 
-#line 37019 "pentiumdecoder.cpp"
+#line 37022 "pentiumdecoder.cpp"
 
                     
                   }
@@ -37033,7 +37036,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 37037 "pentiumdecoder.cpp"
+#line 37040 "pentiumdecoder.cpp"
 
                     
                   }
@@ -37051,7 +37054,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 37055 "pentiumdecoder.cpp"
+#line 37058 "pentiumdecoder.cpp"
 
                     
                   }
@@ -37069,7 +37072,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 37073 "pentiumdecoder.cpp"
+#line 37076 "pentiumdecoder.cpp"
 
                     
                   }
@@ -37094,7 +37097,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_I8);
 
 
-#line 37098 "pentiumdecoder.cpp"
+#line 37101 "pentiumdecoder.cpp"
 
               
             }
@@ -37173,7 +37176,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37177 "pentiumdecoder.cpp"
+#line 37180 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37282,7 +37285,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37286 "pentiumdecoder.cpp"
+#line 37289 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37391,7 +37394,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37395 "pentiumdecoder.cpp"
+#line 37398 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37500,7 +37503,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37504 "pentiumdecoder.cpp"
+#line 37507 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37609,7 +37612,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37613 "pentiumdecoder.cpp"
+#line 37616 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37718,7 +37721,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37722 "pentiumdecoder.cpp"
+#line 37725 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37829,7 +37832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 37833 "pentiumdecoder.cpp"
+#line 37836 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -37946,7 +37949,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 37950 "pentiumdecoder.cpp"
+#line 37953 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38055,7 +38058,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38059 "pentiumdecoder.cpp"
+#line 38062 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38164,7 +38167,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38168 "pentiumdecoder.cpp"
+#line 38171 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38273,7 +38276,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38277 "pentiumdecoder.cpp"
+#line 38280 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38382,7 +38385,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38386 "pentiumdecoder.cpp"
+#line 38389 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38491,7 +38494,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38495 "pentiumdecoder.cpp"
+#line 38498 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38602,7 +38605,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 38606 "pentiumdecoder.cpp"
+#line 38609 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -38664,7 +38667,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 38668 "pentiumdecoder.cpp"
+#line 38671 "pentiumdecoder.cpp"
 
                     
                   }
@@ -38689,7 +38692,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 38693 "pentiumdecoder.cpp"
+#line 38696 "pentiumdecoder.cpp"
 
                     
                   }
@@ -38717,7 +38720,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 38721 "pentiumdecoder.cpp"
+#line 38724 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -38769,7 +38772,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 38773 "pentiumdecoder.cpp"
+#line 38776 "pentiumdecoder.cpp"
 
                             
                           }
@@ -38827,7 +38830,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 38831 "pentiumdecoder.cpp"
+#line 38834 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -38879,7 +38882,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 38883 "pentiumdecoder.cpp"
+#line 38886 "pentiumdecoder.cpp"
 
                             
                           }
@@ -38982,7 +38985,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 38986 "pentiumdecoder.cpp"
+#line 38989 "pentiumdecoder.cpp"
 
                               
                             }
@@ -39092,7 +39095,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 39096 "pentiumdecoder.cpp"
+#line 39099 "pentiumdecoder.cpp"
 
                               
                             }
@@ -39219,7 +39222,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 39223 "pentiumdecoder.cpp"
+#line 39226 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39315,7 +39318,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 39319 "pentiumdecoder.cpp"
+#line 39322 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39411,7 +39414,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 39415 "pentiumdecoder.cpp"
+#line 39418 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39507,7 +39510,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 39511 "pentiumdecoder.cpp"
+#line 39514 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39603,7 +39606,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 39607 "pentiumdecoder.cpp"
+#line 39610 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39699,7 +39702,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 39703 "pentiumdecoder.cpp"
+#line 39706 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39797,7 +39800,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 39801 "pentiumdecoder.cpp"
+#line 39804 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39901,7 +39904,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 39905 "pentiumdecoder.cpp"
+#line 39908 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -39997,7 +40000,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40001 "pentiumdecoder.cpp"
+#line 40004 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40093,7 +40096,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40097 "pentiumdecoder.cpp"
+#line 40100 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40189,7 +40192,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40193 "pentiumdecoder.cpp"
+#line 40196 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40285,7 +40288,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40289 "pentiumdecoder.cpp"
+#line 40292 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40381,7 +40384,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40385 "pentiumdecoder.cpp"
+#line 40388 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40479,7 +40482,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 40483 "pentiumdecoder.cpp"
+#line 40486 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40583,7 +40586,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 40587 "pentiumdecoder.cpp"
+#line 40590 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40679,7 +40682,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 40683 "pentiumdecoder.cpp"
+#line 40686 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40775,7 +40778,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 40779 "pentiumdecoder.cpp"
+#line 40782 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40871,7 +40874,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 40875 "pentiumdecoder.cpp"
+#line 40878 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -40967,7 +40970,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 40971 "pentiumdecoder.cpp"
+#line 40974 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41063,7 +41066,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 41067 "pentiumdecoder.cpp"
+#line 41070 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41161,7 +41164,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41165 "pentiumdecoder.cpp"
+#line 41168 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41265,7 +41268,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41269 "pentiumdecoder.cpp"
+#line 41272 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41361,7 +41364,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41365 "pentiumdecoder.cpp"
+#line 41368 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41457,7 +41460,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41461 "pentiumdecoder.cpp"
+#line 41464 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41553,7 +41556,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41557 "pentiumdecoder.cpp"
+#line 41560 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41649,7 +41652,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41653 "pentiumdecoder.cpp"
+#line 41656 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41745,7 +41748,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41749 "pentiumdecoder.cpp"
+#line 41752 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41843,7 +41846,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 41847 "pentiumdecoder.cpp"
+#line 41850 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -41900,7 +41903,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 41904 "pentiumdecoder.cpp"
+#line 41907 "pentiumdecoder.cpp"
 
                     
                   }
@@ -41928,7 +41931,7 @@ pc
 		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
-#line 41932 "pentiumdecoder.cpp"
+#line 41935 "pentiumdecoder.cpp"
 
                     
                   }
@@ -41950,7 +41953,7 @@ pc
 		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
-#line 41954 "pentiumdecoder.cpp"
+#line 41957 "pentiumdecoder.cpp"
 
                     
                   }
@@ -41972,7 +41975,7 @@ pc
 		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
-#line 41976 "pentiumdecoder.cpp"
+#line 41979 "pentiumdecoder.cpp"
 
                     
                   }
@@ -42023,7 +42026,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42027 "pentiumdecoder.cpp"
+#line 42030 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -42050,7 +42053,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42054 "pentiumdecoder.cpp"
+#line 42057 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42069,7 +42072,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42073 "pentiumdecoder.cpp"
+#line 42076 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42095,7 +42098,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42099 "pentiumdecoder.cpp"
+#line 42102 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42114,7 +42117,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42118 "pentiumdecoder.cpp"
+#line 42121 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42150,7 +42153,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42154 "pentiumdecoder.cpp"
+#line 42157 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42175,7 +42178,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42179 "pentiumdecoder.cpp"
+#line 42182 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42200,7 +42203,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42204 "pentiumdecoder.cpp"
+#line 42207 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42219,7 +42222,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42223 "pentiumdecoder.cpp"
+#line 42226 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42242,7 +42245,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42246 "pentiumdecoder.cpp"
+#line 42249 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42261,7 +42264,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42265 "pentiumdecoder.cpp"
+#line 42268 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42284,7 +42287,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42288 "pentiumdecoder.cpp"
+#line 42291 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42303,7 +42306,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42307 "pentiumdecoder.cpp"
+#line 42310 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42326,7 +42329,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42330 "pentiumdecoder.cpp"
+#line 42333 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42345,7 +42348,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42349 "pentiumdecoder.cpp"
+#line 42352 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42395,7 +42398,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42399 "pentiumdecoder.cpp"
+#line 42402 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -42420,7 +42423,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42424 "pentiumdecoder.cpp"
+#line 42427 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42439,7 +42442,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42443 "pentiumdecoder.cpp"
+#line 42446 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42463,7 +42466,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42467 "pentiumdecoder.cpp"
+#line 42470 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42482,7 +42485,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42486 "pentiumdecoder.cpp"
+#line 42489 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -42518,7 +42521,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42522 "pentiumdecoder.cpp"
+#line 42525 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42543,7 +42546,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42547 "pentiumdecoder.cpp"
+#line 42550 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42568,7 +42571,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42572 "pentiumdecoder.cpp"
+#line 42575 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42587,7 +42590,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42591 "pentiumdecoder.cpp"
+#line 42594 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42610,7 +42613,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42614 "pentiumdecoder.cpp"
+#line 42617 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42629,7 +42632,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42633 "pentiumdecoder.cpp"
+#line 42636 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42652,7 +42655,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42656 "pentiumdecoder.cpp"
+#line 42659 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42671,7 +42674,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42675 "pentiumdecoder.cpp"
+#line 42678 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42694,7 +42697,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42698 "pentiumdecoder.cpp"
+#line 42701 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42713,7 +42716,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42717 "pentiumdecoder.cpp"
+#line 42720 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42740,7 +42743,7 @@ pc
 		result.rtl = instantiate(pc, name);
 
 
-#line 42744 "pentiumdecoder.cpp"
+#line 42747 "pentiumdecoder.cpp"
 
                     
                   }
@@ -42814,7 +42817,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 42818 "pentiumdecoder.cpp"
+#line 42821 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -42916,7 +42919,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 42920 "pentiumdecoder.cpp"
+#line 42923 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43012,7 +43015,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 43016 "pentiumdecoder.cpp"
+#line 43019 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43108,7 +43111,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 43112 "pentiumdecoder.cpp"
+#line 43115 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43204,7 +43207,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 43208 "pentiumdecoder.cpp"
+#line 43211 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43300,7 +43303,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 43304 "pentiumdecoder.cpp"
+#line 43307 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43399,7 +43402,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 43403 "pentiumdecoder.cpp"
+#line 43406 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43510,7 +43513,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 43514 "pentiumdecoder.cpp"
+#line 43517 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43612,7 +43615,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 43616 "pentiumdecoder.cpp"
+#line 43619 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43708,7 +43711,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 43712 "pentiumdecoder.cpp"
+#line 43715 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43804,7 +43807,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 43808 "pentiumdecoder.cpp"
+#line 43811 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43900,7 +43903,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 43904 "pentiumdecoder.cpp"
+#line 43907 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -43996,7 +43999,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 44000 "pentiumdecoder.cpp"
+#line 44003 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -44092,7 +44095,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 44096 "pentiumdecoder.cpp"
+#line 44099 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -44155,7 +44158,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44159 "pentiumdecoder.cpp"
+#line 44162 "pentiumdecoder.cpp"
 
       
     } 
@@ -44173,7 +44176,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44177 "pentiumdecoder.cpp"
+#line 44180 "pentiumdecoder.cpp"
 
       
     } 
@@ -44191,7 +44194,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44195 "pentiumdecoder.cpp"
+#line 44198 "pentiumdecoder.cpp"
 
       
     } 
@@ -44209,7 +44212,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44213 "pentiumdecoder.cpp"
+#line 44216 "pentiumdecoder.cpp"
 
       
     } 
@@ -44227,7 +44230,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44231 "pentiumdecoder.cpp"
+#line 44234 "pentiumdecoder.cpp"
 
       
     } 
@@ -44245,7 +44248,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44249 "pentiumdecoder.cpp"
+#line 44252 "pentiumdecoder.cpp"
 
       
     } 
@@ -44263,7 +44266,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44267 "pentiumdecoder.cpp"
+#line 44270 "pentiumdecoder.cpp"
 
       
     } 
@@ -44281,7 +44284,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44285 "pentiumdecoder.cpp"
+#line 44288 "pentiumdecoder.cpp"
 
       
     } 
@@ -44299,7 +44302,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44303 "pentiumdecoder.cpp"
+#line 44306 "pentiumdecoder.cpp"
 
       
     } 
@@ -44317,7 +44320,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44321 "pentiumdecoder.cpp"
+#line 44324 "pentiumdecoder.cpp"
 
       
     } 
@@ -44335,7 +44338,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44339 "pentiumdecoder.cpp"
+#line 44342 "pentiumdecoder.cpp"
 
       
     } 
@@ -44353,7 +44356,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44357 "pentiumdecoder.cpp"
+#line 44360 "pentiumdecoder.cpp"
 
       
     } 
@@ -44371,7 +44374,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44375 "pentiumdecoder.cpp"
+#line 44378 "pentiumdecoder.cpp"
 
       
     } 
@@ -44389,7 +44392,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44393 "pentiumdecoder.cpp"
+#line 44396 "pentiumdecoder.cpp"
 
       
     } 
@@ -44407,7 +44410,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44411 "pentiumdecoder.cpp"
+#line 44414 "pentiumdecoder.cpp"
 
       
     } 
@@ -44425,7 +44428,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44429 "pentiumdecoder.cpp"
+#line 44432 "pentiumdecoder.cpp"
 
       
     } 
@@ -44443,7 +44446,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44447 "pentiumdecoder.cpp"
+#line 44450 "pentiumdecoder.cpp"
 
       
     } 
@@ -44461,7 +44464,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44465 "pentiumdecoder.cpp"
+#line 44468 "pentiumdecoder.cpp"
 
       
     } 
@@ -44479,7 +44482,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44483 "pentiumdecoder.cpp"
+#line 44486 "pentiumdecoder.cpp"
 
       
     } 
@@ -44497,7 +44500,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44501 "pentiumdecoder.cpp"
+#line 44504 "pentiumdecoder.cpp"
 
       
     } 
@@ -44515,7 +44518,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44519 "pentiumdecoder.cpp"
+#line 44522 "pentiumdecoder.cpp"
 
       
     } 
@@ -44533,7 +44536,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44537 "pentiumdecoder.cpp"
+#line 44540 "pentiumdecoder.cpp"
 
       
     } 
@@ -44551,7 +44554,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44555 "pentiumdecoder.cpp"
+#line 44558 "pentiumdecoder.cpp"
 
       
     } 
@@ -44569,7 +44572,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44573 "pentiumdecoder.cpp"
+#line 44576 "pentiumdecoder.cpp"
 
       
     } 
@@ -44587,7 +44590,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44591 "pentiumdecoder.cpp"
+#line 44594 "pentiumdecoder.cpp"
 
       
     } 
@@ -44605,7 +44608,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44609 "pentiumdecoder.cpp"
+#line 44612 "pentiumdecoder.cpp"
 
       
     } 
@@ -44623,7 +44626,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44627 "pentiumdecoder.cpp"
+#line 44630 "pentiumdecoder.cpp"
 
       
     } 
@@ -44641,7 +44644,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44645 "pentiumdecoder.cpp"
+#line 44648 "pentiumdecoder.cpp"
 
       
     } 
@@ -44659,7 +44662,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44663 "pentiumdecoder.cpp"
+#line 44666 "pentiumdecoder.cpp"
 
       
     } 
@@ -44677,7 +44680,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44681 "pentiumdecoder.cpp"
+#line 44684 "pentiumdecoder.cpp"
 
       
     } 
@@ -44695,7 +44698,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44699 "pentiumdecoder.cpp"
+#line 44702 "pentiumdecoder.cpp"
 
       
     } 
@@ -44713,7 +44716,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44717 "pentiumdecoder.cpp"
+#line 44720 "pentiumdecoder.cpp"
 
       
     } 
@@ -44731,7 +44734,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44735 "pentiumdecoder.cpp"
+#line 44738 "pentiumdecoder.cpp"
 
       
     } 
@@ -44749,7 +44752,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44753 "pentiumdecoder.cpp"
+#line 44756 "pentiumdecoder.cpp"
 
       
     } 
@@ -44767,7 +44770,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44771 "pentiumdecoder.cpp"
+#line 44774 "pentiumdecoder.cpp"
 
       
     } 
@@ -44785,7 +44788,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 44789 "pentiumdecoder.cpp"
+#line 44792 "pentiumdecoder.cpp"
 
       
     } 
@@ -44803,7 +44806,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44807 "pentiumdecoder.cpp"
+#line 44810 "pentiumdecoder.cpp"
 
       
     } 
@@ -44821,7 +44824,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44825 "pentiumdecoder.cpp"
+#line 44828 "pentiumdecoder.cpp"
 
       
     } 
@@ -44839,7 +44842,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44843 "pentiumdecoder.cpp"
+#line 44846 "pentiumdecoder.cpp"
 
       
     } 
@@ -44857,7 +44860,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 44861 "pentiumdecoder.cpp"
+#line 44864 "pentiumdecoder.cpp"
 
       
     } 
@@ -44875,7 +44878,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44879 "pentiumdecoder.cpp"
+#line 44882 "pentiumdecoder.cpp"
 
       
     } 
@@ -44893,7 +44896,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44897 "pentiumdecoder.cpp"
+#line 44900 "pentiumdecoder.cpp"
 
       
     } 
@@ -44911,7 +44914,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44915 "pentiumdecoder.cpp"
+#line 44918 "pentiumdecoder.cpp"
 
       
     } 
@@ -44929,7 +44932,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 44933 "pentiumdecoder.cpp"
+#line 44936 "pentiumdecoder.cpp"
 
       
     } 
@@ -44947,7 +44950,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44951 "pentiumdecoder.cpp"
+#line 44954 "pentiumdecoder.cpp"
 
       
     } 
@@ -44965,7 +44968,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44969 "pentiumdecoder.cpp"
+#line 44972 "pentiumdecoder.cpp"
 
       
     } 
@@ -44983,7 +44986,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 44987 "pentiumdecoder.cpp"
+#line 44990 "pentiumdecoder.cpp"
 
       
     } 
@@ -45001,7 +45004,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 45005 "pentiumdecoder.cpp"
+#line 45008 "pentiumdecoder.cpp"
 
       
     } 
@@ -45019,7 +45022,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 45023 "pentiumdecoder.cpp"
+#line 45026 "pentiumdecoder.cpp"
 
       
     } 
@@ -45037,7 +45040,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 45041 "pentiumdecoder.cpp"
+#line 45044 "pentiumdecoder.cpp"
 
       
     } 
@@ -45055,7 +45058,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 45059 "pentiumdecoder.cpp"
+#line 45062 "pentiumdecoder.cpp"
 
       
     } 
@@ -45073,7 +45076,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 45077 "pentiumdecoder.cpp"
+#line 45080 "pentiumdecoder.cpp"
 
       
     } 
@@ -45091,7 +45094,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 45095 "pentiumdecoder.cpp"
+#line 45098 "pentiumdecoder.cpp"
 
       
     } 
@@ -45109,7 +45112,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 45113 "pentiumdecoder.cpp"
+#line 45116 "pentiumdecoder.cpp"
 
       
     } 
@@ -45127,7 +45130,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 45131 "pentiumdecoder.cpp"
+#line 45134 "pentiumdecoder.cpp"
 
       
     } 
@@ -45145,7 +45148,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 45149 "pentiumdecoder.cpp"
+#line 45152 "pentiumdecoder.cpp"
 
       
     } 
@@ -45163,7 +45166,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 45167 "pentiumdecoder.cpp"
+#line 45170 "pentiumdecoder.cpp"
 
       
     } 
@@ -45181,7 +45184,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 45185 "pentiumdecoder.cpp"
+#line 45188 "pentiumdecoder.cpp"
 
       
     } 
@@ -45199,7 +45202,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 45203 "pentiumdecoder.cpp"
+#line 45206 "pentiumdecoder.cpp"
 
       
     } 
@@ -45217,7 +45220,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 45221 "pentiumdecoder.cpp"
+#line 45224 "pentiumdecoder.cpp"
 
       
     } 
@@ -45235,7 +45238,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 45239 "pentiumdecoder.cpp"
+#line 45242 "pentiumdecoder.cpp"
 
       
     } 
@@ -45253,7 +45256,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 45257 "pentiumdecoder.cpp"
+#line 45260 "pentiumdecoder.cpp"
 
       
     } 
@@ -45271,7 +45274,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 45275 "pentiumdecoder.cpp"
+#line 45278 "pentiumdecoder.cpp"
 
       
     } 
@@ -45289,7 +45292,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 45293 "pentiumdecoder.cpp"
+#line 45296 "pentiumdecoder.cpp"
 
       
     } 
@@ -45299,11 +45302,11 @@ pc
     { 
       nextPC = MATCH_p; 
       
-#line 2078 "machine/pentium/decoder.m"
+#line 2081 "machine/pentium/decoder.m"
 
 		result.valid = false;
 
-#line 45307 "pentiumdecoder.cpp"
+#line 45310 "pentiumdecoder.cpp"
 
       
     } 
@@ -45321,7 +45324,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45325 "pentiumdecoder.cpp"
+#line 45328 "pentiumdecoder.cpp"
 
       
     } 
@@ -45339,7 +45342,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45343 "pentiumdecoder.cpp"
+#line 45346 "pentiumdecoder.cpp"
 
       
     } 
@@ -45357,7 +45360,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45361 "pentiumdecoder.cpp"
+#line 45364 "pentiumdecoder.cpp"
 
       
     } 
@@ -45375,7 +45378,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45379 "pentiumdecoder.cpp"
+#line 45382 "pentiumdecoder.cpp"
 
       
     } 
@@ -45393,7 +45396,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45397 "pentiumdecoder.cpp"
+#line 45400 "pentiumdecoder.cpp"
 
       
     } 
@@ -45411,7 +45414,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45415 "pentiumdecoder.cpp"
+#line 45418 "pentiumdecoder.cpp"
 
       
     } 
@@ -45429,7 +45432,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45433 "pentiumdecoder.cpp"
+#line 45436 "pentiumdecoder.cpp"
 
       
     } 
@@ -45447,7 +45450,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45451 "pentiumdecoder.cpp"
+#line 45454 "pentiumdecoder.cpp"
 
       
     } 
@@ -45465,7 +45468,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45469 "pentiumdecoder.cpp"
+#line 45472 "pentiumdecoder.cpp"
 
       
     } 
@@ -45483,7 +45486,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45487 "pentiumdecoder.cpp"
+#line 45490 "pentiumdecoder.cpp"
 
       
     } 
@@ -45501,7 +45504,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45505 "pentiumdecoder.cpp"
+#line 45508 "pentiumdecoder.cpp"
 
       
     } 
@@ -45519,7 +45522,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45523 "pentiumdecoder.cpp"
+#line 45526 "pentiumdecoder.cpp"
 
       
     } 
@@ -45537,7 +45540,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45541 "pentiumdecoder.cpp"
+#line 45544 "pentiumdecoder.cpp"
 
       
     } 
@@ -45555,7 +45558,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45559 "pentiumdecoder.cpp"
+#line 45562 "pentiumdecoder.cpp"
 
       
     } 
@@ -45573,7 +45576,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45577 "pentiumdecoder.cpp"
+#line 45580 "pentiumdecoder.cpp"
 
       
     } 
@@ -45591,7 +45594,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45595 "pentiumdecoder.cpp"
+#line 45598 "pentiumdecoder.cpp"
 
       
     } 
@@ -45609,7 +45612,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45613 "pentiumdecoder.cpp"
+#line 45616 "pentiumdecoder.cpp"
 
       
     } 
@@ -45627,7 +45630,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45631 "pentiumdecoder.cpp"
+#line 45634 "pentiumdecoder.cpp"
 
       
     } 
@@ -45645,7 +45648,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45649 "pentiumdecoder.cpp"
+#line 45652 "pentiumdecoder.cpp"
 
       
     } 
@@ -45663,7 +45666,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45667 "pentiumdecoder.cpp"
+#line 45670 "pentiumdecoder.cpp"
 
       
     } 
@@ -45681,7 +45684,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45685 "pentiumdecoder.cpp"
+#line 45688 "pentiumdecoder.cpp"
 
       
     } 
@@ -45699,7 +45702,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45703 "pentiumdecoder.cpp"
+#line 45706 "pentiumdecoder.cpp"
 
       
     } 
@@ -45717,7 +45720,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45721 "pentiumdecoder.cpp"
+#line 45724 "pentiumdecoder.cpp"
 
       
     } 
@@ -45735,7 +45738,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 45739 "pentiumdecoder.cpp"
+#line 45742 "pentiumdecoder.cpp"
 
       
     } 
@@ -45753,7 +45756,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45757 "pentiumdecoder.cpp"
+#line 45760 "pentiumdecoder.cpp"
 
       
     } 
@@ -45771,7 +45774,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45775 "pentiumdecoder.cpp"
+#line 45778 "pentiumdecoder.cpp"
 
       
     } 
@@ -45789,7 +45792,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45793 "pentiumdecoder.cpp"
+#line 45796 "pentiumdecoder.cpp"
 
       
     } 
@@ -45807,7 +45810,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45811 "pentiumdecoder.cpp"
+#line 45814 "pentiumdecoder.cpp"
 
       
     } 
@@ -45825,7 +45828,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45829 "pentiumdecoder.cpp"
+#line 45832 "pentiumdecoder.cpp"
 
       
     } 
@@ -45843,7 +45846,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45847 "pentiumdecoder.cpp"
+#line 45850 "pentiumdecoder.cpp"
 
       
     } 
@@ -45861,7 +45864,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45865 "pentiumdecoder.cpp"
+#line 45868 "pentiumdecoder.cpp"
 
       
     } 
@@ -45879,7 +45882,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 45883 "pentiumdecoder.cpp"
+#line 45886 "pentiumdecoder.cpp"
 
       
     } 
@@ -45898,7 +45901,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45902 "pentiumdecoder.cpp"
+#line 45905 "pentiumdecoder.cpp"
 
       
     } 
@@ -45917,7 +45920,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45921 "pentiumdecoder.cpp"
+#line 45924 "pentiumdecoder.cpp"
 
       
     } 
@@ -45936,7 +45939,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45940 "pentiumdecoder.cpp"
+#line 45943 "pentiumdecoder.cpp"
 
       
     } 
@@ -45955,7 +45958,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45959 "pentiumdecoder.cpp"
+#line 45962 "pentiumdecoder.cpp"
 
       
     } 
@@ -45974,7 +45977,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45978 "pentiumdecoder.cpp"
+#line 45981 "pentiumdecoder.cpp"
 
       
     } 
@@ -45993,7 +45996,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 45997 "pentiumdecoder.cpp"
+#line 46000 "pentiumdecoder.cpp"
 
       
     } 
@@ -46012,7 +46015,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 46016 "pentiumdecoder.cpp"
+#line 46019 "pentiumdecoder.cpp"
 
       
     } 
@@ -46031,7 +46034,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 46035 "pentiumdecoder.cpp"
+#line 46038 "pentiumdecoder.cpp"
 
       
     } 
@@ -46049,7 +46052,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46053 "pentiumdecoder.cpp"
+#line 46056 "pentiumdecoder.cpp"
 
       
     } 
@@ -46067,7 +46070,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46071 "pentiumdecoder.cpp"
+#line 46074 "pentiumdecoder.cpp"
 
       
     } 
@@ -46085,7 +46088,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46089 "pentiumdecoder.cpp"
+#line 46092 "pentiumdecoder.cpp"
 
       
     } 
@@ -46103,7 +46106,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46107 "pentiumdecoder.cpp"
+#line 46110 "pentiumdecoder.cpp"
 
       
     } 
@@ -46121,7 +46124,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46125 "pentiumdecoder.cpp"
+#line 46128 "pentiumdecoder.cpp"
 
       
     } 
@@ -46139,7 +46142,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46143 "pentiumdecoder.cpp"
+#line 46146 "pentiumdecoder.cpp"
 
       
     } 
@@ -46157,7 +46160,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46161 "pentiumdecoder.cpp"
+#line 46164 "pentiumdecoder.cpp"
 
       
     } 
@@ -46175,7 +46178,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46179 "pentiumdecoder.cpp"
+#line 46182 "pentiumdecoder.cpp"
 
       
     } 
@@ -46193,7 +46196,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 46197 "pentiumdecoder.cpp"
+#line 46200 "pentiumdecoder.cpp"
 
       
     } 
@@ -46211,7 +46214,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 46215 "pentiumdecoder.cpp"
+#line 46218 "pentiumdecoder.cpp"
 
       
     } 
@@ -46229,7 +46232,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 46233 "pentiumdecoder.cpp"
+#line 46236 "pentiumdecoder.cpp"
 
       
     } 
@@ -46247,7 +46250,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 46251 "pentiumdecoder.cpp"
+#line 46254 "pentiumdecoder.cpp"
 
       
     } 
@@ -46265,7 +46268,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46269 "pentiumdecoder.cpp"
+#line 46272 "pentiumdecoder.cpp"
 
       
     } 
@@ -46283,7 +46286,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46287 "pentiumdecoder.cpp"
+#line 46290 "pentiumdecoder.cpp"
 
       
     } 
@@ -46301,7 +46304,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46305 "pentiumdecoder.cpp"
+#line 46308 "pentiumdecoder.cpp"
 
       
     } 
@@ -46319,7 +46322,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46323 "pentiumdecoder.cpp"
+#line 46326 "pentiumdecoder.cpp"
 
       
     } 
@@ -46338,7 +46341,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46342 "pentiumdecoder.cpp"
+#line 46345 "pentiumdecoder.cpp"
 
       
     } 
@@ -46357,7 +46360,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46361 "pentiumdecoder.cpp"
+#line 46364 "pentiumdecoder.cpp"
 
       
     } 
@@ -46376,7 +46379,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46380 "pentiumdecoder.cpp"
+#line 46383 "pentiumdecoder.cpp"
 
       
     } 
@@ -46395,7 +46398,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46399 "pentiumdecoder.cpp"
+#line 46402 "pentiumdecoder.cpp"
 
       
     } 
@@ -46414,7 +46417,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR16);
 
 
-#line 46418 "pentiumdecoder.cpp"
+#line 46421 "pentiumdecoder.cpp"
 
       
     } 
@@ -46433,7 +46436,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR16);
 
 
-#line 46437 "pentiumdecoder.cpp"
+#line 46440 "pentiumdecoder.cpp"
 
       
     } 
@@ -46452,7 +46455,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR16);
 
 
-#line 46456 "pentiumdecoder.cpp"
+#line 46459 "pentiumdecoder.cpp"
 
       
     } 
@@ -46471,7 +46474,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR16);
 
 
-#line 46475 "pentiumdecoder.cpp"
+#line 46478 "pentiumdecoder.cpp"
 
       
     } 
@@ -46490,7 +46493,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46494 "pentiumdecoder.cpp"
+#line 46497 "pentiumdecoder.cpp"
 
       
     } 
@@ -46509,7 +46512,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46513 "pentiumdecoder.cpp"
+#line 46516 "pentiumdecoder.cpp"
 
       
     } 
@@ -46528,7 +46531,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46532 "pentiumdecoder.cpp"
+#line 46535 "pentiumdecoder.cpp"
 
       
     } 
@@ -46547,7 +46550,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46551 "pentiumdecoder.cpp"
+#line 46554 "pentiumdecoder.cpp"
 
       
     } 
@@ -46566,7 +46569,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46570 "pentiumdecoder.cpp"
+#line 46573 "pentiumdecoder.cpp"
 
       
     } 
@@ -46585,7 +46588,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46589 "pentiumdecoder.cpp"
+#line 46592 "pentiumdecoder.cpp"
 
       
     } 
@@ -46604,7 +46607,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46608 "pentiumdecoder.cpp"
+#line 46611 "pentiumdecoder.cpp"
 
       
     } 
@@ -46623,7 +46626,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 46627 "pentiumdecoder.cpp"
+#line 46630 "pentiumdecoder.cpp"
 
       
     } 
@@ -46641,7 +46644,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46645 "pentiumdecoder.cpp"
+#line 46648 "pentiumdecoder.cpp"
 
       
     } 
@@ -46659,7 +46662,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46663 "pentiumdecoder.cpp"
+#line 46666 "pentiumdecoder.cpp"
 
       
     } 
@@ -46677,7 +46680,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46681 "pentiumdecoder.cpp"
+#line 46684 "pentiumdecoder.cpp"
 
       
     } 
@@ -46695,7 +46698,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46699 "pentiumdecoder.cpp"
+#line 46702 "pentiumdecoder.cpp"
 
       
     } 
@@ -46713,7 +46716,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46717 "pentiumdecoder.cpp"
+#line 46720 "pentiumdecoder.cpp"
 
       
     } 
@@ -46731,7 +46734,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46735 "pentiumdecoder.cpp"
+#line 46738 "pentiumdecoder.cpp"
 
       
     } 
@@ -46749,7 +46752,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46753 "pentiumdecoder.cpp"
+#line 46756 "pentiumdecoder.cpp"
 
       
     } 
@@ -46767,7 +46770,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 46771 "pentiumdecoder.cpp"
+#line 46774 "pentiumdecoder.cpp"
 
       
     } 
@@ -46810,7 +46813,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 46814 "pentiumdecoder.cpp"
+#line 46817 "pentiumdecoder.cpp"
 
       
     } 
@@ -46853,7 +46856,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 46857 "pentiumdecoder.cpp"
+#line 46860 "pentiumdecoder.cpp"
 
       
     } 
@@ -46896,7 +46899,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 46900 "pentiumdecoder.cpp"
+#line 46903 "pentiumdecoder.cpp"
 
       
     } 
@@ -46939,7 +46942,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 46943 "pentiumdecoder.cpp"
+#line 46946 "pentiumdecoder.cpp"
 
       
     } 
@@ -46959,7 +46962,7 @@ pc
 		return;
 
 
-#line 46963 "pentiumdecoder.cpp"
+#line 46966 "pentiumdecoder.cpp"
 
       
     } 
@@ -46979,7 +46982,7 @@ pc
 		return;
 
 
-#line 46983 "pentiumdecoder.cpp"
+#line 46986 "pentiumdecoder.cpp"
 
       
     } 
@@ -46999,7 +47002,7 @@ pc
 		return;
 
 
-#line 47003 "pentiumdecoder.cpp"
+#line 47006 "pentiumdecoder.cpp"
 
       
     } 
@@ -47019,7 +47022,7 @@ pc
 		return;
 
 
-#line 47023 "pentiumdecoder.cpp"
+#line 47026 "pentiumdecoder.cpp"
 
       
     } 
@@ -47037,7 +47040,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47041 "pentiumdecoder.cpp"
+#line 47044 "pentiumdecoder.cpp"
 
       
     } 
@@ -47055,7 +47058,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47059 "pentiumdecoder.cpp"
+#line 47062 "pentiumdecoder.cpp"
 
       
     } 
@@ -47073,7 +47076,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47077 "pentiumdecoder.cpp"
+#line 47080 "pentiumdecoder.cpp"
 
       
     } 
@@ -47091,7 +47094,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47095 "pentiumdecoder.cpp"
+#line 47098 "pentiumdecoder.cpp"
 
       
     } 
@@ -47109,7 +47112,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47113 "pentiumdecoder.cpp"
+#line 47116 "pentiumdecoder.cpp"
 
       
     } 
@@ -47127,7 +47130,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47131 "pentiumdecoder.cpp"
+#line 47134 "pentiumdecoder.cpp"
 
       
     } 
@@ -47145,7 +47148,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47149 "pentiumdecoder.cpp"
+#line 47152 "pentiumdecoder.cpp"
 
       
     } 
@@ -47163,7 +47166,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
 
-#line 47167 "pentiumdecoder.cpp"
+#line 47170 "pentiumdecoder.cpp"
 
       
     } 
@@ -47181,7 +47184,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47185 "pentiumdecoder.cpp"
+#line 47188 "pentiumdecoder.cpp"
 
       
     } 
@@ -47199,7 +47202,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47203 "pentiumdecoder.cpp"
+#line 47206 "pentiumdecoder.cpp"
 
       
     } 
@@ -47217,7 +47220,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47221 "pentiumdecoder.cpp"
+#line 47224 "pentiumdecoder.cpp"
 
       
     } 
@@ -47235,7 +47238,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47239 "pentiumdecoder.cpp"
+#line 47242 "pentiumdecoder.cpp"
 
       
     } 
@@ -47253,7 +47256,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47257 "pentiumdecoder.cpp"
+#line 47260 "pentiumdecoder.cpp"
 
       
     } 
@@ -47271,7 +47274,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47275 "pentiumdecoder.cpp"
+#line 47278 "pentiumdecoder.cpp"
 
       
     } 
@@ -47289,7 +47292,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47293 "pentiumdecoder.cpp"
+#line 47296 "pentiumdecoder.cpp"
 
       
     } 
@@ -47307,7 +47310,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47311 "pentiumdecoder.cpp"
+#line 47314 "pentiumdecoder.cpp"
 
       
     } 
@@ -47325,7 +47328,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47329 "pentiumdecoder.cpp"
+#line 47332 "pentiumdecoder.cpp"
 
       
     } 
@@ -47343,7 +47346,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47347 "pentiumdecoder.cpp"
+#line 47350 "pentiumdecoder.cpp"
 
       
     } 
@@ -47361,7 +47364,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47365 "pentiumdecoder.cpp"
+#line 47368 "pentiumdecoder.cpp"
 
       
     } 
@@ -47379,7 +47382,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47383 "pentiumdecoder.cpp"
+#line 47386 "pentiumdecoder.cpp"
 
       
     } 
@@ -47397,7 +47400,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47401 "pentiumdecoder.cpp"
+#line 47404 "pentiumdecoder.cpp"
 
       
     } 
@@ -47415,7 +47418,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47419 "pentiumdecoder.cpp"
+#line 47422 "pentiumdecoder.cpp"
 
       
     } 
@@ -47433,7 +47436,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47437 "pentiumdecoder.cpp"
+#line 47440 "pentiumdecoder.cpp"
 
       
     } 
@@ -47451,7 +47454,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47455 "pentiumdecoder.cpp"
+#line 47458 "pentiumdecoder.cpp"
 
       
     } 
@@ -47469,7 +47472,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47473 "pentiumdecoder.cpp"
+#line 47476 "pentiumdecoder.cpp"
 
       
     } 
@@ -47487,7 +47490,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47491 "pentiumdecoder.cpp"
+#line 47494 "pentiumdecoder.cpp"
 
       
     } 
@@ -47505,7 +47508,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47509 "pentiumdecoder.cpp"
+#line 47512 "pentiumdecoder.cpp"
 
       
     } 
@@ -47523,7 +47526,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47527 "pentiumdecoder.cpp"
+#line 47530 "pentiumdecoder.cpp"
 
       
     } 
@@ -47541,7 +47544,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47545 "pentiumdecoder.cpp"
+#line 47548 "pentiumdecoder.cpp"
 
       
     } 
@@ -47559,7 +47562,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47563 "pentiumdecoder.cpp"
+#line 47566 "pentiumdecoder.cpp"
 
       
     } 
@@ -47577,7 +47580,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47581 "pentiumdecoder.cpp"
+#line 47584 "pentiumdecoder.cpp"
 
       
     } 
@@ -47595,7 +47598,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47599 "pentiumdecoder.cpp"
+#line 47602 "pentiumdecoder.cpp"
 
       
     } 
@@ -47613,7 +47616,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47617 "pentiumdecoder.cpp"
+#line 47620 "pentiumdecoder.cpp"
 
       
     } 
@@ -47631,7 +47634,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47635 "pentiumdecoder.cpp"
+#line 47638 "pentiumdecoder.cpp"
 
       
     } 
@@ -47649,7 +47652,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47653 "pentiumdecoder.cpp"
+#line 47656 "pentiumdecoder.cpp"
 
       
     } 
@@ -47667,7 +47670,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47671 "pentiumdecoder.cpp"
+#line 47674 "pentiumdecoder.cpp"
 
       
     } 
@@ -47685,7 +47688,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47689 "pentiumdecoder.cpp"
+#line 47692 "pentiumdecoder.cpp"
 
       
     } 
@@ -47703,7 +47706,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47707 "pentiumdecoder.cpp"
+#line 47710 "pentiumdecoder.cpp"
 
       
     } 
@@ -47721,7 +47724,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47725 "pentiumdecoder.cpp"
+#line 47728 "pentiumdecoder.cpp"
 
       
     } 
@@ -47739,7 +47742,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47743 "pentiumdecoder.cpp"
+#line 47746 "pentiumdecoder.cpp"
 
       
     } 
@@ -47757,7 +47760,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47761 "pentiumdecoder.cpp"
+#line 47764 "pentiumdecoder.cpp"
 
       
     } 
@@ -47775,7 +47778,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47779 "pentiumdecoder.cpp"
+#line 47782 "pentiumdecoder.cpp"
 
       
     } 
@@ -47793,7 +47796,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47797 "pentiumdecoder.cpp"
+#line 47800 "pentiumdecoder.cpp"
 
       
     } 
@@ -47811,7 +47814,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47815 "pentiumdecoder.cpp"
+#line 47818 "pentiumdecoder.cpp"
 
       
     } 
@@ -47829,7 +47832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47833 "pentiumdecoder.cpp"
+#line 47836 "pentiumdecoder.cpp"
 
       
     } 
@@ -47847,7 +47850,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47851 "pentiumdecoder.cpp"
+#line 47854 "pentiumdecoder.cpp"
 
       
     } 
@@ -47865,7 +47868,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47869 "pentiumdecoder.cpp"
+#line 47872 "pentiumdecoder.cpp"
 
       
     } 
@@ -47883,7 +47886,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47887 "pentiumdecoder.cpp"
+#line 47890 "pentiumdecoder.cpp"
 
       
     } 
@@ -47901,7 +47904,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47905 "pentiumdecoder.cpp"
+#line 47908 "pentiumdecoder.cpp"
 
       
     } 
@@ -47919,7 +47922,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47923 "pentiumdecoder.cpp"
+#line 47926 "pentiumdecoder.cpp"
 
       
     } 
@@ -47937,7 +47940,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47941 "pentiumdecoder.cpp"
+#line 47944 "pentiumdecoder.cpp"
 
       
     } 
@@ -47955,7 +47958,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 47959 "pentiumdecoder.cpp"
+#line 47962 "pentiumdecoder.cpp"
 
       
     } 
@@ -47973,7 +47976,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47977 "pentiumdecoder.cpp"
+#line 47980 "pentiumdecoder.cpp"
 
       
     } 
@@ -47991,7 +47994,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 47995 "pentiumdecoder.cpp"
+#line 47998 "pentiumdecoder.cpp"
 
       
     } 
@@ -48009,7 +48012,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48013 "pentiumdecoder.cpp"
+#line 48016 "pentiumdecoder.cpp"
 
       
     } 
@@ -48027,7 +48030,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48031 "pentiumdecoder.cpp"
+#line 48034 "pentiumdecoder.cpp"
 
       
     } 
@@ -48045,7 +48048,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48049 "pentiumdecoder.cpp"
+#line 48052 "pentiumdecoder.cpp"
 
       
     } 
@@ -48063,7 +48066,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48067 "pentiumdecoder.cpp"
+#line 48070 "pentiumdecoder.cpp"
 
       
     } 
@@ -48081,7 +48084,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48085 "pentiumdecoder.cpp"
+#line 48088 "pentiumdecoder.cpp"
 
       
     } 
@@ -48099,7 +48102,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 48103 "pentiumdecoder.cpp"
+#line 48106 "pentiumdecoder.cpp"
 
       
     } 
@@ -48119,7 +48122,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 48123 "pentiumdecoder.cpp"
+#line 48126 "pentiumdecoder.cpp"
 
       
     } 
@@ -48139,7 +48142,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 48143 "pentiumdecoder.cpp"
+#line 48146 "pentiumdecoder.cpp"
 
       
     } 
@@ -48159,7 +48162,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 48163 "pentiumdecoder.cpp"
+#line 48166 "pentiumdecoder.cpp"
 
       
     } 
@@ -48179,7 +48182,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 48183 "pentiumdecoder.cpp"
+#line 48186 "pentiumdecoder.cpp"
 
       
     } 
@@ -48199,7 +48202,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 48203 "pentiumdecoder.cpp"
+#line 48206 "pentiumdecoder.cpp"
 
       
     } 
@@ -48219,7 +48222,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 48223 "pentiumdecoder.cpp"
+#line 48226 "pentiumdecoder.cpp"
 
       
     } 
@@ -48239,7 +48242,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 48243 "pentiumdecoder.cpp"
+#line 48246 "pentiumdecoder.cpp"
 
       
     } 
@@ -48259,7 +48262,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 48263 "pentiumdecoder.cpp"
+#line 48266 "pentiumdecoder.cpp"
 
       
     } 
@@ -48273,12 +48276,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1604 "machine/pentium/decoder.m"
+#line 1607 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48282 "pentiumdecoder.cpp"
+#line 48285 "pentiumdecoder.cpp"
 
       
     } 
@@ -48292,12 +48295,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1604 "machine/pentium/decoder.m"
+#line 1607 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48301 "pentiumdecoder.cpp"
+#line 48304 "pentiumdecoder.cpp"
 
       
     } 
@@ -48311,12 +48314,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1604 "machine/pentium/decoder.m"
+#line 1607 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48320 "pentiumdecoder.cpp"
+#line 48323 "pentiumdecoder.cpp"
 
       
     } 
@@ -48330,12 +48333,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1604 "machine/pentium/decoder.m"
+#line 1607 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48339 "pentiumdecoder.cpp"
+#line 48342 "pentiumdecoder.cpp"
 
       
     } 
@@ -48349,12 +48352,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1601 "machine/pentium/decoder.m"
+#line 1604 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48358 "pentiumdecoder.cpp"
+#line 48361 "pentiumdecoder.cpp"
 
       
     } 
@@ -48368,12 +48371,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1601 "machine/pentium/decoder.m"
+#line 1604 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48377 "pentiumdecoder.cpp"
+#line 48380 "pentiumdecoder.cpp"
 
       
     } 
@@ -48387,12 +48390,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1601 "machine/pentium/decoder.m"
+#line 1604 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48396 "pentiumdecoder.cpp"
+#line 48399 "pentiumdecoder.cpp"
 
       
     } 
@@ -48406,12 +48409,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1601 "machine/pentium/decoder.m"
+#line 1604 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48415 "pentiumdecoder.cpp"
+#line 48418 "pentiumdecoder.cpp"
 
       
     } 
@@ -48425,12 +48428,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1598 "machine/pentium/decoder.m"
+#line 1601 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48434 "pentiumdecoder.cpp"
+#line 48437 "pentiumdecoder.cpp"
 
       
     } 
@@ -48444,12 +48447,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1598 "machine/pentium/decoder.m"
+#line 1601 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48453 "pentiumdecoder.cpp"
+#line 48456 "pentiumdecoder.cpp"
 
       
     } 
@@ -48463,12 +48466,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1598 "machine/pentium/decoder.m"
+#line 1601 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48472 "pentiumdecoder.cpp"
+#line 48475 "pentiumdecoder.cpp"
 
       
     } 
@@ -48482,12 +48485,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1598 "machine/pentium/decoder.m"
+#line 1601 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48491 "pentiumdecoder.cpp"
+#line 48494 "pentiumdecoder.cpp"
 
       
     } 
@@ -48501,12 +48504,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1595 "machine/pentium/decoder.m"
+#line 1598 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48510 "pentiumdecoder.cpp"
+#line 48513 "pentiumdecoder.cpp"
 
       
     } 
@@ -48520,12 +48523,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1595 "machine/pentium/decoder.m"
+#line 1598 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48529 "pentiumdecoder.cpp"
+#line 48532 "pentiumdecoder.cpp"
 
       
     } 
@@ -48539,12 +48542,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1595 "machine/pentium/decoder.m"
+#line 1598 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48548 "pentiumdecoder.cpp"
+#line 48551 "pentiumdecoder.cpp"
 
       
     } 
@@ -48558,12 +48561,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1595 "machine/pentium/decoder.m"
+#line 1598 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48567 "pentiumdecoder.cpp"
+#line 48570 "pentiumdecoder.cpp"
 
       
     } 
@@ -48577,12 +48580,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1592 "machine/pentium/decoder.m"
+#line 1595 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48586 "pentiumdecoder.cpp"
+#line 48589 "pentiumdecoder.cpp"
 
       
     } 
@@ -48596,12 +48599,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1592 "machine/pentium/decoder.m"
+#line 1595 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48605 "pentiumdecoder.cpp"
+#line 48608 "pentiumdecoder.cpp"
 
       
     } 
@@ -48615,12 +48618,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1592 "machine/pentium/decoder.m"
+#line 1595 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48624 "pentiumdecoder.cpp"
+#line 48627 "pentiumdecoder.cpp"
 
       
     } 
@@ -48634,12 +48637,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1592 "machine/pentium/decoder.m"
+#line 1595 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48643 "pentiumdecoder.cpp"
+#line 48646 "pentiumdecoder.cpp"
 
       
     } 
@@ -48653,12 +48656,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1589 "machine/pentium/decoder.m"
+#line 1592 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48662 "pentiumdecoder.cpp"
+#line 48665 "pentiumdecoder.cpp"
 
       
     } 
@@ -48672,12 +48675,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1589 "machine/pentium/decoder.m"
+#line 1592 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48681 "pentiumdecoder.cpp"
+#line 48684 "pentiumdecoder.cpp"
 
       
     } 
@@ -48691,12 +48694,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1589 "machine/pentium/decoder.m"
+#line 1592 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48700 "pentiumdecoder.cpp"
+#line 48703 "pentiumdecoder.cpp"
 
       
     } 
@@ -48710,12 +48713,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1589 "machine/pentium/decoder.m"
+#line 1592 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48719 "pentiumdecoder.cpp"
+#line 48722 "pentiumdecoder.cpp"
 
       
     } 
@@ -48729,12 +48732,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1586 "machine/pentium/decoder.m"
+#line 1589 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48738 "pentiumdecoder.cpp"
+#line 48741 "pentiumdecoder.cpp"
 
       
     } 
@@ -48748,12 +48751,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1586 "machine/pentium/decoder.m"
+#line 1589 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48757 "pentiumdecoder.cpp"
+#line 48760 "pentiumdecoder.cpp"
 
       
     } 
@@ -48767,12 +48770,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1586 "machine/pentium/decoder.m"
+#line 1589 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48776 "pentiumdecoder.cpp"
+#line 48779 "pentiumdecoder.cpp"
 
       
     } 
@@ -48786,12 +48789,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1586 "machine/pentium/decoder.m"
+#line 1589 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48795 "pentiumdecoder.cpp"
+#line 48798 "pentiumdecoder.cpp"
 
       
     } 
@@ -48805,12 +48808,12 @@ pc
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1583 "machine/pentium/decoder.m"
+#line 1586 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48814 "pentiumdecoder.cpp"
+#line 48817 "pentiumdecoder.cpp"
 
       
     } 
@@ -48824,12 +48827,12 @@ pc
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1583 "machine/pentium/decoder.m"
+#line 1586 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48833 "pentiumdecoder.cpp"
+#line 48836 "pentiumdecoder.cpp"
 
       
     } 
@@ -48843,12 +48846,12 @@ pc
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1583 "machine/pentium/decoder.m"
+#line 1586 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48852 "pentiumdecoder.cpp"
+#line 48855 "pentiumdecoder.cpp"
 
       
     } 
@@ -48862,12 +48865,12 @@ pc
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1583 "machine/pentium/decoder.m"
+#line 1586 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 48871 "pentiumdecoder.cpp"
+#line 48874 "pentiumdecoder.cpp"
 
       
     } 
@@ -48885,7 +48888,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 48889 "pentiumdecoder.cpp"
+#line 48892 "pentiumdecoder.cpp"
 
       
     } 
@@ -48903,7 +48906,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 48907 "pentiumdecoder.cpp"
+#line 48910 "pentiumdecoder.cpp"
 
       
     } 
@@ -48921,7 +48924,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 48925 "pentiumdecoder.cpp"
+#line 48928 "pentiumdecoder.cpp"
 
       
     } 
@@ -48939,7 +48942,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 48943 "pentiumdecoder.cpp"
+#line 48946 "pentiumdecoder.cpp"
 
       
     } 
@@ -48953,12 +48956,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1556 "machine/pentium/decoder.m"
+#line 1559 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 48962 "pentiumdecoder.cpp"
+#line 48965 "pentiumdecoder.cpp"
 
       
     } 
@@ -48972,12 +48975,12 @@ pc
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1556 "machine/pentium/decoder.m"
+#line 1559 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 48981 "pentiumdecoder.cpp"
+#line 48984 "pentiumdecoder.cpp"
 
       
     } 
@@ -48991,12 +48994,12 @@ pc
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1556 "machine/pentium/decoder.m"
+#line 1559 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49000 "pentiumdecoder.cpp"
+#line 49003 "pentiumdecoder.cpp"
 
       
     } 
@@ -49010,12 +49013,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1556 "machine/pentium/decoder.m"
+#line 1559 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49019 "pentiumdecoder.cpp"
+#line 49022 "pentiumdecoder.cpp"
 
       
     } 
@@ -49029,12 +49032,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1550 "machine/pentium/decoder.m"
+#line 1553 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49038 "pentiumdecoder.cpp"
+#line 49041 "pentiumdecoder.cpp"
 
       
     } 
@@ -49048,12 +49051,12 @@ pc
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1550 "machine/pentium/decoder.m"
+#line 1553 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49057 "pentiumdecoder.cpp"
+#line 49060 "pentiumdecoder.cpp"
 
       
     } 
@@ -49067,12 +49070,12 @@ pc
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1550 "machine/pentium/decoder.m"
+#line 1553 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49076 "pentiumdecoder.cpp"
+#line 49079 "pentiumdecoder.cpp"
 
       
     } 
@@ -49086,12 +49089,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1550 "machine/pentium/decoder.m"
+#line 1553 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49095 "pentiumdecoder.cpp"
+#line 49098 "pentiumdecoder.cpp"
 
       
     } 
@@ -49105,12 +49108,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1544 "machine/pentium/decoder.m"
+#line 1547 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49114 "pentiumdecoder.cpp"
+#line 49117 "pentiumdecoder.cpp"
 
       
     } 
@@ -49124,12 +49127,12 @@ pc
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1544 "machine/pentium/decoder.m"
+#line 1547 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49133 "pentiumdecoder.cpp"
+#line 49136 "pentiumdecoder.cpp"
 
       
     } 
@@ -49143,12 +49146,12 @@ pc
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1544 "machine/pentium/decoder.m"
+#line 1547 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49152 "pentiumdecoder.cpp"
+#line 49155 "pentiumdecoder.cpp"
 
       
     } 
@@ -49162,12 +49165,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1544 "machine/pentium/decoder.m"
+#line 1547 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49171 "pentiumdecoder.cpp"
+#line 49174 "pentiumdecoder.cpp"
 
       
     } 
@@ -49181,12 +49184,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1538 "machine/pentium/decoder.m"
+#line 1541 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49190 "pentiumdecoder.cpp"
+#line 49193 "pentiumdecoder.cpp"
 
       
     } 
@@ -49200,12 +49203,12 @@ pc
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1538 "machine/pentium/decoder.m"
+#line 1541 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49209 "pentiumdecoder.cpp"
+#line 49212 "pentiumdecoder.cpp"
 
       
     } 
@@ -49219,12 +49222,12 @@ pc
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1538 "machine/pentium/decoder.m"
+#line 1541 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49228 "pentiumdecoder.cpp"
+#line 49231 "pentiumdecoder.cpp"
 
       
     } 
@@ -49238,12 +49241,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1538 "machine/pentium/decoder.m"
+#line 1541 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49247 "pentiumdecoder.cpp"
+#line 49250 "pentiumdecoder.cpp"
 
       
     } 
@@ -49257,12 +49260,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1532 "machine/pentium/decoder.m"
+#line 1535 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49266 "pentiumdecoder.cpp"
+#line 49269 "pentiumdecoder.cpp"
 
       
     } 
@@ -49276,12 +49279,12 @@ pc
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1532 "machine/pentium/decoder.m"
+#line 1535 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49285 "pentiumdecoder.cpp"
+#line 49288 "pentiumdecoder.cpp"
 
       
     } 
@@ -49295,12 +49298,12 @@ pc
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1532 "machine/pentium/decoder.m"
+#line 1535 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49304 "pentiumdecoder.cpp"
+#line 49307 "pentiumdecoder.cpp"
 
       
     } 
@@ -49314,12 +49317,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1532 "machine/pentium/decoder.m"
+#line 1535 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49323 "pentiumdecoder.cpp"
+#line 49326 "pentiumdecoder.cpp"
 
       
     } 
@@ -49338,7 +49341,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49342 "pentiumdecoder.cpp"
+#line 49345 "pentiumdecoder.cpp"
 
       
     } 
@@ -49357,7 +49360,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49361 "pentiumdecoder.cpp"
+#line 49364 "pentiumdecoder.cpp"
 
       
     } 
@@ -49376,7 +49379,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49380 "pentiumdecoder.cpp"
+#line 49383 "pentiumdecoder.cpp"
 
       
     } 
@@ -49395,7 +49398,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49399 "pentiumdecoder.cpp"
+#line 49402 "pentiumdecoder.cpp"
 
       
     } 
@@ -49414,7 +49417,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49418 "pentiumdecoder.cpp"
+#line 49421 "pentiumdecoder.cpp"
 
       
     } 
@@ -49433,7 +49436,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49437 "pentiumdecoder.cpp"
+#line 49440 "pentiumdecoder.cpp"
 
       
     } 
@@ -49452,7 +49455,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49456 "pentiumdecoder.cpp"
+#line 49459 "pentiumdecoder.cpp"
 
       
     } 
@@ -49471,7 +49474,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49475 "pentiumdecoder.cpp"
+#line 49478 "pentiumdecoder.cpp"
 
       
     } 
@@ -49490,7 +49493,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49494 "pentiumdecoder.cpp"
+#line 49497 "pentiumdecoder.cpp"
 
       
     } 
@@ -49509,7 +49512,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49513 "pentiumdecoder.cpp"
+#line 49516 "pentiumdecoder.cpp"
 
       
     } 
@@ -49528,7 +49531,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49532 "pentiumdecoder.cpp"
+#line 49535 "pentiumdecoder.cpp"
 
       
     } 
@@ -49547,7 +49550,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 49551 "pentiumdecoder.cpp"
+#line 49554 "pentiumdecoder.cpp"
 
       
     } 
@@ -49565,7 +49568,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 49569 "pentiumdecoder.cpp"
+#line 49572 "pentiumdecoder.cpp"
 
       
     } 
@@ -49583,7 +49586,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 49587 "pentiumdecoder.cpp"
+#line 49590 "pentiumdecoder.cpp"
 
       
     } 
@@ -49601,7 +49604,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 49605 "pentiumdecoder.cpp"
+#line 49608 "pentiumdecoder.cpp"
 
       
     } 
@@ -49619,7 +49622,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
 
-#line 49623 "pentiumdecoder.cpp"
+#line 49626 "pentiumdecoder.cpp"
 
       
     } 
@@ -49637,7 +49640,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49641 "pentiumdecoder.cpp"
+#line 49644 "pentiumdecoder.cpp"
 
       
     } 
@@ -49655,7 +49658,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49659 "pentiumdecoder.cpp"
+#line 49662 "pentiumdecoder.cpp"
 
       
     } 
@@ -49673,7 +49676,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49677 "pentiumdecoder.cpp"
+#line 49680 "pentiumdecoder.cpp"
 
       
     } 
@@ -49691,7 +49694,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49695 "pentiumdecoder.cpp"
+#line 49698 "pentiumdecoder.cpp"
 
       
     } 
@@ -49709,7 +49712,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_MEM);
 
 
-#line 49713 "pentiumdecoder.cpp"
+#line 49716 "pentiumdecoder.cpp"
 
       
     } 
@@ -49727,7 +49730,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_MEM);
 
 
-#line 49731 "pentiumdecoder.cpp"
+#line 49734 "pentiumdecoder.cpp"
 
       
     } 
@@ -49745,7 +49748,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG16, DIS_MEM);
 
 
-#line 49749 "pentiumdecoder.cpp"
+#line 49752 "pentiumdecoder.cpp"
 
       
     } 
@@ -49763,7 +49766,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49767 "pentiumdecoder.cpp"
+#line 49770 "pentiumdecoder.cpp"
 
       
     } 
@@ -49781,7 +49784,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49785 "pentiumdecoder.cpp"
+#line 49788 "pentiumdecoder.cpp"
 
       
     } 
@@ -49799,7 +49802,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49803 "pentiumdecoder.cpp"
+#line 49806 "pentiumdecoder.cpp"
 
       
     } 
@@ -49817,7 +49820,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
 
-#line 49821 "pentiumdecoder.cpp"
+#line 49824 "pentiumdecoder.cpp"
 
       
     } 
@@ -49861,7 +49864,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 49865 "pentiumdecoder.cpp"
+#line 49868 "pentiumdecoder.cpp"
 
       
     } 
@@ -49905,7 +49908,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 49909 "pentiumdecoder.cpp"
+#line 49912 "pentiumdecoder.cpp"
 
       
     } 
@@ -49949,7 +49952,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 49953 "pentiumdecoder.cpp"
+#line 49956 "pentiumdecoder.cpp"
 
       
     } 
@@ -49993,7 +49996,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 49997 "pentiumdecoder.cpp"
+#line 50000 "pentiumdecoder.cpp"
 
       
     } 
@@ -50012,7 +50015,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50016 "pentiumdecoder.cpp"
+#line 50019 "pentiumdecoder.cpp"
 
       
     } 
@@ -50031,7 +50034,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50035 "pentiumdecoder.cpp"
+#line 50038 "pentiumdecoder.cpp"
 
       
     } 
@@ -50050,7 +50053,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50054 "pentiumdecoder.cpp"
+#line 50057 "pentiumdecoder.cpp"
 
       
     } 
@@ -50069,7 +50072,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50073 "pentiumdecoder.cpp"
+#line 50076 "pentiumdecoder.cpp"
 
       
     } 
@@ -50088,7 +50091,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50092 "pentiumdecoder.cpp"
+#line 50095 "pentiumdecoder.cpp"
 
       
     } 
@@ -50107,7 +50110,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50111 "pentiumdecoder.cpp"
+#line 50114 "pentiumdecoder.cpp"
 
       
     } 
@@ -50126,7 +50129,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50130 "pentiumdecoder.cpp"
+#line 50133 "pentiumdecoder.cpp"
 
       
     } 
@@ -50145,7 +50148,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50149 "pentiumdecoder.cpp"
+#line 50152 "pentiumdecoder.cpp"
 
       
     } 
@@ -50164,7 +50167,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50168 "pentiumdecoder.cpp"
+#line 50171 "pentiumdecoder.cpp"
 
       
     } 
@@ -50183,7 +50186,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50187 "pentiumdecoder.cpp"
+#line 50190 "pentiumdecoder.cpp"
 
       
     } 
@@ -50202,7 +50205,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50206 "pentiumdecoder.cpp"
+#line 50209 "pentiumdecoder.cpp"
 
       
     } 
@@ -50221,7 +50224,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50225 "pentiumdecoder.cpp"
+#line 50228 "pentiumdecoder.cpp"
 
       
     } 
@@ -50240,7 +50243,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50244 "pentiumdecoder.cpp"
+#line 50247 "pentiumdecoder.cpp"
 
       
     } 
@@ -50259,7 +50262,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50263 "pentiumdecoder.cpp"
+#line 50266 "pentiumdecoder.cpp"
 
       
     } 
@@ -50278,7 +50281,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50282 "pentiumdecoder.cpp"
+#line 50285 "pentiumdecoder.cpp"
 
       
     } 
@@ -50297,7 +50300,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50301 "pentiumdecoder.cpp"
+#line 50304 "pentiumdecoder.cpp"
 
       
     } 
@@ -50316,7 +50319,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50320 "pentiumdecoder.cpp"
+#line 50323 "pentiumdecoder.cpp"
 
       
     } 
@@ -50335,7 +50338,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50339 "pentiumdecoder.cpp"
+#line 50342 "pentiumdecoder.cpp"
 
       
     } 
@@ -50354,7 +50357,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50358 "pentiumdecoder.cpp"
+#line 50361 "pentiumdecoder.cpp"
 
       
     } 
@@ -50373,7 +50376,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50377 "pentiumdecoder.cpp"
+#line 50380 "pentiumdecoder.cpp"
 
       
     } 
@@ -50392,7 +50395,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50396 "pentiumdecoder.cpp"
+#line 50399 "pentiumdecoder.cpp"
 
       
     } 
@@ -50411,7 +50414,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50415 "pentiumdecoder.cpp"
+#line 50418 "pentiumdecoder.cpp"
 
       
     } 
@@ -50430,7 +50433,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50434 "pentiumdecoder.cpp"
+#line 50437 "pentiumdecoder.cpp"
 
       
     } 
@@ -50449,7 +50452,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50453 "pentiumdecoder.cpp"
+#line 50456 "pentiumdecoder.cpp"
 
       
     } 
@@ -50468,7 +50471,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50472 "pentiumdecoder.cpp"
+#line 50475 "pentiumdecoder.cpp"
 
       
     } 
@@ -50487,7 +50490,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50491 "pentiumdecoder.cpp"
+#line 50494 "pentiumdecoder.cpp"
 
       
     } 
@@ -50506,7 +50509,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50510 "pentiumdecoder.cpp"
+#line 50513 "pentiumdecoder.cpp"
 
       
     } 
@@ -50525,7 +50528,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
 
-#line 50529 "pentiumdecoder.cpp"
+#line 50532 "pentiumdecoder.cpp"
 
       
     } 
@@ -50544,7 +50547,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 50548 "pentiumdecoder.cpp"
+#line 50551 "pentiumdecoder.cpp"
 
       
     } 
@@ -50563,7 +50566,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 50567 "pentiumdecoder.cpp"
+#line 50570 "pentiumdecoder.cpp"
 
       
     } 
@@ -50582,7 +50585,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 50586 "pentiumdecoder.cpp"
+#line 50589 "pentiumdecoder.cpp"
 
       
     } 
@@ -50601,7 +50604,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 50605 "pentiumdecoder.cpp"
+#line 50608 "pentiumdecoder.cpp"
 
       
     } 
@@ -50618,7 +50621,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50622 "pentiumdecoder.cpp"
+#line 50625 "pentiumdecoder.cpp"
 
       
     } 
@@ -50635,7 +50638,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50639 "pentiumdecoder.cpp"
+#line 50642 "pentiumdecoder.cpp"
 
       
     } 
@@ -50652,7 +50655,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50656 "pentiumdecoder.cpp"
+#line 50659 "pentiumdecoder.cpp"
 
       
     } 
@@ -50669,7 +50672,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50673 "pentiumdecoder.cpp"
+#line 50676 "pentiumdecoder.cpp"
 
       
     } 
@@ -50686,7 +50689,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50690 "pentiumdecoder.cpp"
+#line 50693 "pentiumdecoder.cpp"
 
       
     } 
@@ -50703,7 +50706,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50707 "pentiumdecoder.cpp"
+#line 50710 "pentiumdecoder.cpp"
 
       
     } 
@@ -50720,7 +50723,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50724 "pentiumdecoder.cpp"
+#line 50727 "pentiumdecoder.cpp"
 
       
     } 
@@ -50737,7 +50740,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50741 "pentiumdecoder.cpp"
+#line 50744 "pentiumdecoder.cpp"
 
       
     } 
@@ -50754,7 +50757,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50758 "pentiumdecoder.cpp"
+#line 50761 "pentiumdecoder.cpp"
 
       
     } 
@@ -50771,7 +50774,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50775 "pentiumdecoder.cpp"
+#line 50778 "pentiumdecoder.cpp"
 
       
     } 
@@ -50788,7 +50791,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50792 "pentiumdecoder.cpp"
+#line 50795 "pentiumdecoder.cpp"
 
       
     } 
@@ -50805,7 +50808,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50809 "pentiumdecoder.cpp"
+#line 50812 "pentiumdecoder.cpp"
 
       
     } 
@@ -50822,7 +50825,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50826 "pentiumdecoder.cpp"
+#line 50829 "pentiumdecoder.cpp"
 
       
     } 
@@ -50839,7 +50842,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50843 "pentiumdecoder.cpp"
+#line 50846 "pentiumdecoder.cpp"
 
       
     } 
@@ -50856,7 +50859,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50860 "pentiumdecoder.cpp"
+#line 50863 "pentiumdecoder.cpp"
 
       
     } 
@@ -50873,7 +50876,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50877 "pentiumdecoder.cpp"
+#line 50880 "pentiumdecoder.cpp"
 
       
     } 
@@ -50890,7 +50893,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50894 "pentiumdecoder.cpp"
+#line 50897 "pentiumdecoder.cpp"
 
       
     } 
@@ -50907,7 +50910,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50911 "pentiumdecoder.cpp"
+#line 50914 "pentiumdecoder.cpp"
 
       
     } 
@@ -50924,7 +50927,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50928 "pentiumdecoder.cpp"
+#line 50931 "pentiumdecoder.cpp"
 
       
     } 
@@ -50941,7 +50944,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50945 "pentiumdecoder.cpp"
+#line 50948 "pentiumdecoder.cpp"
 
       
     } 
@@ -50958,7 +50961,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50962 "pentiumdecoder.cpp"
+#line 50965 "pentiumdecoder.cpp"
 
       
     } 
@@ -50975,7 +50978,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50979 "pentiumdecoder.cpp"
+#line 50982 "pentiumdecoder.cpp"
 
       
     } 
@@ -50992,7 +50995,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 50996 "pentiumdecoder.cpp"
+#line 50999 "pentiumdecoder.cpp"
 
       
     } 
@@ -51009,7 +51012,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51013 "pentiumdecoder.cpp"
+#line 51016 "pentiumdecoder.cpp"
 
       
     } 
@@ -51026,7 +51029,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51030 "pentiumdecoder.cpp"
+#line 51033 "pentiumdecoder.cpp"
 
       
     } 
@@ -51043,7 +51046,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51047 "pentiumdecoder.cpp"
+#line 51050 "pentiumdecoder.cpp"
 
       
     } 
@@ -51060,7 +51063,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51064 "pentiumdecoder.cpp"
+#line 51067 "pentiumdecoder.cpp"
 
       
     } 
@@ -51077,7 +51080,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51081 "pentiumdecoder.cpp"
+#line 51084 "pentiumdecoder.cpp"
 
       
     } 
@@ -51094,7 +51097,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51098 "pentiumdecoder.cpp"
+#line 51101 "pentiumdecoder.cpp"
 
       
     } 
@@ -51111,7 +51114,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51115 "pentiumdecoder.cpp"
+#line 51118 "pentiumdecoder.cpp"
 
       
     } 
@@ -51128,7 +51131,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51132 "pentiumdecoder.cpp"
+#line 51135 "pentiumdecoder.cpp"
 
       
     } 
@@ -51145,7 +51148,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51149 "pentiumdecoder.cpp"
+#line 51152 "pentiumdecoder.cpp"
 
       
     } 
@@ -51162,7 +51165,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51166 "pentiumdecoder.cpp"
+#line 51169 "pentiumdecoder.cpp"
 
       
     } 
@@ -51179,7 +51182,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51183 "pentiumdecoder.cpp"
+#line 51186 "pentiumdecoder.cpp"
 
       
     } 
@@ -51196,7 +51199,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51200 "pentiumdecoder.cpp"
+#line 51203 "pentiumdecoder.cpp"
 
       
     } 
@@ -51213,7 +51216,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51217 "pentiumdecoder.cpp"
+#line 51220 "pentiumdecoder.cpp"
 
       
     } 
@@ -51230,7 +51233,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51234 "pentiumdecoder.cpp"
+#line 51237 "pentiumdecoder.cpp"
 
       
     } 
@@ -51247,7 +51250,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51251 "pentiumdecoder.cpp"
+#line 51254 "pentiumdecoder.cpp"
 
       
     } 
@@ -51264,7 +51267,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51268 "pentiumdecoder.cpp"
+#line 51271 "pentiumdecoder.cpp"
 
       
     } 
@@ -51281,7 +51284,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51285 "pentiumdecoder.cpp"
+#line 51288 "pentiumdecoder.cpp"
 
       
     } 
@@ -51298,7 +51301,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51302 "pentiumdecoder.cpp"
+#line 51305 "pentiumdecoder.cpp"
 
       
     } 
@@ -51315,7 +51318,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51319 "pentiumdecoder.cpp"
+#line 51322 "pentiumdecoder.cpp"
 
       
     } 
@@ -51332,7 +51335,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51336 "pentiumdecoder.cpp"
+#line 51339 "pentiumdecoder.cpp"
 
       
     } 
@@ -51349,7 +51352,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51353 "pentiumdecoder.cpp"
+#line 51356 "pentiumdecoder.cpp"
 
       
     } 
@@ -51366,7 +51369,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51370 "pentiumdecoder.cpp"
+#line 51373 "pentiumdecoder.cpp"
 
       
     } 
@@ -51383,7 +51386,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51387 "pentiumdecoder.cpp"
+#line 51390 "pentiumdecoder.cpp"
 
       
     } 
@@ -51400,7 +51403,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51404 "pentiumdecoder.cpp"
+#line 51407 "pentiumdecoder.cpp"
 
       
     } 
@@ -51417,7 +51420,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51421 "pentiumdecoder.cpp"
+#line 51424 "pentiumdecoder.cpp"
 
       
     } 
@@ -51434,7 +51437,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51438 "pentiumdecoder.cpp"
+#line 51441 "pentiumdecoder.cpp"
 
       
     } 
@@ -51451,7 +51454,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51455 "pentiumdecoder.cpp"
+#line 51458 "pentiumdecoder.cpp"
 
       
     } 
@@ -51468,7 +51471,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51472 "pentiumdecoder.cpp"
+#line 51475 "pentiumdecoder.cpp"
 
       
     } 
@@ -51485,7 +51488,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51489 "pentiumdecoder.cpp"
+#line 51492 "pentiumdecoder.cpp"
 
       
     } 
@@ -51502,7 +51505,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51506 "pentiumdecoder.cpp"
+#line 51509 "pentiumdecoder.cpp"
 
       
     } 
@@ -51519,7 +51522,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51523 "pentiumdecoder.cpp"
+#line 51526 "pentiumdecoder.cpp"
 
       
     } 
@@ -51536,7 +51539,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51540 "pentiumdecoder.cpp"
+#line 51543 "pentiumdecoder.cpp"
 
       
     } 
@@ -51553,7 +51556,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51557 "pentiumdecoder.cpp"
+#line 51560 "pentiumdecoder.cpp"
 
       
     } 
@@ -51571,7 +51574,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 51575 "pentiumdecoder.cpp"
+#line 51578 "pentiumdecoder.cpp"
 
       
     } 
@@ -51589,7 +51592,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 51593 "pentiumdecoder.cpp"
+#line 51596 "pentiumdecoder.cpp"
 
       
     } 
@@ -51607,7 +51610,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 51611 "pentiumdecoder.cpp"
+#line 51614 "pentiumdecoder.cpp"
 
       
     } 
@@ -51625,7 +51628,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
 
-#line 51629 "pentiumdecoder.cpp"
+#line 51632 "pentiumdecoder.cpp"
 
       
     } 
@@ -51642,7 +51645,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51646 "pentiumdecoder.cpp"
+#line 51649 "pentiumdecoder.cpp"
 
       
     } 
@@ -51659,7 +51662,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51663 "pentiumdecoder.cpp"
+#line 51666 "pentiumdecoder.cpp"
 
       
     } 
@@ -51676,7 +51679,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51680 "pentiumdecoder.cpp"
+#line 51683 "pentiumdecoder.cpp"
 
       
     } 
@@ -51693,7 +51696,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51697 "pentiumdecoder.cpp"
+#line 51700 "pentiumdecoder.cpp"
 
       
     } 
@@ -51710,7 +51713,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51714 "pentiumdecoder.cpp"
+#line 51717 "pentiumdecoder.cpp"
 
       
     } 
@@ -51727,7 +51730,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51731 "pentiumdecoder.cpp"
+#line 51734 "pentiumdecoder.cpp"
 
       
     } 
@@ -51744,7 +51747,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51748 "pentiumdecoder.cpp"
+#line 51751 "pentiumdecoder.cpp"
 
       
     } 
@@ -51761,7 +51764,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51765 "pentiumdecoder.cpp"
+#line 51768 "pentiumdecoder.cpp"
 
       
     } 
@@ -51778,7 +51781,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51782 "pentiumdecoder.cpp"
+#line 51785 "pentiumdecoder.cpp"
 
       
     } 
@@ -51795,7 +51798,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51799 "pentiumdecoder.cpp"
+#line 51802 "pentiumdecoder.cpp"
 
       
     } 
@@ -51812,7 +51815,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51816 "pentiumdecoder.cpp"
+#line 51819 "pentiumdecoder.cpp"
 
       
     } 
@@ -51829,7 +51832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51833 "pentiumdecoder.cpp"
+#line 51836 "pentiumdecoder.cpp"
 
       
     } 
@@ -51846,7 +51849,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51850 "pentiumdecoder.cpp"
+#line 51853 "pentiumdecoder.cpp"
 
       
     } 
@@ -51863,7 +51866,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51867 "pentiumdecoder.cpp"
+#line 51870 "pentiumdecoder.cpp"
 
       
     } 
@@ -51880,7 +51883,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51884 "pentiumdecoder.cpp"
+#line 51887 "pentiumdecoder.cpp"
 
       
     } 
@@ -51897,7 +51900,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51901 "pentiumdecoder.cpp"
+#line 51904 "pentiumdecoder.cpp"
 
       
     } 
@@ -51914,7 +51917,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51918 "pentiumdecoder.cpp"
+#line 51921 "pentiumdecoder.cpp"
 
       
     } 
@@ -51931,7 +51934,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51935 "pentiumdecoder.cpp"
+#line 51938 "pentiumdecoder.cpp"
 
       
     } 
@@ -51948,7 +51951,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51952 "pentiumdecoder.cpp"
+#line 51955 "pentiumdecoder.cpp"
 
       
     } 
@@ -51965,7 +51968,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51969 "pentiumdecoder.cpp"
+#line 51972 "pentiumdecoder.cpp"
 
       
     } 
@@ -51982,7 +51985,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 51986 "pentiumdecoder.cpp"
+#line 51989 "pentiumdecoder.cpp"
 
       
     } 
@@ -51999,7 +52002,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52003 "pentiumdecoder.cpp"
+#line 52006 "pentiumdecoder.cpp"
 
       
     } 
@@ -52016,7 +52019,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52020 "pentiumdecoder.cpp"
+#line 52023 "pentiumdecoder.cpp"
 
       
     } 
@@ -52033,7 +52036,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52037 "pentiumdecoder.cpp"
+#line 52040 "pentiumdecoder.cpp"
 
       
     } 
@@ -52050,7 +52053,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52054 "pentiumdecoder.cpp"
+#line 52057 "pentiumdecoder.cpp"
 
       
     } 
@@ -52067,7 +52070,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52071 "pentiumdecoder.cpp"
+#line 52074 "pentiumdecoder.cpp"
 
       
     } 
@@ -52084,7 +52087,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52088 "pentiumdecoder.cpp"
+#line 52091 "pentiumdecoder.cpp"
 
       
     } 
@@ -52101,7 +52104,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52105 "pentiumdecoder.cpp"
+#line 52108 "pentiumdecoder.cpp"
 
       
     } 
@@ -52118,7 +52121,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52122 "pentiumdecoder.cpp"
+#line 52125 "pentiumdecoder.cpp"
 
       
     } 
@@ -52135,7 +52138,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52139 "pentiumdecoder.cpp"
+#line 52142 "pentiumdecoder.cpp"
 
       
     } 
@@ -52152,7 +52155,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52156 "pentiumdecoder.cpp"
+#line 52159 "pentiumdecoder.cpp"
 
       
     } 
@@ -52169,7 +52172,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 52173 "pentiumdecoder.cpp"
+#line 52176 "pentiumdecoder.cpp"
 
       
     } 
@@ -52198,7 +52201,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 52202 "pentiumdecoder.cpp"
+#line 52205 "pentiumdecoder.cpp"
 
       
     } 
@@ -52227,7 +52230,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 52231 "pentiumdecoder.cpp"
+#line 52234 "pentiumdecoder.cpp"
 
       
     } 
@@ -52256,7 +52259,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 52260 "pentiumdecoder.cpp"
+#line 52263 "pentiumdecoder.cpp"
 
       
     } 
@@ -52285,7 +52288,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 52289 "pentiumdecoder.cpp"
+#line 52292 "pentiumdecoder.cpp"
 
       
     } 
@@ -52299,12 +52302,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1628 "machine/pentium/decoder.m"
+#line 1631 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52308 "pentiumdecoder.cpp"
+#line 52311 "pentiumdecoder.cpp"
 
       
     } 
@@ -52318,12 +52321,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1628 "machine/pentium/decoder.m"
+#line 1631 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52327 "pentiumdecoder.cpp"
+#line 52330 "pentiumdecoder.cpp"
 
       
     } 
@@ -52337,12 +52340,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1628 "machine/pentium/decoder.m"
+#line 1631 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52346 "pentiumdecoder.cpp"
+#line 52349 "pentiumdecoder.cpp"
 
       
     } 
@@ -52356,12 +52359,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1628 "machine/pentium/decoder.m"
+#line 1631 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52365 "pentiumdecoder.cpp"
+#line 52368 "pentiumdecoder.cpp"
 
       
     } 
@@ -52375,12 +52378,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1625 "machine/pentium/decoder.m"
+#line 1628 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52384 "pentiumdecoder.cpp"
+#line 52387 "pentiumdecoder.cpp"
 
       
     } 
@@ -52394,12 +52397,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1625 "machine/pentium/decoder.m"
+#line 1628 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52403 "pentiumdecoder.cpp"
+#line 52406 "pentiumdecoder.cpp"
 
       
     } 
@@ -52413,12 +52416,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1625 "machine/pentium/decoder.m"
+#line 1628 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52422 "pentiumdecoder.cpp"
+#line 52425 "pentiumdecoder.cpp"
 
       
     } 
@@ -52432,12 +52435,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1625 "machine/pentium/decoder.m"
+#line 1628 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52441 "pentiumdecoder.cpp"
+#line 52444 "pentiumdecoder.cpp"
 
       
     } 
@@ -52451,12 +52454,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1622 "machine/pentium/decoder.m"
+#line 1625 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52460 "pentiumdecoder.cpp"
+#line 52463 "pentiumdecoder.cpp"
 
       
     } 
@@ -52470,12 +52473,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1622 "machine/pentium/decoder.m"
+#line 1625 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52479 "pentiumdecoder.cpp"
+#line 52482 "pentiumdecoder.cpp"
 
       
     } 
@@ -52489,12 +52492,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1622 "machine/pentium/decoder.m"
+#line 1625 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52498 "pentiumdecoder.cpp"
+#line 52501 "pentiumdecoder.cpp"
 
       
     } 
@@ -52508,12 +52511,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1622 "machine/pentium/decoder.m"
+#line 1625 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52517 "pentiumdecoder.cpp"
+#line 52520 "pentiumdecoder.cpp"
 
       
     } 
@@ -52527,12 +52530,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1619 "machine/pentium/decoder.m"
+#line 1622 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52536 "pentiumdecoder.cpp"
+#line 52539 "pentiumdecoder.cpp"
 
       
     } 
@@ -52546,12 +52549,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1619 "machine/pentium/decoder.m"
+#line 1622 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52555 "pentiumdecoder.cpp"
+#line 52558 "pentiumdecoder.cpp"
 
       
     } 
@@ -52565,12 +52568,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1619 "machine/pentium/decoder.m"
+#line 1622 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52574 "pentiumdecoder.cpp"
+#line 52577 "pentiumdecoder.cpp"
 
       
     } 
@@ -52584,12 +52587,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1619 "machine/pentium/decoder.m"
+#line 1622 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52593 "pentiumdecoder.cpp"
+#line 52596 "pentiumdecoder.cpp"
 
       
     } 
@@ -52603,12 +52606,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1616 "machine/pentium/decoder.m"
+#line 1619 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52612 "pentiumdecoder.cpp"
+#line 52615 "pentiumdecoder.cpp"
 
       
     } 
@@ -52622,12 +52625,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1616 "machine/pentium/decoder.m"
+#line 1619 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52631 "pentiumdecoder.cpp"
+#line 52634 "pentiumdecoder.cpp"
 
       
     } 
@@ -52641,12 +52644,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1616 "machine/pentium/decoder.m"
+#line 1619 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52650 "pentiumdecoder.cpp"
+#line 52653 "pentiumdecoder.cpp"
 
       
     } 
@@ -52660,12 +52663,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1616 "machine/pentium/decoder.m"
+#line 1619 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52669 "pentiumdecoder.cpp"
+#line 52672 "pentiumdecoder.cpp"
 
       
     } 
@@ -52679,12 +52682,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1613 "machine/pentium/decoder.m"
+#line 1616 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52688 "pentiumdecoder.cpp"
+#line 52691 "pentiumdecoder.cpp"
 
       
     } 
@@ -52698,12 +52701,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1613 "machine/pentium/decoder.m"
+#line 1616 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52707 "pentiumdecoder.cpp"
+#line 52710 "pentiumdecoder.cpp"
 
       
     } 
@@ -52717,12 +52720,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1613 "machine/pentium/decoder.m"
+#line 1616 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52726 "pentiumdecoder.cpp"
+#line 52729 "pentiumdecoder.cpp"
 
       
     } 
@@ -52736,12 +52739,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1613 "machine/pentium/decoder.m"
+#line 1616 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52745 "pentiumdecoder.cpp"
+#line 52748 "pentiumdecoder.cpp"
 
       
     } 
@@ -52755,12 +52758,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1610 "machine/pentium/decoder.m"
+#line 1613 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52764 "pentiumdecoder.cpp"
+#line 52767 "pentiumdecoder.cpp"
 
       
     } 
@@ -52774,12 +52777,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1610 "machine/pentium/decoder.m"
+#line 1613 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52783 "pentiumdecoder.cpp"
+#line 52786 "pentiumdecoder.cpp"
 
       
     } 
@@ -52793,12 +52796,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1610 "machine/pentium/decoder.m"
+#line 1613 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52802 "pentiumdecoder.cpp"
+#line 52805 "pentiumdecoder.cpp"
 
       
     } 
@@ -52812,12 +52815,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1610 "machine/pentium/decoder.m"
+#line 1613 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52821 "pentiumdecoder.cpp"
+#line 52824 "pentiumdecoder.cpp"
 
       
     } 
@@ -52831,12 +52834,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1607 "machine/pentium/decoder.m"
+#line 1610 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52840 "pentiumdecoder.cpp"
+#line 52843 "pentiumdecoder.cpp"
 
       
     } 
@@ -52850,12 +52853,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1607 "machine/pentium/decoder.m"
+#line 1610 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52859 "pentiumdecoder.cpp"
+#line 52862 "pentiumdecoder.cpp"
 
       
     } 
@@ -52869,12 +52872,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1607 "machine/pentium/decoder.m"
+#line 1610 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52878 "pentiumdecoder.cpp"
+#line 52881 "pentiumdecoder.cpp"
 
       
     } 
@@ -52888,12 +52891,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1607 "machine/pentium/decoder.m"
+#line 1610 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 52897 "pentiumdecoder.cpp"
+#line 52900 "pentiumdecoder.cpp"
 
       
     } 
@@ -52906,12 +52909,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1580 "machine/pentium/decoder.m"
+#line 1583 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 52915 "pentiumdecoder.cpp"
+#line 52918 "pentiumdecoder.cpp"
 
       
     } 
@@ -52924,12 +52927,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1580 "machine/pentium/decoder.m"
+#line 1583 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 52933 "pentiumdecoder.cpp"
+#line 52936 "pentiumdecoder.cpp"
 
       
     } 
@@ -52942,12 +52945,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1580 "machine/pentium/decoder.m"
+#line 1583 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 52951 "pentiumdecoder.cpp"
+#line 52954 "pentiumdecoder.cpp"
 
       
     } 
@@ -52960,12 +52963,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1580 "machine/pentium/decoder.m"
+#line 1583 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 52969 "pentiumdecoder.cpp"
+#line 52972 "pentiumdecoder.cpp"
 
       
     } 
@@ -52978,12 +52981,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1577 "machine/pentium/decoder.m"
+#line 1580 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 52987 "pentiumdecoder.cpp"
+#line 52990 "pentiumdecoder.cpp"
 
       
     } 
@@ -52996,12 +52999,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1577 "machine/pentium/decoder.m"
+#line 1580 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53005 "pentiumdecoder.cpp"
+#line 53008 "pentiumdecoder.cpp"
 
       
     } 
@@ -53014,12 +53017,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1577 "machine/pentium/decoder.m"
+#line 1580 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53023 "pentiumdecoder.cpp"
+#line 53026 "pentiumdecoder.cpp"
 
       
     } 
@@ -53032,12 +53035,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1577 "machine/pentium/decoder.m"
+#line 1580 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53041 "pentiumdecoder.cpp"
+#line 53044 "pentiumdecoder.cpp"
 
       
     } 
@@ -53050,12 +53053,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1574 "machine/pentium/decoder.m"
+#line 1577 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53059 "pentiumdecoder.cpp"
+#line 53062 "pentiumdecoder.cpp"
 
       
     } 
@@ -53068,12 +53071,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1574 "machine/pentium/decoder.m"
+#line 1577 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53077 "pentiumdecoder.cpp"
+#line 53080 "pentiumdecoder.cpp"
 
       
     } 
@@ -53086,12 +53089,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1574 "machine/pentium/decoder.m"
+#line 1577 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53095 "pentiumdecoder.cpp"
+#line 53098 "pentiumdecoder.cpp"
 
       
     } 
@@ -53104,12 +53107,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1574 "machine/pentium/decoder.m"
+#line 1577 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53113 "pentiumdecoder.cpp"
+#line 53116 "pentiumdecoder.cpp"
 
       
     } 
@@ -53122,12 +53125,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1571 "machine/pentium/decoder.m"
+#line 1574 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53131 "pentiumdecoder.cpp"
+#line 53134 "pentiumdecoder.cpp"
 
       
     } 
@@ -53140,12 +53143,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1571 "machine/pentium/decoder.m"
+#line 1574 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53149 "pentiumdecoder.cpp"
+#line 53152 "pentiumdecoder.cpp"
 
       
     } 
@@ -53158,12 +53161,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1571 "machine/pentium/decoder.m"
+#line 1574 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53167 "pentiumdecoder.cpp"
+#line 53170 "pentiumdecoder.cpp"
 
       
     } 
@@ -53176,12 +53179,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1571 "machine/pentium/decoder.m"
+#line 1574 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53185 "pentiumdecoder.cpp"
+#line 53188 "pentiumdecoder.cpp"
 
       
     } 
@@ -53194,12 +53197,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1568 "machine/pentium/decoder.m"
+#line 1571 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53203 "pentiumdecoder.cpp"
+#line 53206 "pentiumdecoder.cpp"
 
       
     } 
@@ -53212,12 +53215,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1568 "machine/pentium/decoder.m"
+#line 1571 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53221 "pentiumdecoder.cpp"
+#line 53224 "pentiumdecoder.cpp"
 
       
     } 
@@ -53230,12 +53233,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1568 "machine/pentium/decoder.m"
+#line 1571 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53239 "pentiumdecoder.cpp"
+#line 53242 "pentiumdecoder.cpp"
 
       
     } 
@@ -53248,12 +53251,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1568 "machine/pentium/decoder.m"
+#line 1571 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53257 "pentiumdecoder.cpp"
+#line 53260 "pentiumdecoder.cpp"
 
       
     } 
@@ -53266,12 +53269,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1565 "machine/pentium/decoder.m"
+#line 1568 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53275 "pentiumdecoder.cpp"
+#line 53278 "pentiumdecoder.cpp"
 
       
     } 
@@ -53284,12 +53287,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1565 "machine/pentium/decoder.m"
+#line 1568 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53293 "pentiumdecoder.cpp"
+#line 53296 "pentiumdecoder.cpp"
 
       
     } 
@@ -53302,12 +53305,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1565 "machine/pentium/decoder.m"
+#line 1568 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53311 "pentiumdecoder.cpp"
+#line 53314 "pentiumdecoder.cpp"
 
       
     } 
@@ -53320,12 +53323,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1565 "machine/pentium/decoder.m"
+#line 1568 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53329 "pentiumdecoder.cpp"
+#line 53332 "pentiumdecoder.cpp"
 
       
     } 
@@ -53338,12 +53341,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1562 "machine/pentium/decoder.m"
+#line 1565 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53347 "pentiumdecoder.cpp"
+#line 53350 "pentiumdecoder.cpp"
 
       
     } 
@@ -53356,12 +53359,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1562 "machine/pentium/decoder.m"
+#line 1565 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53365 "pentiumdecoder.cpp"
+#line 53368 "pentiumdecoder.cpp"
 
       
     } 
@@ -53374,12 +53377,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1562 "machine/pentium/decoder.m"
+#line 1565 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53383 "pentiumdecoder.cpp"
+#line 53386 "pentiumdecoder.cpp"
 
       
     } 
@@ -53392,12 +53395,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1562 "machine/pentium/decoder.m"
+#line 1565 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53401 "pentiumdecoder.cpp"
+#line 53404 "pentiumdecoder.cpp"
 
       
     } 
@@ -53410,12 +53413,12 @@ pc
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1559 "machine/pentium/decoder.m"
+#line 1562 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53419 "pentiumdecoder.cpp"
+#line 53422 "pentiumdecoder.cpp"
 
       
     } 
@@ -53428,12 +53431,12 @@ pc
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1559 "machine/pentium/decoder.m"
+#line 1562 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53437 "pentiumdecoder.cpp"
+#line 53440 "pentiumdecoder.cpp"
 
       
     } 
@@ -53446,12 +53449,12 @@ pc
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1559 "machine/pentium/decoder.m"
+#line 1562 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53455 "pentiumdecoder.cpp"
+#line 53458 "pentiumdecoder.cpp"
 
       
     } 
@@ -53464,12 +53467,12 @@ pc
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1559 "machine/pentium/decoder.m"
+#line 1562 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 53473 "pentiumdecoder.cpp"
+#line 53476 "pentiumdecoder.cpp"
 
       
     } 
@@ -53483,12 +53486,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1553 "machine/pentium/decoder.m"
+#line 1556 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53492 "pentiumdecoder.cpp"
+#line 53495 "pentiumdecoder.cpp"
 
       
     } 
@@ -53502,12 +53505,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1553 "machine/pentium/decoder.m"
+#line 1556 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53511 "pentiumdecoder.cpp"
+#line 53514 "pentiumdecoder.cpp"
 
       
     } 
@@ -53521,12 +53524,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1553 "machine/pentium/decoder.m"
+#line 1556 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53530 "pentiumdecoder.cpp"
+#line 53533 "pentiumdecoder.cpp"
 
       
     } 
@@ -53540,12 +53543,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1553 "machine/pentium/decoder.m"
+#line 1556 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53549 "pentiumdecoder.cpp"
+#line 53552 "pentiumdecoder.cpp"
 
       
     } 
@@ -53559,12 +53562,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1547 "machine/pentium/decoder.m"
+#line 1550 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53568 "pentiumdecoder.cpp"
+#line 53571 "pentiumdecoder.cpp"
 
       
     } 
@@ -53578,12 +53581,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1547 "machine/pentium/decoder.m"
+#line 1550 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53587 "pentiumdecoder.cpp"
+#line 53590 "pentiumdecoder.cpp"
 
       
     } 
@@ -53597,12 +53600,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1547 "machine/pentium/decoder.m"
+#line 1550 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53606 "pentiumdecoder.cpp"
+#line 53609 "pentiumdecoder.cpp"
 
       
     } 
@@ -53616,12 +53619,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1547 "machine/pentium/decoder.m"
+#line 1550 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53625 "pentiumdecoder.cpp"
+#line 53628 "pentiumdecoder.cpp"
 
       
     } 
@@ -53635,12 +53638,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1541 "machine/pentium/decoder.m"
+#line 1544 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53644 "pentiumdecoder.cpp"
+#line 53647 "pentiumdecoder.cpp"
 
       
     } 
@@ -53654,12 +53657,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1541 "machine/pentium/decoder.m"
+#line 1544 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53663 "pentiumdecoder.cpp"
+#line 53666 "pentiumdecoder.cpp"
 
       
     } 
@@ -53673,12 +53676,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1541 "machine/pentium/decoder.m"
+#line 1544 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53682 "pentiumdecoder.cpp"
+#line 53685 "pentiumdecoder.cpp"
 
       
     } 
@@ -53692,12 +53695,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1541 "machine/pentium/decoder.m"
+#line 1544 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53701 "pentiumdecoder.cpp"
+#line 53704 "pentiumdecoder.cpp"
 
       
     } 
@@ -53711,12 +53714,12 @@ pc
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1535 "machine/pentium/decoder.m"
+#line 1538 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53720 "pentiumdecoder.cpp"
+#line 53723 "pentiumdecoder.cpp"
 
       
     } 
@@ -53730,12 +53733,12 @@ pc
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1535 "machine/pentium/decoder.m"
+#line 1538 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53739 "pentiumdecoder.cpp"
+#line 53742 "pentiumdecoder.cpp"
 
       
     } 
@@ -53749,12 +53752,12 @@ pc
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1535 "machine/pentium/decoder.m"
+#line 1538 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53758 "pentiumdecoder.cpp"
+#line 53761 "pentiumdecoder.cpp"
 
       
     } 
@@ -53768,12 +53771,12 @@ pc
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1535 "machine/pentium/decoder.m"
+#line 1538 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53777 "pentiumdecoder.cpp"
+#line 53780 "pentiumdecoder.cpp"
 
       
     } 
@@ -53791,11 +53794,14 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 
-#line 53799 "pentiumdecoder.cpp"
+#line 53805 "pentiumdecoder.cpp"
 
       
     } 
@@ -53813,11 +53819,14 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 
-#line 53821 "pentiumdecoder.cpp"
+#line 53830 "pentiumdecoder.cpp"
 
       
     } 
@@ -53835,11 +53844,14 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 
-#line 53843 "pentiumdecoder.cpp"
+#line 53855 "pentiumdecoder.cpp"
 
       
     } 
@@ -53857,11 +53869,14 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 
-#line 53865 "pentiumdecoder.cpp"
+#line 53880 "pentiumdecoder.cpp"
 
       
     } 
@@ -53880,7 +53895,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53884 "pentiumdecoder.cpp"
+#line 53899 "pentiumdecoder.cpp"
 
       
     } 
@@ -53899,7 +53914,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53903 "pentiumdecoder.cpp"
+#line 53918 "pentiumdecoder.cpp"
 
       
     } 
@@ -53918,7 +53933,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53922 "pentiumdecoder.cpp"
+#line 53937 "pentiumdecoder.cpp"
 
       
     } 
@@ -53937,7 +53952,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53941 "pentiumdecoder.cpp"
+#line 53956 "pentiumdecoder.cpp"
 
       
     } 
@@ -53956,7 +53971,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53960 "pentiumdecoder.cpp"
+#line 53975 "pentiumdecoder.cpp"
 
       
     } 
@@ -53975,7 +53990,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53979 "pentiumdecoder.cpp"
+#line 53994 "pentiumdecoder.cpp"
 
       
     } 
@@ -53994,7 +54009,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 53998 "pentiumdecoder.cpp"
+#line 54013 "pentiumdecoder.cpp"
 
       
     } 
@@ -54013,7 +54028,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54017 "pentiumdecoder.cpp"
+#line 54032 "pentiumdecoder.cpp"
 
       
     } 
@@ -54032,7 +54047,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54036 "pentiumdecoder.cpp"
+#line 54051 "pentiumdecoder.cpp"
 
       
     } 
@@ -54051,7 +54066,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54055 "pentiumdecoder.cpp"
+#line 54070 "pentiumdecoder.cpp"
 
       
     } 
@@ -54070,7 +54085,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54074 "pentiumdecoder.cpp"
+#line 54089 "pentiumdecoder.cpp"
 
       
     } 
@@ -54089,7 +54104,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54093 "pentiumdecoder.cpp"
+#line 54108 "pentiumdecoder.cpp"
 
       
     } 
@@ -54107,7 +54122,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54111 "pentiumdecoder.cpp"
+#line 54126 "pentiumdecoder.cpp"
 
       
     } 
@@ -54125,7 +54140,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54129 "pentiumdecoder.cpp"
+#line 54144 "pentiumdecoder.cpp"
 
       
     } 
@@ -54143,7 +54158,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54147 "pentiumdecoder.cpp"
+#line 54162 "pentiumdecoder.cpp"
 
       
     } 
@@ -54161,7 +54176,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54165 "pentiumdecoder.cpp"
+#line 54180 "pentiumdecoder.cpp"
 
       
     } 
@@ -54179,7 +54194,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54183 "pentiumdecoder.cpp"
+#line 54198 "pentiumdecoder.cpp"
 
       
     } 
@@ -54197,7 +54212,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54201 "pentiumdecoder.cpp"
+#line 54216 "pentiumdecoder.cpp"
 
       
     } 
@@ -54215,7 +54230,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54219 "pentiumdecoder.cpp"
+#line 54234 "pentiumdecoder.cpp"
 
       
     } 
@@ -54233,7 +54248,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54237 "pentiumdecoder.cpp"
+#line 54252 "pentiumdecoder.cpp"
 
       
     } 
@@ -54251,7 +54266,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54255 "pentiumdecoder.cpp"
+#line 54270 "pentiumdecoder.cpp"
 
       
     } 
@@ -54269,7 +54284,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54273 "pentiumdecoder.cpp"
+#line 54288 "pentiumdecoder.cpp"
 
       
     } 
@@ -54287,7 +54302,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54291 "pentiumdecoder.cpp"
+#line 54306 "pentiumdecoder.cpp"
 
       
     } 
@@ -54305,7 +54320,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 54309 "pentiumdecoder.cpp"
+#line 54324 "pentiumdecoder.cpp"
 
       
     } 
@@ -54323,7 +54338,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54327 "pentiumdecoder.cpp"
+#line 54342 "pentiumdecoder.cpp"
 
       
     } 
@@ -54341,7 +54356,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54345 "pentiumdecoder.cpp"
+#line 54360 "pentiumdecoder.cpp"
 
       
     } 
@@ -54359,7 +54374,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54363 "pentiumdecoder.cpp"
+#line 54378 "pentiumdecoder.cpp"
 
       
     } 
@@ -54377,7 +54392,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 54381 "pentiumdecoder.cpp"
+#line 54396 "pentiumdecoder.cpp"
 
       
     } 
@@ -54396,7 +54411,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54400 "pentiumdecoder.cpp"
+#line 54415 "pentiumdecoder.cpp"
 
       
     } 
@@ -54415,7 +54430,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54419 "pentiumdecoder.cpp"
+#line 54434 "pentiumdecoder.cpp"
 
       
     } 
@@ -54434,7 +54449,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54438 "pentiumdecoder.cpp"
+#line 54453 "pentiumdecoder.cpp"
 
       
     } 
@@ -54453,7 +54468,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54457 "pentiumdecoder.cpp"
+#line 54472 "pentiumdecoder.cpp"
 
       
     } 
@@ -54472,7 +54487,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54476 "pentiumdecoder.cpp"
+#line 54491 "pentiumdecoder.cpp"
 
       
     } 
@@ -54491,7 +54506,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54495 "pentiumdecoder.cpp"
+#line 54510 "pentiumdecoder.cpp"
 
       
     } 
@@ -54510,7 +54525,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54514 "pentiumdecoder.cpp"
+#line 54529 "pentiumdecoder.cpp"
 
       
     } 
@@ -54529,7 +54544,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54533 "pentiumdecoder.cpp"
+#line 54548 "pentiumdecoder.cpp"
 
       
     } 
@@ -54548,7 +54563,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54552 "pentiumdecoder.cpp"
+#line 54567 "pentiumdecoder.cpp"
 
       
     } 
@@ -54567,7 +54582,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54571 "pentiumdecoder.cpp"
+#line 54586 "pentiumdecoder.cpp"
 
       
     } 
@@ -54586,7 +54601,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54590 "pentiumdecoder.cpp"
+#line 54605 "pentiumdecoder.cpp"
 
       
     } 
@@ -54605,7 +54620,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54609 "pentiumdecoder.cpp"
+#line 54624 "pentiumdecoder.cpp"
 
       
     } 
@@ -54624,7 +54639,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54628 "pentiumdecoder.cpp"
+#line 54643 "pentiumdecoder.cpp"
 
       
     } 
@@ -54643,7 +54658,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54647 "pentiumdecoder.cpp"
+#line 54662 "pentiumdecoder.cpp"
 
       
     } 
@@ -54662,7 +54677,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54666 "pentiumdecoder.cpp"
+#line 54681 "pentiumdecoder.cpp"
 
       
     } 
@@ -54681,7 +54696,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54685 "pentiumdecoder.cpp"
+#line 54700 "pentiumdecoder.cpp"
 
       
     } 
@@ -54700,7 +54715,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54704 "pentiumdecoder.cpp"
+#line 54719 "pentiumdecoder.cpp"
 
       
     } 
@@ -54719,7 +54734,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54723 "pentiumdecoder.cpp"
+#line 54738 "pentiumdecoder.cpp"
 
       
     } 
@@ -54738,7 +54753,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54742 "pentiumdecoder.cpp"
+#line 54757 "pentiumdecoder.cpp"
 
       
     } 
@@ -54757,7 +54772,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54761 "pentiumdecoder.cpp"
+#line 54776 "pentiumdecoder.cpp"
 
       
     } 
@@ -54776,7 +54791,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54780 "pentiumdecoder.cpp"
+#line 54795 "pentiumdecoder.cpp"
 
       
     } 
@@ -54795,7 +54810,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54799 "pentiumdecoder.cpp"
+#line 54814 "pentiumdecoder.cpp"
 
       
     } 
@@ -54814,7 +54829,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54818 "pentiumdecoder.cpp"
+#line 54833 "pentiumdecoder.cpp"
 
       
     } 
@@ -54833,7 +54848,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54837 "pentiumdecoder.cpp"
+#line 54852 "pentiumdecoder.cpp"
 
       
     } 
@@ -54852,7 +54867,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54856 "pentiumdecoder.cpp"
+#line 54871 "pentiumdecoder.cpp"
 
       
     } 
@@ -54871,7 +54886,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54875 "pentiumdecoder.cpp"
+#line 54890 "pentiumdecoder.cpp"
 
       
     } 
@@ -54890,7 +54905,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54894 "pentiumdecoder.cpp"
+#line 54909 "pentiumdecoder.cpp"
 
       
     } 
@@ -54909,7 +54924,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 54913 "pentiumdecoder.cpp"
+#line 54928 "pentiumdecoder.cpp"
 
       
     } 
@@ -54928,7 +54943,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54932 "pentiumdecoder.cpp"
+#line 54947 "pentiumdecoder.cpp"
 
       
     } 
@@ -54947,7 +54962,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54951 "pentiumdecoder.cpp"
+#line 54966 "pentiumdecoder.cpp"
 
       
     } 
@@ -54966,7 +54981,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54970 "pentiumdecoder.cpp"
+#line 54985 "pentiumdecoder.cpp"
 
       
     } 
@@ -54985,7 +55000,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 54989 "pentiumdecoder.cpp"
+#line 55004 "pentiumdecoder.cpp"
 
       
     } 
@@ -55004,7 +55019,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55008 "pentiumdecoder.cpp"
+#line 55023 "pentiumdecoder.cpp"
 
       
     } 
@@ -55023,7 +55038,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55027 "pentiumdecoder.cpp"
+#line 55042 "pentiumdecoder.cpp"
 
       
     } 
@@ -55042,7 +55057,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55046 "pentiumdecoder.cpp"
+#line 55061 "pentiumdecoder.cpp"
 
       
     } 
@@ -55061,7 +55076,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55065 "pentiumdecoder.cpp"
+#line 55080 "pentiumdecoder.cpp"
 
       
     } 
@@ -55080,7 +55095,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55084 "pentiumdecoder.cpp"
+#line 55099 "pentiumdecoder.cpp"
 
       
     } 
@@ -55099,7 +55114,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55103 "pentiumdecoder.cpp"
+#line 55118 "pentiumdecoder.cpp"
 
       
     } 
@@ -55118,7 +55133,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55122 "pentiumdecoder.cpp"
+#line 55137 "pentiumdecoder.cpp"
 
       
     } 
@@ -55137,7 +55152,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55141 "pentiumdecoder.cpp"
+#line 55156 "pentiumdecoder.cpp"
 
       
     } 
@@ -55156,7 +55171,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55160 "pentiumdecoder.cpp"
+#line 55175 "pentiumdecoder.cpp"
 
       
     } 
@@ -55175,7 +55190,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55179 "pentiumdecoder.cpp"
+#line 55194 "pentiumdecoder.cpp"
 
       
     } 
@@ -55194,7 +55209,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55198 "pentiumdecoder.cpp"
+#line 55213 "pentiumdecoder.cpp"
 
       
     } 
@@ -55213,7 +55228,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55217 "pentiumdecoder.cpp"
+#line 55232 "pentiumdecoder.cpp"
 
       
     } 
@@ -55232,7 +55247,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55236 "pentiumdecoder.cpp"
+#line 55251 "pentiumdecoder.cpp"
 
       
     } 
@@ -55251,7 +55266,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55255 "pentiumdecoder.cpp"
+#line 55270 "pentiumdecoder.cpp"
 
       
     } 
@@ -55270,7 +55285,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55274 "pentiumdecoder.cpp"
+#line 55289 "pentiumdecoder.cpp"
 
       
     } 
@@ -55289,7 +55304,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55293 "pentiumdecoder.cpp"
+#line 55308 "pentiumdecoder.cpp"
 
       
     } 
@@ -55308,7 +55323,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55312 "pentiumdecoder.cpp"
+#line 55327 "pentiumdecoder.cpp"
 
       
     } 
@@ -55327,7 +55342,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55331 "pentiumdecoder.cpp"
+#line 55346 "pentiumdecoder.cpp"
 
       
     } 
@@ -55346,7 +55361,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55350 "pentiumdecoder.cpp"
+#line 55365 "pentiumdecoder.cpp"
 
       
     } 
@@ -55365,7 +55380,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55369 "pentiumdecoder.cpp"
+#line 55384 "pentiumdecoder.cpp"
 
       
     } 
@@ -55384,7 +55399,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55388 "pentiumdecoder.cpp"
+#line 55403 "pentiumdecoder.cpp"
 
       
     } 
@@ -55403,7 +55418,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55407 "pentiumdecoder.cpp"
+#line 55422 "pentiumdecoder.cpp"
 
       
     } 
@@ -55422,7 +55437,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55426 "pentiumdecoder.cpp"
+#line 55441 "pentiumdecoder.cpp"
 
       
     } 
@@ -55441,7 +55456,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 55445 "pentiumdecoder.cpp"
+#line 55460 "pentiumdecoder.cpp"
 
       
     } 
@@ -55459,7 +55474,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55463 "pentiumdecoder.cpp"
+#line 55478 "pentiumdecoder.cpp"
 
       
     } 
@@ -55477,7 +55492,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55481 "pentiumdecoder.cpp"
+#line 55496 "pentiumdecoder.cpp"
 
       
     } 
@@ -55495,7 +55510,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55499 "pentiumdecoder.cpp"
+#line 55514 "pentiumdecoder.cpp"
 
       
     } 
@@ -55513,7 +55528,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55517 "pentiumdecoder.cpp"
+#line 55532 "pentiumdecoder.cpp"
 
       
     } 
@@ -55531,7 +55546,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55535 "pentiumdecoder.cpp"
+#line 55550 "pentiumdecoder.cpp"
 
       
     } 
@@ -55549,7 +55564,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 55553 "pentiumdecoder.cpp"
+#line 55568 "pentiumdecoder.cpp"
 
       
     } 
@@ -55568,7 +55583,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 55572 "pentiumdecoder.cpp"
+#line 55587 "pentiumdecoder.cpp"
 
       
     } 
@@ -55587,7 +55602,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 55591 "pentiumdecoder.cpp"
+#line 55606 "pentiumdecoder.cpp"
 
       
     } 
@@ -55606,7 +55621,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 55610 "pentiumdecoder.cpp"
+#line 55625 "pentiumdecoder.cpp"
 
       
     } 
@@ -55625,7 +55640,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 55629 "pentiumdecoder.cpp"
+#line 55644 "pentiumdecoder.cpp"
 
       
     } 
@@ -55643,7 +55658,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 55647 "pentiumdecoder.cpp"
+#line 55662 "pentiumdecoder.cpp"
 
       
     } 
@@ -55661,7 +55676,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 55665 "pentiumdecoder.cpp"
+#line 55680 "pentiumdecoder.cpp"
 
       
     } 
@@ -55679,7 +55694,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 55683 "pentiumdecoder.cpp"
+#line 55698 "pentiumdecoder.cpp"
 
       
     } 
@@ -55697,7 +55712,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 55701 "pentiumdecoder.cpp"
+#line 55716 "pentiumdecoder.cpp"
 
       
     } 
@@ -55728,7 +55743,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 55732 "pentiumdecoder.cpp"
+#line 55747 "pentiumdecoder.cpp"
 
       
     } 
@@ -55759,7 +55774,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 55763 "pentiumdecoder.cpp"
+#line 55778 "pentiumdecoder.cpp"
 
       
     } 
@@ -55790,7 +55805,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 55794 "pentiumdecoder.cpp"
+#line 55809 "pentiumdecoder.cpp"
 
       
     } 
@@ -55821,7 +55836,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 55825 "pentiumdecoder.cpp"
+#line 55840 "pentiumdecoder.cpp"
 
       
     } 
@@ -55838,7 +55853,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55842 "pentiumdecoder.cpp"
+#line 55857 "pentiumdecoder.cpp"
 
       
     } 
@@ -55855,7 +55870,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55859 "pentiumdecoder.cpp"
+#line 55874 "pentiumdecoder.cpp"
 
       
     } 
@@ -55872,7 +55887,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55876 "pentiumdecoder.cpp"
+#line 55891 "pentiumdecoder.cpp"
 
       
     } 
@@ -55889,7 +55904,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55893 "pentiumdecoder.cpp"
+#line 55908 "pentiumdecoder.cpp"
 
       
     } 
@@ -55906,7 +55921,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55910 "pentiumdecoder.cpp"
+#line 55925 "pentiumdecoder.cpp"
 
       
     } 
@@ -55923,7 +55938,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55927 "pentiumdecoder.cpp"
+#line 55942 "pentiumdecoder.cpp"
 
       
     } 
@@ -55940,7 +55955,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55944 "pentiumdecoder.cpp"
+#line 55959 "pentiumdecoder.cpp"
 
       
     } 
@@ -55957,7 +55972,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55961 "pentiumdecoder.cpp"
+#line 55976 "pentiumdecoder.cpp"
 
       
     } 
@@ -55974,7 +55989,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55978 "pentiumdecoder.cpp"
+#line 55993 "pentiumdecoder.cpp"
 
       
     } 
@@ -55991,7 +56006,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 55995 "pentiumdecoder.cpp"
+#line 56010 "pentiumdecoder.cpp"
 
       
     } 
@@ -56008,7 +56023,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56012 "pentiumdecoder.cpp"
+#line 56027 "pentiumdecoder.cpp"
 
       
     } 
@@ -56025,7 +56040,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56029 "pentiumdecoder.cpp"
+#line 56044 "pentiumdecoder.cpp"
 
       
     } 
@@ -56042,7 +56057,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56046 "pentiumdecoder.cpp"
+#line 56061 "pentiumdecoder.cpp"
 
       
     } 
@@ -56059,7 +56074,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56063 "pentiumdecoder.cpp"
+#line 56078 "pentiumdecoder.cpp"
 
       
     } 
@@ -56076,7 +56091,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56080 "pentiumdecoder.cpp"
+#line 56095 "pentiumdecoder.cpp"
 
       
     } 
@@ -56093,7 +56108,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56097 "pentiumdecoder.cpp"
+#line 56112 "pentiumdecoder.cpp"
 
       
     } 
@@ -56110,7 +56125,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56114 "pentiumdecoder.cpp"
+#line 56129 "pentiumdecoder.cpp"
 
       
     } 
@@ -56127,7 +56142,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56131 "pentiumdecoder.cpp"
+#line 56146 "pentiumdecoder.cpp"
 
       
     } 
@@ -56144,7 +56159,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56148 "pentiumdecoder.cpp"
+#line 56163 "pentiumdecoder.cpp"
 
       
     } 
@@ -56161,7 +56176,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56165 "pentiumdecoder.cpp"
+#line 56180 "pentiumdecoder.cpp"
 
       
     } 
@@ -56178,7 +56193,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 56182 "pentiumdecoder.cpp"
+#line 56197 "pentiumdecoder.cpp"
 
       
     } 
@@ -56195,7 +56210,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 56199 "pentiumdecoder.cpp"
+#line 56214 "pentiumdecoder.cpp"
 
       
     } 
@@ -56212,7 +56227,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 56216 "pentiumdecoder.cpp"
+#line 56231 "pentiumdecoder.cpp"
 
       
     } 
@@ -56229,7 +56244,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
 
-#line 56233 "pentiumdecoder.cpp"
+#line 56248 "pentiumdecoder.cpp"
 
       
     } 
@@ -56246,7 +56261,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56250 "pentiumdecoder.cpp"
+#line 56265 "pentiumdecoder.cpp"
 
       
     } 
@@ -56263,7 +56278,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56267 "pentiumdecoder.cpp"
+#line 56282 "pentiumdecoder.cpp"
 
       
     } 
@@ -56280,7 +56295,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56284 "pentiumdecoder.cpp"
+#line 56299 "pentiumdecoder.cpp"
 
       
     } 
@@ -56297,7 +56312,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56301 "pentiumdecoder.cpp"
+#line 56316 "pentiumdecoder.cpp"
 
       
     } 
@@ -56314,7 +56329,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56318 "pentiumdecoder.cpp"
+#line 56333 "pentiumdecoder.cpp"
 
       
     } 
@@ -56331,7 +56346,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56335 "pentiumdecoder.cpp"
+#line 56350 "pentiumdecoder.cpp"
 
       
     } 
@@ -56348,7 +56363,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56352 "pentiumdecoder.cpp"
+#line 56367 "pentiumdecoder.cpp"
 
       
     } 
@@ -56365,7 +56380,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56369 "pentiumdecoder.cpp"
+#line 56384 "pentiumdecoder.cpp"
 
       
     } 
@@ -56382,7 +56397,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56386 "pentiumdecoder.cpp"
+#line 56401 "pentiumdecoder.cpp"
 
       
     } 
@@ -56399,7 +56414,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56403 "pentiumdecoder.cpp"
+#line 56418 "pentiumdecoder.cpp"
 
       
     } 
@@ -56416,7 +56431,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56420 "pentiumdecoder.cpp"
+#line 56435 "pentiumdecoder.cpp"
 
       
     } 
@@ -56433,7 +56448,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56437 "pentiumdecoder.cpp"
+#line 56452 "pentiumdecoder.cpp"
 
       
     } 
@@ -56450,7 +56465,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56454 "pentiumdecoder.cpp"
+#line 56469 "pentiumdecoder.cpp"
 
       
     } 
@@ -56467,7 +56482,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56471 "pentiumdecoder.cpp"
+#line 56486 "pentiumdecoder.cpp"
 
       
     } 
@@ -56484,7 +56499,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56488 "pentiumdecoder.cpp"
+#line 56503 "pentiumdecoder.cpp"
 
       
     } 
@@ -56501,7 +56516,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56505 "pentiumdecoder.cpp"
+#line 56520 "pentiumdecoder.cpp"
 
       
     } 
@@ -56518,7 +56533,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56522 "pentiumdecoder.cpp"
+#line 56537 "pentiumdecoder.cpp"
 
       
     } 
@@ -56535,7 +56550,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56539 "pentiumdecoder.cpp"
+#line 56554 "pentiumdecoder.cpp"
 
       
     } 
@@ -56552,7 +56567,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56556 "pentiumdecoder.cpp"
+#line 56571 "pentiumdecoder.cpp"
 
       
     } 
@@ -56569,7 +56584,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56573 "pentiumdecoder.cpp"
+#line 56588 "pentiumdecoder.cpp"
 
       
     } 
@@ -56586,7 +56601,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56590 "pentiumdecoder.cpp"
+#line 56605 "pentiumdecoder.cpp"
 
       
     } 
@@ -56603,7 +56618,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56607 "pentiumdecoder.cpp"
+#line 56622 "pentiumdecoder.cpp"
 
       
     } 
@@ -56620,7 +56635,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56624 "pentiumdecoder.cpp"
+#line 56639 "pentiumdecoder.cpp"
 
       
     } 
@@ -56637,7 +56652,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56641 "pentiumdecoder.cpp"
+#line 56656 "pentiumdecoder.cpp"
 
       
     } 
@@ -56654,7 +56669,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56658 "pentiumdecoder.cpp"
+#line 56673 "pentiumdecoder.cpp"
 
       
     } 
@@ -56671,7 +56686,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56675 "pentiumdecoder.cpp"
+#line 56690 "pentiumdecoder.cpp"
 
       
     } 
@@ -56688,7 +56703,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56692 "pentiumdecoder.cpp"
+#line 56707 "pentiumdecoder.cpp"
 
       
     } 
@@ -56705,7 +56720,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 56709 "pentiumdecoder.cpp"
+#line 56724 "pentiumdecoder.cpp"
 
       
     } 
@@ -56722,7 +56737,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56726 "pentiumdecoder.cpp"
+#line 56741 "pentiumdecoder.cpp"
 
       
     } 
@@ -56739,7 +56754,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56743 "pentiumdecoder.cpp"
+#line 56758 "pentiumdecoder.cpp"
 
       
     } 
@@ -56756,7 +56771,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56760 "pentiumdecoder.cpp"
+#line 56775 "pentiumdecoder.cpp"
 
       
     } 
@@ -56773,7 +56788,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56777 "pentiumdecoder.cpp"
+#line 56792 "pentiumdecoder.cpp"
 
       
     } 
@@ -56790,7 +56805,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56794 "pentiumdecoder.cpp"
+#line 56809 "pentiumdecoder.cpp"
 
       
     } 
@@ -56807,7 +56822,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56811 "pentiumdecoder.cpp"
+#line 56826 "pentiumdecoder.cpp"
 
       
     } 
@@ -56824,7 +56839,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56828 "pentiumdecoder.cpp"
+#line 56843 "pentiumdecoder.cpp"
 
       
     } 
@@ -56841,7 +56856,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56845 "pentiumdecoder.cpp"
+#line 56860 "pentiumdecoder.cpp"
 
       
     } 
@@ -56858,7 +56873,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56862 "pentiumdecoder.cpp"
+#line 56877 "pentiumdecoder.cpp"
 
       
     } 
@@ -56875,7 +56890,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56879 "pentiumdecoder.cpp"
+#line 56894 "pentiumdecoder.cpp"
 
       
     } 
@@ -56892,7 +56907,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56896 "pentiumdecoder.cpp"
+#line 56911 "pentiumdecoder.cpp"
 
       
     } 
@@ -56909,7 +56924,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56913 "pentiumdecoder.cpp"
+#line 56928 "pentiumdecoder.cpp"
 
       
     } 
@@ -56926,7 +56941,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56930 "pentiumdecoder.cpp"
+#line 56945 "pentiumdecoder.cpp"
 
       
     } 
@@ -56943,7 +56958,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56947 "pentiumdecoder.cpp"
+#line 56962 "pentiumdecoder.cpp"
 
       
     } 
@@ -56960,7 +56975,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56964 "pentiumdecoder.cpp"
+#line 56979 "pentiumdecoder.cpp"
 
       
     } 
@@ -56977,7 +56992,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56981 "pentiumdecoder.cpp"
+#line 56996 "pentiumdecoder.cpp"
 
       
     } 
@@ -56994,7 +57009,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 56998 "pentiumdecoder.cpp"
+#line 57013 "pentiumdecoder.cpp"
 
       
     } 
@@ -57011,7 +57026,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57015 "pentiumdecoder.cpp"
+#line 57030 "pentiumdecoder.cpp"
 
       
     } 
@@ -57028,7 +57043,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57032 "pentiumdecoder.cpp"
+#line 57047 "pentiumdecoder.cpp"
 
       
     } 
@@ -57045,7 +57060,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57049 "pentiumdecoder.cpp"
+#line 57064 "pentiumdecoder.cpp"
 
       
     } 
@@ -57062,7 +57077,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57066 "pentiumdecoder.cpp"
+#line 57081 "pentiumdecoder.cpp"
 
       
     } 
@@ -57079,7 +57094,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57083 "pentiumdecoder.cpp"
+#line 57098 "pentiumdecoder.cpp"
 
       
     } 
@@ -57096,7 +57111,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57100 "pentiumdecoder.cpp"
+#line 57115 "pentiumdecoder.cpp"
 
       
     } 
@@ -57113,7 +57128,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57117 "pentiumdecoder.cpp"
+#line 57132 "pentiumdecoder.cpp"
 
       
     } 
@@ -57130,7 +57145,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57134 "pentiumdecoder.cpp"
+#line 57149 "pentiumdecoder.cpp"
 
       
     } 
@@ -57147,7 +57162,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57151 "pentiumdecoder.cpp"
+#line 57166 "pentiumdecoder.cpp"
 
       
     } 
@@ -57164,7 +57179,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57168 "pentiumdecoder.cpp"
+#line 57183 "pentiumdecoder.cpp"
 
       
     } 
@@ -57181,7 +57196,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57185 "pentiumdecoder.cpp"
+#line 57200 "pentiumdecoder.cpp"
 
       
     } 
@@ -57198,7 +57213,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57202 "pentiumdecoder.cpp"
+#line 57217 "pentiumdecoder.cpp"
 
       
     } 
@@ -57215,7 +57230,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57219 "pentiumdecoder.cpp"
+#line 57234 "pentiumdecoder.cpp"
 
       
     } 
@@ -57232,7 +57247,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57236 "pentiumdecoder.cpp"
+#line 57251 "pentiumdecoder.cpp"
 
       
     } 
@@ -57249,7 +57264,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57253 "pentiumdecoder.cpp"
+#line 57268 "pentiumdecoder.cpp"
 
       
     } 
@@ -57266,7 +57281,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57270 "pentiumdecoder.cpp"
+#line 57285 "pentiumdecoder.cpp"
 
       
     } 
@@ -57283,7 +57298,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57287 "pentiumdecoder.cpp"
+#line 57302 "pentiumdecoder.cpp"
 
       
     } 
@@ -57300,7 +57315,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57304 "pentiumdecoder.cpp"
+#line 57319 "pentiumdecoder.cpp"
 
       
     } 
@@ -57317,7 +57332,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57321 "pentiumdecoder.cpp"
+#line 57336 "pentiumdecoder.cpp"
 
       
     } 
@@ -57334,7 +57349,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57338 "pentiumdecoder.cpp"
+#line 57353 "pentiumdecoder.cpp"
 
       
     } 
@@ -57351,7 +57366,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57355 "pentiumdecoder.cpp"
+#line 57370 "pentiumdecoder.cpp"
 
       
     } 
@@ -57368,7 +57383,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57372 "pentiumdecoder.cpp"
+#line 57387 "pentiumdecoder.cpp"
 
       
     } 
@@ -57385,7 +57400,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57389 "pentiumdecoder.cpp"
+#line 57404 "pentiumdecoder.cpp"
 
       
     } 
@@ -57402,7 +57417,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57406 "pentiumdecoder.cpp"
+#line 57421 "pentiumdecoder.cpp"
 
       
     } 
@@ -57419,7 +57434,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57423 "pentiumdecoder.cpp"
+#line 57438 "pentiumdecoder.cpp"
 
       
     } 
@@ -57436,7 +57451,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57440 "pentiumdecoder.cpp"
+#line 57455 "pentiumdecoder.cpp"
 
       
     } 
@@ -57453,7 +57468,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57457 "pentiumdecoder.cpp"
+#line 57472 "pentiumdecoder.cpp"
 
       
     } 
@@ -57470,7 +57485,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57474 "pentiumdecoder.cpp"
+#line 57489 "pentiumdecoder.cpp"
 
       
     } 
@@ -57487,7 +57502,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57491 "pentiumdecoder.cpp"
+#line 57506 "pentiumdecoder.cpp"
 
       
     } 
@@ -57504,7 +57519,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57508 "pentiumdecoder.cpp"
+#line 57523 "pentiumdecoder.cpp"
 
       
     } 
@@ -57521,7 +57536,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57525 "pentiumdecoder.cpp"
+#line 57540 "pentiumdecoder.cpp"
 
       
     } 
@@ -57538,7 +57553,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57542 "pentiumdecoder.cpp"
+#line 57557 "pentiumdecoder.cpp"
 
       
     } 
@@ -57555,7 +57570,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57559 "pentiumdecoder.cpp"
+#line 57574 "pentiumdecoder.cpp"
 
       
     } 
@@ -57572,7 +57587,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57576 "pentiumdecoder.cpp"
+#line 57591 "pentiumdecoder.cpp"
 
       
     } 
@@ -57589,7 +57604,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57593 "pentiumdecoder.cpp"
+#line 57608 "pentiumdecoder.cpp"
 
       
     } 
@@ -57606,7 +57621,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57610 "pentiumdecoder.cpp"
+#line 57625 "pentiumdecoder.cpp"
 
       
     } 
@@ -57623,7 +57638,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57627 "pentiumdecoder.cpp"
+#line 57642 "pentiumdecoder.cpp"
 
       
     } 
@@ -57640,7 +57655,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57644 "pentiumdecoder.cpp"
+#line 57659 "pentiumdecoder.cpp"
 
       
     } 
@@ -57657,7 +57672,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 57661 "pentiumdecoder.cpp"
+#line 57676 "pentiumdecoder.cpp"
 
       
     } 
@@ -57675,7 +57690,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 57679 "pentiumdecoder.cpp"
+#line 57694 "pentiumdecoder.cpp"
 
       
     } 
@@ -57693,7 +57708,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 57697 "pentiumdecoder.cpp"
+#line 57712 "pentiumdecoder.cpp"
 
       
     } 
@@ -57711,7 +57726,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 57715 "pentiumdecoder.cpp"
+#line 57730 "pentiumdecoder.cpp"
 
       
     } 
@@ -57729,7 +57744,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
 
-#line 57733 "pentiumdecoder.cpp"
+#line 57748 "pentiumdecoder.cpp"
 
       
     } 
@@ -57746,7 +57761,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57750 "pentiumdecoder.cpp"
+#line 57765 "pentiumdecoder.cpp"
 
       
     } 
@@ -57763,7 +57778,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57767 "pentiumdecoder.cpp"
+#line 57782 "pentiumdecoder.cpp"
 
       
     } 
@@ -57780,7 +57795,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57784 "pentiumdecoder.cpp"
+#line 57799 "pentiumdecoder.cpp"
 
       
     } 
@@ -57797,7 +57812,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57801 "pentiumdecoder.cpp"
+#line 57816 "pentiumdecoder.cpp"
 
       
     } 
@@ -57814,7 +57829,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57818 "pentiumdecoder.cpp"
+#line 57833 "pentiumdecoder.cpp"
 
       
     } 
@@ -57831,7 +57846,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57835 "pentiumdecoder.cpp"
+#line 57850 "pentiumdecoder.cpp"
 
       
     } 
@@ -57848,7 +57863,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57852 "pentiumdecoder.cpp"
+#line 57867 "pentiumdecoder.cpp"
 
       
     } 
@@ -57865,7 +57880,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57869 "pentiumdecoder.cpp"
+#line 57884 "pentiumdecoder.cpp"
 
       
     } 
@@ -57882,7 +57897,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57886 "pentiumdecoder.cpp"
+#line 57901 "pentiumdecoder.cpp"
 
       
     } 
@@ -57899,7 +57914,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57903 "pentiumdecoder.cpp"
+#line 57918 "pentiumdecoder.cpp"
 
       
     } 
@@ -57916,7 +57931,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57920 "pentiumdecoder.cpp"
+#line 57935 "pentiumdecoder.cpp"
 
       
     } 
@@ -57933,7 +57948,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57937 "pentiumdecoder.cpp"
+#line 57952 "pentiumdecoder.cpp"
 
       
     } 
@@ -57950,7 +57965,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57954 "pentiumdecoder.cpp"
+#line 57969 "pentiumdecoder.cpp"
 
       
     } 
@@ -57967,7 +57982,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57971 "pentiumdecoder.cpp"
+#line 57986 "pentiumdecoder.cpp"
 
       
     } 
@@ -57984,7 +57999,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 57988 "pentiumdecoder.cpp"
+#line 58003 "pentiumdecoder.cpp"
 
       
     } 
@@ -58001,7 +58016,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 58005 "pentiumdecoder.cpp"
+#line 58020 "pentiumdecoder.cpp"
 
       
     } 
@@ -58018,7 +58033,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 58022 "pentiumdecoder.cpp"
+#line 58037 "pentiumdecoder.cpp"
 
       
     } 
@@ -58035,7 +58050,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 58039 "pentiumdecoder.cpp"
+#line 58054 "pentiumdecoder.cpp"
 
       
     } 
@@ -58052,7 +58067,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 58056 "pentiumdecoder.cpp"
+#line 58071 "pentiumdecoder.cpp"
 
       
     } 
@@ -58069,7 +58084,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 58073 "pentiumdecoder.cpp"
+#line 58088 "pentiumdecoder.cpp"
 
       
     } 
@@ -58089,7 +58104,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 58093 "pentiumdecoder.cpp"
+#line 58108 "pentiumdecoder.cpp"
 
       
     } 
@@ -58109,7 +58124,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 58113 "pentiumdecoder.cpp"
+#line 58128 "pentiumdecoder.cpp"
 
       
     } 
@@ -58129,7 +58144,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 58133 "pentiumdecoder.cpp"
+#line 58148 "pentiumdecoder.cpp"
 
       
     } 
@@ -58149,7 +58164,7 @@ pc
 //		result.rtl = instantiate(pc, name);
 
 
-#line 58153 "pentiumdecoder.cpp"
+#line 58168 "pentiumdecoder.cpp"
 
       
     } 
@@ -58167,7 +58182,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 58171 "pentiumdecoder.cpp"
+#line 58186 "pentiumdecoder.cpp"
 
       
     } 
@@ -58185,7 +58200,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 58189 "pentiumdecoder.cpp"
+#line 58204 "pentiumdecoder.cpp"
 
       
     } 
@@ -58203,7 +58218,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 58207 "pentiumdecoder.cpp"
+#line 58222 "pentiumdecoder.cpp"
 
       
     } 
@@ -58221,7 +58236,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 58225 "pentiumdecoder.cpp"
+#line 58240 "pentiumdecoder.cpp"
 
       
     } 
@@ -58238,7 +58253,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58242 "pentiumdecoder.cpp"
+#line 58257 "pentiumdecoder.cpp"
 
       
     } 
@@ -58255,7 +58270,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58259 "pentiumdecoder.cpp"
+#line 58274 "pentiumdecoder.cpp"
 
       
     } 
@@ -58272,7 +58287,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58276 "pentiumdecoder.cpp"
+#line 58291 "pentiumdecoder.cpp"
 
       
     } 
@@ -58289,7 +58304,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58293 "pentiumdecoder.cpp"
+#line 58308 "pentiumdecoder.cpp"
 
       
     } 
@@ -58306,7 +58321,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58310 "pentiumdecoder.cpp"
+#line 58325 "pentiumdecoder.cpp"
 
       
     } 
@@ -58323,7 +58338,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58327 "pentiumdecoder.cpp"
+#line 58342 "pentiumdecoder.cpp"
 
       
     } 
@@ -58340,7 +58355,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58344 "pentiumdecoder.cpp"
+#line 58359 "pentiumdecoder.cpp"
 
       
     } 
@@ -58357,7 +58372,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58361 "pentiumdecoder.cpp"
+#line 58376 "pentiumdecoder.cpp"
 
       
     } 
@@ -58374,7 +58389,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58378 "pentiumdecoder.cpp"
+#line 58393 "pentiumdecoder.cpp"
 
       
     } 
@@ -58391,7 +58406,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58395 "pentiumdecoder.cpp"
+#line 58410 "pentiumdecoder.cpp"
 
       
     } 
@@ -58408,7 +58423,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58412 "pentiumdecoder.cpp"
+#line 58427 "pentiumdecoder.cpp"
 
       
     } 
@@ -58425,7 +58440,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58429 "pentiumdecoder.cpp"
+#line 58444 "pentiumdecoder.cpp"
 
       
     } 
@@ -58442,7 +58457,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58446 "pentiumdecoder.cpp"
+#line 58461 "pentiumdecoder.cpp"
 
       
     } 
@@ -58459,7 +58474,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58463 "pentiumdecoder.cpp"
+#line 58478 "pentiumdecoder.cpp"
 
       
     } 
@@ -58476,7 +58491,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58480 "pentiumdecoder.cpp"
+#line 58495 "pentiumdecoder.cpp"
 
       
     } 
@@ -58493,7 +58508,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58497 "pentiumdecoder.cpp"
+#line 58512 "pentiumdecoder.cpp"
 
       
     } 
@@ -58510,7 +58525,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58514 "pentiumdecoder.cpp"
+#line 58529 "pentiumdecoder.cpp"
 
       
     } 
@@ -58527,7 +58542,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58531 "pentiumdecoder.cpp"
+#line 58546 "pentiumdecoder.cpp"
 
       
     } 
@@ -58544,7 +58559,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58548 "pentiumdecoder.cpp"
+#line 58563 "pentiumdecoder.cpp"
 
       
     } 
@@ -58561,7 +58576,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58565 "pentiumdecoder.cpp"
+#line 58580 "pentiumdecoder.cpp"
 
       
     } 
@@ -58578,7 +58593,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58582 "pentiumdecoder.cpp"
+#line 58597 "pentiumdecoder.cpp"
 
       
     } 
@@ -58595,7 +58610,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58599 "pentiumdecoder.cpp"
+#line 58614 "pentiumdecoder.cpp"
 
       
     } 
@@ -58612,7 +58627,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58616 "pentiumdecoder.cpp"
+#line 58631 "pentiumdecoder.cpp"
 
       
     } 
@@ -58629,7 +58644,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58633 "pentiumdecoder.cpp"
+#line 58648 "pentiumdecoder.cpp"
 
       
     } 
@@ -58647,7 +58662,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 58651 "pentiumdecoder.cpp"
+#line 58666 "pentiumdecoder.cpp"
 
       
     } 
@@ -58665,7 +58680,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 58669 "pentiumdecoder.cpp"
+#line 58684 "pentiumdecoder.cpp"
 
       
     } 
@@ -58683,7 +58698,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 58687 "pentiumdecoder.cpp"
+#line 58702 "pentiumdecoder.cpp"
 
       
     } 
@@ -58701,7 +58716,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 58705 "pentiumdecoder.cpp"
+#line 58720 "pentiumdecoder.cpp"
 
       
     } 
@@ -58719,7 +58734,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 58723 "pentiumdecoder.cpp"
+#line 58738 "pentiumdecoder.cpp"
 
       
     } 
@@ -58737,7 +58752,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 58741 "pentiumdecoder.cpp"
+#line 58756 "pentiumdecoder.cpp"
 
       
     } 
@@ -58755,7 +58770,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 58759 "pentiumdecoder.cpp"
+#line 58774 "pentiumdecoder.cpp"
 
       
     } 
@@ -58773,7 +58788,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 58777 "pentiumdecoder.cpp"
+#line 58792 "pentiumdecoder.cpp"
 
       
     } 
@@ -58791,7 +58806,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 58795 "pentiumdecoder.cpp"
+#line 58810 "pentiumdecoder.cpp"
 
       
     } 
@@ -58809,7 +58824,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 58813 "pentiumdecoder.cpp"
+#line 58828 "pentiumdecoder.cpp"
 
       
     } 
@@ -58827,7 +58842,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 58831 "pentiumdecoder.cpp"
+#line 58846 "pentiumdecoder.cpp"
 
       
     } 
@@ -58845,7 +58860,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 58849 "pentiumdecoder.cpp"
+#line 58864 "pentiumdecoder.cpp"
 
       
     } 
@@ -58863,7 +58878,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 58867 "pentiumdecoder.cpp"
+#line 58882 "pentiumdecoder.cpp"
 
       
     } 
@@ -58881,7 +58896,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 58885 "pentiumdecoder.cpp"
+#line 58900 "pentiumdecoder.cpp"
 
       
     } 
@@ -58899,7 +58914,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 58903 "pentiumdecoder.cpp"
+#line 58918 "pentiumdecoder.cpp"
 
       
     } 
@@ -58917,7 +58932,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 58921 "pentiumdecoder.cpp"
+#line 58936 "pentiumdecoder.cpp"
 
       
     } 
@@ -58934,7 +58949,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58938 "pentiumdecoder.cpp"
+#line 58953 "pentiumdecoder.cpp"
 
       
     } 
@@ -58951,7 +58966,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58955 "pentiumdecoder.cpp"
+#line 58970 "pentiumdecoder.cpp"
 
       
     } 
@@ -58968,7 +58983,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58972 "pentiumdecoder.cpp"
+#line 58987 "pentiumdecoder.cpp"
 
       
     } 
@@ -58985,7 +59000,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 58989 "pentiumdecoder.cpp"
+#line 59004 "pentiumdecoder.cpp"
 
       
     } 
@@ -59002,7 +59017,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59006 "pentiumdecoder.cpp"
+#line 59021 "pentiumdecoder.cpp"
 
       
     } 
@@ -59019,7 +59034,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59023 "pentiumdecoder.cpp"
+#line 59038 "pentiumdecoder.cpp"
 
       
     } 
@@ -59036,7 +59051,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59040 "pentiumdecoder.cpp"
+#line 59055 "pentiumdecoder.cpp"
 
       
     } 
@@ -59053,7 +59068,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59057 "pentiumdecoder.cpp"
+#line 59072 "pentiumdecoder.cpp"
 
       
     } 
@@ -59070,7 +59085,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59074 "pentiumdecoder.cpp"
+#line 59089 "pentiumdecoder.cpp"
 
       
     } 
@@ -59087,7 +59102,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59091 "pentiumdecoder.cpp"
+#line 59106 "pentiumdecoder.cpp"
 
       
     } 
@@ -59104,7 +59119,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59108 "pentiumdecoder.cpp"
+#line 59123 "pentiumdecoder.cpp"
 
       
     } 
@@ -59121,7 +59136,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59125 "pentiumdecoder.cpp"
+#line 59140 "pentiumdecoder.cpp"
 
       
     } 
@@ -59138,7 +59153,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59142 "pentiumdecoder.cpp"
+#line 59157 "pentiumdecoder.cpp"
 
       
     } 
@@ -59155,7 +59170,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59159 "pentiumdecoder.cpp"
+#line 59174 "pentiumdecoder.cpp"
 
       
     } 
@@ -59172,7 +59187,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59176 "pentiumdecoder.cpp"
+#line 59191 "pentiumdecoder.cpp"
 
       
     } 
@@ -59189,7 +59204,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59193 "pentiumdecoder.cpp"
+#line 59208 "pentiumdecoder.cpp"
 
       
     } 
@@ -59206,7 +59221,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59210 "pentiumdecoder.cpp"
+#line 59225 "pentiumdecoder.cpp"
 
       
     } 
@@ -59223,7 +59238,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59227 "pentiumdecoder.cpp"
+#line 59242 "pentiumdecoder.cpp"
 
       
     } 
@@ -59240,7 +59255,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59244 "pentiumdecoder.cpp"
+#line 59259 "pentiumdecoder.cpp"
 
       
     } 
@@ -59258,7 +59273,7 @@ pc
 
 	// Sets are now in the high level instructions
 
-#line 59262 "pentiumdecoder.cpp"
+#line 59277 "pentiumdecoder.cpp"
 
       
     } 
@@ -59276,7 +59291,7 @@ pc
 
 	// Sets are now in the high level instructions
 
-#line 59280 "pentiumdecoder.cpp"
+#line 59295 "pentiumdecoder.cpp"
 
       
     } 
@@ -59294,7 +59309,7 @@ pc
 
 	// Sets are now in the high level instructions
 
-#line 59298 "pentiumdecoder.cpp"
+#line 59313 "pentiumdecoder.cpp"
 
       
     } 
@@ -59311,7 +59326,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59315 "pentiumdecoder.cpp"
+#line 59330 "pentiumdecoder.cpp"
 
       
     } 
@@ -59328,7 +59343,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59332 "pentiumdecoder.cpp"
+#line 59347 "pentiumdecoder.cpp"
 
       
     } 
@@ -59345,7 +59360,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59349 "pentiumdecoder.cpp"
+#line 59364 "pentiumdecoder.cpp"
 
       
     } 
@@ -59362,7 +59377,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59366 "pentiumdecoder.cpp"
+#line 59381 "pentiumdecoder.cpp"
 
       
     } 
@@ -59379,7 +59394,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59383 "pentiumdecoder.cpp"
+#line 59398 "pentiumdecoder.cpp"
 
       
     } 
@@ -59396,7 +59411,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59400 "pentiumdecoder.cpp"
+#line 59415 "pentiumdecoder.cpp"
 
       
     } 
@@ -59413,7 +59428,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 59417 "pentiumdecoder.cpp"
+#line 59432 "pentiumdecoder.cpp"
 
       
     } 
@@ -59430,7 +59445,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59434 "pentiumdecoder.cpp"
+#line 59449 "pentiumdecoder.cpp"
 
       
     } 
@@ -59447,7 +59462,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59451 "pentiumdecoder.cpp"
+#line 59466 "pentiumdecoder.cpp"
 
       
     } 
@@ -59464,7 +59479,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 59468 "pentiumdecoder.cpp"
+#line 59483 "pentiumdecoder.cpp"
 
       
     } 
@@ -59482,7 +59497,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59486 "pentiumdecoder.cpp"
+#line 59501 "pentiumdecoder.cpp"
 
       
     } 
@@ -59500,7 +59515,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59504 "pentiumdecoder.cpp"
+#line 59519 "pentiumdecoder.cpp"
 
       
     } 
@@ -59518,7 +59533,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59522 "pentiumdecoder.cpp"
+#line 59537 "pentiumdecoder.cpp"
 
       
     } 
@@ -59536,7 +59551,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59540 "pentiumdecoder.cpp"
+#line 59555 "pentiumdecoder.cpp"
 
       
     } 
@@ -59554,7 +59569,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59558 "pentiumdecoder.cpp"
+#line 59573 "pentiumdecoder.cpp"
 
       
     } 
@@ -59572,7 +59587,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59576 "pentiumdecoder.cpp"
+#line 59591 "pentiumdecoder.cpp"
 
       
     } 
@@ -59590,7 +59605,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59594 "pentiumdecoder.cpp"
+#line 59609 "pentiumdecoder.cpp"
 
       
     } 
@@ -59608,7 +59623,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 59612 "pentiumdecoder.cpp"
+#line 59627 "pentiumdecoder.cpp"
 
       
     } 
@@ -59632,7 +59647,7 @@ pc
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
-#line 59636 "pentiumdecoder.cpp"
+#line 59651 "pentiumdecoder.cpp"
 
       
     } 
@@ -59656,7 +59671,7 @@ pc
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
-#line 59660 "pentiumdecoder.cpp"
+#line 59675 "pentiumdecoder.cpp"
 
       
     } 
@@ -59680,7 +59695,7 @@ pc
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
-#line 59684 "pentiumdecoder.cpp"
+#line 59699 "pentiumdecoder.cpp"
 
       
     } 
@@ -59704,7 +59719,7 @@ pc
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
-#line 59708 "pentiumdecoder.cpp"
+#line 59723 "pentiumdecoder.cpp"
 
       
     } 
@@ -59721,7 +59736,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
-#line 59725 "pentiumdecoder.cpp"
+#line 59740 "pentiumdecoder.cpp"
 
       
     } 
@@ -59738,7 +59753,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
-#line 59742 "pentiumdecoder.cpp"
+#line 59757 "pentiumdecoder.cpp"
 
       
     } 
@@ -59755,7 +59770,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
-#line 59759 "pentiumdecoder.cpp"
+#line 59774 "pentiumdecoder.cpp"
 
       
     } 
@@ -59772,7 +59787,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
-#line 59776 "pentiumdecoder.cpp"
+#line 59791 "pentiumdecoder.cpp"
 
       
     } 
@@ -59789,7 +59804,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
-#line 59793 "pentiumdecoder.cpp"
+#line 59808 "pentiumdecoder.cpp"
 
       
     } 
@@ -59806,7 +59821,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
-#line 59810 "pentiumdecoder.cpp"
+#line 59825 "pentiumdecoder.cpp"
 
       
     } 
@@ -59823,7 +59838,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
-#line 59827 "pentiumdecoder.cpp"
+#line 59842 "pentiumdecoder.cpp"
 
       
     } 
@@ -59840,7 +59855,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
-#line 59844 "pentiumdecoder.cpp"
+#line 59859 "pentiumdecoder.cpp"
 
       
     } 
@@ -59857,7 +59872,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
-#line 59861 "pentiumdecoder.cpp"
+#line 59876 "pentiumdecoder.cpp"
 
       
     } 
@@ -59874,7 +59889,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
-#line 59878 "pentiumdecoder.cpp"
+#line 59893 "pentiumdecoder.cpp"
 
       
     } 
@@ -59891,7 +59906,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
-#line 59895 "pentiumdecoder.cpp"
+#line 59910 "pentiumdecoder.cpp"
 
       
     } 
@@ -59908,7 +59923,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
-#line 59912 "pentiumdecoder.cpp"
+#line 59927 "pentiumdecoder.cpp"
 
       
     } 
@@ -59925,7 +59940,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
-#line 59929 "pentiumdecoder.cpp"
+#line 59944 "pentiumdecoder.cpp"
 
       
     } 
@@ -59942,7 +59957,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
-#line 59946 "pentiumdecoder.cpp"
+#line 59961 "pentiumdecoder.cpp"
 
       
     } 
@@ -59959,7 +59974,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
-#line 59963 "pentiumdecoder.cpp"
+#line 59978 "pentiumdecoder.cpp"
 
       
     } 
@@ -59976,7 +59991,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
-#line 59980 "pentiumdecoder.cpp"
+#line 59995 "pentiumdecoder.cpp"
 
       
     } 
@@ -59993,7 +60008,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
-#line 59997 "pentiumdecoder.cpp"
+#line 60012 "pentiumdecoder.cpp"
 
       
     } 
@@ -60010,7 +60025,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
-#line 60014 "pentiumdecoder.cpp"
+#line 60029 "pentiumdecoder.cpp"
 
       
     } 
@@ -60027,7 +60042,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
-#line 60031 "pentiumdecoder.cpp"
+#line 60046 "pentiumdecoder.cpp"
 
       
     } 
@@ -60044,7 +60059,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
-#line 60048 "pentiumdecoder.cpp"
+#line 60063 "pentiumdecoder.cpp"
 
       
     } 
@@ -60061,7 +60076,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
-#line 60065 "pentiumdecoder.cpp"
+#line 60080 "pentiumdecoder.cpp"
 
       
     } 
@@ -60078,7 +60093,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
-#line 60082 "pentiumdecoder.cpp"
+#line 60097 "pentiumdecoder.cpp"
 
       
     } 
@@ -60095,7 +60110,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
-#line 60099 "pentiumdecoder.cpp"
+#line 60114 "pentiumdecoder.cpp"
 
       
     } 
@@ -60112,7 +60127,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
-#line 60116 "pentiumdecoder.cpp"
+#line 60131 "pentiumdecoder.cpp"
 
       
     } 
@@ -60129,7 +60144,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
-#line 60133 "pentiumdecoder.cpp"
+#line 60148 "pentiumdecoder.cpp"
 
       
     } 
@@ -60146,7 +60161,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
-#line 60150 "pentiumdecoder.cpp"
+#line 60165 "pentiumdecoder.cpp"
 
       
     } 
@@ -60163,7 +60178,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
-#line 60167 "pentiumdecoder.cpp"
+#line 60182 "pentiumdecoder.cpp"
 
       
     } 
@@ -60180,7 +60195,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
-#line 60184 "pentiumdecoder.cpp"
+#line 60199 "pentiumdecoder.cpp"
 
       
     } 
@@ -60203,7 +60218,7 @@ pc
 //		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60207 "pentiumdecoder.cpp"
+#line 60222 "pentiumdecoder.cpp"
 
       
     } 
@@ -60226,7 +60241,7 @@ pc
 //		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60230 "pentiumdecoder.cpp"
+#line 60245 "pentiumdecoder.cpp"
 
       
     } 
@@ -60249,7 +60264,7 @@ pc
 //		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60253 "pentiumdecoder.cpp"
+#line 60268 "pentiumdecoder.cpp"
 
       
     } 
@@ -60272,7 +60287,7 @@ pc
 //		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 //		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60276 "pentiumdecoder.cpp"
+#line 60291 "pentiumdecoder.cpp"
 
       
     } 
@@ -60289,7 +60304,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
-#line 60293 "pentiumdecoder.cpp"
+#line 60308 "pentiumdecoder.cpp"
 
       
     } 
@@ -60306,7 +60321,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
-#line 60310 "pentiumdecoder.cpp"
+#line 60325 "pentiumdecoder.cpp"
 
       
     } 
@@ -60323,7 +60338,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
-#line 60327 "pentiumdecoder.cpp"
+#line 60342 "pentiumdecoder.cpp"
 
       
     } 
@@ -60340,7 +60355,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
-#line 60344 "pentiumdecoder.cpp"
+#line 60359 "pentiumdecoder.cpp"
 
       
     } 
@@ -60357,7 +60372,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
-#line 60361 "pentiumdecoder.cpp"
+#line 60376 "pentiumdecoder.cpp"
 
       
     } 
@@ -60374,7 +60389,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
-#line 60378 "pentiumdecoder.cpp"
+#line 60393 "pentiumdecoder.cpp"
 
       
     } 
@@ -60391,7 +60406,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
-#line 60395 "pentiumdecoder.cpp"
+#line 60410 "pentiumdecoder.cpp"
 
       
     } 
@@ -60408,7 +60423,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
-#line 60412 "pentiumdecoder.cpp"
+#line 60427 "pentiumdecoder.cpp"
 
       
     } 
@@ -60425,7 +60440,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60429 "pentiumdecoder.cpp"
+#line 60444 "pentiumdecoder.cpp"
 
       
     } 
@@ -60442,7 +60457,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60446 "pentiumdecoder.cpp"
+#line 60461 "pentiumdecoder.cpp"
 
       
     } 
@@ -60459,7 +60474,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60463 "pentiumdecoder.cpp"
+#line 60478 "pentiumdecoder.cpp"
 
       
     } 
@@ -60476,7 +60491,7 @@ pc
 		//result.rtl = instantiate(pc, name, DIS_EADDR8);
 		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
-#line 60480 "pentiumdecoder.cpp"
+#line 60495 "pentiumdecoder.cpp"
 
       
     } 
@@ -60494,7 +60509,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60498 "pentiumdecoder.cpp"
+#line 60513 "pentiumdecoder.cpp"
 
       
     } 
@@ -60512,7 +60527,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60516 "pentiumdecoder.cpp"
+#line 60531 "pentiumdecoder.cpp"
 
       
     } 
@@ -60530,7 +60545,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60534 "pentiumdecoder.cpp"
+#line 60549 "pentiumdecoder.cpp"
 
       
     } 
@@ -60548,7 +60563,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60552 "pentiumdecoder.cpp"
+#line 60567 "pentiumdecoder.cpp"
 
       
     } 
@@ -60566,7 +60581,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60570 "pentiumdecoder.cpp"
+#line 60585 "pentiumdecoder.cpp"
 
       
     } 
@@ -60584,7 +60599,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60588 "pentiumdecoder.cpp"
+#line 60603 "pentiumdecoder.cpp"
 
       
     } 
@@ -60602,7 +60617,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60606 "pentiumdecoder.cpp"
+#line 60621 "pentiumdecoder.cpp"
 
       
     } 
@@ -60620,7 +60635,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60624 "pentiumdecoder.cpp"
+#line 60639 "pentiumdecoder.cpp"
 
       
     } 
@@ -60639,7 +60654,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60643 "pentiumdecoder.cpp"
+#line 60658 "pentiumdecoder.cpp"
 
       
     } 
@@ -60658,7 +60673,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60662 "pentiumdecoder.cpp"
+#line 60677 "pentiumdecoder.cpp"
 
       
     } 
@@ -60677,7 +60692,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60681 "pentiumdecoder.cpp"
+#line 60696 "pentiumdecoder.cpp"
 
       
     } 
@@ -60696,7 +60711,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60700 "pentiumdecoder.cpp"
+#line 60715 "pentiumdecoder.cpp"
 
       
     } 
@@ -60715,7 +60730,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60719 "pentiumdecoder.cpp"
+#line 60734 "pentiumdecoder.cpp"
 
       
     } 
@@ -60734,7 +60749,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60738 "pentiumdecoder.cpp"
+#line 60753 "pentiumdecoder.cpp"
 
       
     } 
@@ -60753,7 +60768,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60757 "pentiumdecoder.cpp"
+#line 60772 "pentiumdecoder.cpp"
 
       
     } 
@@ -60772,7 +60787,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 60776 "pentiumdecoder.cpp"
+#line 60791 "pentiumdecoder.cpp"
 
       
     } 
@@ -60790,7 +60805,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60794 "pentiumdecoder.cpp"
+#line 60809 "pentiumdecoder.cpp"
 
       
     } 
@@ -60808,7 +60823,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60812 "pentiumdecoder.cpp"
+#line 60827 "pentiumdecoder.cpp"
 
       
     } 
@@ -60826,7 +60841,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60830 "pentiumdecoder.cpp"
+#line 60845 "pentiumdecoder.cpp"
 
       
     } 
@@ -60844,7 +60859,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60848 "pentiumdecoder.cpp"
+#line 60863 "pentiumdecoder.cpp"
 
       
     } 
@@ -60862,7 +60877,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60866 "pentiumdecoder.cpp"
+#line 60881 "pentiumdecoder.cpp"
 
       
     } 
@@ -60880,7 +60895,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60884 "pentiumdecoder.cpp"
+#line 60899 "pentiumdecoder.cpp"
 
       
     } 
@@ -60898,7 +60913,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60902 "pentiumdecoder.cpp"
+#line 60917 "pentiumdecoder.cpp"
 
       
     } 
@@ -60916,7 +60931,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 60920 "pentiumdecoder.cpp"
+#line 60935 "pentiumdecoder.cpp"
 
       
     } 
@@ -60934,7 +60949,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 60938 "pentiumdecoder.cpp"
+#line 60953 "pentiumdecoder.cpp"
 
       
     } 
@@ -60952,7 +60967,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 60956 "pentiumdecoder.cpp"
+#line 60971 "pentiumdecoder.cpp"
 
       
     } 
@@ -60970,7 +60985,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 60974 "pentiumdecoder.cpp"
+#line 60989 "pentiumdecoder.cpp"
 
       
     } 
@@ -60988,7 +61003,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 60992 "pentiumdecoder.cpp"
+#line 61007 "pentiumdecoder.cpp"
 
       
     } 
@@ -61006,7 +61021,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 61010 "pentiumdecoder.cpp"
+#line 61025 "pentiumdecoder.cpp"
 
       
     } 
@@ -61024,7 +61039,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 61028 "pentiumdecoder.cpp"
+#line 61043 "pentiumdecoder.cpp"
 
       
     } 
@@ -61042,7 +61057,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 61046 "pentiumdecoder.cpp"
+#line 61061 "pentiumdecoder.cpp"
 
       
     } 
@@ -61060,7 +61075,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 61064 "pentiumdecoder.cpp"
+#line 61079 "pentiumdecoder.cpp"
 
       
     } 
@@ -61078,7 +61093,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61082 "pentiumdecoder.cpp"
+#line 61097 "pentiumdecoder.cpp"
 
       
     } 
@@ -61096,7 +61111,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61100 "pentiumdecoder.cpp"
+#line 61115 "pentiumdecoder.cpp"
 
       
     } 
@@ -61114,7 +61129,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61118 "pentiumdecoder.cpp"
+#line 61133 "pentiumdecoder.cpp"
 
       
     } 
@@ -61132,7 +61147,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61136 "pentiumdecoder.cpp"
+#line 61151 "pentiumdecoder.cpp"
 
       
     } 
@@ -61150,7 +61165,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61154 "pentiumdecoder.cpp"
+#line 61169 "pentiumdecoder.cpp"
 
       
     } 
@@ -61168,7 +61183,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61172 "pentiumdecoder.cpp"
+#line 61187 "pentiumdecoder.cpp"
 
       
     } 
@@ -61186,7 +61201,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61190 "pentiumdecoder.cpp"
+#line 61205 "pentiumdecoder.cpp"
 
       
     } 
@@ -61204,7 +61219,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61208 "pentiumdecoder.cpp"
+#line 61223 "pentiumdecoder.cpp"
 
       
     } 
@@ -61222,7 +61237,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61226 "pentiumdecoder.cpp"
+#line 61241 "pentiumdecoder.cpp"
 
       
     } 
@@ -61240,7 +61255,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61244 "pentiumdecoder.cpp"
+#line 61259 "pentiumdecoder.cpp"
 
       
     } 
@@ -61258,7 +61273,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61262 "pentiumdecoder.cpp"
+#line 61277 "pentiumdecoder.cpp"
 
       
     } 
@@ -61276,7 +61291,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61280 "pentiumdecoder.cpp"
+#line 61295 "pentiumdecoder.cpp"
 
       
     } 
@@ -61294,7 +61309,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61298 "pentiumdecoder.cpp"
+#line 61313 "pentiumdecoder.cpp"
 
       
     } 
@@ -61312,7 +61327,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61316 "pentiumdecoder.cpp"
+#line 61331 "pentiumdecoder.cpp"
 
       
     } 
@@ -61330,7 +61345,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61334 "pentiumdecoder.cpp"
+#line 61349 "pentiumdecoder.cpp"
 
       
     } 
@@ -61348,7 +61363,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61352 "pentiumdecoder.cpp"
+#line 61367 "pentiumdecoder.cpp"
 
       
     } 
@@ -61366,7 +61381,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 61370 "pentiumdecoder.cpp"
+#line 61385 "pentiumdecoder.cpp"
 
       
     } 
@@ -61384,7 +61399,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 61388 "pentiumdecoder.cpp"
+#line 61403 "pentiumdecoder.cpp"
 
       
     } 
@@ -61402,7 +61417,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 61406 "pentiumdecoder.cpp"
+#line 61421 "pentiumdecoder.cpp"
 
       
     } 
@@ -61420,7 +61435,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 61424 "pentiumdecoder.cpp"
+#line 61439 "pentiumdecoder.cpp"
 
       
     } 
@@ -61438,7 +61453,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 61442 "pentiumdecoder.cpp"
+#line 61457 "pentiumdecoder.cpp"
 
       
     } 
@@ -61456,7 +61471,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 61460 "pentiumdecoder.cpp"
+#line 61475 "pentiumdecoder.cpp"
 
       
     } 
@@ -61474,7 +61489,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 61478 "pentiumdecoder.cpp"
+#line 61493 "pentiumdecoder.cpp"
 
       
     } 
@@ -61492,7 +61507,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 61496 "pentiumdecoder.cpp"
+#line 61511 "pentiumdecoder.cpp"
 
       
     } 
@@ -61510,7 +61525,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 61514 "pentiumdecoder.cpp"
+#line 61529 "pentiumdecoder.cpp"
 
       
     } 
@@ -61529,7 +61544,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61533 "pentiumdecoder.cpp"
+#line 61548 "pentiumdecoder.cpp"
 
       
     } 
@@ -61548,7 +61563,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61552 "pentiumdecoder.cpp"
+#line 61567 "pentiumdecoder.cpp"
 
       
     } 
@@ -61567,7 +61582,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61571 "pentiumdecoder.cpp"
+#line 61586 "pentiumdecoder.cpp"
 
       
     } 
@@ -61586,7 +61601,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61590 "pentiumdecoder.cpp"
+#line 61605 "pentiumdecoder.cpp"
 
       
     } 
@@ -61605,7 +61620,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR32);
 
 
-#line 61609 "pentiumdecoder.cpp"
+#line 61624 "pentiumdecoder.cpp"
 
       
     } 
@@ -61624,7 +61639,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR32);
 
 
-#line 61628 "pentiumdecoder.cpp"
+#line 61643 "pentiumdecoder.cpp"
 
       
     } 
@@ -61643,7 +61658,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR32);
 
 
-#line 61647 "pentiumdecoder.cpp"
+#line 61662 "pentiumdecoder.cpp"
 
       
     } 
@@ -61662,7 +61677,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR32);
 
 
-#line 61666 "pentiumdecoder.cpp"
+#line 61681 "pentiumdecoder.cpp"
 
       
     } 
@@ -61681,7 +61696,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61685 "pentiumdecoder.cpp"
+#line 61700 "pentiumdecoder.cpp"
 
       
     } 
@@ -61700,7 +61715,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61704 "pentiumdecoder.cpp"
+#line 61719 "pentiumdecoder.cpp"
 
       
     } 
@@ -61719,7 +61734,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61723 "pentiumdecoder.cpp"
+#line 61738 "pentiumdecoder.cpp"
 
       
     } 
@@ -61738,7 +61753,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61742 "pentiumdecoder.cpp"
+#line 61757 "pentiumdecoder.cpp"
 
       
     } 
@@ -61757,7 +61772,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61761 "pentiumdecoder.cpp"
+#line 61776 "pentiumdecoder.cpp"
 
       
     } 
@@ -61776,7 +61791,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61780 "pentiumdecoder.cpp"
+#line 61795 "pentiumdecoder.cpp"
 
       
     } 
@@ -61795,7 +61810,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61799 "pentiumdecoder.cpp"
+#line 61814 "pentiumdecoder.cpp"
 
       
     } 
@@ -61814,7 +61829,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
 
-#line 61818 "pentiumdecoder.cpp"
+#line 61833 "pentiumdecoder.cpp"
 
       
     } 
@@ -61832,7 +61847,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61836 "pentiumdecoder.cpp"
+#line 61851 "pentiumdecoder.cpp"
 
       
     } 
@@ -61850,7 +61865,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61854 "pentiumdecoder.cpp"
+#line 61869 "pentiumdecoder.cpp"
 
       
     } 
@@ -61868,7 +61883,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61872 "pentiumdecoder.cpp"
+#line 61887 "pentiumdecoder.cpp"
 
       
     } 
@@ -61886,7 +61901,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 61890 "pentiumdecoder.cpp"
+#line 61905 "pentiumdecoder.cpp"
 
       
     } 
@@ -61906,7 +61921,7 @@ pc
 		return;
 
 
-#line 61910 "pentiumdecoder.cpp"
+#line 61925 "pentiumdecoder.cpp"
 
       
     } 
@@ -61926,7 +61941,7 @@ pc
 		return;
 
 
-#line 61930 "pentiumdecoder.cpp"
+#line 61945 "pentiumdecoder.cpp"
 
       
     } 
@@ -61946,7 +61961,7 @@ pc
 		return;
 
 
-#line 61950 "pentiumdecoder.cpp"
+#line 61965 "pentiumdecoder.cpp"
 
       
     } 
@@ -61966,7 +61981,7 @@ pc
 		return;
 
 
-#line 61970 "pentiumdecoder.cpp"
+#line 61985 "pentiumdecoder.cpp"
 
       
     } 
@@ -61986,7 +62001,7 @@ pc
 		return;
 
 
-#line 61990 "pentiumdecoder.cpp"
+#line 62005 "pentiumdecoder.cpp"
 
       
     } 
@@ -62006,7 +62021,7 @@ pc
 		return;
 
 
-#line 62010 "pentiumdecoder.cpp"
+#line 62025 "pentiumdecoder.cpp"
 
       
     } 
@@ -62026,7 +62041,7 @@ pc
 		return;
 
 
-#line 62030 "pentiumdecoder.cpp"
+#line 62045 "pentiumdecoder.cpp"
 
       
     } 
@@ -62046,7 +62061,7 @@ pc
 		return;
 
 
-#line 62050 "pentiumdecoder.cpp"
+#line 62065 "pentiumdecoder.cpp"
 
       
     } 
@@ -62064,7 +62079,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 62068 "pentiumdecoder.cpp"
+#line 62083 "pentiumdecoder.cpp"
 
       
     } 
@@ -62082,7 +62097,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 62086 "pentiumdecoder.cpp"
+#line 62101 "pentiumdecoder.cpp"
 
       
     } 
@@ -62100,7 +62115,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 62104 "pentiumdecoder.cpp"
+#line 62119 "pentiumdecoder.cpp"
 
       
     } 
@@ -62118,7 +62133,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
 
-#line 62122 "pentiumdecoder.cpp"
+#line 62137 "pentiumdecoder.cpp"
 
       
     } 
@@ -62136,7 +62151,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 62140 "pentiumdecoder.cpp"
+#line 62155 "pentiumdecoder.cpp"
 
       
     } 
@@ -62154,7 +62169,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 62158 "pentiumdecoder.cpp"
+#line 62173 "pentiumdecoder.cpp"
 
       
     } 
@@ -62172,7 +62187,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 62176 "pentiumdecoder.cpp"
+#line 62191 "pentiumdecoder.cpp"
 
       
     } 
@@ -62190,7 +62205,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
 
-#line 62194 "pentiumdecoder.cpp"
+#line 62209 "pentiumdecoder.cpp"
 
       
     } 
@@ -62208,7 +62223,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 62212 "pentiumdecoder.cpp"
+#line 62227 "pentiumdecoder.cpp"
 
       
     } 
@@ -62226,7 +62241,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 62230 "pentiumdecoder.cpp"
+#line 62245 "pentiumdecoder.cpp"
 
       
     } 
@@ -62244,7 +62259,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 62248 "pentiumdecoder.cpp"
+#line 62263 "pentiumdecoder.cpp"
 
       
     } 
@@ -62262,7 +62277,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 62266 "pentiumdecoder.cpp"
+#line 62281 "pentiumdecoder.cpp"
 
       
     } 
@@ -62280,7 +62295,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62284 "pentiumdecoder.cpp"
+#line 62299 "pentiumdecoder.cpp"
 
       
     } 
@@ -62298,7 +62313,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62302 "pentiumdecoder.cpp"
+#line 62317 "pentiumdecoder.cpp"
 
       
     } 
@@ -62316,7 +62331,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62320 "pentiumdecoder.cpp"
+#line 62335 "pentiumdecoder.cpp"
 
       
     } 
@@ -62334,7 +62349,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62338 "pentiumdecoder.cpp"
+#line 62353 "pentiumdecoder.cpp"
 
       
     } 
@@ -62351,7 +62366,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 62355 "pentiumdecoder.cpp"
+#line 62370 "pentiumdecoder.cpp"
 
       
     } 
@@ -62368,7 +62383,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 62372 "pentiumdecoder.cpp"
+#line 62387 "pentiumdecoder.cpp"
 
       
     } 
@@ -62385,7 +62400,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 62389 "pentiumdecoder.cpp"
+#line 62404 "pentiumdecoder.cpp"
 
       
     } 
@@ -62403,7 +62418,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62407 "pentiumdecoder.cpp"
+#line 62422 "pentiumdecoder.cpp"
 
       
     } 
@@ -62421,7 +62436,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62425 "pentiumdecoder.cpp"
+#line 62440 "pentiumdecoder.cpp"
 
       
     } 
@@ -62439,7 +62454,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62443 "pentiumdecoder.cpp"
+#line 62458 "pentiumdecoder.cpp"
 
       
     } 
@@ -62457,7 +62472,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62461 "pentiumdecoder.cpp"
+#line 62476 "pentiumdecoder.cpp"
 
       
     } 
@@ -62475,7 +62490,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62479 "pentiumdecoder.cpp"
+#line 62494 "pentiumdecoder.cpp"
 
       
     } 
@@ -62493,7 +62508,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62497 "pentiumdecoder.cpp"
+#line 62512 "pentiumdecoder.cpp"
 
       
     } 
@@ -62511,7 +62526,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62515 "pentiumdecoder.cpp"
+#line 62530 "pentiumdecoder.cpp"
 
       
     } 
@@ -62529,7 +62544,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62533 "pentiumdecoder.cpp"
+#line 62548 "pentiumdecoder.cpp"
 
       
     } 
@@ -62547,7 +62562,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62551 "pentiumdecoder.cpp"
+#line 62566 "pentiumdecoder.cpp"
 
       
     } 
@@ -62565,7 +62580,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62569 "pentiumdecoder.cpp"
+#line 62584 "pentiumdecoder.cpp"
 
       
     } 
@@ -62583,7 +62598,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62587 "pentiumdecoder.cpp"
+#line 62602 "pentiumdecoder.cpp"
 
       
     } 
@@ -62601,7 +62616,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62605 "pentiumdecoder.cpp"
+#line 62620 "pentiumdecoder.cpp"
 
       
     } 
@@ -62619,7 +62634,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62623 "pentiumdecoder.cpp"
+#line 62638 "pentiumdecoder.cpp"
 
       
     } 
@@ -62637,7 +62652,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62641 "pentiumdecoder.cpp"
+#line 62656 "pentiumdecoder.cpp"
 
       
     } 
@@ -62655,7 +62670,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62659 "pentiumdecoder.cpp"
+#line 62674 "pentiumdecoder.cpp"
 
       
     } 
@@ -62673,7 +62688,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62677 "pentiumdecoder.cpp"
+#line 62692 "pentiumdecoder.cpp"
 
       
     } 
@@ -62691,7 +62706,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62695 "pentiumdecoder.cpp"
+#line 62710 "pentiumdecoder.cpp"
 
       
     } 
@@ -62709,7 +62724,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62713 "pentiumdecoder.cpp"
+#line 62728 "pentiumdecoder.cpp"
 
       
     } 
@@ -62727,7 +62742,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62731 "pentiumdecoder.cpp"
+#line 62746 "pentiumdecoder.cpp"
 
       
     } 
@@ -62745,7 +62760,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62749 "pentiumdecoder.cpp"
+#line 62764 "pentiumdecoder.cpp"
 
       
     } 
@@ -62763,7 +62778,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62767 "pentiumdecoder.cpp"
+#line 62782 "pentiumdecoder.cpp"
 
       
     } 
@@ -62781,7 +62796,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62785 "pentiumdecoder.cpp"
+#line 62800 "pentiumdecoder.cpp"
 
       
     } 
@@ -62799,7 +62814,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62803 "pentiumdecoder.cpp"
+#line 62818 "pentiumdecoder.cpp"
 
       
     } 
@@ -62817,7 +62832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 62821 "pentiumdecoder.cpp"
+#line 62836 "pentiumdecoder.cpp"
 
       
     } 
@@ -62835,7 +62850,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62839 "pentiumdecoder.cpp"
+#line 62854 "pentiumdecoder.cpp"
 
       
     } 
@@ -62853,7 +62868,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62857 "pentiumdecoder.cpp"
+#line 62872 "pentiumdecoder.cpp"
 
       
     } 
@@ -62871,7 +62886,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62875 "pentiumdecoder.cpp"
+#line 62890 "pentiumdecoder.cpp"
 
       
     } 
@@ -62889,7 +62904,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 62893 "pentiumdecoder.cpp"
+#line 62908 "pentiumdecoder.cpp"
 
       
     } 
@@ -62907,7 +62922,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62911 "pentiumdecoder.cpp"
+#line 62926 "pentiumdecoder.cpp"
 
       
     } 
@@ -62925,7 +62940,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62929 "pentiumdecoder.cpp"
+#line 62944 "pentiumdecoder.cpp"
 
       
     } 
@@ -62943,7 +62958,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62947 "pentiumdecoder.cpp"
+#line 62962 "pentiumdecoder.cpp"
 
       
     } 
@@ -62961,7 +62976,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 62965 "pentiumdecoder.cpp"
+#line 62980 "pentiumdecoder.cpp"
 
       
     } 
@@ -62979,7 +62994,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 62983 "pentiumdecoder.cpp"
+#line 62998 "pentiumdecoder.cpp"
 
       
     } 
@@ -62997,7 +63012,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 63001 "pentiumdecoder.cpp"
+#line 63016 "pentiumdecoder.cpp"
 
       
     } 
@@ -63015,7 +63030,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 63019 "pentiumdecoder.cpp"
+#line 63034 "pentiumdecoder.cpp"
 
       
     } 
@@ -63033,7 +63048,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
 
-#line 63037 "pentiumdecoder.cpp"
+#line 63052 "pentiumdecoder.cpp"
 
       
     } 
@@ -63051,7 +63066,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63055 "pentiumdecoder.cpp"
+#line 63070 "pentiumdecoder.cpp"
 
       
     } 
@@ -63069,7 +63084,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63073 "pentiumdecoder.cpp"
+#line 63088 "pentiumdecoder.cpp"
 
       
     } 
@@ -63087,7 +63102,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63091 "pentiumdecoder.cpp"
+#line 63106 "pentiumdecoder.cpp"
 
       
     } 
@@ -63105,7 +63120,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63109 "pentiumdecoder.cpp"
+#line 63124 "pentiumdecoder.cpp"
 
       
     } 
@@ -63123,7 +63138,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 63127 "pentiumdecoder.cpp"
+#line 63142 "pentiumdecoder.cpp"
 
       
     } 
@@ -63141,7 +63156,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 63145 "pentiumdecoder.cpp"
+#line 63160 "pentiumdecoder.cpp"
 
       
     } 
@@ -63159,7 +63174,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 63163 "pentiumdecoder.cpp"
+#line 63178 "pentiumdecoder.cpp"
 
       
     } 
@@ -63177,7 +63192,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
 
-#line 63181 "pentiumdecoder.cpp"
+#line 63196 "pentiumdecoder.cpp"
 
       
     } 
@@ -63195,7 +63210,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63199 "pentiumdecoder.cpp"
+#line 63214 "pentiumdecoder.cpp"
 
       
     } 
@@ -63213,7 +63228,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63217 "pentiumdecoder.cpp"
+#line 63232 "pentiumdecoder.cpp"
 
       
     } 
@@ -63231,7 +63246,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63235 "pentiumdecoder.cpp"
+#line 63250 "pentiumdecoder.cpp"
 
       
     } 
@@ -63249,7 +63264,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63253 "pentiumdecoder.cpp"
+#line 63268 "pentiumdecoder.cpp"
 
       
     } 
@@ -63268,7 +63283,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 63272 "pentiumdecoder.cpp"
+#line 63287 "pentiumdecoder.cpp"
 
       
     } 
@@ -63287,7 +63302,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 63291 "pentiumdecoder.cpp"
+#line 63306 "pentiumdecoder.cpp"
 
       
     } 
@@ -63306,7 +63321,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 63310 "pentiumdecoder.cpp"
+#line 63325 "pentiumdecoder.cpp"
 
       
     } 
@@ -63325,7 +63340,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, addReloc(DIS_I32));
 
 
-#line 63329 "pentiumdecoder.cpp"
+#line 63344 "pentiumdecoder.cpp"
 
       
     } 
@@ -63345,7 +63360,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 63349 "pentiumdecoder.cpp"
+#line 63364 "pentiumdecoder.cpp"
 
       
     } 
@@ -63365,7 +63380,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 63369 "pentiumdecoder.cpp"
+#line 63384 "pentiumdecoder.cpp"
 
       
     } 
@@ -63385,7 +63400,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 63389 "pentiumdecoder.cpp"
+#line 63404 "pentiumdecoder.cpp"
 
       
     } 
@@ -63405,7 +63420,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 63409 "pentiumdecoder.cpp"
+#line 63424 "pentiumdecoder.cpp"
 
       
     } 
@@ -63423,7 +63438,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 63427 "pentiumdecoder.cpp"
+#line 63442 "pentiumdecoder.cpp"
 
       
     } 
@@ -63441,7 +63456,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 63445 "pentiumdecoder.cpp"
+#line 63460 "pentiumdecoder.cpp"
 
       
     } 
@@ -63459,7 +63474,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 63463 "pentiumdecoder.cpp"
+#line 63478 "pentiumdecoder.cpp"
 
       
     } 
@@ -63477,7 +63492,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
 
-#line 63481 "pentiumdecoder.cpp"
+#line 63496 "pentiumdecoder.cpp"
 
       
     } 
@@ -63495,7 +63510,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63499 "pentiumdecoder.cpp"
+#line 63514 "pentiumdecoder.cpp"
 
       
     } 
@@ -63513,7 +63528,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63517 "pentiumdecoder.cpp"
+#line 63532 "pentiumdecoder.cpp"
 
       
     } 
@@ -63531,7 +63546,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63535 "pentiumdecoder.cpp"
+#line 63550 "pentiumdecoder.cpp"
 
       
     } 
@@ -63549,7 +63564,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
 
-#line 63553 "pentiumdecoder.cpp"
+#line 63568 "pentiumdecoder.cpp"
 
       
     } 
@@ -63567,7 +63582,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG8, DIS_EADDR8);
 
 
-#line 63571 "pentiumdecoder.cpp"
+#line 63586 "pentiumdecoder.cpp"
 
       
     } 
@@ -63585,7 +63600,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG8, DIS_EADDR8);
 
 
-#line 63589 "pentiumdecoder.cpp"
+#line 63604 "pentiumdecoder.cpp"
 
       
     } 
@@ -63603,7 +63618,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG8, DIS_EADDR8);
 
 
-#line 63607 "pentiumdecoder.cpp"
+#line 63622 "pentiumdecoder.cpp"
 
       
     } 
@@ -63621,7 +63636,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG8, DIS_EADDR8);
 
 
-#line 63625 "pentiumdecoder.cpp"
+#line 63640 "pentiumdecoder.cpp"
 
       
     } 
@@ -63639,7 +63654,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63643 "pentiumdecoder.cpp"
+#line 63658 "pentiumdecoder.cpp"
 
       
     } 
@@ -63657,7 +63672,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63661 "pentiumdecoder.cpp"
+#line 63676 "pentiumdecoder.cpp"
 
       
     } 
@@ -63675,7 +63690,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63679 "pentiumdecoder.cpp"
+#line 63694 "pentiumdecoder.cpp"
 
       
     } 
@@ -63693,7 +63708,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
 
-#line 63697 "pentiumdecoder.cpp"
+#line 63712 "pentiumdecoder.cpp"
 
       
     } 
@@ -63711,7 +63726,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 63715 "pentiumdecoder.cpp"
+#line 63730 "pentiumdecoder.cpp"
 
       
     } 
@@ -63729,7 +63744,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 63733 "pentiumdecoder.cpp"
+#line 63748 "pentiumdecoder.cpp"
 
       
     } 
@@ -63747,7 +63762,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
 
-#line 63751 "pentiumdecoder.cpp"
+#line 63766 "pentiumdecoder.cpp"
 
       
     } 
@@ -63764,7 +63779,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 63768 "pentiumdecoder.cpp"
+#line 63783 "pentiumdecoder.cpp"
 
       
     } 
@@ -63781,7 +63796,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 63785 "pentiumdecoder.cpp"
+#line 63800 "pentiumdecoder.cpp"
 
       
     } 
@@ -63798,7 +63813,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 63802 "pentiumdecoder.cpp"
+#line 63817 "pentiumdecoder.cpp"
 
       
     } 
@@ -63815,7 +63830,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 63819 "pentiumdecoder.cpp"
+#line 63834 "pentiumdecoder.cpp"
 
       
     } 
@@ -63827,12 +63842,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1719 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63836 "pentiumdecoder.cpp"
+#line 63851 "pentiumdecoder.cpp"
 
       
     } 
@@ -63844,12 +63859,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1719 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63853 "pentiumdecoder.cpp"
+#line 63868 "pentiumdecoder.cpp"
 
       
     } 
@@ -63861,12 +63876,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1719 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63870 "pentiumdecoder.cpp"
+#line 63885 "pentiumdecoder.cpp"
 
       
     } 
@@ -63878,12 +63893,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1913 "machine/pentium/decoder.m"
+#line 1916 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63887 "pentiumdecoder.cpp"
+#line 63902 "pentiumdecoder.cpp"
 
       
     } 
@@ -63895,12 +63910,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1913 "machine/pentium/decoder.m"
+#line 1916 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63904 "pentiumdecoder.cpp"
+#line 63919 "pentiumdecoder.cpp"
 
       
     } 
@@ -63912,12 +63927,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1913 "machine/pentium/decoder.m"
+#line 1916 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63921 "pentiumdecoder.cpp"
+#line 63936 "pentiumdecoder.cpp"
 
       
     } 
@@ -63929,12 +63944,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1752 "machine/pentium/decoder.m"
+#line 1755 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63938 "pentiumdecoder.cpp"
+#line 63953 "pentiumdecoder.cpp"
 
       
     } 
@@ -63946,12 +63961,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1752 "machine/pentium/decoder.m"
+#line 1755 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63955 "pentiumdecoder.cpp"
+#line 63970 "pentiumdecoder.cpp"
 
       
     } 
@@ -63963,12 +63978,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1752 "machine/pentium/decoder.m"
+#line 1755 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63972 "pentiumdecoder.cpp"
+#line 63987 "pentiumdecoder.cpp"
 
       
     } 
@@ -63980,12 +63995,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1764 "machine/pentium/decoder.m"
+#line 1767 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 63989 "pentiumdecoder.cpp"
+#line 64004 "pentiumdecoder.cpp"
 
       
     } 
@@ -63997,12 +64012,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1764 "machine/pentium/decoder.m"
+#line 1767 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64006 "pentiumdecoder.cpp"
+#line 64021 "pentiumdecoder.cpp"
 
       
     } 
@@ -64014,12 +64029,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1764 "machine/pentium/decoder.m"
+#line 1767 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64023 "pentiumdecoder.cpp"
+#line 64038 "pentiumdecoder.cpp"
 
       
     } 
@@ -64031,12 +64046,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2003 "machine/pentium/decoder.m"
+#line 2006 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64040 "pentiumdecoder.cpp"
+#line 64055 "pentiumdecoder.cpp"
 
       
     } 
@@ -64048,12 +64063,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2003 "machine/pentium/decoder.m"
+#line 2006 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64057 "pentiumdecoder.cpp"
+#line 64072 "pentiumdecoder.cpp"
 
       
     } 
@@ -64065,12 +64080,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2003 "machine/pentium/decoder.m"
+#line 2006 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64074 "pentiumdecoder.cpp"
+#line 64089 "pentiumdecoder.cpp"
 
       
     } 
@@ -64082,12 +64097,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2024 "machine/pentium/decoder.m"
+#line 2027 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64091 "pentiumdecoder.cpp"
+#line 64106 "pentiumdecoder.cpp"
 
       
     } 
@@ -64099,12 +64114,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2024 "machine/pentium/decoder.m"
+#line 2027 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64108 "pentiumdecoder.cpp"
+#line 64123 "pentiumdecoder.cpp"
 
       
     } 
@@ -64116,12 +64131,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2024 "machine/pentium/decoder.m"
+#line 2027 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64125 "pentiumdecoder.cpp"
+#line 64140 "pentiumdecoder.cpp"
 
       
     } 
@@ -64133,12 +64148,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1797 "machine/pentium/decoder.m"
+#line 1800 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64142 "pentiumdecoder.cpp"
+#line 64157 "pentiumdecoder.cpp"
 
       
     } 
@@ -64150,12 +64165,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1797 "machine/pentium/decoder.m"
+#line 1800 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64159 "pentiumdecoder.cpp"
+#line 64174 "pentiumdecoder.cpp"
 
       
     } 
@@ -64167,12 +64182,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1797 "machine/pentium/decoder.m"
+#line 1800 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64176 "pentiumdecoder.cpp"
+#line 64191 "pentiumdecoder.cpp"
 
       
     } 
@@ -64184,12 +64199,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1818 "machine/pentium/decoder.m"
+#line 1821 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64193 "pentiumdecoder.cpp"
+#line 64208 "pentiumdecoder.cpp"
 
       
     } 
@@ -64201,12 +64216,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1818 "machine/pentium/decoder.m"
+#line 1821 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64210 "pentiumdecoder.cpp"
+#line 64225 "pentiumdecoder.cpp"
 
       
     } 
@@ -64218,12 +64233,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1818 "machine/pentium/decoder.m"
+#line 1821 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64227 "pentiumdecoder.cpp"
+#line 64242 "pentiumdecoder.cpp"
 
       
     } 
@@ -64235,12 +64250,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1869 "machine/pentium/decoder.m"
+#line 1872 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64244 "pentiumdecoder.cpp"
+#line 64259 "pentiumdecoder.cpp"
 
       
     } 
@@ -64252,12 +64267,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1869 "machine/pentium/decoder.m"
+#line 1872 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64261 "pentiumdecoder.cpp"
+#line 64276 "pentiumdecoder.cpp"
 
       
     } 
@@ -64269,12 +64284,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1869 "machine/pentium/decoder.m"
+#line 1872 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64278 "pentiumdecoder.cpp"
+#line 64293 "pentiumdecoder.cpp"
 
       
     } 
@@ -64286,12 +64301,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1970 "machine/pentium/decoder.m"
+#line 1973 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64295 "pentiumdecoder.cpp"
+#line 64310 "pentiumdecoder.cpp"
 
       
     } 
@@ -64303,12 +64318,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1970 "machine/pentium/decoder.m"
+#line 1973 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64312 "pentiumdecoder.cpp"
+#line 64327 "pentiumdecoder.cpp"
 
       
     } 
@@ -64320,12 +64335,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1970 "machine/pentium/decoder.m"
+#line 1973 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64329 "pentiumdecoder.cpp"
+#line 64344 "pentiumdecoder.cpp"
 
       
     } 
@@ -64337,12 +64352,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1976 "machine/pentium/decoder.m"
+#line 1979 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64346 "pentiumdecoder.cpp"
+#line 64361 "pentiumdecoder.cpp"
 
       
     } 
@@ -64354,12 +64369,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1976 "machine/pentium/decoder.m"
+#line 1979 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64363 "pentiumdecoder.cpp"
+#line 64378 "pentiumdecoder.cpp"
 
       
     } 
@@ -64371,12 +64386,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1976 "machine/pentium/decoder.m"
+#line 1979 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64380 "pentiumdecoder.cpp"
+#line 64395 "pentiumdecoder.cpp"
 
       
     } 
@@ -64388,12 +64403,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1976 "machine/pentium/decoder.m"
+#line 1979 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64397 "pentiumdecoder.cpp"
+#line 64412 "pentiumdecoder.cpp"
 
       
     } 
@@ -64405,12 +64420,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1910 "machine/pentium/decoder.m"
+#line 1913 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64414 "pentiumdecoder.cpp"
+#line 64429 "pentiumdecoder.cpp"
 
       
     } 
@@ -64422,12 +64437,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1910 "machine/pentium/decoder.m"
+#line 1913 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64431 "pentiumdecoder.cpp"
+#line 64446 "pentiumdecoder.cpp"
 
       
     } 
@@ -64439,12 +64454,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1910 "machine/pentium/decoder.m"
+#line 1913 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64448 "pentiumdecoder.cpp"
+#line 64463 "pentiumdecoder.cpp"
 
       
     } 
@@ -64456,12 +64471,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1910 "machine/pentium/decoder.m"
+#line 1913 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64465 "pentiumdecoder.cpp"
+#line 64480 "pentiumdecoder.cpp"
 
       
     } 
@@ -64473,12 +64488,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1910 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64482 "pentiumdecoder.cpp"
+#line 64497 "pentiumdecoder.cpp"
 
       
     } 
@@ -64490,12 +64505,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1910 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64499 "pentiumdecoder.cpp"
+#line 64514 "pentiumdecoder.cpp"
 
       
     } 
@@ -64507,12 +64522,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1910 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64516 "pentiumdecoder.cpp"
+#line 64531 "pentiumdecoder.cpp"
 
       
     } 
@@ -64524,12 +64539,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1910 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64533 "pentiumdecoder.cpp"
+#line 64548 "pentiumdecoder.cpp"
 
       
     } 
@@ -64541,12 +64556,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1994 "machine/pentium/decoder.m"
+#line 1997 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64550 "pentiumdecoder.cpp"
+#line 64565 "pentiumdecoder.cpp"
 
       
     } 
@@ -64558,12 +64573,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1994 "machine/pentium/decoder.m"
+#line 1997 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64567 "pentiumdecoder.cpp"
+#line 64582 "pentiumdecoder.cpp"
 
       
     } 
@@ -64575,12 +64590,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1994 "machine/pentium/decoder.m"
+#line 1997 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64584 "pentiumdecoder.cpp"
+#line 64599 "pentiumdecoder.cpp"
 
       
     } 
@@ -64592,12 +64607,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1994 "machine/pentium/decoder.m"
+#line 1997 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 64601 "pentiumdecoder.cpp"
+#line 64616 "pentiumdecoder.cpp"
 
       
     } 
@@ -64609,12 +64624,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1991 "machine/pentium/decoder.m"
+#line 1994 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64618 "pentiumdecoder.cpp"
+#line 64633 "pentiumdecoder.cpp"
 
       
     } 
@@ -64626,12 +64641,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1991 "machine/pentium/decoder.m"
+#line 1994 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64635 "pentiumdecoder.cpp"
+#line 64650 "pentiumdecoder.cpp"
 
       
     } 
@@ -64643,12 +64658,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1991 "machine/pentium/decoder.m"
+#line 1994 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64652 "pentiumdecoder.cpp"
+#line 64667 "pentiumdecoder.cpp"
 
       
     } 
@@ -64660,12 +64675,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1991 "machine/pentium/decoder.m"
+#line 1994 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 64669 "pentiumdecoder.cpp"
+#line 64684 "pentiumdecoder.cpp"
 
       
     } 
@@ -64677,12 +64692,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1734 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64686 "pentiumdecoder.cpp"
+#line 64701 "pentiumdecoder.cpp"
 
       
     } 
@@ -64694,12 +64709,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1734 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64703 "pentiumdecoder.cpp"
+#line 64718 "pentiumdecoder.cpp"
 
       
     } 
@@ -64711,12 +64726,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1734 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64720 "pentiumdecoder.cpp"
+#line 64735 "pentiumdecoder.cpp"
 
       
     } 
@@ -64728,12 +64743,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1734 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64737 "pentiumdecoder.cpp"
+#line 64752 "pentiumdecoder.cpp"
 
       
     } 
@@ -64745,12 +64760,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1928 "machine/pentium/decoder.m"
+#line 1931 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64754 "pentiumdecoder.cpp"
+#line 64769 "pentiumdecoder.cpp"
 
       
     } 
@@ -64762,12 +64777,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1928 "machine/pentium/decoder.m"
+#line 1931 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64771 "pentiumdecoder.cpp"
+#line 64786 "pentiumdecoder.cpp"
 
       
     } 
@@ -64779,12 +64794,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1928 "machine/pentium/decoder.m"
+#line 1931 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64788 "pentiumdecoder.cpp"
+#line 64803 "pentiumdecoder.cpp"
 
       
     } 
@@ -64796,12 +64811,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1928 "machine/pentium/decoder.m"
+#line 1931 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64805 "pentiumdecoder.cpp"
+#line 64820 "pentiumdecoder.cpp"
 
       
     } 
@@ -64813,12 +64828,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1758 "machine/pentium/decoder.m"
+#line 1761 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64822 "pentiumdecoder.cpp"
+#line 64837 "pentiumdecoder.cpp"
 
       
     } 
@@ -64830,12 +64845,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1758 "machine/pentium/decoder.m"
+#line 1761 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64839 "pentiumdecoder.cpp"
+#line 64854 "pentiumdecoder.cpp"
 
       
     } 
@@ -64847,12 +64862,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1758 "machine/pentium/decoder.m"
+#line 1761 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64856 "pentiumdecoder.cpp"
+#line 64871 "pentiumdecoder.cpp"
 
       
     } 
@@ -64864,12 +64879,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1758 "machine/pentium/decoder.m"
+#line 1761 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64873 "pentiumdecoder.cpp"
+#line 64888 "pentiumdecoder.cpp"
 
       
     } 
@@ -64881,12 +64896,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1776 "machine/pentium/decoder.m"
+#line 1779 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64890 "pentiumdecoder.cpp"
+#line 64905 "pentiumdecoder.cpp"
 
       
     } 
@@ -64898,12 +64913,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1776 "machine/pentium/decoder.m"
+#line 1779 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64907 "pentiumdecoder.cpp"
+#line 64922 "pentiumdecoder.cpp"
 
       
     } 
@@ -64915,12 +64930,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1776 "machine/pentium/decoder.m"
+#line 1779 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64924 "pentiumdecoder.cpp"
+#line 64939 "pentiumdecoder.cpp"
 
       
     } 
@@ -64932,12 +64947,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1776 "machine/pentium/decoder.m"
+#line 1779 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64941 "pentiumdecoder.cpp"
+#line 64956 "pentiumdecoder.cpp"
 
       
     } 
@@ -64949,12 +64964,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2015 "machine/pentium/decoder.m"
+#line 2018 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64958 "pentiumdecoder.cpp"
+#line 64973 "pentiumdecoder.cpp"
 
       
     } 
@@ -64966,12 +64981,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2015 "machine/pentium/decoder.m"
+#line 2018 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64975 "pentiumdecoder.cpp"
+#line 64990 "pentiumdecoder.cpp"
 
       
     } 
@@ -64983,12 +64998,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2015 "machine/pentium/decoder.m"
+#line 2018 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 64992 "pentiumdecoder.cpp"
+#line 65007 "pentiumdecoder.cpp"
 
       
     } 
@@ -65000,12 +65015,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2015 "machine/pentium/decoder.m"
+#line 2018 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65009 "pentiumdecoder.cpp"
+#line 65024 "pentiumdecoder.cpp"
 
       
     } 
@@ -65017,12 +65032,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2036 "machine/pentium/decoder.m"
+#line 2039 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65026 "pentiumdecoder.cpp"
+#line 65041 "pentiumdecoder.cpp"
 
       
     } 
@@ -65034,12 +65049,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2036 "machine/pentium/decoder.m"
+#line 2039 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65043 "pentiumdecoder.cpp"
+#line 65058 "pentiumdecoder.cpp"
 
       
     } 
@@ -65051,12 +65066,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2036 "machine/pentium/decoder.m"
+#line 2039 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65060 "pentiumdecoder.cpp"
+#line 65075 "pentiumdecoder.cpp"
 
       
     } 
@@ -65068,12 +65083,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2036 "machine/pentium/decoder.m"
+#line 2039 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65077 "pentiumdecoder.cpp"
+#line 65092 "pentiumdecoder.cpp"
 
       
     } 
@@ -65085,12 +65100,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1812 "machine/pentium/decoder.m"
+#line 1815 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65094 "pentiumdecoder.cpp"
+#line 65109 "pentiumdecoder.cpp"
 
       
     } 
@@ -65102,12 +65117,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1812 "machine/pentium/decoder.m"
+#line 1815 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65111 "pentiumdecoder.cpp"
+#line 65126 "pentiumdecoder.cpp"
 
       
     } 
@@ -65119,12 +65134,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1812 "machine/pentium/decoder.m"
+#line 1815 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65128 "pentiumdecoder.cpp"
+#line 65143 "pentiumdecoder.cpp"
 
       
     } 
@@ -65136,12 +65151,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1812 "machine/pentium/decoder.m"
+#line 1815 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65145 "pentiumdecoder.cpp"
+#line 65160 "pentiumdecoder.cpp"
 
       
     } 
@@ -65153,12 +65168,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1830 "machine/pentium/decoder.m"
+#line 1833 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65162 "pentiumdecoder.cpp"
+#line 65177 "pentiumdecoder.cpp"
 
       
     } 
@@ -65170,12 +65185,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1830 "machine/pentium/decoder.m"
+#line 1833 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65179 "pentiumdecoder.cpp"
+#line 65194 "pentiumdecoder.cpp"
 
       
     } 
@@ -65187,12 +65202,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1830 "machine/pentium/decoder.m"
+#line 1833 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65196 "pentiumdecoder.cpp"
+#line 65211 "pentiumdecoder.cpp"
 
       
     } 
@@ -65204,12 +65219,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1830 "machine/pentium/decoder.m"
+#line 1833 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65213 "pentiumdecoder.cpp"
+#line 65228 "pentiumdecoder.cpp"
 
       
     } 
@@ -65221,12 +65236,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1845 "machine/pentium/decoder.m"
+#line 1848 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65230 "pentiumdecoder.cpp"
+#line 65245 "pentiumdecoder.cpp"
 
       
     } 
@@ -65238,12 +65253,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1845 "machine/pentium/decoder.m"
+#line 1848 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65247 "pentiumdecoder.cpp"
+#line 65262 "pentiumdecoder.cpp"
 
       
     } 
@@ -65255,12 +65270,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1845 "machine/pentium/decoder.m"
+#line 1848 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65264 "pentiumdecoder.cpp"
+#line 65279 "pentiumdecoder.cpp"
 
       
     } 
@@ -65272,12 +65287,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1845 "machine/pentium/decoder.m"
+#line 1848 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65281 "pentiumdecoder.cpp"
+#line 65296 "pentiumdecoder.cpp"
 
       
     } 
@@ -65289,12 +65304,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1857 "machine/pentium/decoder.m"
+#line 1860 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65298 "pentiumdecoder.cpp"
+#line 65313 "pentiumdecoder.cpp"
 
       
     } 
@@ -65306,12 +65321,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1857 "machine/pentium/decoder.m"
+#line 1860 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65315 "pentiumdecoder.cpp"
+#line 65330 "pentiumdecoder.cpp"
 
       
     } 
@@ -65323,12 +65338,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1857 "machine/pentium/decoder.m"
+#line 1860 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65332 "pentiumdecoder.cpp"
+#line 65347 "pentiumdecoder.cpp"
 
       
     } 
@@ -65340,12 +65355,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1857 "machine/pentium/decoder.m"
+#line 1860 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65349 "pentiumdecoder.cpp"
+#line 65364 "pentiumdecoder.cpp"
 
       
     } 
@@ -65357,12 +65372,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1863 "machine/pentium/decoder.m"
+#line 1866 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65366 "pentiumdecoder.cpp"
+#line 65381 "pentiumdecoder.cpp"
 
       
     } 
@@ -65374,12 +65389,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1863 "machine/pentium/decoder.m"
+#line 1866 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65383 "pentiumdecoder.cpp"
+#line 65398 "pentiumdecoder.cpp"
 
       
     } 
@@ -65391,12 +65406,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1863 "machine/pentium/decoder.m"
+#line 1866 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65400 "pentiumdecoder.cpp"
+#line 65415 "pentiumdecoder.cpp"
 
       
     } 
@@ -65408,12 +65423,12 @@ pc
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1863 "machine/pentium/decoder.m"
+#line 1866 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 
-#line 65417 "pentiumdecoder.cpp"
+#line 65432 "pentiumdecoder.cpp"
 
       
     } 
@@ -65425,7 +65440,7 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1875 "machine/pentium/decoder.m"
+#line 1878 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -65435,7 +65450,7 @@ pc
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 65439 "pentiumdecoder.cpp"
+#line 65454 "pentiumdecoder.cpp"
 
       
     } 
@@ -65447,7 +65462,7 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1875 "machine/pentium/decoder.m"
+#line 1878 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -65457,7 +65472,7 @@ pc
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 65461 "pentiumdecoder.cpp"
+#line 65476 "pentiumdecoder.cpp"
 
       
     } 
@@ -65469,7 +65484,7 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1875 "machine/pentium/decoder.m"
+#line 1878 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -65479,7 +65494,7 @@ pc
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 65483 "pentiumdecoder.cpp"
+#line 65498 "pentiumdecoder.cpp"
 
       
     } 
@@ -65491,7 +65506,7 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1875 "machine/pentium/decoder.m"
+#line 1878 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
@@ -65501,7 +65516,7 @@ pc
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 65505 "pentiumdecoder.cpp"
+#line 65520 "pentiumdecoder.cpp"
 
       
     } 
@@ -65513,12 +65528,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1982 "machine/pentium/decoder.m"
+#line 1985 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 65522 "pentiumdecoder.cpp"
+#line 65537 "pentiumdecoder.cpp"
 
       
     } 
@@ -65530,12 +65545,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1982 "machine/pentium/decoder.m"
+#line 1985 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 65539 "pentiumdecoder.cpp"
+#line 65554 "pentiumdecoder.cpp"
 
       
     } 
@@ -65547,12 +65562,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1982 "machine/pentium/decoder.m"
+#line 1985 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 65556 "pentiumdecoder.cpp"
+#line 65571 "pentiumdecoder.cpp"
 
       
     } 
@@ -65564,12 +65579,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1982 "machine/pentium/decoder.m"
+#line 1985 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 65573 "pentiumdecoder.cpp"
+#line 65588 "pentiumdecoder.cpp"
 
       
     } 
@@ -65581,12 +65596,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1722 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65590 "pentiumdecoder.cpp"
+#line 65605 "pentiumdecoder.cpp"
 
       
     } 
@@ -65598,12 +65613,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1722 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65607 "pentiumdecoder.cpp"
+#line 65622 "pentiumdecoder.cpp"
 
       
     } 
@@ -65615,12 +65630,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1722 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65624 "pentiumdecoder.cpp"
+#line 65639 "pentiumdecoder.cpp"
 
       
     } 
@@ -65632,12 +65647,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1722 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65641 "pentiumdecoder.cpp"
+#line 65656 "pentiumdecoder.cpp"
 
       
     } 
@@ -65649,12 +65664,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1916 "machine/pentium/decoder.m"
+#line 1919 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65658 "pentiumdecoder.cpp"
+#line 65673 "pentiumdecoder.cpp"
 
       
     } 
@@ -65666,12 +65681,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1916 "machine/pentium/decoder.m"
+#line 1919 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65675 "pentiumdecoder.cpp"
+#line 65690 "pentiumdecoder.cpp"
 
       
     } 
@@ -65683,12 +65698,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1916 "machine/pentium/decoder.m"
+#line 1919 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65692 "pentiumdecoder.cpp"
+#line 65707 "pentiumdecoder.cpp"
 
       
     } 
@@ -65700,12 +65715,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1916 "machine/pentium/decoder.m"
+#line 1919 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65709 "pentiumdecoder.cpp"
+#line 65724 "pentiumdecoder.cpp"
 
       
     } 
@@ -65717,12 +65732,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1755 "machine/pentium/decoder.m"
+#line 1758 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65726 "pentiumdecoder.cpp"
+#line 65741 "pentiumdecoder.cpp"
 
       
     } 
@@ -65734,12 +65749,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1755 "machine/pentium/decoder.m"
+#line 1758 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65743 "pentiumdecoder.cpp"
+#line 65758 "pentiumdecoder.cpp"
 
       
     } 
@@ -65751,12 +65766,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1755 "machine/pentium/decoder.m"
+#line 1758 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65760 "pentiumdecoder.cpp"
+#line 65775 "pentiumdecoder.cpp"
 
       
     } 
@@ -65768,12 +65783,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1755 "machine/pentium/decoder.m"
+#line 1758 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65777 "pentiumdecoder.cpp"
+#line 65792 "pentiumdecoder.cpp"
 
       
     } 
@@ -65785,12 +65800,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1767 "machine/pentium/decoder.m"
+#line 1770 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65794 "pentiumdecoder.cpp"
+#line 65809 "pentiumdecoder.cpp"
 
       
     } 
@@ -65802,12 +65817,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1767 "machine/pentium/decoder.m"
+#line 1770 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65811 "pentiumdecoder.cpp"
+#line 65826 "pentiumdecoder.cpp"
 
       
     } 
@@ -65819,12 +65834,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1767 "machine/pentium/decoder.m"
+#line 1770 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65828 "pentiumdecoder.cpp"
+#line 65843 "pentiumdecoder.cpp"
 
       
     } 
@@ -65836,12 +65851,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1767 "machine/pentium/decoder.m"
+#line 1770 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65845 "pentiumdecoder.cpp"
+#line 65860 "pentiumdecoder.cpp"
 
       
     } 
@@ -65853,12 +65868,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2006 "machine/pentium/decoder.m"
+#line 2009 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65862 "pentiumdecoder.cpp"
+#line 65877 "pentiumdecoder.cpp"
 
       
     } 
@@ -65870,12 +65885,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2006 "machine/pentium/decoder.m"
+#line 2009 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65879 "pentiumdecoder.cpp"
+#line 65894 "pentiumdecoder.cpp"
 
       
     } 
@@ -65887,12 +65902,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2006 "machine/pentium/decoder.m"
+#line 2009 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65896 "pentiumdecoder.cpp"
+#line 65911 "pentiumdecoder.cpp"
 
       
     } 
@@ -65904,12 +65919,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2006 "machine/pentium/decoder.m"
+#line 2009 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65913 "pentiumdecoder.cpp"
+#line 65928 "pentiumdecoder.cpp"
 
       
     } 
@@ -65921,12 +65936,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2027 "machine/pentium/decoder.m"
+#line 2030 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65930 "pentiumdecoder.cpp"
+#line 65945 "pentiumdecoder.cpp"
 
       
     } 
@@ -65938,12 +65953,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2027 "machine/pentium/decoder.m"
+#line 2030 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65947 "pentiumdecoder.cpp"
+#line 65962 "pentiumdecoder.cpp"
 
       
     } 
@@ -65955,12 +65970,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2027 "machine/pentium/decoder.m"
+#line 2030 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65964 "pentiumdecoder.cpp"
+#line 65979 "pentiumdecoder.cpp"
 
       
     } 
@@ -65972,12 +65987,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2027 "machine/pentium/decoder.m"
+#line 2030 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65981 "pentiumdecoder.cpp"
+#line 65996 "pentiumdecoder.cpp"
 
       
     } 
@@ -65989,12 +66004,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1800 "machine/pentium/decoder.m"
+#line 1803 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 65998 "pentiumdecoder.cpp"
+#line 66013 "pentiumdecoder.cpp"
 
       
     } 
@@ -66006,12 +66021,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1800 "machine/pentium/decoder.m"
+#line 1803 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66015 "pentiumdecoder.cpp"
+#line 66030 "pentiumdecoder.cpp"
 
       
     } 
@@ -66023,12 +66038,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1800 "machine/pentium/decoder.m"
+#line 1803 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66032 "pentiumdecoder.cpp"
+#line 66047 "pentiumdecoder.cpp"
 
       
     } 
@@ -66040,12 +66055,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1800 "machine/pentium/decoder.m"
+#line 1803 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66049 "pentiumdecoder.cpp"
+#line 66064 "pentiumdecoder.cpp"
 
       
     } 
@@ -66057,12 +66072,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1821 "machine/pentium/decoder.m"
+#line 1824 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66066 "pentiumdecoder.cpp"
+#line 66081 "pentiumdecoder.cpp"
 
       
     } 
@@ -66074,12 +66089,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1821 "machine/pentium/decoder.m"
+#line 1824 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66083 "pentiumdecoder.cpp"
+#line 66098 "pentiumdecoder.cpp"
 
       
     } 
@@ -66091,12 +66106,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1821 "machine/pentium/decoder.m"
+#line 1824 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66100 "pentiumdecoder.cpp"
+#line 66115 "pentiumdecoder.cpp"
 
       
     } 
@@ -66108,12 +66123,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1821 "machine/pentium/decoder.m"
+#line 1824 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66117 "pentiumdecoder.cpp"
+#line 66132 "pentiumdecoder.cpp"
 
       
     } 
@@ -66125,12 +66140,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1872 "machine/pentium/decoder.m"
+#line 1875 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66134 "pentiumdecoder.cpp"
+#line 66149 "pentiumdecoder.cpp"
 
       
     } 
@@ -66142,12 +66157,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1872 "machine/pentium/decoder.m"
+#line 1875 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66151 "pentiumdecoder.cpp"
+#line 66166 "pentiumdecoder.cpp"
 
       
     } 
@@ -66159,12 +66174,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1872 "machine/pentium/decoder.m"
+#line 1875 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66168 "pentiumdecoder.cpp"
+#line 66183 "pentiumdecoder.cpp"
 
       
     } 
@@ -66176,12 +66191,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1872 "machine/pentium/decoder.m"
+#line 1875 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66185 "pentiumdecoder.cpp"
+#line 66200 "pentiumdecoder.cpp"
 
       
     } 
@@ -66193,12 +66208,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1973 "machine/pentium/decoder.m"
+#line 1976 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66202 "pentiumdecoder.cpp"
+#line 66217 "pentiumdecoder.cpp"
 
       
     } 
@@ -66210,12 +66225,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1973 "machine/pentium/decoder.m"
+#line 1976 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66219 "pentiumdecoder.cpp"
+#line 66234 "pentiumdecoder.cpp"
 
       
     } 
@@ -66227,12 +66242,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1973 "machine/pentium/decoder.m"
+#line 1976 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66236 "pentiumdecoder.cpp"
+#line 66251 "pentiumdecoder.cpp"
 
       
     } 
@@ -66244,12 +66259,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1973 "machine/pentium/decoder.m"
+#line 1976 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66253 "pentiumdecoder.cpp"
+#line 66268 "pentiumdecoder.cpp"
 
       
     } 
@@ -66261,12 +66276,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1979 "machine/pentium/decoder.m"
+#line 1982 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66270 "pentiumdecoder.cpp"
+#line 66285 "pentiumdecoder.cpp"
 
       
     } 
@@ -66278,12 +66293,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1979 "machine/pentium/decoder.m"
+#line 1982 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66287 "pentiumdecoder.cpp"
+#line 66302 "pentiumdecoder.cpp"
 
       
     } 
@@ -66295,12 +66310,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1979 "machine/pentium/decoder.m"
+#line 1982 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66304 "pentiumdecoder.cpp"
+#line 66319 "pentiumdecoder.cpp"
 
       
     } 
@@ -66312,12 +66327,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1979 "machine/pentium/decoder.m"
+#line 1982 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 66321 "pentiumdecoder.cpp"
+#line 66336 "pentiumdecoder.cpp"
 
       
     } 
@@ -66329,12 +66344,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1952 "machine/pentium/decoder.m"
+#line 1955 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66338 "pentiumdecoder.cpp"
+#line 66353 "pentiumdecoder.cpp"
 
       
     } 
@@ -66346,12 +66361,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1952 "machine/pentium/decoder.m"
+#line 1955 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66355 "pentiumdecoder.cpp"
+#line 66370 "pentiumdecoder.cpp"
 
       
     } 
@@ -66363,12 +66378,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1952 "machine/pentium/decoder.m"
+#line 1955 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66372 "pentiumdecoder.cpp"
+#line 66387 "pentiumdecoder.cpp"
 
       
     } 
@@ -66380,12 +66395,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1952 "machine/pentium/decoder.m"
+#line 1955 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66389 "pentiumdecoder.cpp"
+#line 66404 "pentiumdecoder.cpp"
 
       
     } 
@@ -66397,12 +66412,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1955 "machine/pentium/decoder.m"
+#line 1958 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66406 "pentiumdecoder.cpp"
+#line 66421 "pentiumdecoder.cpp"
 
       
     } 
@@ -66414,12 +66429,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1955 "machine/pentium/decoder.m"
+#line 1958 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66423 "pentiumdecoder.cpp"
+#line 66438 "pentiumdecoder.cpp"
 
       
     } 
@@ -66431,12 +66446,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1955 "machine/pentium/decoder.m"
+#line 1958 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66440 "pentiumdecoder.cpp"
+#line 66455 "pentiumdecoder.cpp"
 
       
     } 
@@ -66448,12 +66463,12 @@ pc
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1955 "machine/pentium/decoder.m"
+#line 1958 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM);
 
 
-#line 66457 "pentiumdecoder.cpp"
+#line 66472 "pentiumdecoder.cpp"
 
       
     } 
@@ -66465,12 +66480,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1997 "machine/pentium/decoder.m"
+#line 2000 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66474 "pentiumdecoder.cpp"
+#line 66489 "pentiumdecoder.cpp"
 
       
     } 
@@ -66482,12 +66497,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1997 "machine/pentium/decoder.m"
+#line 2000 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66491 "pentiumdecoder.cpp"
+#line 66506 "pentiumdecoder.cpp"
 
       
     } 
@@ -66499,12 +66514,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1997 "machine/pentium/decoder.m"
+#line 2000 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66508 "pentiumdecoder.cpp"
+#line 66523 "pentiumdecoder.cpp"
 
       
     } 
@@ -66516,12 +66531,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1997 "machine/pentium/decoder.m"
+#line 2000 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66525 "pentiumdecoder.cpp"
+#line 66540 "pentiumdecoder.cpp"
 
       
     } 
@@ -66533,12 +66548,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1737 "machine/pentium/decoder.m"
+#line 1740 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66542 "pentiumdecoder.cpp"
+#line 66557 "pentiumdecoder.cpp"
 
       
     } 
@@ -66550,12 +66565,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1737 "machine/pentium/decoder.m"
+#line 1740 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66559 "pentiumdecoder.cpp"
+#line 66574 "pentiumdecoder.cpp"
 
       
     } 
@@ -66567,12 +66582,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1737 "machine/pentium/decoder.m"
+#line 1740 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66576 "pentiumdecoder.cpp"
+#line 66591 "pentiumdecoder.cpp"
 
       
     } 
@@ -66584,12 +66599,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1737 "machine/pentium/decoder.m"
+#line 1740 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66593 "pentiumdecoder.cpp"
+#line 66608 "pentiumdecoder.cpp"
 
       
     } 
@@ -66601,12 +66616,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1931 "machine/pentium/decoder.m"
+#line 1934 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66610 "pentiumdecoder.cpp"
+#line 66625 "pentiumdecoder.cpp"
 
       
     } 
@@ -66618,12 +66633,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1931 "machine/pentium/decoder.m"
+#line 1934 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66627 "pentiumdecoder.cpp"
+#line 66642 "pentiumdecoder.cpp"
 
       
     } 
@@ -66635,12 +66650,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1931 "machine/pentium/decoder.m"
+#line 1934 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66644 "pentiumdecoder.cpp"
+#line 66659 "pentiumdecoder.cpp"
 
       
     } 
@@ -66652,12 +66667,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1931 "machine/pentium/decoder.m"
+#line 1934 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66661 "pentiumdecoder.cpp"
+#line 66676 "pentiumdecoder.cpp"
 
       
     } 
@@ -66669,12 +66684,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1761 "machine/pentium/decoder.m"
+#line 1764 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66678 "pentiumdecoder.cpp"
+#line 66693 "pentiumdecoder.cpp"
 
       
     } 
@@ -66686,12 +66701,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1761 "machine/pentium/decoder.m"
+#line 1764 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66695 "pentiumdecoder.cpp"
+#line 66710 "pentiumdecoder.cpp"
 
       
     } 
@@ -66703,12 +66718,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1761 "machine/pentium/decoder.m"
+#line 1764 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66712 "pentiumdecoder.cpp"
+#line 66727 "pentiumdecoder.cpp"
 
       
     } 
@@ -66720,12 +66735,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1761 "machine/pentium/decoder.m"
+#line 1764 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66729 "pentiumdecoder.cpp"
+#line 66744 "pentiumdecoder.cpp"
 
       
     } 
@@ -66737,12 +66752,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1779 "machine/pentium/decoder.m"
+#line 1782 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66746 "pentiumdecoder.cpp"
+#line 66761 "pentiumdecoder.cpp"
 
       
     } 
@@ -66754,12 +66769,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1779 "machine/pentium/decoder.m"
+#line 1782 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66763 "pentiumdecoder.cpp"
+#line 66778 "pentiumdecoder.cpp"
 
       
     } 
@@ -66771,12 +66786,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1779 "machine/pentium/decoder.m"
+#line 1782 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66780 "pentiumdecoder.cpp"
+#line 66795 "pentiumdecoder.cpp"
 
       
     } 
@@ -66788,12 +66803,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1779 "machine/pentium/decoder.m"
+#line 1782 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66797 "pentiumdecoder.cpp"
+#line 66812 "pentiumdecoder.cpp"
 
       
     } 
@@ -66805,12 +66820,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2018 "machine/pentium/decoder.m"
+#line 2021 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66814 "pentiumdecoder.cpp"
+#line 66829 "pentiumdecoder.cpp"
 
       
     } 
@@ -66822,12 +66837,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2018 "machine/pentium/decoder.m"
+#line 2021 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66831 "pentiumdecoder.cpp"
+#line 66846 "pentiumdecoder.cpp"
 
       
     } 
@@ -66839,12 +66854,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2018 "machine/pentium/decoder.m"
+#line 2021 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66848 "pentiumdecoder.cpp"
+#line 66863 "pentiumdecoder.cpp"
 
       
     } 
@@ -66856,12 +66871,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2018 "machine/pentium/decoder.m"
+#line 2021 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66865 "pentiumdecoder.cpp"
+#line 66880 "pentiumdecoder.cpp"
 
       
     } 
@@ -66873,12 +66888,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 2039 "machine/pentium/decoder.m"
+#line 2042 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66882 "pentiumdecoder.cpp"
+#line 66897 "pentiumdecoder.cpp"
 
       
     } 
@@ -66890,12 +66905,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2039 "machine/pentium/decoder.m"
+#line 2042 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66899 "pentiumdecoder.cpp"
+#line 66914 "pentiumdecoder.cpp"
 
       
     } 
@@ -66907,12 +66922,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2039 "machine/pentium/decoder.m"
+#line 2042 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66916 "pentiumdecoder.cpp"
+#line 66931 "pentiumdecoder.cpp"
 
       
     } 
@@ -66924,12 +66939,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2039 "machine/pentium/decoder.m"
+#line 2042 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66933 "pentiumdecoder.cpp"
+#line 66948 "pentiumdecoder.cpp"
 
       
     } 
@@ -66941,12 +66956,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1815 "machine/pentium/decoder.m"
+#line 1818 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66950 "pentiumdecoder.cpp"
+#line 66965 "pentiumdecoder.cpp"
 
       
     } 
@@ -66958,12 +66973,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1815 "machine/pentium/decoder.m"
+#line 1818 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66967 "pentiumdecoder.cpp"
+#line 66982 "pentiumdecoder.cpp"
 
       
     } 
@@ -66975,12 +66990,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1815 "machine/pentium/decoder.m"
+#line 1818 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 66984 "pentiumdecoder.cpp"
+#line 66999 "pentiumdecoder.cpp"
 
       
     } 
@@ -66992,12 +67007,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1815 "machine/pentium/decoder.m"
+#line 1818 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67001 "pentiumdecoder.cpp"
+#line 67016 "pentiumdecoder.cpp"
 
       
     } 
@@ -67009,12 +67024,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1833 "machine/pentium/decoder.m"
+#line 1836 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67018 "pentiumdecoder.cpp"
+#line 67033 "pentiumdecoder.cpp"
 
       
     } 
@@ -67026,12 +67041,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1833 "machine/pentium/decoder.m"
+#line 1836 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67035 "pentiumdecoder.cpp"
+#line 67050 "pentiumdecoder.cpp"
 
       
     } 
@@ -67043,12 +67058,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1833 "machine/pentium/decoder.m"
+#line 1836 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67052 "pentiumdecoder.cpp"
+#line 67067 "pentiumdecoder.cpp"
 
       
     } 
@@ -67060,12 +67075,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1833 "machine/pentium/decoder.m"
+#line 1836 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67069 "pentiumdecoder.cpp"
+#line 67084 "pentiumdecoder.cpp"
 
       
     } 
@@ -67077,12 +67092,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1842 "machine/pentium/decoder.m"
+#line 1845 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67086 "pentiumdecoder.cpp"
+#line 67101 "pentiumdecoder.cpp"
 
       
     } 
@@ -67094,12 +67109,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1842 "machine/pentium/decoder.m"
+#line 1845 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67103 "pentiumdecoder.cpp"
+#line 67118 "pentiumdecoder.cpp"
 
       
     } 
@@ -67111,12 +67126,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1842 "machine/pentium/decoder.m"
+#line 1845 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67120 "pentiumdecoder.cpp"
+#line 67135 "pentiumdecoder.cpp"
 
       
     } 
@@ -67128,12 +67143,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1842 "machine/pentium/decoder.m"
+#line 1845 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67137 "pentiumdecoder.cpp"
+#line 67152 "pentiumdecoder.cpp"
 
       
     } 
@@ -67145,12 +67160,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1854 "machine/pentium/decoder.m"
+#line 1857 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67154 "pentiumdecoder.cpp"
+#line 67169 "pentiumdecoder.cpp"
 
       
     } 
@@ -67162,12 +67177,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1854 "machine/pentium/decoder.m"
+#line 1857 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67171 "pentiumdecoder.cpp"
+#line 67186 "pentiumdecoder.cpp"
 
       
     } 
@@ -67179,12 +67194,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1854 "machine/pentium/decoder.m"
+#line 1857 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67188 "pentiumdecoder.cpp"
+#line 67203 "pentiumdecoder.cpp"
 
       
     } 
@@ -67196,12 +67211,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1854 "machine/pentium/decoder.m"
+#line 1857 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67205 "pentiumdecoder.cpp"
+#line 67220 "pentiumdecoder.cpp"
 
       
     } 
@@ -67213,12 +67228,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1860 "machine/pentium/decoder.m"
+#line 1863 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67222 "pentiumdecoder.cpp"
+#line 67237 "pentiumdecoder.cpp"
 
       
     } 
@@ -67230,12 +67245,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1860 "machine/pentium/decoder.m"
+#line 1863 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67239 "pentiumdecoder.cpp"
+#line 67254 "pentiumdecoder.cpp"
 
       
     } 
@@ -67247,12 +67262,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1860 "machine/pentium/decoder.m"
+#line 1863 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67256 "pentiumdecoder.cpp"
+#line 67271 "pentiumdecoder.cpp"
 
       
     } 
@@ -67264,12 +67279,12 @@ pc
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1860 "machine/pentium/decoder.m"
+#line 1863 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM16);
 
 
-#line 67273 "pentiumdecoder.cpp"
+#line 67288 "pentiumdecoder.cpp"
 
       
     } 
@@ -67281,12 +67296,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1740 "machine/pentium/decoder.m"
+#line 1743 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67290 "pentiumdecoder.cpp"
+#line 67305 "pentiumdecoder.cpp"
 
       
     } 
@@ -67298,12 +67313,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1740 "machine/pentium/decoder.m"
+#line 1743 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67307 "pentiumdecoder.cpp"
+#line 67322 "pentiumdecoder.cpp"
 
       
     } 
@@ -67315,12 +67330,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1740 "machine/pentium/decoder.m"
+#line 1743 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67324 "pentiumdecoder.cpp"
+#line 67339 "pentiumdecoder.cpp"
 
       
     } 
@@ -67332,12 +67347,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1740 "machine/pentium/decoder.m"
+#line 1743 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67341 "pentiumdecoder.cpp"
+#line 67356 "pentiumdecoder.cpp"
 
       
     } 
@@ -67349,12 +67364,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1848 "machine/pentium/decoder.m"
+#line 1851 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67358 "pentiumdecoder.cpp"
+#line 67373 "pentiumdecoder.cpp"
 
       
     } 
@@ -67366,12 +67381,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1848 "machine/pentium/decoder.m"
+#line 1851 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67375 "pentiumdecoder.cpp"
+#line 67390 "pentiumdecoder.cpp"
 
       
     } 
@@ -67383,12 +67398,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1848 "machine/pentium/decoder.m"
+#line 1851 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67392 "pentiumdecoder.cpp"
+#line 67407 "pentiumdecoder.cpp"
 
       
     } 
@@ -67400,12 +67415,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1848 "machine/pentium/decoder.m"
+#line 1851 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67409 "pentiumdecoder.cpp"
+#line 67424 "pentiumdecoder.cpp"
 
       
     } 
@@ -67417,12 +67432,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1743 "machine/pentium/decoder.m"
+#line 1746 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67426 "pentiumdecoder.cpp"
+#line 67441 "pentiumdecoder.cpp"
 
       
     } 
@@ -67434,12 +67449,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1743 "machine/pentium/decoder.m"
+#line 1746 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67443 "pentiumdecoder.cpp"
+#line 67458 "pentiumdecoder.cpp"
 
       
     } 
@@ -67451,12 +67466,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1743 "machine/pentium/decoder.m"
+#line 1746 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67460 "pentiumdecoder.cpp"
+#line 67475 "pentiumdecoder.cpp"
 
       
     } 
@@ -67468,12 +67483,12 @@ pc
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1743 "machine/pentium/decoder.m"
+#line 1746 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 
-#line 67477 "pentiumdecoder.cpp"
+#line 67492 "pentiumdecoder.cpp"
 
       
     } 
@@ -67485,12 +67500,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1866 "machine/pentium/decoder.m"
+#line 1869 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67494 "pentiumdecoder.cpp"
+#line 67509 "pentiumdecoder.cpp"
 
       
     } 
@@ -67502,12 +67517,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1866 "machine/pentium/decoder.m"
+#line 1869 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67511 "pentiumdecoder.cpp"
+#line 67526 "pentiumdecoder.cpp"
 
       
     } 
@@ -67519,12 +67534,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1866 "machine/pentium/decoder.m"
+#line 1869 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67528 "pentiumdecoder.cpp"
+#line 67543 "pentiumdecoder.cpp"
 
       
     } 
@@ -67536,12 +67551,12 @@ pc
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1866 "machine/pentium/decoder.m"
+#line 1869 "machine/pentium/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 
-#line 67545 "pentiumdecoder.cpp"
+#line 67560 "pentiumdecoder.cpp"
 
       
     } 
@@ -67576,7 +67591,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 67580 "pentiumdecoder.cpp"
+#line 67595 "pentiumdecoder.cpp"
 
       
     } 
@@ -67611,7 +67626,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 67615 "pentiumdecoder.cpp"
+#line 67630 "pentiumdecoder.cpp"
 
       
     } 
@@ -67646,7 +67661,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 67650 "pentiumdecoder.cpp"
+#line 67665 "pentiumdecoder.cpp"
 
       
     } 
@@ -67681,7 +67696,7 @@ pc
 //		result.rtl = instantiate(pc, name, DIS_I8);
 
 
-#line 67685 "pentiumdecoder.cpp"
+#line 67700 "pentiumdecoder.cpp"
 
       
     } 
@@ -67698,7 +67713,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 67702 "pentiumdecoder.cpp"
+#line 67717 "pentiumdecoder.cpp"
 
       
     } 
@@ -67715,7 +67730,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 67719 "pentiumdecoder.cpp"
+#line 67734 "pentiumdecoder.cpp"
 
       
     } 
@@ -67732,7 +67747,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 67736 "pentiumdecoder.cpp"
+#line 67751 "pentiumdecoder.cpp"
 
       
     } 
@@ -67749,7 +67764,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 
-#line 67753 "pentiumdecoder.cpp"
+#line 67768 "pentiumdecoder.cpp"
 
       
     } 
@@ -67766,7 +67781,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67770 "pentiumdecoder.cpp"
+#line 67785 "pentiumdecoder.cpp"
 
       
     } 
@@ -67783,7 +67798,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67787 "pentiumdecoder.cpp"
+#line 67802 "pentiumdecoder.cpp"
 
       
     } 
@@ -67800,7 +67815,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67804 "pentiumdecoder.cpp"
+#line 67819 "pentiumdecoder.cpp"
 
       
     } 
@@ -67817,7 +67832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67821 "pentiumdecoder.cpp"
+#line 67836 "pentiumdecoder.cpp"
 
       
     } 
@@ -67834,7 +67849,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67838 "pentiumdecoder.cpp"
+#line 67853 "pentiumdecoder.cpp"
 
       
     } 
@@ -67851,7 +67866,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67855 "pentiumdecoder.cpp"
+#line 67870 "pentiumdecoder.cpp"
 
       
     } 
@@ -67868,7 +67883,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67872 "pentiumdecoder.cpp"
+#line 67887 "pentiumdecoder.cpp"
 
       
     } 
@@ -67885,7 +67900,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 67889 "pentiumdecoder.cpp"
+#line 67904 "pentiumdecoder.cpp"
 
       
     } 
@@ -67910,7 +67925,7 @@ pc
 		result.rtl->appendStmt(newCall);
 
 
-#line 67914 "pentiumdecoder.cpp"
+#line 67929 "pentiumdecoder.cpp"
 
       
     } 
@@ -67935,7 +67950,7 @@ pc
 		result.rtl->appendStmt(newCall);
 
 
-#line 67939 "pentiumdecoder.cpp"
+#line 67954 "pentiumdecoder.cpp"
 
       
     } 
@@ -67960,7 +67975,7 @@ pc
 		result.rtl->appendStmt(newCall);
 
 
-#line 67964 "pentiumdecoder.cpp"
+#line 67979 "pentiumdecoder.cpp"
 
       
     } 
@@ -67985,7 +68000,7 @@ pc
 		result.rtl->appendStmt(newCall);
 
 
-#line 67989 "pentiumdecoder.cpp"
+#line 68004 "pentiumdecoder.cpp"
 
       
     } 
@@ -68010,7 +68025,7 @@ pc
 	 * Unconditional branches
 	 */
 
-#line 68014 "pentiumdecoder.cpp"
+#line 68029 "pentiumdecoder.cpp"
 
       
     } 
@@ -68035,7 +68050,7 @@ pc
 	 * Unconditional branches
 	 */
 
-#line 68039 "pentiumdecoder.cpp"
+#line 68054 "pentiumdecoder.cpp"
 
       
     } 
@@ -68060,7 +68075,7 @@ pc
 	 * Unconditional branches
 	 */
 
-#line 68064 "pentiumdecoder.cpp"
+#line 68079 "pentiumdecoder.cpp"
 
       
     } 
@@ -68085,7 +68100,7 @@ pc
 	 * Unconditional branches
 	 */
 
-#line 68089 "pentiumdecoder.cpp"
+#line 68104 "pentiumdecoder.cpp"
 
       
     } 
@@ -68102,7 +68117,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 68106 "pentiumdecoder.cpp"
+#line 68121 "pentiumdecoder.cpp"
 
       
     } 
@@ -68119,7 +68134,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 68123 "pentiumdecoder.cpp"
+#line 68138 "pentiumdecoder.cpp"
 
       
     } 
@@ -68136,7 +68151,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 68140 "pentiumdecoder.cpp"
+#line 68155 "pentiumdecoder.cpp"
 
       
     } 
@@ -68153,7 +68168,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
 
-#line 68157 "pentiumdecoder.cpp"
+#line 68172 "pentiumdecoder.cpp"
 
       
     } 
@@ -68162,12 +68177,10 @@ pc
   MATCH_finished_c: (void)0; /*placeholder for label*/
   
 }
-#line 68166 "pentiumdecoder.cpp"
+#line 68181 "pentiumdecoder.cpp"
 
-#line 2081 "machine/pentium/decoder.m"
+#line 2084 "machine/pentium/decoder.m"
 
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
 }
 
@@ -68211,15 +68224,15 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size) const
 	 */
 
 
-#line 68215 "pentiumdecoder.cpp"
+#line 68228 "pentiumdecoder.cpp"
 
-#line 2126 "machine/pentium/decoder.m"
+#line 2127 "machine/pentium/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 2126 "machine/pentium/decoder.m"
+#line 2127 "machine/pentium/decoder.m"
 pc
-#line 68223 "pentiumdecoder.cpp"
+#line 68236 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -68228,7 +68241,7 @@ pc
     if ((MATCH_w_8_0 >> 6 & 0x3) /* mod at 0 */ == 3) { 
       unsigned reg = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
       
-#line 2129 "machine/pentium/decoder.m"
+#line 2130 "machine/pentium/decoder.m"
 
 		switch (size) {
 		case  8: return DIS_REG8;
@@ -68237,7 +68250,7 @@ pc
 		case 32: return DIS_REG32;
 		}
 
-#line 68241 "pentiumdecoder.cpp"
+#line 68254 "pentiumdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
@@ -68250,11 +68263,11 @@ pc
     { 
       unsigned Mem = addressToPC(MATCH_p);
       
-#line 2127 "machine/pentium/decoder.m"
+#line 2128 "machine/pentium/decoder.m"
 
 		return DIS_MEM;
 
-#line 68258 "pentiumdecoder.cpp"
+#line 68271 "pentiumdecoder.cpp"
 
       
     } 
@@ -68263,9 +68276,9 @@ pc
   MATCH_finished_b: (void)0; /*placeholder for label*/
   
 }
-#line 68267 "pentiumdecoder.cpp"
+#line 68280 "pentiumdecoder.cpp"
 
-#line 2137 "machine/pentium/decoder.m"
+#line 2138 "machine/pentium/decoder.m"
 }
 
 /**
@@ -68282,15 +68295,15 @@ PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf) const
 	ADDRESS lastDwordLc = NO_ADDRESS;
 
 
-#line 68286 "pentiumdecoder.cpp"
+#line 68299 "pentiumdecoder.cpp"
 
-#line 2152 "machine/pentium/decoder.m"
+#line 2153 "machine/pentium/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 2152 "machine/pentium/decoder.m"
+#line 2153 "machine/pentium/decoder.m"
 pc
-#line 68294 "pentiumdecoder.cpp"
+#line 68307 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -68308,12 +68321,12 @@ pc
                 { 
                   unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
                   
-#line 2198 "machine/pentium/decoder.m"
+#line 2199 "machine/pentium/decoder.m"
 
 		// m[r[base]]
 		return Location::memOf(DIS_BASE);
 
-#line 68317 "pentiumdecoder.cpp"
+#line 68330 "pentiumdecoder.cpp"
 
                   
                 }
@@ -68327,12 +68340,12 @@ pc
                     { 
                       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                       
-#line 2206 "machine/pentium/decoder.m"
+#line 2207 "machine/pentium/decoder.m"
 
 		// m[i32] (Same as Abs32 using SIB)
 		return Location::memOf(addReloc(DIS_I32));
 
-#line 68336 "pentiumdecoder.cpp"
+#line 68349 "pentiumdecoder.cpp"
 
                       
                     }
@@ -68346,14 +68359,14 @@ pc
                         (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                       unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                       
-#line 2201 "machine/pentium/decoder.m"
+#line 2202 "machine/pentium/decoder.m"
 
 		// m[(r[index] << ss) + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_INDEX,
 		                                  addReloc(DIS_I32)));
 
-#line 68357 "pentiumdecoder.cpp"
+#line 68370 "pentiumdecoder.cpp"
 
                       
                     }
@@ -68363,12 +68376,12 @@ pc
                   if ((MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */ == 4) { 
                     unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                     
-#line 2171 "machine/pentium/decoder.m"
+#line 2172 "machine/pentium/decoder.m"
 
 		// m[r[base]]
 		return Location::memOf(DIS_BASE);
 
-#line 68372 "pentiumdecoder.cpp"
+#line 68385 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/
@@ -68378,14 +68391,14 @@ pc
                       (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                     unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                     
-#line 2166 "machine/pentium/decoder.m"
+#line 2167 "machine/pentium/decoder.m"
 
 		// m[r[base] + (r[index] << ss)]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
 		                                  DIS_INDEX));
 
-#line 68389 "pentiumdecoder.cpp"
+#line 68402 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -68396,12 +68409,12 @@ pc
                 { 
                   unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                   
-#line 2153 "machine/pentium/decoder.m"
+#line 2154 "machine/pentium/decoder.m"
 
 		// m[i32]
 		return Location::memOf(addReloc(DIS_I32));
 
-#line 68405 "pentiumdecoder.cpp"
+#line 68418 "pentiumdecoder.cpp"
 
                   
                 }
@@ -68420,14 +68433,14 @@ pc
                 int /* [~128..127] */ i8 = 
                   sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
                 
-#line 2193 "machine/pentium/decoder.m"
+#line 2194 "machine/pentium/decoder.m"
 
 		// m[r[base] + i8]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
 		                                  DIS_I8));
 
-#line 68431 "pentiumdecoder.cpp"
+#line 68444 "pentiumdecoder.cpp"
 
                 
               }
@@ -68442,7 +68455,7 @@ pc
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2186 "machine/pentium/decoder.m"
+#line 2187 "machine/pentium/decoder.m"
 
 		// m[r[base] + (r[index] << ss) + i8]
 		return Location::memOf(new Binary(opPlus,
@@ -68451,7 +68464,7 @@ pc
 		                                             DIS_INDEX,
 		                                             DIS_I8)));
 
-#line 68455 "pentiumdecoder.cpp"
+#line 68468 "pentiumdecoder.cpp"
 
                 
               }
@@ -68466,14 +68479,14 @@ pc
                 sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
               unsigned reg = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               
-#line 2161 "machine/pentium/decoder.m"
+#line 2162 "machine/pentium/decoder.m"
 
 		// m[r[reg] + i8]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_REG32,
 		                                  DIS_I8));
 
-#line 68477 "pentiumdecoder.cpp"
+#line 68490 "pentiumdecoder.cpp"
 
               
             }
@@ -68489,14 +68502,14 @@ pc
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                 unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
                 
-#line 2181 "machine/pentium/decoder.m"
+#line 2182 "machine/pentium/decoder.m"
 
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
 		                                  addReloc(DIS_I32)));
 
-#line 68500 "pentiumdecoder.cpp"
+#line 68513 "pentiumdecoder.cpp"
 
                 
               }
@@ -68510,7 +68523,7 @@ pc
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2174 "machine/pentium/decoder.m"
+#line 2175 "machine/pentium/decoder.m"
 
 		// m[r[base] + (r[index] << ss) + i32]
 		return Location::memOf(new Binary(opPlus,
@@ -68519,7 +68532,7 @@ pc
 		                                             DIS_INDEX,
 		                                             addReloc(DIS_I32))));
 
-#line 68523 "pentiumdecoder.cpp"
+#line 68536 "pentiumdecoder.cpp"
 
                 
               }
@@ -68533,14 +68546,14 @@ pc
               unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
               
-#line 2156 "machine/pentium/decoder.m"
+#line 2157 "machine/pentium/decoder.m"
 
 		// m[r[base] + i32]
 		return Location::memOf(new Binary(opPlus,
 		                                  DIS_BASE,
 		                                  addReloc(DIS_I32)));
 
-#line 68544 "pentiumdecoder.cpp"
+#line 68557 "pentiumdecoder.cpp"
 
               
             }
@@ -68557,9 +68570,9 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 68561 "pentiumdecoder.cpp"
+#line 68574 "pentiumdecoder.cpp"
 
-#line 2210 "machine/pentium/decoder.m"
+#line 2211 "machine/pentium/decoder.m"
 }
 
 #if 0 // Cruft?
@@ -68685,5 +68698,5 @@ PentiumDecoder::genBSFR(DecodeResult &result, ADDRESS pc, Exp *dest, Exp *modrm,
 	}
 }
 
-#line 68689 "pentiumdecoder.cpp"
+#line 68702 "pentiumdecoder.cpp"
 

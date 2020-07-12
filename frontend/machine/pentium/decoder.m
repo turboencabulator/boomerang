@@ -1526,8 +1526,11 @@ PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const Binary
 	| ANDiodb(Eaddr, i8) [name] =>
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (!(i8 == -16 && oper->isRegN(28)))
+		if (i8 == -16 && oper->isRegN(28)) {
+			result.rtl = new RTL(pc);  // Return a NOP
+		} else {
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
+		}
 
 	| ANDiowb(Eaddr, i8) [name] =>
 		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
@@ -2079,8 +2082,6 @@ PentiumDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const Binary
 		result.valid = false;
 	endmatch
 
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
 }
 

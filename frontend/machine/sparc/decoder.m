@@ -637,8 +637,6 @@ SparcDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFi
 		result.valid = false;
 	endmatch
 
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
 }
 

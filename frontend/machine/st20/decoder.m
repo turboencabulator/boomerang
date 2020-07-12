@@ -269,7 +269,4 @@ ST20Decoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFil
 		endmatch
 		break;
 	}
-
-	if (result.valid && !result.rtl)
-		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 }
