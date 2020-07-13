@@ -1289,14 +1289,14 @@ pc
             MATCH_name_OPCD_0[(MATCH_w_32_0 >> 26 & 0x3f) /* OPCD at 0 */]; 
           { 
             const char *name = MATCH_name;
-            unsigned ra = (MATCH_w_32_0 >> 21 & 0x1f) /* S at 0 */;
-            unsigned rd = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
+            unsigned ra = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
+            unsigned rs = (MATCH_w_32_0 >> 21 & 0x1f) /* S at 0 */;
             unsigned uimm = (MATCH_w_32_0 & 0xffff) /* UIMM at 0 */;
             nextPC = 4 + MATCH_p; 
             
 #line 106 "machine/ppc/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
 #line 1302 "ppcdecoder.cpp"
 

@@ -103,8 +103,8 @@ PPCDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile
 			result.rtl = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
 		}
 
-	| Dsaui_(rd, ra, uimm) [name] =>
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
+	| Dsaui_(ra, rs, uimm) [name] =>
+		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 	| Ddasi_(rd, ra, simm) [name] =>
 		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
 			// Note the DIS_RAZ, since rA could be constant zero
