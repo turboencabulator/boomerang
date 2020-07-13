@@ -556,61 +556,7 @@ discard sld^Rc srad^Rc srd^Rc stdcxq stdux stdx td
 discard divd^OE^Rc divdu^OE^Rc mulhd^Rc mulhdu^Rc mulld^OE^Rc
 discard sradi^Rc MD_^Rc MDS_^Rc
 
-### simplified mnemonics
-
 constructors
-
-## Section F.2
-
-   subi   D,A,v   is addi(   D, A, -v )
-   subis  D,A,v   is addis(  D, A, -v )
-   subic  D,A,v   is addic(  D, A, -v )
-   subicq D,A,v   is addicq( D, A, -v )
-
-   sub   D,A,B is subf(   D, B, A )
-   subq  D,A,B is subfq(  D, B, A )
-   subo  D,A,B is subfo(  D, B, A )
-   suboq D,A,B is subfoq( D, B, A )
-
-   subc   D,A,B is subfc(   D, B, A )
-   subcq  D,A,B is subfcq(  D, B, A )
-   subco  D,A,B is subfco(  D, B, A )
-   subcoq D,A,B is subfcoq( D, B, A )
-
-## Section F.3
-
-# Table F-2
-
-   cmpdi  crfD, A, SIMM! is cmpi(  crfD, 1, A, SIMM! )
-   cmpd   crfD, A, B     is cmp(   crfD, 1, A, B )
-   cmpldi crfD, A, UIMM  is cmpli( crfD, 1, A, UIMM )
-   cmpld  crfD, A, B     is cmpl(  crfD, 1, A, B )
-
-# Table F-3
-
-   cmpwi  crfD, A, SIMM! is cmpi(  crfD, 0, A, SIMM! )
-   cmpw   crfD, A, B     is cmp(   crfD, 0, A, B )
-   cmplwi crfD, A, UIMM  is cmpli( crfD, 0, A, UIMM )
-   cmplw  crfD, A, B     is cmpl(  crfD, 0, A, B )
-
-## Section F.4
-
-# Table F-4 skipped, 64 bit ops
-
-# Table F-5
-
-   extlwi A,S,n,p    is rlwinm( A,S,p,     0,   n- 1   )
-   extrwi A,S,n,p    is rlwinm( A,S,p+n,   32-n,31    )
-   inslwi A,S,n,p    is rlwimi( A,S,32-p,  p,   p+n- 1 )
-   insrwi A,S,n,p    is rlwimi( A,S,32-p-n,p,   p+n- 1 )
-   rotlwi A,S,n      is rlwinm( A,S,n,     0,   31    )
-   rotrwi A,S,n      is rlwinm( A,S,32-n,  0,   31    )
-   rotlw  A,S,B      is rlwnm(  A,S,B,     0,   31    )
-   slwi   A,S,n      is rlwinm( A,S,n,     0,   31-n  )
-   srwi   A,S,n      is rlwinm( A,S,32-n,  n,   31    )
-   clrlwi A,S,n      is rlwinm( A,S,0,     n,   31    )
-   clrrwi A,S,n      is rlwinm( A,S,0,     0,   31-n  )
-   clrlslwi A,S,p,n  is rlwinm( A,S,n,     p-n, 31-n  )
 
 # Table F-6
 

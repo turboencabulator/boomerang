@@ -22,8 +22,6 @@
 #include "rtl.h"
 #include "statement.h"
 
-#include <iostream>
-
 #include <cstring>
 
 class Proc;
@@ -53,6 +51,7 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_BICR    (new Const(BIcr))
 #define DIS_RS_NUM  (new Const(rs))
 #define DIS_RD_NUM  (new Const(rd))
+#define DIS_SPR_NUM (new Const(spr))
 #define DIS_BEG     (new Const(beg))
 #define DIS_END     (new Const(end))
 #define DIS_FD      (dis_Reg(fd + 32))
@@ -138,19 +137,34 @@ PPCDecoder::decodeInstruction(DecodeResult &result, ADDRESS pc, const BinaryFile
 	| XLc_(crbD, crbA, crbB) [name] =>
 		result.rtl = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
-	| mfspr(rd, uimm) [name] =>
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_UIMM);
-	| mtspr(uimm, rs) =>
-		switch (uimm) {
-		case 1:
-			result.rtl = instantiate(pc, "MTXER", DIS_RS); break;
-		case 8:
-			result.rtl = instantiate(pc, "MTLR", DIS_RS); break;
-		case 9:
-			result.rtl = instantiate(pc, "MTCTR", DIS_RS); break;
-		default:
-			result.rtl = new RTL(pc);  // Return a NOP.  FIXME:  This and mfspr should return invalid when uimm not in (1,8,9).
-			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
+	// FIXME: Can't do this, names don't work right for synthetic instructions, and the generated code becomes even more bloated.
+	//| mfxer(rd) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RD);
+	//| mflr(rd) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RD);
+	//| mfctr(rd) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RD);
+	//| mtxer(rs) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RS);
+	//| mtlr(rs) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RS);
+	//| mtctr(rs) [name] =>
+	//	result.rtl = instantiate(pc, name, DIS_RS);
+	| mfspr(rd, spr) [name] =>
+		if (spr == 1 || spr == 8 || spr == 9) {
+			// User instructions are supported
+			result.rtl = instantiate(pc, name, DIS_RD, DIS_SPR_NUM);
+		} else {
+			// Supervisor instructions (spr@[4] = 1) are not yet supported
+			result.valid = false;
+		}
+	| mtspr(spr, rs) [name] =>
+		if (spr == 1 || spr == 8 || spr == 9) {
+			// User instructions are supported
+			result.rtl = instantiate(pc, name, DIS_SPR_NUM, DIS_RS);
+		} else {
+			// Supervisor instructions (spr@[4] = 1) are not yet supported
+			result.valid = false;
 		}
 
 	| Xd_(rd) [name] =>

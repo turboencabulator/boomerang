@@ -515,16 +515,31 @@ MFCR rd
 	         + (%CR4 << 12) + (%CR5 <<  8) + (%CR6 <<  4) + (%CR7);
 
 MFSPR rd, spr
-	*32* rd := [spr & 1 ? [spr >> 3 & 1 ? %CTR : %XER] : %LR];
+	*32* spr = 1 => rd := %XER
+	*32* spr = 8 => rd := %LR
+	*32* spr = 9 => rd := %CTR;
+# MFSPR extended mnemonics:
+#MFXER rd
+#	*32* rd := %XER;
+#MFLR rd
+#	*32* rd := %LR;
+#MFCTR rd
+#	*32* rd := %CTR;
 
-MTLR rs
-	*32* %LR := rs;
-
-MTXER rs
-	SETXER(rs);
-
-MTCTR rs
-	*32* %CTR := rs;
+MTSPR spr, rs
+	*32* spr = 1 => %XER := rs  # Hack:  Can't do SETXER(rs) conditionally
+	*1*  spr = 1 => %XERCA := %XER@[29:29]
+	*1*  spr = 1 => %XEROV := %XER@[30:30]
+	*1*  spr = 1 => %XERSO := %XER@[31:31]
+	*32* spr = 8 => %LR  := rs
+	*32* spr = 9 => %CTR := rs;
+# MTSPR extended mnemonics:
+#MTXER rs
+#	SETXER(rs);
+#MTLR rs
+#	*32* %LR := rs;
+#MTCTR rs
+#	*32* %CTR := rs;
 
 ROT_AND := { "RLWINM", "RLWIMI" };
 
