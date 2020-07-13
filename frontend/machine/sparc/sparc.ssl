@@ -104,58 +104,58 @@ INTEGER
 #@EXCEPTIONS
 
 LOGICALFLAGS(op1) {
-	*1*  %NF := op1@[31:31]
+	*1*  %NF := op1@[31]
 	*1*  %ZF := [op1 = 0 ? 1 : 0]
 	*1*  %OF := 0
 	*1*  %CF := 0
 };
 ADDFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
-	*1*  %OF := ( op1@[31:31] &  op2@[31:31] & ~result@[31:31])
-	          | (~op1@[31:31] & ~op2@[31:31] &  result@[31:31])
-	*1*  %CF :=                    (op1@[31:31] & op2@[31:31])
-	          | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
+	*1*  %OF := ( op1@[31] &  op2@[31] & ~result@[31])
+	          | (~op1@[31] & ~op2@[31] &  result@[31])
+	*1*  %CF :=                 (op1@[31] & op2@[31])
+	          | (~result@[31] & (op1@[31] | op2@[31]))
 };
 TADDFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
 #	*1*  %OF := temp_v
-	*1*  %CF :=                    (op1@[31:31] & op2@[31:31])
-	          | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
+	*1*  %CF :=                 (op1@[31] & op2@[31])
+	          | (~result@[31] & (op1@[31] | op2@[31]))
 };
 SUBFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
-	*1*  %OF := ( op1@[31:31] & ~op2@[31:31] & ~result@[31:31])
-	          | (~op1@[31:31] &  op2@[31:31] &  result@[31:31])
-	*1*  %CF :=                   (~op1@[31:31] & op2@[31:31])
-	          | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
+	*1*  %OF := ( op1@[31] & ~op2@[31] & ~result@[31])
+	          | (~op1@[31] &  op2@[31] &  result@[31])
+	*1*  %CF :=                (~op1@[31] & op2@[31])
+	          | (result@[31] & (~op1@[31] | op2@[31]))
 };
 TSUBFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
 #	*1*  %OF := temp_v
-	*1*  %CF :=                   (~op1@[31:31] & op2@[31:31])
-	          | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
+	*1*  %CF :=                (~op1@[31] & op2@[31])
+	          | (result@[31] & (~op1@[31] | op2@[31]))
 };
 # MVE: These are correct only for a 32 but result; usually result is 64 bits
 MULTFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
 	*1*  %OF := 0
 	*1*  %CF := 0
 };
 MULTSFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
-	*1*  %OF := ( op1@[31:31] &  op2@[31:31] & ~result@[31:31])
-	          | (~op1@[31:31] & ~op2@[31:31] &  result@[31:31])
-	*1*  %CF :=                    (op1@[31:31] & op2@[31:31])
-	          | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
+	*1*  %OF := ( op1@[31] &  op2@[31] & ~result@[31])
+	          | (~op1@[31] & ~op2@[31] &  result@[31])
+	*1*  %CF :=                 (op1@[31] & op2@[31])
+	          | (~result@[31] & (op1@[31] | op2@[31]))
 };
 DIVFLAGS(op1, op2, result) {
-	*1*  %NF := result@[31:31]
+	*1*  %NF := result@[31]
 	*1*  %ZF := [result = 0 ? 1 : 0]
 #	*1*  %OF := temp_v
 	*1*  %CF := 0
@@ -172,7 +172,7 @@ TRAP(cond, op1) {
 	*32* %l1 := %pc
 	*32* %l2 := %npc
 	*32* %TBR@[4:11] := op1
-	*1*  %PSR@[7:7] := 1
+	*1*  %PSR@[7] := 1
 	*32* %pc  := %TBR
 	*32* %npc := %TBR+4
 };
@@ -357,7 +357,7 @@ UMULCC rs1, reg_or_imm, rd
 
 MULSCC rs1, reg_or_imm, rd
 	*32* tmp := (rs1 >> 1) | [(%NF^%OF) = 1 ? 1<<31 : 0]
-	*32* tmp2 := [%Y@[0:0] = 1 ? reg_or_imm : 0]
+	*32* tmp2 := [%Y@[0] = 1 ? reg_or_imm : 0]
 	*32* %Y := %Y >> 1 | (rs1 << 31)
 	*32* rd := tmp + tmp2
 	ADDFLAGS(tmp, tmp2, rd);

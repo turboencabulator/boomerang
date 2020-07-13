@@ -401,7 +401,7 @@ iret             # interrupt return
 	*32* %sp := m[%sp+4]{32};
 	# no status reg yet
 ladd             # long add
-	*32* %Areg := %Areg + %Breg + zfill(1, 32, %Creg@[0:0])
+	*32* %Areg := %Areg + %Breg + zfill(1, 32, %Creg@[0])
 	POP2();
 lb               # load byte
 	*32* %Areg := m[%Areg]{8};
@@ -412,7 +412,7 @@ ldclock          # load clock
 lddevid          # load device identity
 	_;
 ldiff            # long diff
-	*33* tmp := %Breg - %Areg - zfill(1, 32, %Creg@[0:0])
+	*33* tmp := %Breg - %Areg - zfill(1, 32, %Creg@[0])
 	*32* %Areg := tmp@[0:31]
 	*32* %Breg := tmp@[32:32]
 	*32* %Creg := -1;
@@ -592,6 +592,6 @@ wsubdb           # form double word subscript
 	POP1();
 xdble            # extend to double
 	*32* %Creg := %Breg
-	*32* %Breg := [%Areg@[31:31] = 0 ? 0 : -1];
+	*32* %Breg := [%Areg@[31] = 0 ? 0 : -1];
 xword            # extend word
 	_;

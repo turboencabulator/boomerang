@@ -44,141 +44,141 @@ INTEGER
 
 SETXER(value) {
 	*32* %XER := value
-	*1*  %XERCA := %XER@[29:29]
-	*1*  %XEROV := %XER@[30:30]
-	*1*  %XERSO := %XER@[31:31]
+	*1*  %XERCA := %XER@[29]
+	*1*  %XEROV := %XER@[30]
+	*1*  %XERSO := %XER@[31]
 };
 
 ADDFLAGSX(result, op1, op2) {
-	*1*  %XERCA :=                    (op1@[31:31] & op2@[31:31])
-	             | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
-	*1*  %XER@[29:29] := %XERCA
+	*1*  %XERCA :=                 (op1@[31] & op2@[31])
+	             | (~result@[31] & (op1@[31] | op2@[31]))
+	*1*  %XER@[29] := %XERCA
 };
 
 ADDFLAGSX0(result, op1, op2) {
-	*1*  %XERCA :=                    (op1@[31:31] & op2@[31:31])
-	             | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
-	*1*  %XER@[29:29] := %XERCA
-	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
-	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
-	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
+	*1*  %XERCA :=                 (op1@[31] & op2@[31])
+	             | (~result@[31] & (op1@[31] | op2@[31]))
+	*1*  %XER@[29] := %XERCA
+	*1*  %CR0@[0] := %XERSO
+	*1*  %CR0@[1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3] := [result < 0 ? 1 : 0]
 };
 
 SUBFLAGSX(result, op1, op2) {
-	*1*  %XERCA :=                   (~op1@[31:31] & op2@[31:31])
-	             | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
-	*1*  %XER@[29:29] := %XERCA
+	*1*  %XERCA :=                (~op1@[31] & op2@[31])
+	             | (result@[31] & (~op1@[31] | op2@[31]))
+	*1*  %XER@[29] := %XERCA
 };
 
 SUBFLAGS0(result) {
-	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
-	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
-	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
+	*1*  %CR0@[0] := %XERSO
+	*1*  %CR0@[1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3] := [result < 0 ? 1 : 0]
 };
 
 SUBFLAGSX0(result, op1, op2) {
-	*1*  %XERCA :=                   (~op1@[31:31] & op2@[31:31])
-	             | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
-	*1*  %XER@[29:29] := %XERCA
-	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
-	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
-	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
+	*1*  %XERCA :=                (~op1@[31] & op2@[31])
+	             | (result@[31] & (~op1@[31] | op2@[31]))
+	*1*  %XER@[29] := %XERCA
+	*1*  %CR0@[0] := %XERSO
+	*1*  %CR0@[1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3] := [result < 0 ? 1 : 0]
 };
 
 SETFLAGS0(rd) {
-	*1*  %CR0@[0:0] := %XERSO  # Note: these are non IBM bit numbers; LT is most significant bit (PPC bit 0)
-	*1*  %CR0@[1:1] := [rd = 0 ? 1 : 0]
-	*1*  %CR0@[2:2] := [rd > 0 ? 1 : 0]
-	*1*  %CR0@[3:3] := [rd < 0 ? 1 : 0]
+	*1*  %CR0@[0] := %XERSO  # Note: these are non IBM bit numbers; LT is most significant bit (PPC bit 0)
+	*1*  %CR0@[1] := [rd = 0 ? 1 : 0]
+	*1*  %CR0@[2] := [rd > 0 ? 1 : 0]
+	*1*  %CR0@[3] := [rd < 0 ? 1 : 0]
 };
 
 
 
 SUBFLAGSNL(op1, op2, crfd) {
 	# Set flags in Logical (unsigned) fashion
-	*32* crfd = 0 => %CR0@[3:3] := op1 <u op2
-	*32* crfd = 0 => %CR0@[2:2] := op1 >u op2
-	*32* crfd = 0 => %CR0@[1:1] := op1 =  op2
-	*32* crfd = 1 => %CR1@[3:3] := op1 <u op2
-	*32* crfd = 1 => %CR1@[2:2] := op1 >u op2
-	*32* crfd = 1 => %CR1@[1:1] := op1 =  op2
-	*32* crfd = 2 => %CR2@[3:3] := op1 <u op2
-	*32* crfd = 2 => %CR2@[2:2] := op1 >u op2
-	*32* crfd = 2 => %CR2@[1:1] := op1 =  op2
-	*32* crfd = 3 => %CR3@[3:3] := op1 <u op2
-	*32* crfd = 3 => %CR3@[2:2] := op1 >u op2
-	*32* crfd = 3 => %CR3@[1:1] := op1 =  op2
-	*32* crfd = 4 => %CR4@[3:3] := op1 <u op2
-	*32* crfd = 4 => %CR4@[2:2] := op1 >u op2
-	*32* crfd = 4 => %CR4@[1:1] := op1 =  op2
-	*32* crfd = 5 => %CR5@[3:3] := op1 <u op2
-	*32* crfd = 5 => %CR5@[2:2] := op1 >u op2
-	*32* crfd = 5 => %CR5@[1:1] := op1 =  op2
-	*32* crfd = 6 => %CR6@[3:3] := op1 <u op2
-	*32* crfd = 6 => %CR6@[2:2] := op1 >u op2
-	*32* crfd = 6 => %CR6@[1:1] := op1 =  op2
-	*32* crfd = 7 => %CR7@[3:3] := op1 <u op2
-	*32* crfd = 7 => %CR7@[2:2] := op1 >u op2
-	*32* crfd = 7 => %CR7@[1:1] := op1 =  op2
+	*32* crfd = 0 => %CR0@[3] := op1 <u op2
+	*32* crfd = 0 => %CR0@[2] := op1 >u op2
+	*32* crfd = 0 => %CR0@[1] := op1 =  op2
+	*32* crfd = 1 => %CR1@[3] := op1 <u op2
+	*32* crfd = 1 => %CR1@[2] := op1 >u op2
+	*32* crfd = 1 => %CR1@[1] := op1 =  op2
+	*32* crfd = 2 => %CR2@[3] := op1 <u op2
+	*32* crfd = 2 => %CR2@[2] := op1 >u op2
+	*32* crfd = 2 => %CR2@[1] := op1 =  op2
+	*32* crfd = 3 => %CR3@[3] := op1 <u op2
+	*32* crfd = 3 => %CR3@[2] := op1 >u op2
+	*32* crfd = 3 => %CR3@[1] := op1 =  op2
+	*32* crfd = 4 => %CR4@[3] := op1 <u op2
+	*32* crfd = 4 => %CR4@[2] := op1 >u op2
+	*32* crfd = 4 => %CR4@[1] := op1 =  op2
+	*32* crfd = 5 => %CR5@[3] := op1 <u op2
+	*32* crfd = 5 => %CR5@[2] := op1 >u op2
+	*32* crfd = 5 => %CR5@[1] := op1 =  op2
+	*32* crfd = 6 => %CR6@[3] := op1 <u op2
+	*32* crfd = 6 => %CR6@[2] := op1 >u op2
+	*32* crfd = 6 => %CR6@[1] := op1 =  op2
+	*32* crfd = 7 => %CR7@[3] := op1 <u op2
+	*32* crfd = 7 => %CR7@[2] := op1 >u op2
+	*32* crfd = 7 => %CR7@[1] := op1 =  op2
 };
 
 SUBFLAGSNS(op1, op2, crfd) {
 	# Set flags in signed fashion
-	*32* crfd = 0 => %CR0@[3:3] := op1 < op2
-	*32* crfd = 0 => %CR0@[2:2] := op1 > op2
-	*32* crfd = 0 => %CR0@[1:1] := op1 = op2
-	*32* crfd = 1 => %CR1@[3:3] := op1 < op2
-	*32* crfd = 1 => %CR1@[2:2] := op1 > op2
-	*32* crfd = 1 => %CR1@[1:1] := op1 = op2
-	*32* crfd = 2 => %CR2@[3:3] := op1 < op2
-	*32* crfd = 2 => %CR2@[2:2] := op1 > op2
-	*32* crfd = 2 => %CR2@[1:1] := op1 = op2
-	*32* crfd = 3 => %CR3@[3:3] := op1 < op2
-	*32* crfd = 3 => %CR3@[2:2] := op1 > op2
-	*32* crfd = 3 => %CR3@[1:1] := op1 = op2
-	*32* crfd = 4 => %CR4@[3:3] := op1 < op2
-	*32* crfd = 4 => %CR4@[2:2] := op1 > op2
-	*32* crfd = 4 => %CR4@[1:1] := op1 = op2
-	*32* crfd = 5 => %CR5@[3:3] := op1 < op2
-	*32* crfd = 5 => %CR5@[2:2] := op1 > op2
-	*32* crfd = 5 => %CR5@[1:1] := op1 = op2
-	*32* crfd = 6 => %CR6@[3:3] := op1 < op2
-	*32* crfd = 6 => %CR6@[2:2] := op1 > op2
-	*32* crfd = 6 => %CR6@[1:1] := op1 = op2
-	*32* crfd = 7 => %CR7@[3:3] := op1 < op2
-	*32* crfd = 7 => %CR7@[2:2] := op1 > op2
-	*32* crfd = 7 => %CR7@[1:1] := op1 = op2
+	*32* crfd = 0 => %CR0@[3] := op1 < op2
+	*32* crfd = 0 => %CR0@[2] := op1 > op2
+	*32* crfd = 0 => %CR0@[1] := op1 = op2
+	*32* crfd = 1 => %CR1@[3] := op1 < op2
+	*32* crfd = 1 => %CR1@[2] := op1 > op2
+	*32* crfd = 1 => %CR1@[1] := op1 = op2
+	*32* crfd = 2 => %CR2@[3] := op1 < op2
+	*32* crfd = 2 => %CR2@[2] := op1 > op2
+	*32* crfd = 2 => %CR2@[1] := op1 = op2
+	*32* crfd = 3 => %CR3@[3] := op1 < op2
+	*32* crfd = 3 => %CR3@[2] := op1 > op2
+	*32* crfd = 3 => %CR3@[1] := op1 = op2
+	*32* crfd = 4 => %CR4@[3] := op1 < op2
+	*32* crfd = 4 => %CR4@[2] := op1 > op2
+	*32* crfd = 4 => %CR4@[1] := op1 = op2
+	*32* crfd = 5 => %CR5@[3] := op1 < op2
+	*32* crfd = 5 => %CR5@[2] := op1 > op2
+	*32* crfd = 5 => %CR5@[1] := op1 = op2
+	*32* crfd = 6 => %CR6@[3] := op1 < op2
+	*32* crfd = 6 => %CR6@[2] := op1 > op2
+	*32* crfd = 6 => %CR6@[1] := op1 = op2
+	*32* crfd = 7 => %CR7@[3] := op1 < op2
+	*32* crfd = 7 => %CR7@[2] := op1 > op2
+	*32* crfd = 7 => %CR7@[1] := op1 = op2
 };
 
 SETFFLAGSN(op1, op2, crfd) {
 	# Set flags according to floating point compare
-	*32* crfd = 0 => %CR0@[3:3] := op1 < op2
-	*32* crfd = 0 => %CR0@[2:2] := op1 > op2
-	*32* crfd = 0 => %CR0@[1:1] := op1 = op2
-	*32* crfd = 1 => %CR1@[3:3] := op1 < op2
-	*32* crfd = 1 => %CR1@[2:2] := op1 > op2
-	*32* crfd = 1 => %CR1@[1:1] := op1 = op2
-	*32* crfd = 2 => %CR2@[3:3] := op1 < op2
-	*32* crfd = 2 => %CR2@[2:2] := op1 > op2
-	*32* crfd = 2 => %CR2@[1:1] := op1 = op2
-	*32* crfd = 3 => %CR3@[3:3] := op1 < op2
-	*32* crfd = 3 => %CR3@[2:2] := op1 > op2
-	*32* crfd = 3 => %CR3@[1:1] := op1 = op2
-	*32* crfd = 4 => %CR4@[3:3] := op1 < op2
-	*32* crfd = 4 => %CR4@[2:2] := op1 > op2
-	*32* crfd = 4 => %CR4@[1:1] := op1 = op2
-	*32* crfd = 5 => %CR5@[3:3] := op1 < op2
-	*32* crfd = 5 => %CR5@[2:2] := op1 > op2
-	*32* crfd = 5 => %CR5@[1:1] := op1 = op2
-	*32* crfd = 6 => %CR6@[3:3] := op1 < op2
-	*32* crfd = 6 => %CR6@[2:2] := op1 > op2
-	*32* crfd = 6 => %CR6@[1:1] := op1 = op2
-	*32* crfd = 7 => %CR7@[3:3] := op1 < op2
-	*32* crfd = 7 => %CR7@[2:2] := op1 > op2
-	*32* crfd = 7 => %CR7@[1:1] := op1 = op2
+	*32* crfd = 0 => %CR0@[3] := op1 < op2
+	*32* crfd = 0 => %CR0@[2] := op1 > op2
+	*32* crfd = 0 => %CR0@[1] := op1 = op2
+	*32* crfd = 1 => %CR1@[3] := op1 < op2
+	*32* crfd = 1 => %CR1@[2] := op1 > op2
+	*32* crfd = 1 => %CR1@[1] := op1 = op2
+	*32* crfd = 2 => %CR2@[3] := op1 < op2
+	*32* crfd = 2 => %CR2@[2] := op1 > op2
+	*32* crfd = 2 => %CR2@[1] := op1 = op2
+	*32* crfd = 3 => %CR3@[3] := op1 < op2
+	*32* crfd = 3 => %CR3@[2] := op1 > op2
+	*32* crfd = 3 => %CR3@[1] := op1 = op2
+	*32* crfd = 4 => %CR4@[3] := op1 < op2
+	*32* crfd = 4 => %CR4@[2] := op1 > op2
+	*32* crfd = 4 => %CR4@[1] := op1 = op2
+	*32* crfd = 5 => %CR5@[3] := op1 < op2
+	*32* crfd = 5 => %CR5@[2] := op1 > op2
+	*32* crfd = 5 => %CR5@[1] := op1 = op2
+	*32* crfd = 6 => %CR6@[3] := op1 < op2
+	*32* crfd = 6 => %CR6@[2] := op1 > op2
+	*32* crfd = 6 => %CR6@[1] := op1 = op2
+	*32* crfd = 7 => %CR7@[3] := op1 < op2
+	*32* crfd = 7 => %CR7@[2] := op1 > op2
+	*32* crfd = 7 => %CR7@[1] := op1 = op2
 };
 
 
@@ -528,9 +528,9 @@ MFSPR rd, spr
 
 MTSPR spr, rs
 	*32* spr = 1 => %XER := rs  # Hack:  Can't do SETXER(rs) conditionally
-	*1*  spr = 1 => %XERCA := %XER@[29:29]
-	*1*  spr = 1 => %XEROV := %XER@[30:30]
-	*1*  spr = 1 => %XERSO := %XER@[31:31]
+	*1*  spr = 1 => %XERCA := %XER@[29]
+	*1*  spr = 1 => %XEROV := %XER@[30]
+	*1*  spr = 1 => %XERSO := %XER@[31]
 	*32* spr = 8 => %LR  := rs
 	*32* spr = 9 => %CTR := rs;
 # MTSPR extended mnemonics:
@@ -613,9 +613,9 @@ FDIV'S''q'  fd, fa, fb
 # conditional branch
 # MVE: Not sure if I have the bit numbers round the right way (is LT 3 or 0?)
 CONDBR  := {
-	%CR0@[3:3], ~%CR0@[2:2],  %CR0@[1:1], ~%CR0@[3:3],
-	%CR0@[2:2], ~%CR0@[3:3], ~%CR0@[1:1], ~%CR0@[2:2],
-	%CR0@[0:0], ~%CR0@[0:0],  %CR0@[0:0], ~%CR0@[0:0]
+	%CR0@[3], ~%CR0@[2],  %CR0@[1], ~%CR0@[3],
+	%CR0@[2], ~%CR0@[3], ~%CR0@[1], ~%CR0@[2],
+	%CR0@[0], ~%CR0@[0],  %CR0@[0], ~%CR0@[0]
 };
 BRCONDS := {
 	"lt", "le", "eq", "ge",

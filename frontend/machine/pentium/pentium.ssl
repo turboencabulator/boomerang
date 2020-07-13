@@ -75,66 +75,66 @@ INTEGER
 
 
 ADDFLAGS8(op1, op2, result) {
-	*1* %CF :=                  (op1@[7:7] & op2@[7:7])
-	         | (~result@[7:7] & (op1@[7:7] | op2@[7:7]))
-	*1* %OF := ( op1@[7:7] &  op2@[7:7] & ~result@[7:7])
-	         | (~op1@[7:7] & ~op2@[7:7] &  result@[7:7])
-	*1* %NF := result@[7:7]
+	*1* %CF :=                (op1@[7] & op2@[7])
+	         | (~result@[7] & (op1@[7] | op2@[7]))
+	*1* %OF := ( op1@[7] &  op2@[7] & ~result@[7])
+	         | (~op1@[7] & ~op2@[7] &  result@[7])
+	*1* %NF := result@[7]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 ADDFLAGS16(op1, op2, result) {
-	*1* %CF :=                    (op1@[15:15] & op2@[15:15])
-	         | (~result@[15:15] & (op1@[15:15] | op2@[15:15]))
-	*1* %OF := ( op1@[15:15] &  op2@[15:15] & ~result@[15:15])
-	         | (~op1@[15:15] & ~op2@[15:15] &  result@[15:15])
-	*1* %NF := result@[15:15]
+	*1* %CF :=                 (op1@[15] & op2@[15])
+	         | (~result@[15] & (op1@[15] | op2@[15]))
+	*1* %OF := ( op1@[15] &  op2@[15] & ~result@[15])
+	         | (~op1@[15] & ~op2@[15] &  result@[15])
+	*1* %NF := result@[15]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 ADDFLAGS32(op1, op2, result) {
-	*1* %CF :=                    (op1@[31:31] & op2@[31:31])
-	         | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
-	*1* %OF := ( op1@[31:31] &  op2@[31:31] & ~result@[31:31])
-	         | (~op1@[31:31] & ~op2@[31:31] &  result@[31:31])
-	*1* %NF := result@[31:31]
+	*1* %CF :=                 (op1@[31] & op2@[31])
+	         | (~result@[31] & (op1@[31] | op2@[31]))
+	*1* %OF := ( op1@[31] &  op2@[31] & ~result@[31])
+	         | (~op1@[31] & ~op2@[31] &  result@[31])
+	*1* %NF := result@[31]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS8(op1, op2, result) {
-	*1* %CF :=                 (~op1@[7:7] & op2@[7:7])
-	         | (result@[7:7] & (~op1@[7:7] | op2@[7:7]))
-	*1* %OF := ( op1@[7:7] & ~op2@[7:7] & ~result@[7:7])
-	         | (~op1@[7:7] &  op2@[7:7] &  result@[7:7])
-	*1* %NF := result@[7:7]
+	*1* %CF :=               (~op1@[7] & op2@[7])
+	         | (result@[7] & (~op1@[7] | op2@[7]))
+	*1* %OF := ( op1@[7] & ~op2@[7] & ~result@[7])
+	         | (~op1@[7] &  op2@[7] &  result@[7])
+	*1* %NF := result@[7]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS16(op1, op2, result) {
-	*1* %CF :=                   (~op1@[15:15] & op2@[15:15])
-	         | (result@[15:15] & (~op1@[15:15] | op2@[15:15]))
-	*1* %OF := ( op1@[15:15] & ~op2@[15:15] & ~result@[15:15])
-	         | (~op1@[15:15] &  op2@[15:15] &  result@[15:15])
-	*1* %NF := result@[15:15]
+	*1* %CF :=                (~op1@[15] & op2@[15])
+	         | (result@[15] & (~op1@[15] | op2@[15]))
+	*1* %OF := ( op1@[15] & ~op2@[15] & ~result@[15])
+	         | (~op1@[15] &  op2@[15] &  result@[15])
+	*1* %NF := result@[15]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS32(op1, op2, result) {
-	*1* %CF :=                   (~op1@[31:31] & op2@[31:31])
-	         | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
-	*1* %OF := ( op1@[31:31] & ~op2@[31:31] & ~result@[31:31])
-	         | (~op1@[31:31] &  op2@[31:31] &  result@[31:31])
-	*1* %NF := result@[31:31]
+	*1* %CF :=                (~op1@[31] & op2@[31])
+	         | (result@[31] & (~op1@[31] | op2@[31]))
+	*1* %OF := ( op1@[31] & ~op2@[31] & ~result@[31])
+	         | (~op1@[31] &  op2@[31] &  result@[31])
+	*1* %NF := result@[31]
 	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
@@ -149,7 +149,7 @@ LOGICALFLAGS8(result) {
 	*1* %CF := 0
 	*1* %OF := 0
 	*1* %ZF := [result = 0 ? 1 : 0]
-	*1* %NF := result@[7:7]
+	*1* %NF := result@[7]
 #	*1* %PF := ??
 #	*1* %AF := ??
 };
@@ -158,7 +158,7 @@ LOGICALFLAGS16(result) {
 	*1* %CF := 0
 	*1* %OF := 0
 	*1* %ZF := [result = 0 ? 1 : 0]
-	*1* %NF := result@[15:15]
+	*1* %NF := result@[15]
 #	*1* %PF := ??
 #	*1* %AF := ??
 };
@@ -167,7 +167,7 @@ LOGICALFLAGS32(result) {
 	*1* %CF := 0
 	*1* %OF := 0
 	*1* %ZF := [result = 0 ? 1 : 0]
-	*1* %NF := result@[31:31]
+	*1* %NF := result@[31]
 #	*1* %PF := ??
 #	*1* %AF := ??
 };
@@ -203,48 +203,48 @@ MULTFLAGS32(result) {
 };
 
 ROLFLAGS8(result, op1, count) {
-	*1* %OF := [count = 1 ? op1@[7:7]! = %CF : -1]
-	*1* %CF := result@[7:7]
+	*1* %OF := [count = 1 ? op1@[7]! = %CF : -1]
+	*1* %CF := result@[7]
 };
 
 ROLFLAGS16(result, op1, count) {
-	*1* %OF := [count = 1 ? op1@[15:15]! = %CF : -1]
-	*1* %CF := result@[15:15]
+	*1* %OF := [count = 1 ? op1@[15]! = %CF : -1]
+	*1* %CF := result@[15]
 };
 
 ROLFLAGS32(result, op1, count) {
-	*1* %OF := [count = 1 ? op1@[31:31]! = %CF : -1]
-	*1* %CF := result@[31:31]
+	*1* %OF := [count = 1 ? op1@[31]! = %CF : -1]
+	*1* %CF := result@[31]
 };
 
 RORFLAGS8(result, op1, count) {
-	*1* %CF := result@[7:7]
-	*1* %OF := [count = 1 ? op1@[7:7]! = op1@[6:6] : -1]
+	*1* %CF := result@[7]
+	*1* %OF := [count = 1 ? op1@[7]! = op1@[6] : -1]
 };
 
 RORFLAGS16(result, op1, count) {
-	*1* %CF := result@[15:15]
-	*1* %OF := [count = 1 ? op1@[15:15]! = op1@[14:14] : -1]
+	*1* %CF := result@[15]
+	*1* %OF := [count = 1 ? op1@[15]! = op1@[14] : -1]
 };
 
 RORFLAGS32(result, op1, count) {
-	*1* %CF := result@[31:31]
-	*1* %OF := [count = 1 ? op1@[31:31]! = op1@[30:30] : -1]
+	*1* %CF := result@[31]
+	*1* %OF := [count = 1 ? op1@[31]! = op1@[30] : -1]
 };
 
 SALFLAGS8(result, op1, count) {
 	*1* %CF := op1@[(8 - count):(9 - count)]
-	*1* %OF := [count = 1 ? result@[7:7]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[7]! = %CF : -1]
 };
 
 SALFLAGS16(result, op1, count) {
 	*1* %CF := op1@[(16 - count):(17 - count)]
-	*1* %OF := [count = 1 ? result@[15:15]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[15]! = %CF : -1]
 };
 
 SALFLAGS32(result, op1, count) {
 	*1* %CF := op1@[(32 - count):(33 - count)]
-	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[31]! = %CF : -1]
 };
 
 SARFLAGS(result, op1, count) {
@@ -254,22 +254,22 @@ SARFLAGS(result, op1, count) {
 
 SHRFLAGS8(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1 ? result@[7:7]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[7]! = %CF : -1]
 };
 
 SHRFLAGS16(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1 ? result@[15:15]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[15]! = %CF : -1]
 };
 
 SHRFLAGS32(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[31]! = %CF : -1]
 };
 
 SHLDFLAGS32(result, combine, count) {
 	*1* %CF := combine@[(32 - count):(33 - count)]
-	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[31]! = %CF : -1]
 };
 
 SHLDFLAGS64(result, combine, count) {
@@ -279,7 +279,7 @@ SHLDFLAGS64(result, combine, count) {
 
 SHRDFLAGS32(result, combine, count) {
 	*1* %CF := combine@[(count - 1):count]
-	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
+	*1* %OF := [count = 1 ? result@[31]! = %CF : -1]
 };
 
 SHRDFLAGS64(result, combine, count) {
@@ -639,21 +639,21 @@ SBB.RMOD reg32, modrm
 	SUBFLAGS32(tmp1, modrm, reg32);
 
 BT.od modrm, reg32
-	*1* %CF := modrm@[reg32:reg32];
+	*1* %CF := modrm@[reg32];
 
 BTR.od modrm, reg32
 	*32* tmp1 := 1 << reg32
-	*1* %CF := modrm@[reg32:reg32]
+	*1* %CF := modrm@[reg32]
 	*32* modrm := modrm & ~tmp1;
 
 BTC.od modrm, reg32
 	*32* tmp1 := 1 << reg32
-	*1* %CF := modrm@[reg32:reg32]
+	*1* %CF := modrm@[reg32]
 	*32* modrm := modrm ^ tmp1;
 
 BTS.od modrm, reg32
 	*32* tmp1 := 1 << reg32
-	*1* %CF := modrm@[reg32:reg32]
+	*1* %CF := modrm@[reg32]
 	*32* modrm := modrm | tmp1;
 
 CALL.JVOW reloc16
@@ -1267,10 +1267,10 @@ RET.IW i16
 	*32* %esp := %esp + 4 + i16;
 
 SAHF
-	*1* %NF := %ah@[7:7]
-	*1* %ZF := %ah@[6:6]
-	*1* %PF := %ah@[2:2]
-	*1* %CF := %ah@[0:0];
+	*1* %NF := %ah@[7]
+	*1* %ZF := %ah@[6]
+	*1* %PF := %ah@[2]
+	*1* %CF := %ah@[0];
 
 # For now, treat these as NOP
 SEG.CS
@@ -1724,11 +1724,11 @@ FCHS
 
 FCLEX
 	*8* %fsw@[0:7] := 0
-	*1* %fsw@[15:15] := 0;
+	*1* %fsw@[15] := 0;
 
 FNCLEX
 	*8* %fsw@[0:7] := 0
-	*1* %fsw@[15:15] := 0;
+	*1* %fsw@[15] := 0;
 
 FCOM.r32 modrm
 	*f80* tmpD := %st -f fsize(32, 80, modrm)

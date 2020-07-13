@@ -828,6 +828,7 @@ location
 	  }
 
 	| exp '@' '[' exp ':' exp ']' { $$ = new Ternary(opAt, $1, $4, $6); }
+	| exp '@' '[' exp ']'         { $$ = new Ternary(opAt, $1, $4, $4->clone()); }
 
 	| TEMP { $$ = Location::tempOf(new Const(*$1)); delete $1; }
 
