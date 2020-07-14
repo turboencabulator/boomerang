@@ -21,6 +21,8 @@
 
 #include "insnameelem.h"
 
+#include <cassert>
+
 InsNameElem::InsNameElem(const std::string &name) :
 	elemname(name)
 {
@@ -62,15 +64,6 @@ InsNameElem::getrefmap(std::map<std::string, const InsNameElem *> &m) const
 		nextelem->getrefmap(m);
 	else
 		m.clear();
-}
-
-int
-InsNameElem::ninstructions() const
-{
-	int n = ntokens();
-	if (nextelem)
-		n *= nextelem->ninstructions();
-	return n;
 }
 
 void
@@ -144,6 +137,7 @@ InsListElem::InsListElem(const std::string &name, const std::deque<std::string> 
 	indexname(idx),
 	thetable(t)
 {
+	assert(!thetable->empty());
 }
 
 int

@@ -1063,7 +1063,6 @@ OpTableExpander::postVisit(Ternary *e)
 void
 SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params, const RTL &o_rtlist, RTLInstDict &Dict)
 {
-	assert(iname.ninstructions());
 	iname.reset();
 	// Expand the tables (if any) in this instruction
 	auto ete = ExpTableExpander(ExpTable, indexrefmap);

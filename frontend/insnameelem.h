@@ -28,7 +28,6 @@ public:
 	virtual std::string getinspattern() const;
 	virtual void getrefmap(std::map<std::string, const InsNameElem *> &m) const;
 
-	int ninstructions() const;
 	void append(InsNameElem *next);
 	bool increment();
 	void reset();
