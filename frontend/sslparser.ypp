@@ -384,9 +384,26 @@ constants
 		delete $1;
 	  }
 
-	| NAME EQUATE '{' str_array '}'   { NameTable[*$1] = $4; }
-	| NAME EQUATE '{' binop_array '}' { OpTable[*$1]   = $4; }
-	| NAME EQUATE '{' exp_array '}'   { ExpTable[*$1]  = $4; }
+	| NAME EQUATE '{' str_array '}' {
+		if (NameTable.count(*$1))
+			yyerror("NameTable declared twice");
+		NameTable[*$1] = $4;
+		delete $1;
+	  }
+
+	| NAME EQUATE '{' binop_array '}' {
+		if (OpTable.count(*$1))
+			yyerror("OpTable declared twice");
+		OpTable[*$1] = $4;
+		delete $1;
+	  }
+
+	| NAME EQUATE '{' exp_array '}' {
+		if (ExpTable.count(*$1))
+			yyerror("ExpTable declared twice");
+		ExpTable[*$1] = $4;
+		delete $1;
+	  }
 	;
 
 str_expr
