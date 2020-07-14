@@ -878,10 +878,9 @@ fastentry
 
 %%
 
-/*==============================================================================
- * FUNCTION:        SSLParser::~SSLParser
- * OVERVIEW:        Destructor.
- *============================================================================*/
+/**
+ * \brief Destructor.
+ */
 SSLParser::~SSLParser()
 {
 	delete theScanner;
@@ -896,23 +895,22 @@ SSLParser::~SSLParser()
 	}
 }
 
-/*==============================================================================
- * FUNCTION:        SSLParser::yyerror
- * OVERVIEW:        Display an error message and exit.
- * PARAMETERS:      msg - an error message
- *============================================================================*/
+/**
+ * \brief Display an error message and exit.
+ *
+ * \param msg  An error message.
+ */
 void
-SSLParser::yyerror(const char* msg)
+SSLParser::yyerror(const char *msg)
 {
 	// TODO:  Replace "ssl" with the filename.
 	std::cerr << "ssl:" << theScanner->theLine << ": " << msg << "\n";
 }
 
-/*==============================================================================
- * FUNCTION:        SSLParser::yylex
- * OVERVIEW:        The scanner driver than returns the next token.
- * RETURNS:         the next token
- *============================================================================*/
+/**
+ * \brief The scanner driver than returns the next token.
+ * \returns  The next token.
+ */
 int
 SSLParser::yylex()
 {
@@ -945,14 +943,16 @@ strToTerm(const char *s)
 	return (OPER)0;
 }
 
-/*==============================================================================
- * FUNCTION:        listExpToExp
- * OVERVIEW:        Convert a list of actual parameters in the form of a STL list of Exps into one expression
- *                    (using opList)
- * NOTE:            The expressions in the list are not cloned; they are simply copied to the new opList
- * PARAMETERS:      le: the list of expressions
- * RETURNS:         The opList Expression
- *============================================================================*/
+/**
+ * Convert a list of actual parameters in the form of a STL list of Exps into
+ * one expression (using opList).
+ *
+ * \note The expressions in the list are not cloned; they are simply copied to
+ * the new opList.
+ *
+ * \param le  The list of expressions.
+ * \returns   The opList Expression.
+ */
 static Exp *
 listExpToExp(const std::list<Exp *> &le)
 {
@@ -962,13 +962,13 @@ listExpToExp(const std::list<Exp *> &le)
 	return e;
 }
 
-/*==============================================================================
- * FUNCTION:        listStrToExp
- * OVERVIEW:        Convert a list of formal parameters in the form of a STL list of strings into one expression
- *                    (using opList)
- * PARAMETERS:      ls - the list of strings
- * RETURNS:         The opList expression
- *============================================================================*/
+/**
+ * Convert a list of formal parameters in the form of a STL list of strings
+ * into one expression (using opList).
+ *
+ * \param ls  The list of strings.
+ * \returns   The opList expression.
+ */
 static Exp *
 listStrToExp(const std::list<std::string> &ls)
 {
@@ -1036,15 +1036,17 @@ OpTableExpander::postVisit(Ternary *e)
 	return ret;
 }
 
-/*==============================================================================
- * FUNCTION:        SSLParser::expandTables
- * OVERVIEW:        Expand tables in an RTL and save to dictionary
- * NOTE:            This may generate many entries
- * PARAMETERS:      iname: Parser object representing the instruction name
- *                  params: Parser object representing the instruction params
- *                  o_rtlist: Original rtlist object (before expanding)
- *                  Dict: Ref to the dictionary that will contain the results of the parse
- *============================================================================*/
+/**
+ * Expand tables in an RTL and save to dictionary.
+ *
+ * \note This may generate many entries.
+ *
+ * \param iname     Parser object representing the instruction name.
+ * \param params    Parser object representing the instruction params.
+ * \param o_rtlist  Original rtlist object (before expanding).
+ * \param Dict      Ref to the dictionary that will contain the results of the
+ *                  parse.
+ */
 void
 SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params, const RTL &o_rtlist, RTLInstDict &Dict)
 {
@@ -1072,17 +1074,20 @@ SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params
 	} while (iname.increment());
 }
 
-/*==============================================================================
- * FUNCTION:        SSLParser::makeSuccessor
- * OVERVIEW:        Make the successor of the given expression, e.g. given r[2], return succ(r[2])
- *                    (using opSuccessor)
- *                  We can't do the successor operation here, because the parameters are not yet instantiated
- *                    (still of the form param(rd)). Actual successor done in Exp::fixSuccessor()
- * NOTE:            The given expression should be of the form  r[const]
- * NOTE:            The parameter expresion is copied (not cloned) in the result
- * PARAMETERS:      The expression to find the successor of
- * RETURNS:         The modified expression
- *============================================================================*/
+/**
+ * Make the successor of the given expression, e.g. given r[2], return
+ * succ(r[2]) (using opSuccessor).
+ *
+ * We can't do the successor operation here, because the parameters are not
+ * yet instantiated (still of the form param(rd)).  Actual successor done in
+ * Exp::fixSuccessor().
+ *
+ * \note The parameter expression is copied (not cloned) in the result.
+ *
+ * \param e  The expression to find the successor of,
+ *           should be of the form r[const].
+ * \returns  The modified expression.
+ */
 Exp *
 SSLParser::makeSuccessor(Exp *e)
 {
