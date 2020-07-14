@@ -847,7 +847,7 @@ location
 
 	/* This indicates a post-instruction marker (var tick) */
 	| location '\'' { $$ = new Unary(opPostVar, $1); }
-	| SUCCESSOR exp ')' { $$ = makeSuccessor($2); }
+	| SUCCESSOR location ')' { $$ = makeSuccessor($2); }
 	;
 
 assigntype
