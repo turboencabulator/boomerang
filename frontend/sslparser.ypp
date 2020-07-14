@@ -66,7 +66,6 @@
 	#include <gc/gc.h>
 	#endif
 
-	#include <algorithm>
 	#include <sstream>
 	#include <string>
 
@@ -473,9 +472,6 @@ instr
 instr_name
 	: instr_elem { $$ = $1; }
 	| instr_name DECOR {
-		// remove all . from the decoration
-		$2->erase(std::remove($2->begin(), $2->end(), '.'), $2->end());
-
 		$$ = $1;
 		$$->append(new InsNameElem(*$2));
 		delete $2;
