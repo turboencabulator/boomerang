@@ -6,6 +6,7 @@ frontenddir = \
 	$(pkgdatadir)/frontend
 
 nobase_dist_frontend_DATA = \
+	machine/mc68k/mc68k.ssl \
 	machine/mips/mips.ssl \
 	machine/pentium/pentium.ssl \
 	machine/ppc/ppc.ssl \
