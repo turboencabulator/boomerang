@@ -143,8 +143,8 @@ public:
 
 protected:
 	RTL *instantiate(ADDRESS, const std::string &, ...);
-	Exp *instantiateNamedParam(const std::string &, ...);
-	void substituteCallArgs(const std::string &, Exp *&, ...);
+	//Exp *instantiateNamedParam(const std::string &, ...);
+	//void substituteCallArgs(const std::string &, Exp *&, ...);
 
 	static RTL *unconditionalJump(ADDRESS, const std::string &, ADDRESS);
 	static RTL *conditionalJump(ADDRESS, const std::string &, ADDRESS, BRANCH_TYPE);

@@ -24,7 +24,7 @@
 #include "exp.h"
 
 #include <cstdarg>  // For varargs
-#include <cassert>
+//#include <cassert>
 
 NJMCDecoder::NJMCDecoder(Prog *prog) :
 	prog(prog)
@@ -108,6 +108,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const std::string &name, ...)
 	return RTLDict.instantiateRTL(pc, opcode, actuals);
 }
 
+#if 0 // Cruft?  Used by hppa, probably obsoleted by the above.
 /**
  * Similarly to the above, given a parameter name and a list of Exp*'s
  * representing sub-parameters, return a fully substituted Exp for the whole
@@ -129,7 +130,7 @@ NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 	}
 	auto it = RTLDict.DetParamMap.find(name);
 	assert(it != RTLDict.DetParamMap.end());
-	ParamEntry &ent = it->second;
+	auto &ent = it->second;
 	if (ent.kind != ParamEntry::ASGN && ent.kind != ParamEntry::LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
 		return nullptr;
@@ -137,13 +138,13 @@ NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 	// Start with the RHS
 	auto as = dynamic_cast<Assign *>(ent.asgn);
 	assert(as);
-	Exp *result = as->getRight()->clone();
+	auto result = as->getRight()->clone();
 
 	va_list args;
 	va_start(args, name);
 	for (const auto &param : ent.params) {
-		Exp *formal = Location::param(param);
-		Exp *actual = va_arg(args, Exp *);
+		auto formal = Location::param(param);
+		auto actual = va_arg(args, Exp *);
 		bool change;
 		result = result->searchReplaceAll(formal, actual, change);
 		delete formal;
@@ -174,7 +175,7 @@ NJMCDecoder::substituteCallArgs(const std::string &name, Exp *&exp, ...)
 		std::cerr << "No entry for named parameter '" << name << "'\n";
 		return;
 	}
-	ParamEntry &ent = RTLDict.DetParamMap[name];
+	auto &ent = RTLDict.DetParamMap[name];
 #if 0
 	if (ent.kind != ParamEntry::ASGN && ent.kind != ParamEntry::LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
@@ -185,14 +186,15 @@ NJMCDecoder::substituteCallArgs(const std::string &name, Exp *&exp, ...)
 	va_list args;
 	va_start(args, exp);
 	for (const auto &param : ent.funcParams) {
-		Exp *formal = Location::param(param);
-		Exp *actual = va_arg(args, Exp *);
+		auto formal = Location::param(param);
+		auto actual = va_arg(args, Exp *);
 		bool change;
 		exp = exp->searchReplaceAll(formal, actual, change);
 		delete formal;
 	}
 	va_end(args);
 }
+#endif
 
 /**
  * Resets the fields of a DecodeResult to their default values.
