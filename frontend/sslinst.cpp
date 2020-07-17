@@ -158,7 +158,7 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	theParser.yyparse(*this);
 	ssl.close();
 
-	fixupParams();
+	//fixupParams();
 
 	if (Boomerang::get().debugDecoder) {
 		std::cout << "\n=======Expanded RTL template dictionary=======\n";
@@ -237,6 +237,7 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 #endif
 }
 
+#if 0 // Cruft?  Lambdas might be obsolete.
 /**
  * \brief Go through the params and fixup any lambda functions.
  *
@@ -246,15 +247,15 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 void
 RTLInstDict::fixupParams()
 {
-	int mark = 1;
 	for (auto &param : DetParamMap) {
 		param.second.mark = 0;
 	}
+	int mark = 0;
 	for (const auto &param : DetParamMap) {
-		std::list<std::string> funcParams;
-		bool haveCount = false;
 		if (param.second.kind == ParamEntry::VARIANT) {
-			fixupParamsSub(param.first, funcParams, haveCount, mark++);
+			std::list<std::string> funcParams;
+			bool haveCount = false;
+			fixupParamsSub(param.first, funcParams, haveCount, ++mark);
 		}
 	}
 }
@@ -274,7 +275,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 	param.mark = mark;
 
 	for (const auto &p : param.params) {
-		ParamEntry &sub = DetParamMap[p];
+		auto &sub = DetParamMap[p];
 		if (sub.kind == ParamEntry::VARIANT) {
 			fixupParamsSub(p, funcParams, haveCount, mark);
 			if (!haveCount) { /* Empty branch? */
@@ -282,8 +283,8 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 			}
 		} else if (!haveCount) {
 			haveCount = true;
-			char buf[10];
 			for (unsigned i = 1; i <= sub.funcParams.size(); ++i) {
+				char buf[10];
 				sprintf(buf, "__lp%d", i);
 				funcParams.push_back(buf);
 			}
@@ -297,8 +298,8 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 		} else if (funcParams != sub.funcParams && sub.asgn) {
 			/* Rename so all the parameter names match */
 			for (auto i = funcParams.begin(), j = sub.funcParams.begin(); i != funcParams.end(); ++i, ++j) {
-				Exp *match = Location::param(j->c_str());
-				Exp *replace = Location::param(i->c_str());
+				auto match = Location::param(j->c_str());
+				auto replace = Location::param(i->c_str());
 				sub.asgn->searchAndReplace(match, replace);
 			}
 			sub.funcParams = funcParams;
@@ -311,6 +312,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 #endif
 	param.funcParams = funcParams;
 }
+#endif
 
 /**
  * \brief Returns the signature of the given instruction.
@@ -621,7 +623,7 @@ RTLInstDict::reset()
 	DetRegMap.clear();
 	SpecialRegMap.clear();
 	ParamSet.clear();
-	DetParamMap.clear();
+	//DetParamMap.clear();
 	FlagFuncs.clear();
 	fastMap.clear();
 	idict.clear();

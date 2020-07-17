@@ -157,7 +157,7 @@
 %type <typ> assigntype
 %type <insel> name_contract instr_elem instr_name
 %type <strlist> reg_table
-%type <strlist> list_parameter func_parameter
+%type <strlist> list_parameter /*func_parameter*/
 %type <namedeque> str_term str_expr str_array
 %type <explist> flag_list
 %type <opdeque> binop_array
@@ -195,25 +195,25 @@ parts
 	| flag_fnc
 
 	/* Addressing modes (or instruction operands) (optional) */
-	| OPERAND operandlist { Dict.fixupParams(); }
+	/*| OPERAND operandlist { Dict.fixupParams(); }*/
 	;
 
-operandlist
-	: operandlist ',' operand
-	| operand
-	;
+/*operandlist*/
+	/*: operandlist ',' operand*/
+	/*| operand*/
+	/*;*/
 
-operand
+/*operand*/
 	/* In the .tex documentation, this is the first, or variant kind
 	 * Example: reg_or_imm := { imode, rmode }; */
-	: param EQUATE '{' list_parameter '}' {
+	/*: param EQUATE '{' list_parameter '}' {
 		// Note: the below copies the list of strings!
 		auto &param = Dict.DetParamMap[*$1];
 		param.params.swap(*$4);
 		param.kind = ParamEntry::VARIANT;
 		delete $1;
 		delete $4;
-	  }
+	  }*/
 
 	/* In the documentation, these are the second and third kinds
 	 * The third kind is described as the functional, or lambda, form
@@ -221,7 +221,7 @@ operand
 	 * actually are parameters in square brackets, in which case it is
 	 * ParamEntry::LAMBDA
 	 * Example: indexA  rs1, rs2 *i32* r[rs1] + r[rs2] */
-	| param list_parameter func_parameter assigntype exp {
+	/*| param list_parameter func_parameter assigntype exp {
 		auto &param = Dict.DetParamMap[*$1];
 		param.params.swap(*$2);
 		param.funcParams.swap(*$3);
@@ -230,13 +230,13 @@ operand
 		delete $1;
 		delete $2;
 		delete $3;
-	  }
-	;
+	  }*/
+	/*;*/
 
-func_parameter
-	: '[' list_parameter ']' { $$ = $2; }
-	| /* empty */            { $$ = new std::list<std::string>; }
-	;
+/*func_parameter*/
+	/*: '[' list_parameter ']' { $$ = $2; }*/
+	/*|*/ /* empty */        /*{ $$ = new std::list<std::string>; }*/
+	/*;*/
 
 reglists
 	: reglists ',' reglist
@@ -709,7 +709,7 @@ exp
 	/* This is a "lambda" function-like parameter
 	 * $1 is the "function" name, and $2 is a list of Exp* for the actual params.
 	 * I believe only PA/RISC uses these so far. */
-	| NAME_CALL list_actualparameter ')' {
+	/*| NAME_CALL list_actualparameter ')' {
 		if (Dict.ParamSet.count(*$1)) {
 			auto it = Dict.DetParamMap.find(*$1);
 			if (it != Dict.DetParamMap.end()) {
@@ -735,7 +735,7 @@ exp
 		}
 		delete $1;
 		delete $2;
-	  }
+	  }*/
 
 	/* FIXME:  Does the following comment still apply?  '!' is highest precedence. */
 	/* Sign extend. Note it effectively has low precedence, because being a post operator,

@@ -19,6 +19,7 @@
 
 #include "register.h"
 #include "rtl.h"
+//#include "statement.h"
 #include "type.h"
 #include "types.h"
 
@@ -31,7 +32,6 @@
 #include <vector>
 
 class Exp;
-class Statement;
 
 /**
  * Represents a single instruction - a string/RTL pair.
@@ -50,11 +50,13 @@ struct TableEntry {
 };
 
 
+#if 0 // Cruft?
 /**
  * Represents the details of a single parameter.
  */
 struct ParamEntry {
 	~ParamEntry() {
+		delete asgn;
 		delete type;
 		delete regType;
 	}
@@ -71,6 +73,7 @@ struct ParamEntry {
 	std::set<int> regIdx;               ///< Values this param can take as an r[param].
 	int         mark = 0;               ///< Traversal mark. (free temporary use, basically)
 };
+#endif
 
 
 /**
@@ -100,8 +103,8 @@ struct RTLInstDict {
 
 	bool partialType(Exp *exp, Type &ty);
 
-	void fixupParams();
-	void fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark);
+	//void fixupParams();
+	//void fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark);
 
 	/**
 	 * A map from the symbolic representation of a register (e.g. "%g0")
@@ -131,7 +134,7 @@ struct RTLInstDict {
 	 * Parameter (instruction operand, more like addressing mode) details
 	 * (where given).
 	 */
-	std::map<std::string, ParamEntry> DetParamMap;
+	//std::map<std::string, ParamEntry> DetParamMap;
 
 	/**
 	 * The maps which summarise the semantics (.ssl) file.
