@@ -208,10 +208,11 @@ operand
 	 * Example: reg_or_imm := { imode, rmode }; */
 	: param EQUATE '{' list_parameter '}' {
 		// Note: the below copies the list of strings!
-		Dict.DetParamMap[*$1].params = *$4;
-		Dict.DetParamMap[*$1].kind = ParamEntry::VARIANT;
+		auto &param = Dict.DetParamMap[*$1];
+		param.params.swap(*$4);
+		param.kind = ParamEntry::VARIANT;
 		delete $1;
-		//delete $4;
+		delete $4;
 	  }
 
 	/* In the documentation, these are the second and third kinds
@@ -221,16 +222,14 @@ operand
 	 * ParamEntry::LAMBDA
 	 * Example: indexA  rs1, rs2 *i32* r[rs1] + r[rs2] */
 	| param list_parameter func_parameter assigntype exp {
-		ParamEntry &param = Dict.DetParamMap[*$1];
-		Statement *asgn = new Assign($4, new Terminal(opNil), $5);
-		// Note: The below 2 copy lists of strings (to be deleted below!)
-		param.params = *$2;
-		param.funcParams = *$3;
-		param.asgn = asgn;
+		auto &param = Dict.DetParamMap[*$1];
+		param.params.swap(*$2);
+		param.funcParams.swap(*$3);
+		param.asgn = new Assign($4, new Terminal(opNil), $5);
 		param.kind = param.funcParams.empty() ? ParamEntry::ASGN : ParamEntry::LAMBDA;
 		delete $1;
-		//delete $2;
-		//delete $3;
+		delete $2;
+		delete $3;
 	  }
 	;
 
