@@ -189,20 +189,19 @@ FAST
 	SDIVCC -> SDIVCCQ;
 
 
-OPERAND
-	eaddr := { absoluteA, dispA, indirectA, indexA },
-	reg_or_imm := { imode, rmode };
-
-OPERAND
-	dispA      rs1, simm13  *32* rs1 + sgnex(13, 32, simm13),
-	absoluteA  simm13       *32* sgnex(13, 32, simm13),
-	indexA     rs1, rs2     *32* rs1 + rs2,
-	indirectA  rs1          *32* rs1,
-	imode      simm13       *32* sgnex(13, 32, simm13),
-	rmode      rs2          *32* rs2,
-	indexR     rs1, rs2     *32* rs1 + rs2,
-	indirectR  rs1          *32* rs1;
-
+#OPERAND
+#	eaddr := { absoluteA, dispA, indirectA, indexA },
+#	reg_or_imm := { imode, rmode };
+#
+#OPERAND
+#	dispA      rs1, simm13  *32* rs1 + sgnex(13, 32, simm13),
+#	absoluteA  simm13       *32* sgnex(13, 32, simm13),
+#	indexA     rs1, rs2     *32* rs1 + rs2,
+#	indirectA  rs1          *32* rs1,
+#	imode      simm13       *32* sgnex(13, 32, simm13),
+#	rmode      rs2          *32* rs2,
+#	indexR     rs1, rs2     *32* rs1 + rs2,
+#	indirectR  rs1          *32* rs1;
 
 
 FETCHEXEC
