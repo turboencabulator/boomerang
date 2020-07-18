@@ -2947,59 +2947,64 @@ Location::polySimplify(bool &bMod)
 }
 
 /**
- * \fn Exp *Exp::simplifyAddr()
+ * \note Preserves the existing Exp::simplifyAddr() behavior of top-down
+ * search and not recursing into any replacement.  Should reconsider this.
+ */
+class AddrSimplifier : public ExpModifier {
+public:
+	Exp *preVisit(Unary *, bool &) override;
+	Exp *preVisit(Location *, bool &) override;
+};
+
+/**
+ * Converts m[a[any]] -> any.
+ */
+Exp *
+AddrSimplifier::preVisit(Location *e, bool &recurse)
+{
+	if (e->isMemOf()) {
+		auto sub = e->getSubExp1();
+		if (sub->isAddrOf()) {
+			recurse = false;
+			return ((Unary *)sub)->getSubExp1();
+		}
+	}
+	return e;
+}
+
+/**
+ * Converts a[m[any]] -> any, and also a[size m[any]] -> any.
+ */
+Exp *
+AddrSimplifier::preVisit(Unary *e, bool &recurse)
+{
+	if (e->isAddrOf()) {
+		auto sub = e->getSubExp1();
+		if (sub->isMemOf()) {
+			recurse = false;
+			return ((Location *)sub)->getSubExp1();
+		}
+		if (sub->getOper() == opSize) {
+			auto sub2 = ((Binary *)sub)->getSubExp2();
+			if (sub2->isMemOf()) {
+				recurse = false;
+				return ((Location *)sub2)->getSubExp1();
+			}
+		}
+	}
+	return e;
+}
+
+/**
  * \brief Just the address simplification.
- *
- * Just do addressof simplification:  a[m[any]] == any, m[a[any]] = any, and
- * also a[size m[any]] == any.
- *
- * \todo Replace with a visitor some day.
  *
  * \returns  Ptr to the simplified expression.
  */
 Exp *
-Unary::simplifyAddr()
+Exp::simplifyAddr()
 {
-	if (isMemOf() && subExp1->isAddrOf()) {
-		return ((Unary *)subExp1)->getSubExp1();
-	}
-	if (!isAddrOf()) {
-		// Not a[ anything ]. Recurse
-		subExp1 = subExp1->simplifyAddr();
-		return this;
-	}
-	if (subExp1->isMemOf()) {
-		return ((Location *)subExp1)->getSubExp1();
-	}
-	if (subExp1->getOper() == opSize) {
-		auto sub = ((Binary *)subExp1)->getSubExp2();
-		if (sub->isMemOf()) {
-			return ((Location *)sub)->getSubExp1();
-		}
-	}
-
-	// a[ something else ]. Still recurse, just in case
-	subExp1 = subExp1->simplifyAddr();
-	return this;
-}
-
-Exp *
-Binary::simplifyAddr()
-{
-	assert(subExp1 && subExp2);
-
-	subExp1 = subExp1->simplifyAddr();
-	subExp2 = subExp2->simplifyAddr();
-	return this;
-}
-
-Exp *
-Ternary::simplifyAddr()
-{
-	subExp1 = subExp1->simplifyAddr();
-	subExp2 = subExp2->simplifyAddr();
-	subExp3 = subExp3->simplifyAddr();
-	return this;
+	AddrSimplifier as;
+	return accept(as);
 }
 
 /**

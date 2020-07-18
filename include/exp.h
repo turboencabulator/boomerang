@@ -238,7 +238,7 @@ public:
 	static  Exp        *Accumulate(std::list<Exp *> exprs);
 	        Exp        *simplify();
 	virtual Exp        *polySimplify(bool &bMod) { bMod = false; return this; }
-	virtual Exp        *simplifyAddr() { return this; }
+	        Exp        *simplifyAddr();
 	virtual Exp        *simplifyConstraint() { return this; }
 	        Exp        *fixSuccessor();
 	        Exp        *killFill();
@@ -461,7 +461,6 @@ public:
 	// Do the work of simplifying this expression
 	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
-	Exp        *simplifyAddr() override;
 	Exp        *simplifyConstraint() override;
 
 	// Type analysis
@@ -526,7 +525,6 @@ public:
 	// Do the work of simplifying this expression
 	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
-	Exp        *simplifyAddr() override;
 	Exp        *simplifyConstraint() override;
 
 	// Type analysis
@@ -589,7 +587,6 @@ public:
 
 	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
-	Exp        *simplifyAddr() override;
 
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;
