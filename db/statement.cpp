@@ -1690,6 +1690,21 @@ Assign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	hll->AddAssignmentStatement(indLevel, this);
 }
 
+Exp *
+Assignment::swapLeft(Exp *e)
+{
+	auto ret = lhs;
+	lhs = e;
+	return ret;
+}
+Exp *
+Assign::swapRight(Exp *e)
+{
+	auto ret = rhs;
+	rhs = e;
+	return ret;
+}
+
 /**
  * Common to BranchStatement and BoolAssign.
  * \returns  true if this is now a floating point Branch.

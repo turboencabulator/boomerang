@@ -222,6 +222,28 @@ Ternary::setSubExp3(Exp *e)
 	assert(subExp1 && subExp2 && subExp3);
 }
 
+Exp *
+Unary::swapSubExp1(Exp *e)
+{
+	auto ret = subExp1;
+	subExp1 = e;
+	return ret;
+}
+Exp *
+Binary::swapSubExp2(Exp *e)
+{
+	auto ret = subExp2;
+	subExp2 = e;
+	return ret;
+}
+Exp *
+Ternary::swapSubExp3(Exp *e)
+{
+	auto ret = subExp3;
+	subExp3 = e;
+	return ret;
+}
+
 /*==============================================================================
  * FUNCTION:        Unary::getSubExp1 etc
  * OVERVIEW:        Get subexpression
@@ -2966,7 +2988,9 @@ AddrSimplifier::preVisit(Location *e, bool &recurse)
 		auto sub = e->getSubExp1();
 		if (sub->isAddrOf()) {
 			recurse = false;
-			return ((Unary *)sub)->getSubExp1();
+			auto ret = ((Unary *)sub)->swapSubExp1(nullptr);
+			delete e;
+			return ret;
 		}
 	}
 	return e;
@@ -2982,13 +3006,17 @@ AddrSimplifier::preVisit(Unary *e, bool &recurse)
 		auto sub = e->getSubExp1();
 		if (sub->isMemOf()) {
 			recurse = false;
-			return ((Location *)sub)->getSubExp1();
+			auto ret = ((Location *)sub)->swapSubExp1(nullptr);
+			delete e;
+			return ret;
 		}
 		if (sub->getOper() == opSize) {
 			auto sub2 = ((Binary *)sub)->getSubExp2();
 			if (sub2->isMemOf()) {
 				recurse = false;
-				return ((Location *)sub2)->getSubExp1();
+				auto ret = ((Location *)sub2)->swapSubExp1(nullptr);
+				delete e;
+				return ret;
 			}
 		}
 	}

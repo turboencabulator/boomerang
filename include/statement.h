@@ -318,6 +318,7 @@ public:
 
 	// set the lhs to something new
 	void        setLeft(Exp *e) { lhs = e; }
+	Exp        *swapLeft(Exp *);
 
 	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 
@@ -359,6 +360,7 @@ public:
 
 	// set the rhs to something new
 	void        setRight(Exp *e) { rhs = e; }
+	Exp        *swapRight(Exp *);
 
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;

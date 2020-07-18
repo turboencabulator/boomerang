@@ -447,8 +447,9 @@ public:
 	void        printx(int ind) const override;
 
 	// Set first subexpression
-	void        setSubExp1(Exp *e) override;
+	void        setSubExp1(Exp *) override;
 	void        setSubExp1ND(Exp *e) { subExp1 = e; }
+	Exp        *swapSubExp1(Exp *);
 	// Get first subexpression
 	Exp        *getSubExp1() const override;
 
@@ -511,7 +512,8 @@ public:
 	void        printx(int ind) const override;
 
 	// Set second subexpression
-	void        setSubExp2(Exp *e) override;
+	void        setSubExp2(Exp *) override;
+	Exp        *swapSubExp2(Exp *);
 	// Get second subexpression
 	Exp        *getSubExp2() const override;
 
@@ -576,7 +578,8 @@ public:
 	void        printx(int ind) const override;
 
 	// Set third subexpression
-	void        setSubExp3(Exp *e) override;
+	void        setSubExp3(Exp *) override;
+	Exp        *swapSubExp3(Exp *);
 	// Get third subexpression
 	Exp        *getSubExp3() const override;
 
