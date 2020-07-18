@@ -2076,7 +2076,6 @@ Exp::simplify()
  * Do the work of simplification.
  *
  * \note User must ;//delete result.
- * \note Address simplification (a[m[x]] == x) is done separately.
  *
  * \returns  Ptr to the simplified expression.
  */
@@ -2162,16 +2161,6 @@ Unary::polySimplify(bool &bMod)
 		if (subExp1->isMemOf()) {
 			bMod = true;
 			return ((Location *)subExp1)->swapSubExp1(nullptr);
-		}
-		break;
-	case opMemOf:
-	case opRegOf:
-		{
-			subExp1 = subExp1->polySimplify(bMod);
-			// The below IS bad now. It undoes the simplification of
-			// m[r29 + -4] to m[r29 - 4]
-			// If really needed, do another polySimplify, or swap the order
-			//subExp1 = subExp1->simplifyArith();  // probably bad
 		}
 		break;
 	default:
@@ -2960,14 +2949,22 @@ RefExp::polySimplify(bool &bMod)
 Exp *
 Location::polySimplify(bool &bMod)
 {
-	Exp *res = Unary::polySimplify(bMod);
+	subExp1 = subExp1->polySimplify(bMod);
 
-	if (res->isMemOf() && ((Location *)res)->getSubExp1()->isAddrOf()) {
-		bMod = true;
-		return ((Unary *)((Location *)res)->getSubExp1())->swapSubExp1(nullptr);
+	if (isMemOf() || isRegOf()) {
+		// The below IS bad now. It undoes the simplification of
+		// m[r29 + -4] to m[r29 - 4]
+		// If really needed, do another polySimplify, or swap the order
+		// FIXME: Re-evaluate this, both appear to simplify to m[r29 - 4].
+		//subExp1 = subExp1->simplifyArith();  // probably bad
 	}
 
-	return res;
+	if (isMemOf() && subExp1->isAddrOf()) {
+		bMod = true;
+		return ((Unary *)subExp1)->swapSubExp1(nullptr);
+	}
+
+	return this;
 }
 
 /**
