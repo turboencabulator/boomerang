@@ -2090,43 +2090,43 @@ Unary::polySimplify(bool &bMod)
 		case opEqual:
 			subExp1->setOper(opNotEqual);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opNotEqual:
 			subExp1->setOper(opEqual);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opLess:
 			subExp1->setOper(opGtrEq);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opLessEq:
 			subExp1->setOper(opGtr);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opGtr:
 			subExp1->setOper(opLessEq);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opGtrEq:
 			subExp1->setOper(opLess);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opLessUns:
 			subExp1->setOper(opGtrEqUns);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opLessEqUns:
 			subExp1->setOper(opGtrUns);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opGtrUns:
 			subExp1->setOper(opLessEqUns);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		case opGtrEqUns:
 			subExp1->setOper(opLessUns);
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		default:
 			break;
 		}
@@ -2140,20 +2140,20 @@ Unary::polySimplify(bool &bMod)
 			OPER subOP = subExp1->getOper();
 			if (subOP == opIntConst) {
 				// -k, ~k, or !k
-				auto res = (Const *)subExp1;
-				int k = res->getInt();
+				int k = ((Const *)subExp1)->getInt();
 				switch (op) {
 				case opNeg:  k = -k; break;
 				case opNot:  k = ~k; break;
 				case opLNot: k = !k; break;
 				default: break;
 				}
-				res->setInt(k);
+				((Const *)subExp1)->setInt(k);
 				bMod = true;
-				return res;
+				return swapSubExp1(nullptr);
 			} else if (op == subOP) {
+				// double negation
 				bMod = true;
-				return ((Unary *)subExp1)->getSubExp1();
+				return ((Unary *)subExp1)->swapSubExp1(nullptr);
 			}
 		}
 		break;
@@ -2161,7 +2161,7 @@ Unary::polySimplify(bool &bMod)
 		// check for a[m[x]], becomes x
 		if (subExp1->isMemOf()) {
 			bMod = true;
-			return ((Location *)subExp1)->getSubExp1();
+			return ((Location *)subExp1)->swapSubExp1(nullptr);
 		}
 		break;
 	case opMemOf:
@@ -2193,7 +2193,7 @@ Binary::polySimplify(bool &bMod)
 	if ((op == opBitAnd || op == opBitOr)
 	 && *subExp1 == *subExp2) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// x ^ x or x - x: result is zero
@@ -2299,7 +2299,7 @@ Binary::polySimplify(bool &bMod)
 		auto b = ((Const *)subExp2)->getInt();
 		((Const *)subExp1->getSubExp2())->setInt(a + b);
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// check for (x - a) + b where a and b are constants, becomes x + -a+b
@@ -2312,7 +2312,7 @@ Binary::polySimplify(bool &bMod)
 		subExp1->setOper(opPlus);
 		((Const *)subExp1->getSubExp2())->setInt(-a + b);
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// check for (x * k) - x, becomes x * (k-1)
@@ -2322,7 +2322,7 @@ Binary::polySimplify(bool &bMod)
 	 && *subExp2 == *subExp1->getSubExp1()) {
 		subExp1->setSubExp2(new Binary(op, subExp1->getSubExp2(), new Const(1)));
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// check for x + (x * k), becomes x * (k+1)
@@ -2331,7 +2331,7 @@ Binary::polySimplify(bool &bMod)
 	 && *subExp1 == *subExp2->getSubExp1()) {
 		subExp2->setSubExp2(new Binary(op, subExp2->getSubExp2(), new Const(1)));
 		bMod = true;
-		return subExp2;
+		return swapSubExp2(nullptr);
 	}
 
 	// Turn a + -K into a - K (K is int const > 0)
@@ -2349,7 +2349,7 @@ Binary::polySimplify(bool &bMod)
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 0) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for exp * 0  or exp & 0
@@ -2366,7 +2366,7 @@ Binary::polySimplify(bool &bMod)
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 1) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for exp * x / x
@@ -2374,7 +2374,7 @@ Binary::polySimplify(bool &bMod)
 	 && (opSub1 == opMult || opSub1 == opMults)
 	 && *subExp2 == *subExp1->getSubExp2()) {
 		bMod = true;
-		return ((Binary *)subExp1)->getSubExp1();
+		return ((Binary *)subExp1)->swapSubExp1(nullptr);
 	}
 
 	// Check for exp / 1, becomes exp
@@ -2382,7 +2382,7 @@ Binary::polySimplify(bool &bMod)
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 1) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for exp % 1, becomes 0
@@ -2406,7 +2406,7 @@ Binary::polySimplify(bool &bMod)
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == -1) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for [exp] << k where k is a positive integer const
@@ -2433,7 +2433,7 @@ Binary::polySimplify(bool &bMod)
 	if (op == opOr
 	 && subExp2->isFalse()) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for exp && false
@@ -2456,7 +2456,7 @@ Binary::polySimplify(bool &bMod)
 	if (op == opAnd
 	 && subExp2->isTrue()) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for (x compare y) == true, becomes x compare y
@@ -2464,7 +2464,7 @@ Binary::polySimplify(bool &bMod)
 	 && subExp2->isTrue()
 	 && subExp1->isComparison()) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for (x compare y) != false, becomes x compare y
@@ -2472,23 +2472,25 @@ Binary::polySimplify(bool &bMod)
 	 && subExp2->isFalse()
 	 && subExp1->isComparison()) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// Check for (x compare y) != true, becomes !(x compare y)
 	if (op == opNotEqual
 	 && subExp2->isTrue()
 	 && subExp1->isComparison()) {
+		auto cmp = swapSubExp1(nullptr);
 		bMod = true;
-		return new Unary(opLNot, subExp1->clone());
+		return new Unary(opLNot, cmp);
 	}
 
 	// Check for (x compare y) == false, becomes !(x compare y)
 	if (op == opEqual
 	 && subExp2->isFalse()
 	 && subExp1->isComparison()) {
+		auto cmp = swapSubExp1(nullptr);
 		bMod = true;
-		return new Unary(opLNot, subExp1->clone());
+		return new Unary(opLNot, cmp);
 	}
 
 #if 0
@@ -2496,45 +2498,37 @@ Binary::polySimplify(bool &bMod)
 	// doesn't count as a change
 	if (isComparison()
 	 && opSub1 == opNeg) {
-		Exp *e = subExp1;
-		subExp1 = e->getSubExp1()->clone();
-		;//delete e;
-		subExp2 = new Unary(opNeg, subExp2);
+		subExp2 = ((Unary *)subExp1)->swapSubExp1(subExp2);
+		std::swap(subExp1, subExp2);
 	}
 
 	// Check for (x + y) compare 0, becomes x compare -y
 	if (isComparison()
 	 && opSub2 == opIntConst && ((Const *)subExp2)->getInt() == 0
 	 && opSub1 == opPlus) {
-		;//delete subExp2;
-		Binary *b = (Binary *)subExp1;
-		subExp2 = b->subExp2;
-		b->subExp2 = nullptr;
-		subExp1 = b->subExp1;
-		b->subExp1 = nullptr;
-		;//delete b;
+		auto b1 = (Binary *)subExp1;
+		subExp2 = b1->swapSubExp2(subExp2);
 		subExp2 = new Unary(opNeg, subExp2);
+		subExp1 = b1->swapSubExp1(nullptr);
+		delete b1;
 		bMod = true;
 		return this;
 	}
 #endif
 
+	auto b1 = (Binary *)subExp1;
 	// Check for x + -y == 0, becomes x == y
 	if (op == opEqual
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 0
 	 && opSub1 == opPlus
-	 && ((Binary *)subExp1)->subExp2->isIntConst()) {
-		auto b = (Binary *)subExp1;
-		auto n = ((Const *)b->subExp2)->getInt();
+	 && b1->subExp2->isIntConst()) {
+		auto n = ((Const *)b1->subExp2)->getInt();
 		if (n < 0) {
-			;//delete subExp2;
-			subExp2 = b->subExp2;
+			subExp2 = b1->swapSubExp2(subExp2);
 			((Const *)subExp2)->setInt(-n);
-			b->subExp2 = nullptr;
-			subExp1 = b->subExp1;
-			b->subExp1 = nullptr;
-			;//delete b;
+			subExp1 = b1->swapSubExp1(nullptr);
+			delete b1;
 			bMod = true;
 			return this;
 		}
@@ -2545,14 +2539,15 @@ Binary::polySimplify(bool &bMod)
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 0
 	 && opSub1 == opMinus
-	 && subExp1->getSubExp1()->isIntConst()
-	 && ((Const *)subExp1->getSubExp1())->getInt() == 0) {
+	 && b1->getSubExp1()->isIntConst()
+	 && ((Const *)b1->getSubExp1())->getInt() == 0) {
+		subExp1 = b1->swapSubExp2(nullptr);
+		delete b1;
 		bMod = true;
-		return new Binary(opNotEqual, subExp1->getSubExp2()->clone(), subExp2->clone());
+		return this;
 	}
 
-	Binary *b1 = (Binary *)subExp1;
-	Binary *b2 = (Binary *)subExp2;
+	auto b2 = (Binary *)subExp2;
 	// Check for (x <= y) || (x == y), becomes x <= y
 	if (op == opOr
 	 && opSub2 == opEqual
@@ -2560,18 +2555,18 @@ Binary::polySimplify(bool &bMod)
 	 && ((*b1->subExp1 == *b2->subExp1 && *b1->subExp2 == *b2->subExp2)
 	  || (*b1->subExp1 == *b2->subExp2 && *b1->subExp2 == *b2->subExp1))) {
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	// check for a*n*m, becomes a*(n*m) where n and m are ints
 	if (op == opMult
 	 && opSub1 == opMult
 	 && opSub2 == opIntConst
-	 && subExp1->getSubExp2()->isIntConst()) {
+	 && b1->getSubExp2()->isIntConst()) {
 		auto m = ((Const *)subExp2)->getInt();
-		((Const *)subExp1->getSubExp2())->setInt(((Const *)subExp1->getSubExp2())->getInt() * m);
+		((Const *)b1->subExp2)->setInt(((Const *)b1->subExp2)->getInt() * m);
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 #if 0  // FIXME! ADHOC TA assumed!
@@ -2579,12 +2574,13 @@ Binary::polySimplify(bool &bMod)
 	if (op == opPlus
 	 && opSub1 == opPlus
 	 && subExp2->isIntConst()) {
-		Type *ty = subExp1->getSubExp1()->getType();
+		Type *ty = b1->subExp1->getType();
 		if (ty
 		 && ty->resolvesToPointer()
 		 && ty->asPointer()->getPointsTo()->resolvesToCompound()) {
+			subExp2 = b1->swapSubExp2(subExp2);
 			bMod = true;
-			return new Binary(opPlus, new Binary(opPlus, subExp1->getSubExp1(), subExp2), subExp1->getSubExp2());
+			return this;
 		}
 	}
 #endif
@@ -2601,25 +2597,22 @@ Binary::polySimplify(bool &bMod)
 	 && ty->resolvesToPointer()
 	 && ty->asPointer()->getPointsTo()->resolvesToCompound()
 	 && opSub2 == opIntConst) {
-		unsigned n = (unsigned)((Const *)subExp2)->getInt();
+		auto n = (unsigned)((Const *)subExp2)->getInt();
 		CompoundType *c = ty->asPointer()->getPointsTo()->asCompound();
 		if (n * 8 < c->getSize()) {
 			unsigned r = c->getOffsetRemainder(n * 8);
 			assert((r % 8) == 0);
 			const char *nam = c->getNameAtOffset(n * 8);
 			if (nam && std::string("pad") != nam) {
-				Location *l = Location::memOf(subExp1);
+				auto l = Location::memOf(subExp1);
 				//l->setType(c);
-				auto res = new Binary(opPlus,
-				                      new Unary(opAddrOf,
-				                                new Binary(opMemberAccess,
-				                                           l,
-				                                           new Const(strdup(nam)))),
-				                      new Const(r / 8));
-				if (VERBOSE)
-					LOG << "(trans1) replacing " << *this << " with " << *res << "\n";
+				subExp1 = new Unary(opAddrOf,
+				                    new Binary(opMemberAccess,
+				                               l,
+				                               new Const(strdup(nam))));
+				((Const *)subExp2)->setInt(r / 8);
 				bMod = true;
-				return res;
+				return this;
 			}
 		}
 	}
@@ -2629,9 +2622,9 @@ Binary::polySimplify(bool &bMod)
 	// becomes &exp[x / b] + (x % b) where b is the size of the base type in bytes
 	if (op == opPlus
 	 && subExp1->getType()) {
-		Exp *x = subExp2;
-		Exp *l = subExp1;
-		Type *ty = l->getType();
+		auto x = subExp2;
+		auto l = subExp1;
+		auto ty = l->getType();
 		if (ty
 		 && ty->resolvesToPointer()
 		 && ty->asPointer()->getPointsTo()->resolvesToArray()) {
@@ -2640,21 +2633,18 @@ Binary::polySimplify(bool &bMod)
 			int br = a->getBaseType()->getSize() % 8;
 			assert(br == 0);
 			if (!x->isIntConst() || ((Const *)x)->getInt() >= b || a->getBaseType()->isArray()) {
-				auto res = new Binary(opPlus,
-				                      new Unary(opAddrOf,
-				                                new Binary(opArrayIndex,
-				                                           Location::memOf(l->clone()),
-				                                           new Binary(opDiv, x->clone(), new Const(b)))),
-				                      new Binary(opMod, x->clone(), new Const(b)));
-				if (VERBOSE)
-					LOG << "replacing " << *this << " with " << *res << "\n";
+				subExp1 = new Unary(opAddrOf,
+				                    new Binary(opArrayIndex,
+				                               Location::memOf(l),
+				                               new Binary(opDiv, x->clone(), new Const(b))));
+				subExp2 = new Binary(opMod, x, new Const(b));
 				if (auto r = dynamic_cast<RefExp *>(l)) {
 					if (auto pa = dynamic_cast<PhiAssign *>(r->getDef())) {
 						LOG << "argh: " << *pa->getAt(1).def << "\n";
 					}
 				}
 				bMod = true;
-				return res;
+				return this;
 			}
 		}
 	}
@@ -2664,24 +2654,24 @@ Binary::polySimplify(bool &bMod)
 	if (op == opFMinus
 	 && subExp1->isFltConst()
 	 && ((Const *)subExp1)->getFlt() == 0.0) {
+		subExp2 = new Unary(opFNeg, subExp2);
 		bMod = true;
-		return new Unary(opFNeg, subExp2);
+		return swapSubExp2(nullptr);
 	}
 
 	// Check for (x * k) + k, becomes (x + 1) * k
 	if ((op == opPlus || op == opMinus)
 	 && (opSub1 == opMults || opSub1 == opMult)
 	 && subExp2->isIntConst()
-	 && subExp1->getSubExp2()->isIntConst()) {
+	 && b1->subExp2->isIntConst()) {
 		auto n1 = ((Const *)subExp2)->getInt();
-		auto n2 = ((Const *)subExp1->getSubExp2())->getInt();
+		auto n2 = ((Const *)b1->subExp2)->getInt();
 		if (n1 == n2) {
+			((Const *)b1->subExp2)->setInt(1);
+			b1->setOper(op);
+			setOper(opSub1);
 			bMod = true;
-			return new Binary(opSub1,
-			                  new Binary(op,
-			                             subExp1->getSubExp1()->clone(),
-			                             new Const(1)),
-			                  new Const(n1));
+			return this;
 		}
 	}
 
@@ -2689,19 +2679,20 @@ Binary::polySimplify(bool &bMod)
 	if ((op == opPlus || op == opMinus)
 	 && opSub1 == opPlus
 	 && subExp2->isIntConst()
-	 && (subExp1->getSubExp2()->getOper() == opMults || subExp1->getSubExp2()->getOper() == opMult)
-	 && subExp1->getSubExp2()->getSubExp2()->isIntConst()) {
+	 && (b1->subExp2->getOper() == opMults || b1->subExp2->getOper() == opMult)
+	 && ((Binary *)b1->subExp2)->getSubExp2()->isIntConst()) {
 		auto n1 = ((Const *)subExp2)->getInt();
-		auto n2 = ((Const *)subExp1->getSubExp2()->getSubExp2())->getInt();
+		auto n2 = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
 		if (n1 == n2) {
+			((Const *)((Binary *)b1->subExp2)->getSubExp2())->setInt(1);
+			b1->setOper(b1->subExp2->getOper());  // (x * (y * 1)) + k
+			b1->subExp2->setOper(op);             // (x * (y + 1)) + k
+			setOper(opPlus);                      // (x * (y + 1)) + k
+			subExp2 = b1->swapSubExp1(subExp2);   // (k * (y + 1)) + x
+			std::swap(b1->subExp1, b1->subExp2);  // ((y + 1) * k) + x
+			std::swap(subExp1, subExp2);          // x + ((y + 1) * k)
 			bMod = true;
-			return new Binary(opPlus,
-			                  subExp1->getSubExp1(),
-			                  new Binary(subExp1->getSubExp2()->getOper(),
-			                             new Binary(op,
-			                                        subExp1->getSubExp2()->getSubExp1()->clone(),
-			                                        new Const(1)),
-			                             new Const(n1)));
+			return this;
 		}
 	}
 
@@ -2710,18 +2701,18 @@ Binary::polySimplify(bool &bMod)
 	if (op == opDiv
 	 && subExp1->getOper() == opPlus
 	 && subExp2->isIntConst()
-	 && subExp1->getSubExp1()->getOper() == opMult
-	 && subExp1->getSubExp2()->getOper() == opMult
-	 && subExp1->getSubExp1()->getSubExp2()->isIntConst()
-	 && subExp1->getSubExp2()->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)subExp1->getSubExp1()->getSubExp2())->getInt();
-		auto b = ((Const *)subExp1->getSubExp2()->getSubExp2())->getInt();
+	 && b1->subExp1->getOper() == opMult
+	 && b1->subExp2->getOper() == opMult
+	 && ((Binary *)b1->subExp1)->getSubExp2()->isIntConst()
+	 && ((Binary *)b1->subExp2)->getSubExp2()->isIntConst()) {
+		auto a = ((Const *)((Binary *)b1->subExp1)->getSubExp2())->getInt();
+		auto b = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
 		auto c = ((Const *)subExp2)->getInt();
 		if ((a % c) == 0 && (b % c) == 0) {
+			((Const *)((Binary *)b1->subExp1)->getSubExp2())->setInt(a / c);
+			((Const *)((Binary *)b1->subExp2)->getSubExp2())->setInt(b / c);
 			bMod = true;
-			return new Binary(opPlus,
-			                  new Binary(opMult, subExp1->getSubExp1()->getSubExp1(), new Const(a / c)),
-			                  new Binary(opMult, subExp1->getSubExp2()->getSubExp1(), new Const(b / c)));
+			return swapSubExp1(nullptr);
 		}
 	}
 
@@ -2732,32 +2723,45 @@ Binary::polySimplify(bool &bMod)
 	if (op == opMod
 	 && subExp1->getOper() == opPlus
 	 && subExp2->isIntConst()
-	 && subExp1->getSubExp1()->getOper() == opMult
-	 && subExp1->getSubExp2()->getOper() == opMult
-	 && subExp1->getSubExp1()->getSubExp2()->isIntConst()
-	 && subExp1->getSubExp2()->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)subExp1->getSubExp1()->getSubExp2())->getInt();
-		auto b = ((Const *)subExp1->getSubExp2()->getSubExp2())->getInt();
+	 && b1->subExp1->getOper() == opMult
+	 && b1->subExp2->getOper() == opMult
+	 && b1->subExp1->getSubExp2()->isIntConst()
+	 && b1->subExp2->getSubExp2()->isIntConst()) {
+		auto a = ((Const *)((Binary *)b1->subExp1)->getSubExp2())->getInt();
+		auto b = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
 		auto c = ((Const *)subExp2)->getInt();
-		if ((a % c) == 0 && (b % c) == 0) {
-			bMod = true;
-			return new Const(0);
-		}
 		if ((a % c) == 0) {
-			bMod = true;
-			return new Binary(opMod, subExp1->getSubExp2()->clone(), new Const(c));
+			delete b1->subExp1;
+			b1->subExp1 = nullptr;
 		}
 		if ((b % c) == 0) {
+			delete b1->subExp2;
+			b1->subExp2 = nullptr;
+		}
+		if (!b1->subExp1 && !b1->subExp2) {
+			((Const *)subExp2)->setInt(0);
 			bMod = true;
-			return new Binary(opMod, subExp1->getSubExp1()->clone(), new Const(c));
+			return swapSubExp2(nullptr);
+		}
+		if (!b1->subExp1) {
+			subExp1 = b1->swapSubExp2(nullptr);
+			delete b1;
+			bMod = true;
+			return this;
+		}
+		if (!b1->subExp2) {
+			subExp1 = b1->swapSubExp1(nullptr);
+			delete b1;
+			bMod = true;
+			return this;
 		}
 	}
 
 	// Check for 0 - (0 <u exp1) & exp2 => exp2
 	if (op == opBitAnd
 	 && opSub1 == opMinus) {
-		auto leftOfMinus = ((Binary *)subExp1)->getSubExp1();
-		auto rightOfMinus = ((Binary *)subExp1)->getSubExp2();
+		auto leftOfMinus = b1->subExp1;
+		auto rightOfMinus = b1->subExp2;
 		if (leftOfMinus->isIntConst()
 		 && ((Const *)leftOfMinus)->getInt() == 0
 		 && rightOfMinus->getOper() == opLessUns) {
@@ -2765,7 +2769,7 @@ Binary::polySimplify(bool &bMod)
 			if (leftOfLess->isIntConst()
 			 && ((Const *)leftOfLess)->getInt() == 0) {
 				bMod = true;
-				return subExp2;
+				return swapSubExp2(nullptr);
 			}
 		}
 	}
@@ -2783,7 +2787,7 @@ Binary::polySimplify(bool &bMod)
 			ty->setSize(n);
 #endif
 		bMod = true;
-		return subExp2;
+		return swapSubExp2(nullptr);
 	}
 
 	return this;
@@ -2805,7 +2809,7 @@ Ternary::polySimplify(bool &bMod)
 
 		if (s2->getInt() == 1 && s3->getInt() == 0) {
 			bMod = true;
-			return subExp1;
+			return swapSubExp1(nullptr);
 		}
 	}
 
@@ -2813,20 +2817,20 @@ Ternary::polySimplify(bool &bMod)
 	if (op == opTern
 	 && subExp1->isTrue()) {
 		bMod = true;
-		return subExp2;
+		return swapSubExp2(nullptr);
 	}
 
 	// 0 ? x : y -> y
 	if (op == opTern
 	 && subExp1->isFalse()) {
 		bMod = true;
-		return subExp3;
+		return swapSubExp3(nullptr);
 	}
 
 	if ((op == opSgnEx || op == opZfill)
 	 && subExp3->isIntConst()) {
 		bMod = true;
-		return subExp3;
+		return swapSubExp3(nullptr);
 	}
 
 	if (op == opFsize
@@ -2834,13 +2838,13 @@ Ternary::polySimplify(bool &bMod)
 	 && *subExp1 == *subExp3->getSubExp2()
 	 && *subExp2 == *subExp3->getSubExp1()) {
 		bMod = true;
-		return subExp3;
+		return swapSubExp3(nullptr);
 	}
 
 	if (op == opFsize
 	 && subExp3->isFltConst()) {
 		bMod = true;
-		return subExp3;
+		return swapSubExp3(nullptr);
 	}
 
 	if (op == opItof
@@ -2863,6 +2867,7 @@ Ternary::polySimplify(bool &bMod)
 			if (ok) {
 				if (VERBOSE)
 					LOG << "replacing " << *subExp3 << " with " << d << " in " << *this << "\n";
+				delete subExp3;
 				subExp3 = new Const(d);
 				bMod = true;
 				return this;
@@ -2913,7 +2918,7 @@ TypedExp::polySimplify(bool &bMod)
 	if (subExp1->isRegOf()) {
 		// type cast on a reg of.. hmm.. let's remove this
 		bMod = true;
-		return subExp1;
+		return swapSubExp1(nullptr);
 	}
 
 	subExp1 = subExp1->simplify();
@@ -2957,12 +2962,9 @@ Location::polySimplify(bool &bMod)
 {
 	Exp *res = Unary::polySimplify(bMod);
 
-	if (res->isMemOf() && res->getSubExp1()->isAddrOf()) {
-		if (VERBOSE)
-			LOG << "polySimplify " << *res << "\n";
-		res = res->getSubExp1()->getSubExp1();
+	if (res->isMemOf() && ((Location *)res)->getSubExp1()->isAddrOf()) {
 		bMod = true;
-		return res;
+		return ((Unary *)((Location *)res)->getSubExp1())->swapSubExp1(nullptr);
 	}
 
 	return res;
