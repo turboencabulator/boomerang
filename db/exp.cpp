@@ -3557,31 +3557,25 @@ Location::getDefinitions(LocationSet &defs) const
 	}
 }
 
-Exp *
-Unary::simplifyConstraint()
-{
-	subExp1 = subExp1->simplifyConstraint();
-	return this;
-}
+class ConstraintSimplifier : public ExpModifier {
+public:
+	Exp *postVisit(Binary *) override;
+};
 
 Exp *
-Binary::simplifyConstraint()
+ConstraintSimplifier::postVisit(Binary *e)
 {
-	assert(subExp1 && subExp2);
-
-	subExp1 = subExp1->simplifyConstraint();
-	subExp2 = subExp2->simplifyConstraint();
-	switch (op) {
+	switch (e->getOper()) {
 	case opEqual:
 		{
-			auto tv1 = dynamic_cast<TypeVal *>(subExp1);
-			auto tv2 = dynamic_cast<TypeVal *>(subExp2);
+			auto tv1 = dynamic_cast<TypeVal *>(e->getSubExp1());
+			auto tv2 = dynamic_cast<TypeVal *>(e->getSubExp2());
 			if (tv1 && tv2) {
 				// FIXME: ADHOC TA assumed
 				auto t1 = tv1->getType();
 				auto t2 = tv2->getType();
 				if (!t1->isPointerToAlpha() && !t2->isPointerToAlpha()) {
-					delete this;
+					delete e;
 					return new Terminal(*t1 == *t2 ? opTrue : opFalse);
 				}
 			}
@@ -3591,11 +3585,18 @@ Binary::simplifyConstraint()
 	case opOr:
 	case opAnd:
 	case opNot:
-		return simplify();
+		return e->simplify();
 	default:
 		break;
 	}
-	return this;
+	return e;
+}
+
+Exp *
+Exp::simplifyConstraint()
+{
+	ConstraintSimplifier cs;
+	return accept(cs);
 }
 
 //  //  //  //  //  //  //  //

@@ -239,7 +239,7 @@ public:
 	        Exp        *simplify();
 	virtual Exp        *polySimplify(bool &bMod) { bMod = false; return this; }
 	        Exp        *simplifyAddr();
-	virtual Exp        *simplifyConstraint() { return this; }
+	        Exp        *simplifyConstraint();
 	        Exp        *fixSuccessor();
 	        Exp        *killFill();
 	/** \} */
@@ -461,7 +461,6 @@ public:
 	// Do the work of simplifying this expression
 	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
-	Exp        *simplifyConstraint() override;
 
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;
@@ -525,7 +524,6 @@ public:
 	// Do the work of simplifying this expression
 	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
-	Exp        *simplifyConstraint() override;
 
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;

@@ -703,7 +703,7 @@ ExpTest::testSimplifyAddr()
 }
 
 /**
- * Test the simplifyConstraint functions.
+ * Test the simplifyConstraint function.
  */
 void
 ExpTest::testSimpConstr()
