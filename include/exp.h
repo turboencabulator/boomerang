@@ -237,7 +237,7 @@ public:
 	virtual Exp        *simplifyArith() { return this; }
 	static  Exp        *Accumulate(std::list<Exp *> exprs);
 	        Exp        *simplify();
-	virtual Exp        *polySimplify(bool &bMod) { bMod = false; return this; }
+	virtual Exp        *polySimplify(bool &bMod) { return this; }
 	        Exp        *simplifyAddr();
 	        Exp        *simplifyConstraint();
 	        Exp        *fixSuccessor();

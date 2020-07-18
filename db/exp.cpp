@@ -2173,8 +2173,6 @@ Unary::polySimplify(bool &bMod)
 Exp *
 Binary::polySimplify(bool &bMod)
 {
-	assert(subExp1 && subExp2);
-
 	subExp1 = subExp1->polySimplify(bMod);
 	subExp2 = subExp2->polySimplify(bMod);
 
@@ -2904,24 +2902,21 @@ Ternary::polySimplify(bool &bMod)
 Exp *
 TypedExp::polySimplify(bool &bMod)
 {
+	subExp1 = subExp1->polySimplify(bMod);
+
 	if (subExp1->isRegOf()) {
 		// type cast on a reg of.. hmm.. let's remove this
 		bMod = true;
 		return swapSubExp1(nullptr);
 	}
 
-	subExp1 = subExp1->simplify();
 	return this;
 }
 
 Exp *
 RefExp::polySimplify(bool &bMod)
 {
-	Exp *tmp = subExp1->polySimplify(bMod);
-	if (bMod) {
-		subExp1 = tmp;
-		return this;
-	}
+	subExp1 = subExp1->polySimplify(bMod);
 
 	/* This is a nasty hack.  We assume that %DF{0} is 0.  This happens when string instructions are used without first
 	 * clearing the direction flag.  By convention, the direction flag is assumed to be clear on entry to a procedure.
@@ -3756,6 +3751,7 @@ Unary::accept(ExpModifier &v)
 	bool recurse = true;
 	auto ret = (Unary *)v.preVisit(this, recurse);
 	if (recurse) {
+		// TODO: Consider adding a way to repeatedly modify each child in turn until unchanged.
 		subExp1 = subExp1->accept(v);
 	}
 	return v.postVisit(ret);
