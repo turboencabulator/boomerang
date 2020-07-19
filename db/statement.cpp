@@ -1939,8 +1939,8 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				}
 				if (op != opWild) {
 					pCond = new Binary(op,
-					                   left1->getSubExp2()->getSubExp1(),
-					                   left1->getSubExp2()->getSubExp2()->getSubExp1());
+					                   left1->getSubExp2()->getSubExp1()->clone(),
+					                   left1->getSubExp2()->getSubExp2()->getSubExp1()->clone());
 					return true;  // This is now a float comparison
 				}
 			}
@@ -3088,8 +3088,8 @@ Statement::replaceRef(RefExp *e, Assign *def, bool &convert)
 			                    P3   opNil
 			*/
 			Exp *relExp = new Binary(opLessUns,
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp1(),
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp1());
+			                         ((Binary *)rhs)->getSubExp2()->getSubExp1()->clone(),
+			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp1()->clone());
 			searchAndReplace(new RefExp(new Terminal(opCF), def), relExp, true);
 			return true;
 		}
@@ -3102,7 +3102,7 @@ Statement::replaceRef(RefExp *e, Assign *def, bool &convert)
 		if (strncmp("SUBFLAGS", str, 8) == 0) {
 			// for zf we're only interested in if the result part of the subflags is equal to zero
 			Exp *relExp = new Binary(opEqual,
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1(),
+			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1()->clone(),
 			                         new Const(0));
 			searchAndReplace(new RefExp(new Terminal(opZF), def), relExp, true);
 			return true;
