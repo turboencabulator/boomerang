@@ -5033,7 +5033,7 @@ ArgSourceProvider::nextArgLoc()
 	case SRC_COL:
 		if (cc == defCol->end()) return nullptr;
 		// Give the location, i.e. the left hand side of the assignment
-		return ((Assign *)*cc++)->getLeft();
+		return ((Assign *)*cc++)->getLeft()->clone();
 	}
 	return nullptr;  // Suppress warning
 }
@@ -5046,12 +5046,12 @@ ArgSourceProvider::localise(Exp *e)
 {
 	if (src == SRC_COL) {
 		// Provide the RHS of the current assignment
-		Exp *ret = ((Assign *)*--cc)->getRight();
+		Exp *ret = ((Assign *)*--cc)->getRight()->clone();
 		++cc;
 		return ret;
 	}
 	// Else just use the call to localise
-	return call->localiseExp(e);
+	return call->localiseExp(e->clone());
 }
 
 /**
@@ -5168,11 +5168,11 @@ CallStatement::updateArguments()
 			// collected in the call, and you just get m[...]{-} even if there are definitions.
 			Exp *rhs;
 			if (proc->canRename(loc))
-				rhs = asp.localise(loc->clone());
+				rhs = asp.localise(loc);
 			else
 				rhs = loc->clone();
 			Type *ty = asp.curType(loc);
-			auto as = new Assign(ty, loc->clone(), rhs);
+			auto as = new Assign(ty, loc, rhs);
 			as->setNumber(number);  // Give the assign the same statement number as the call (for now)
 			as->setParent(this);
 			as->setProc(proc);
