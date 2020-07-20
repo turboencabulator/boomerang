@@ -2989,8 +2989,11 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 	} while (change && ++changes < 10);
 	// Simplify is very costly, especially for calls. I hope that doing one simplify at the end will not affect any
 	// result...
-	simplify();
-	return changes > 0;  // Note: change is only for the last time around the do/while loop
+	if (changes) {  // Note: change is only for the last time around the do/while loop
+		simplify();
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -3017,8 +3020,11 @@ Statement::propagateFlagsTo()
 			}
 		}
 	} while (change && ++changes < 10);
-	simplify();
-	return changes > 0;
+	if (changes) {
+		simplify();
+		return true;
+	}
+	return false;
 }
 
 /**
