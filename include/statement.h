@@ -239,7 +239,8 @@ public:
 	        bool        addUsedLocals(LocationSet &);
 	        void        bypass();
 
-	        bool        replaceRef(RefExp *, Assign *, bool &);
+	        bool        doPropagateTo(RefExp *, bool &);
+	        bool        replaceRef(RefExp *, bool &);
 
 	        void        findConstants(std::list<Const *> &);
 
@@ -259,7 +260,6 @@ public:
 	virtual Type       *getTypeFor(Exp *) const { return nullptr; }
 	virtual void        setTypeFor(Exp *, Type *) { assert(0); }
 
-	        bool        doPropagateTo(RefExp *, Assign *, bool &);
 	//static  bool        calcMayAlias(Exp *, Exp *, int);
 	//static  bool        mayAlias(Exp *, Exp *, int);
 };

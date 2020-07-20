@@ -2984,7 +2984,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 					}
 				}
 			}
-			change |= doPropagateTo(r, def, convert);
+			change |= doPropagateTo(r, convert);
 		}
 	} while (change && ++changes < 10);
 	// Simplify is very costly, especially for calls. I hope that doing one simplify at the end will not affect any
@@ -3013,7 +3013,7 @@ Statement::propagateFlagsTo()
 			if (!def) continue;
 			Exp *base = re->getSubExp1();
 			if (base->isFlags() || base->isMainFlag()) {
-				change |= doPropagateTo(re, def, convert);
+				change |= doPropagateTo(re, convert);
 			}
 		}
 	} while (change && ++changes < 10);
@@ -3033,7 +3033,7 @@ Statement::propagateFlagsTo()
  * \returns true if a change made.
  */
 bool
-Statement::doPropagateTo(RefExp *e, Assign *def, bool &convert)
+Statement::doPropagateTo(RefExp *e, bool &convert)
 {
 	// Respect the -p N switch
 	if (Boomerang::get().numToPropagate >= 0) {
@@ -3042,10 +3042,10 @@ Statement::doPropagateTo(RefExp *e, Assign *def, bool &convert)
 	}
 
 	if (VERBOSE)
-		LOG << "propagating " << *def << "\n"
+		LOG << "propagating " << *e->getDef() << "\n"
 		    << "       into " << *this << "\n";
 
-	bool change = replaceRef(e, def, convert);
+	bool change = replaceRef(e, convert);
 
 	if (VERBOSE)
 		LOG << "     result " << *this << "\n\n";
@@ -3062,8 +3062,11 @@ Statement::doPropagateTo(RefExp *e, Assign *def, bool &convert)
  * \returns true if change.
  */
 bool
-Statement::replaceRef(RefExp *e, Assign *def, bool &convert)
+Statement::replaceRef(RefExp *e, bool &convert)
 {
+	auto def = dynamic_cast<Assign *>(e->getDef());
+	assert(def);
+
 	Exp *rhs = def->getRight();
 	assert(rhs);
 
