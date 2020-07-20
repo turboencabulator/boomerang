@@ -3000,11 +3000,12 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 bool
 Statement::propagateFlagsTo()
 {
-	bool change = false, convert;
+	bool change, convert;
 	int changes = 0;
 	do {
 		LocationSet exps;
 		addUsedLocs(exps, true);
+		change = false;
 		for (const auto &e : exps) {
 			auto re = dynamic_cast<RefExp *>(e);
 			if (!re) continue;  // e.g. %pc
@@ -3017,7 +3018,7 @@ Statement::propagateFlagsTo()
 		}
 	} while (change && ++changes < 10);
 	simplify();
-	return change;
+	return changes > 0;
 }
 
 /**
