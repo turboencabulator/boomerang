@@ -237,7 +237,6 @@ public:
 	virtual Exp        *simplifyArith() { return this; }
 	static  Exp        *Accumulate(std::list<Exp *> exprs);
 	        Exp        *simplify();
-	virtual Exp        *polySimplify(bool &bMod) { return this; }
 	        Exp        *simplifyAddr();
 	        Exp        *simplifyConstraint();
 	        Exp        *fixSuccessor();
@@ -460,7 +459,6 @@ public:
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
 	// Do the work of simplifying this expression
-	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
 
 	// Type analysis
@@ -524,7 +522,6 @@ public:
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
 	// Do the work of simplifying this expression
-	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
 
 	// Type analysis
@@ -586,7 +583,6 @@ public:
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
-	Exp        *polySimplify(bool &bMod) override;
 	Exp        *simplifyArith() override;
 
 	// Type analysis
@@ -639,9 +635,6 @@ public:
 	// Get and set the type
 	virtual Type *getType() const { return type; }
 	virtual void setType(Type *ty) { type = ty; }
-
-	// polySimplify
-	Exp        *polySimplify(bool &bMod) override;
 
 	// Visitation
 	bool        accept(ExpVisitor &) override;
@@ -708,7 +701,6 @@ public:
 	void        setDef(Statement *def) { this->def = def; }
 	Exp        *genConstraints(Exp *restrictTo) override;
 	bool        references(Statement *s) { return def == s; }
-	Exp        *polySimplify(bool &bMod) override;
 	Exp        *match(const Exp *pattern) const override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
@@ -778,7 +770,6 @@ public:
 	void        setProc(UserProc *p) { proc = p; }
 	UserProc   *getProc() const { return proc; }
 
-	Exp        *polySimplify(bool &bMod) override;
 	virtual void getDefinitions(LocationSet &defs) const;
 
 	// Visitation

@@ -2017,6 +2017,22 @@ Exp::Accumulate(std::list<Exp *> exprs)
 	return res;
 }
 
+/**
+ * \brief Does the work of simplification.
+ *
+ * \note Was Exp::polySimplify() ("polymorphic simplify").
+ * \note ExpTransformer is/was intended to replace this.
+ */
+class PolySimplifier : public ExpModifier {
+public:
+	Exp *postVisit(Unary *) override;
+	Exp *postVisit(Binary *) override;
+	Exp *postVisit(Ternary *) override;
+	Exp *postVisit(TypedExp *) override;
+	Exp *postVisit(RefExp *) override;
+	Exp *postVisit(Location *) override;
+};
+
 #define DEBUG_SIMP 0  // Set to 1 to print every change
 /**
  * \brief Simplify the expression.
@@ -2044,22 +2060,22 @@ Exp::simplify()
 #if DEBUG_SIMP
 	Exp *save = clone();
 #endif
-	bool bMod = false;  // True if simplified at this or lower level
 	Exp *res = this;
 	//res = ExpTransformer::applyAllTo(res, bMod);
 	//return res;
+	PolySimplifier ps;
 	do {
-		bMod = false;
+		ps.clearMod();
 		//Exp *before = res->clone();
-		res = res->polySimplify(bMod);// Call the polymorphic simplify
+		res = res->accept(ps);
 #if 0
-		if (bMod) {
-			LOG << "polySimplify hit: " << before << " to " << res << "\n";
-			// polySimplify is now redundant, if you see this in the log you need to update one of the files in the
+		if (ps.isMod()) {
+			LOG << "simplify hit: " << *before << " to " << *res << "\n";
+			// simplify is now redundant, if you see this in the log you need to update one of the files in the
 			// transformations directory to include a rule for the reported transform.
 		}
 #endif
-	} while (bMod);  // If modified at this (or a lower) level, redo
+	} while (ps.isMod());  // If modified at this (or a lower) level, redo
 	// The below is still important. E.g. want to canonicalise sums, so we know that a + K + b is the same as a + b + K
 	// No! This slows everything down, and it's slow enough as it is. Call only where needed:
 	// res = res->simplifyArith();
@@ -2070,62 +2086,75 @@ Exp::simplify()
 	return res;
 }
 
-/**
- * \fn Exp *Exp::polySimplify(bool &bMod)
- *
- * Do the work of simplification.
- *
- * \note User must ;//delete result.
- *
- * \returns  Ptr to the simplified expression.
- */
 Exp *
-Unary::polySimplify(bool &bMod)
+PolySimplifier::postVisit(Unary *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
+	auto op = e->getOper();
+	auto eSub1 = e->getSubExp1();
+	auto opSub1 = eSub1->getOper();
 
 	if (op == opNot || op == opLNot) {
-		switch (subExp1->getOper()) {
+		switch (opSub1) {
 		case opEqual:
-			subExp1->setOper(opNotEqual);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opNotEqual);
+			delete e;
+			return eSub1;
 		case opNotEqual:
-			subExp1->setOper(opEqual);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opEqual);
+			delete e;
+			return eSub1;
 		case opLess:
-			subExp1->setOper(opGtrEq);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opGtrEq);
+			delete e;
+			return eSub1;
 		case opLessEq:
-			subExp1->setOper(opGtr);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opGtr);
+			delete e;
+			return eSub1;
 		case opGtr:
-			subExp1->setOper(opLessEq);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opLessEq);
+			delete e;
+			return eSub1;
 		case opGtrEq:
-			subExp1->setOper(opLess);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opLess);
+			delete e;
+			return eSub1;
 		case opLessUns:
-			subExp1->setOper(opGtrEqUns);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opGtrEqUns);
+			delete e;
+			return eSub1;
 		case opLessEqUns:
-			subExp1->setOper(opGtrUns);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opGtrUns);
+			delete e;
+			return eSub1;
 		case opGtrUns:
-			subExp1->setOper(opLessEqUns);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opLessEqUns);
+			delete e;
+			return eSub1;
 		case opGtrEqUns:
-			subExp1->setOper(opLessUns);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			eSub1->setOper(opLessUns);
+			delete e;
+			return eSub1;
 		default:
 			break;
 		}
@@ -2135,77 +2164,83 @@ Unary::polySimplify(bool &bMod)
 	case opNeg:
 	case opNot:
 	case opLNot:
-		{
-			OPER subOP = subExp1->getOper();
-			if (subOP == opIntConst) {
-				// -k, ~k, or !k
-				int k = ((Const *)subExp1)->getInt();
-				switch (op) {
-				case opNeg:  k = -k; break;
-				case opNot:  k = ~k; break;
-				case opLNot: k = !k; break;
-				default: break;
-				}
-				((Const *)subExp1)->setInt(k);
-				bMod = true;
-				return swapSubExp1(nullptr);
-			} else if (op == subOP) {
-				// double negation
-				bMod = true;
-				return ((Unary *)subExp1)->swapSubExp1(nullptr);
+		if (opSub1 == opIntConst) {
+			// -k, ~k, or !k
+			mod = true;
+			auto k = (Const *)e->swapSubExp1(nullptr);
+			auto n = k->getInt();
+			switch (op) {
+			case opNeg:  n = -n; break;
+			case opNot:  n = ~n; break;
+			case opLNot: n = !n; break;
+			default: break;
 			}
+			k->setInt(n);
+			delete e;
+			return k;
+		} else if (opSub1 == op) {
+			// double negation
+			mod = true;
+			auto x = ((Unary *)eSub1)->swapSubExp1(nullptr);
+			delete e;
+			return x;
 		}
 		break;
 	case opAddrOf:
 		// check for a[m[x]], becomes x
-		if (subExp1->isMemOf()) {
-			bMod = true;
-			return ((Location *)subExp1)->swapSubExp1(nullptr);
+		if (opSub1 == opMemOf) {
+			auto x = ((Location *)eSub1)->swapSubExp1(nullptr);
+			mod = true;
+			delete e;
+			return x;
 		}
 		break;
 	default:
 		break;
 	}
 
-	return this;
+	return e;
 }
 
 Exp *
-Binary::polySimplify(bool &bMod)
+PolySimplifier::postVisit(Binary *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
-	subExp2 = subExp2->polySimplify(bMod);
+	auto op = e->getOper();
+	auto eSub1 = e->getSubExp1();
+	auto eSub2 = e->getSubExp2();
+	auto opSub1 = eSub1->getOper();
+	auto opSub2 = eSub2->getOper();
 
 	// x & x or x | x: result is x
 	if ((op == opBitAnd || op == opBitOr)
-	 && *subExp1 == *subExp2) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && *eSub1 == *eSub2) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// x ^ x or x - x: result is zero
 	if ((op == opBitXor || op == opMinus)
-	 && *subExp1 == *subExp2) {
-		bMod = true;
+	 && *eSub1 == *eSub2) {
+		mod = true;
+		delete e;
 		return new Const(0);
 	}
 
 	// x == x: result is true
 	if (op == opEqual
-	 && *subExp1 == *subExp2) {
-		;//delete this;
-		bMod = true;
+	 && *eSub1 == *eSub2) {
+		mod = true;
+		delete e;
 		return new Terminal(opTrue);
 	}
-
-	auto opSub1 = subExp1->getOper();
-	auto opSub2 = subExp2->getOper();
 
 	if (opSub1 == opIntConst
 	 && opSub2 == opIntConst) {
 		// k1 op k2, where k1 and k2 are integer constants
-		auto k1 = ((Const *)subExp1)->getInt();
-		auto k2 = ((Const *)subExp2)->getInt();
+		auto k1 = ((Const *)eSub1)->getInt();
+		auto k2 = ((Const *)eSub2)->getInt();
 		bool change = true;
 		switch (op) {
 		case opPlus:      k1 = k1 + k2; break;
@@ -2235,11 +2270,15 @@ Binary::polySimplify(bool &bMod)
 		default: change = false;
 		}
 		if (change) {
-			;//delete this;
-			bMod = true;
-			if (isComparison())
+			mod = true;
+			if (e->isComparison()) {
+				delete e;
 				return new Terminal(k1 ? opTrue : opFalse);
-			return new Const(k1);
+			}
+			eSub1 = e->swapSubExp1(nullptr);
+			((Const *)eSub1)->setInt(k1);
+			delete e;
+			return eSub1;
 		}
 	}
 
@@ -2250,75 +2289,94 @@ Binary::polySimplify(bool &bMod)
 	 && (op == opPlus   || op == opMult  || op == opMults
 	  || op == opBitAnd || op == opBitOr || op == opBitXor
 	  || op == opAnd    || op == opOr    || op == opEqual  || op == opNotEqual)) {
-		std::swap(subExp1, subExp2);
+		eSub2 = e->swapSubExp1(eSub2);
+		eSub1 = e->swapSubExp2(eSub1);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
 	// Similarly for boolean constants
-	if (subExp1->isBoolConst()
-	 && !subExp2->isBoolConst()
+	if (eSub1->isBoolConst()
+	 && !eSub2->isBoolConst()
 	 && (op == opAnd || op == opOr || op == opEqual || op == opNotEqual)) {
-		std::swap(subExp1, subExp2);
+		eSub2 = e->swapSubExp1(eSub2);
+		eSub1 = e->swapSubExp2(eSub1);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
 	// Similarly for adding stuff to the addresses of globals
-	if (subExp2->isAddrOf()
-	 && subExp2->getSubExp1()->isSubscript()
-	 && subExp2->getSubExp1()->getSubExp1()->isGlobal()
+	if (eSub2->isAddrOf()
+	 && ((Unary *)eSub2)->getSubExp1()->isSubscript()
+	 && ((RefExp *)((Unary *)eSub2)->getSubExp1())->getSubExp1()->isGlobal()
 	 && op == opPlus) {
-		std::swap(subExp1, subExp2);
+		eSub2 = e->swapSubExp1(eSub2);
+		eSub1 = e->swapSubExp2(eSub1);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
+	// Convenience casts
+	auto bSub1 = dynamic_cast<Binary *>(eSub1);
+	auto bSub2 = dynamic_cast<Binary *>(eSub2);
+	auto kSub1 = dynamic_cast<Const *>(eSub1);
+	auto kSub2 = dynamic_cast<Const *>(eSub2);
+
 	// check for (x + a) + b where a and b are constants, becomes x + a+b
 	if (op == opPlus
 	 && opSub1 == opPlus
 	 && opSub2 == opIntConst
-	 && subExp1->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)subExp1->getSubExp2())->getInt();
-		auto b = ((Const *)subExp2)->getInt();
-		((Const *)subExp1->getSubExp2())->setInt(a + b);
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && bSub1->getSubExp2()->isIntConst()) {
+		auto kSub1Sub2 = (Const *)bSub1->getSubExp2();
+		auto a = kSub1Sub2->getInt();
+		auto b = kSub2->getInt();
+		kSub1Sub2->setInt(a + b);
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// check for (x - a) + b where a and b are constants, becomes x + -a+b
 	if (op == opPlus
 	 && opSub1 == opMinus
 	 && opSub2 == opIntConst
-	 && subExp1->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)subExp1->getSubExp2())->getInt();
-		auto b = ((Const *)subExp2)->getInt();
-		subExp1->setOper(opPlus);
-		((Const *)subExp1->getSubExp2())->setInt(-a + b);
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && bSub1->getSubExp2()->isIntConst()) {
+		auto kSub1Sub2 = (Const *)bSub1->getSubExp2();
+		auto a = kSub1Sub2->getInt();
+		auto b = kSub2->getInt();
+		bSub1->setOper(opPlus);
+		kSub1Sub2->setInt(-a + b);
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// check for (x * k) - x, becomes x * (k-1)
 	// same with +
 	if ((op == opMinus || op == opPlus)
 	 && (opSub1 == opMults || opSub1 == opMult)
-	 && *subExp2 == *subExp1->getSubExp1()) {
-		subExp1->setSubExp2(new Binary(op, subExp1->getSubExp2(), new Const(1)));
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && *eSub2 == *bSub1->getSubExp1()) {
+		bSub1->setSubExp2(new Binary(op, bSub1->getSubExp2(), new Const(1)));
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// check for x + (x * k), becomes x * (k+1)
 	if (op == opPlus
 	 && (opSub2 == opMults || opSub2 == opMult)
-	 && *subExp1 == *subExp2->getSubExp1()) {
-		subExp2->setSubExp2(new Binary(op, subExp2->getSubExp2(), new Const(1)));
-		bMod = true;
-		return swapSubExp2(nullptr);
+	 && *eSub1 == *bSub2->getSubExp1()) {
+		bSub2->setSubExp2(new Binary(op, bSub2->getSubExp2(), new Const(1)));
+		mod = true;
+		eSub2 = e->swapSubExp2(nullptr);
+		delete e;
+		return eSub2;
 	}
 
 	// Turn a + -K into a - K (K is int const > 0)
@@ -2326,248 +2384,270 @@ Binary::polySimplify(bool &bMod)
 	// Does not count as a change
 	if ((op == opPlus || op == opMinus)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() < 0) {
-		((Const *)subExp2)->setInt(-((Const *)subExp2)->getInt());
+	 && kSub2->getInt() < 0) {
+		kSub2->setInt(-kSub2->getInt());
 		op = op == opPlus ? opMinus : opPlus;
+		e->setOper(op);
 	}
 
 	// Check for exp + 0  or  exp - 0  or  exp | 0
 	if ((op == opPlus || op == opMinus || op == opBitOr)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && kSub2->getInt() == 0) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for exp * 0  or exp & 0
 	if ((op == opMult || op == opMults || op == opBitAnd)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0) {
-		;//delete this;
-		bMod = true;
-		return new Const(0);
+	 && kSub2->getInt() == 0) {
+		mod = true;
+		eSub2 = e->swapSubExp2(nullptr);
+		delete e;
+		return eSub2;
 	}
 
-	// Check for exp * 1
-	if ((op == opMult || op == opMults)
+	// Check for exp * 1 or exp / 1
+	if ((op == opMult || op == opMults || op == opDiv || op == opDivs)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 1) {
-		bMod = true;
-		return swapSubExp1(nullptr);
-	}
-
-	// Check for exp * x / x
-	if ((op == opDiv || op == opDivs)
-	 && (opSub1 == opMult || opSub1 == opMults)
-	 && *subExp2 == *subExp1->getSubExp2()) {
-		bMod = true;
-		return ((Binary *)subExp1)->swapSubExp1(nullptr);
-	}
-
-	// Check for exp / 1, becomes exp
-	if ((op == opDiv || op == opDivs)
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 1) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && kSub2->getInt() == 1) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for exp % 1, becomes 0
 	if ((op == opMod || op == opMods)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 1) {
-		bMod = true;
+	 && kSub2->getInt() == 1) {
+		mod = true;
+		delete e;
 		return new Const(0);
+	}
+
+	// Check for exp * x / x
+	if ((op == opDiv || op == opDivs)
+	 && (opSub1 == opMult || opSub1 == opMults)
+	 && *eSub2 == *bSub1->getSubExp2()) {
+		mod = true;
+		auto eSub1Sub1 = bSub1->swapSubExp1(nullptr);
+		delete e;
+		return eSub1Sub1;
 	}
 
 	// Check for exp * x % x, becomes 0
 	if ((op == opMod || op == opMods)
 	 && (opSub1 == opMult || opSub1 == opMults)
-	 && *subExp2 == *subExp1->getSubExp2()) {
-		bMod = true;
+	 && *eSub2 == *bSub1->getSubExp2()) {
+		mod = true;
+		delete e;
 		return new Const(0);
 	}
 
 	// Check for exp AND -1 (bitwise AND)
 	if ((op == opBitAnd)
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == -1) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && kSub2->getInt() == -1) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for [exp] << k where k is a positive integer const
-	int k;
 	if (op == opShiftL
 	 && opSub2 == opIntConst
-	 && ((k = ((Const *)subExp2)->getInt(), (k >= 0 && k < 32)))) {
-		setOper(opMult);
-		((Const *)subExp2)->setInt(1 << k);
-		bMod = true;
-		return this;
+	 && kSub2->getInt() >= 0
+	 && kSub2->getInt() < 32) {
+		e->setOper(opMult);
+		kSub2->setInt(1 << kSub2->getInt());
+		mod = true;
+		return e;
 	}
 
 	if (op == opShiftR
 	 && opSub2 == opIntConst
-	 && ((k = ((Const *)subExp2)->getInt(), (k >= 0 && k < 32)))) {
-		setOper(opDiv);
-		((Const *)subExp2)->setInt(1 << k);
-		bMod = true;
-		return this;
+	 && kSub2->getInt() >= 0
+	 && kSub2->getInt() < 32) {
+		e->setOper(opDiv);
+		kSub2->setInt(1 << kSub2->getInt());
+		mod = true;
+		return e;
 	}
 
 	// Check for exp || false
 	if (op == opOr
-	 && subExp2->isFalse()) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && eSub2->isFalse()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
+	}
+
+	// Check for exp && true
+	if (op == opAnd
+	 && eSub2->isTrue()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for exp && false
 	if (op == opAnd
-	 && subExp2->isFalse()) {
-		;//delete this;
-		bMod = true;
+	 && eSub2->isFalse()) {
+		mod = true;
+		delete e;
 		return new Terminal(opFalse);
 	}
 
 	// Check for exp || true
 	if (op == opOr
-	 && subExp2->isTrue()) {
-		//delete this;
-		bMod = true;
+	 && eSub2->isTrue()) {
+		mod = true;
+		delete e;
 		return new Terminal(opTrue);
-	}
-
-	// Check for exp && true
-	if (op == opAnd
-	 && subExp2->isTrue()) {
-		bMod = true;
-		return swapSubExp1(nullptr);
 	}
 
 	// Check for (x compare y) == true, becomes x compare y
 	if (op == opEqual
-	 && subExp2->isTrue()
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && eSub2->isTrue()
+	 && eSub1->isComparison()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for (x compare y) != false, becomes x compare y
 	if (op == opNotEqual
-	 && subExp2->isFalse()
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && eSub2->isFalse()
+	 && eSub1->isComparison()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// Check for (x compare y) != true, becomes !(x compare y)
 	if (op == opNotEqual
-	 && subExp2->isTrue()
-	 && subExp1->isComparison()) {
-		auto cmp = swapSubExp1(nullptr);
-		bMod = true;
-		return new Unary(opLNot, cmp);
+	 && eSub2->isTrue()
+	 && eSub1->isComparison()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return new Unary(opLNot, eSub1);
 	}
 
 	// Check for (x compare y) == false, becomes !(x compare y)
 	if (op == opEqual
-	 && subExp2->isFalse()
-	 && subExp1->isComparison()) {
-		auto cmp = swapSubExp1(nullptr);
-		bMod = true;
-		return new Unary(opLNot, cmp);
+	 && eSub2->isFalse()
+	 && eSub1->isComparison()) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return new Unary(opLNot, eSub1);
 	}
 
 #if 0
 	// Check for -x compare y, becomes x compare -y
-	// doesn't count as a change
-	if (isComparison()
+	// FIXME: Likely need to swap < for >, <= for >=, etc.
+	// FIXME: If y is also negated, next pass will swap them back.
+	if (e->isComparison()
 	 && opSub1 == opNeg) {
-		subExp2 = ((Unary *)subExp1)->swapSubExp1(subExp2);
-		std::swap(subExp1, subExp2);
+		auto x = ((Unary *)eSub1)->swapSubExp1(eSub2);
+		auto ny = e->swapSubExp1(x);
+		e->setSubExp2(ny);
+		mod = true;
+		return e;
 	}
 
 	// Check for (x + y) compare 0, becomes x compare -y
-	if (isComparison()
-	 && opSub2 == opIntConst && ((Const *)subExp2)->getInt() == 0
+	if (e->isComparison()
+	 && opSub2 == opIntConst && kSub2->getInt() == 0
 	 && opSub1 == opPlus) {
-		auto b1 = (Binary *)subExp1;
-		subExp2 = b1->swapSubExp2(subExp2);
-		subExp2 = new Unary(opNeg, subExp2);
-		subExp1 = b1->swapSubExp1(nullptr);
-		delete b1;
-		bMod = true;
-		return this;
+		auto x = bSub1->swapSubExp1(nullptr);
+		auto y = bSub1->swapSubExp2(nullptr);
+		delete e->swapSubExp1(x);
+		delete e->swapSubExp2(new Unary(opNeg, y));
+		mod = true;
+		return e;
 	}
 #endif
 
-	auto b1 = (Binary *)subExp1;
-	// Check for x + -y == 0, becomes x == y
+	// Check for x + -K == 0, becomes x == k
+	// FIXME: eSub1 gets simplified to x - K above, should never execute
 	if (op == opEqual
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
+	 && kSub2->getInt() == 0
 	 && opSub1 == opPlus
-	 && b1->subExp2->isIntConst()) {
-		auto n = ((Const *)b1->subExp2)->getInt();
+	 && bSub1->getSubExp2()->isIntConst()) {
+		auto k = (Const *)bSub1->getSubExp2();
+		auto n = k->getInt();
 		if (n < 0) {
-			subExp2 = b1->swapSubExp2(subExp2);
-			((Const *)subExp2)->setInt(-n);
-			subExp1 = b1->swapSubExp1(nullptr);
-			delete b1;
-			bMod = true;
-			return this;
+			auto x = bSub1->swapSubExp1(nullptr);
+			delete e->swapSubExp1(x);
+			kSub2->setInt(-n);
+			mod = true;
+			return e;
 		}
 	}
 
 	// Check for (0 - x) != 0, becomes x != 0
 	if (op == opNotEqual
 	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
+	 && kSub2->getInt() == 0
 	 && opSub1 == opMinus
-	 && b1->getSubExp1()->isIntConst()
-	 && ((Const *)b1->getSubExp1())->getInt() == 0) {
-		subExp1 = b1->swapSubExp2(nullptr);
-		delete b1;
-		bMod = true;
-		return this;
+	 && bSub1->getSubExp1()->isIntConst()
+	 && ((Const *)bSub1->getSubExp1())->getInt() == 0) {
+		auto x = bSub1->swapSubExp2(nullptr);
+		delete e->swapSubExp1(x);
+		mod = true;
+		return e;
 	}
 
-	auto b2 = (Binary *)subExp2;
 	// Check for (x <= y) || (x == y), becomes x <= y
 	if (op == opOr
 	 && opSub2 == opEqual
 	 && (opSub1 == opGtrEq || opSub1 == opLessEq || opSub1 == opGtrEqUns || opSub1 == opLessEqUns)
-	 && ((*b1->subExp1 == *b2->subExp1 && *b1->subExp2 == *b2->subExp2)
-	  || (*b1->subExp1 == *b2->subExp2 && *b1->subExp2 == *b2->subExp1))) {
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && ((*bSub1->getSubExp1() == *bSub2->getSubExp1() && *bSub1->getSubExp2() == *bSub2->getSubExp2())
+	  || (*bSub1->getSubExp1() == *bSub2->getSubExp2() && *bSub1->getSubExp2() == *bSub2->getSubExp1()))) {
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 	// check for a*n*m, becomes a*(n*m) where n and m are ints
 	if (op == opMult
 	 && opSub1 == opMult
 	 && opSub2 == opIntConst
-	 && b1->getSubExp2()->isIntConst()) {
-		auto m = ((Const *)subExp2)->getInt();
-		((Const *)b1->subExp2)->setInt(((Const *)b1->subExp2)->getInt() * m);
-		bMod = true;
-		return swapSubExp1(nullptr);
+	 && bSub1->getSubExp2()->isIntConst()) {
+		auto n = (Const *)bSub1->getSubExp2();
+		n->setInt(n->getInt() * kSub2->getInt());
+		mod = true;
+		eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
 #if 0  // FIXME! ADHOC TA assumed!
 	// check for (exp + x) + n where exp is a pointer to a compound type becomes (exp + n) + x
 	if (op == opPlus
 	 && opSub1 == opPlus
-	 && subExp2->isIntConst()) {
-		Type *ty = b1->subExp1->getType();
+	 && eSub2->isIntConst()) {
+		Type *ty = bSub1->getSubExp1()->getType();
 		if (ty
 		 && ty->resolvesToPointer()
 		 && ty->asPointer()->getPointsTo()->resolvesToCompound()) {
-			subExp2 = b1->swapSubExp2(subExp2);
-			bMod = true;
-			return this;
+			auto x = bSub1->swapSubExp2(eSub2);
+			e->setSubExp2(x);
+			mod = true;
+			return e;
 		}
 	}
 #endif
@@ -2575,8 +2655,8 @@ Binary::polySimplify(bool &bMod)
 	// FIXME: suspect this was only needed for ADHOC TA
 	// check for exp + n where exp is a pointer to a compound type
 	// becomes &m[exp].m + r where m is the member at offset n and r is n - the offset to member m
-	Type *ty = nullptr;  // Type of subExp1
-	if (auto re = dynamic_cast<RefExp *>(subExp1))
+	Type *ty = nullptr;  // Type of eSub1
+	if (auto re = dynamic_cast<RefExp *>(eSub1))
 		if (auto def = re->getDef())
 			ty = def->getTypeFor(re->getSubExp1());
 	if (op == opPlus
@@ -2584,22 +2664,22 @@ Binary::polySimplify(bool &bMod)
 	 && ty->resolvesToPointer()
 	 && ty->asPointer()->getPointsTo()->resolvesToCompound()
 	 && opSub2 == opIntConst) {
-		auto n = (unsigned)((Const *)subExp2)->getInt();
+		auto n = (unsigned)kSub2->getInt();
 		CompoundType *c = ty->asPointer()->getPointsTo()->asCompound();
 		if (n * 8 < c->getSize()) {
 			unsigned r = c->getOffsetRemainder(n * 8);
 			assert((r % 8) == 0);
 			const char *nam = c->getNameAtOffset(n * 8);
 			if (nam && std::string("pad") != nam) {
-				auto l = Location::memOf(subExp1);
+				auto l = Location::memOf(eSub1);
 				//l->setType(c);
-				subExp1 = new Unary(opAddrOf,
-				                    new Binary(opMemberAccess,
-				                               l,
-				                               new Const(strdup(nam))));
-				((Const *)subExp2)->setInt(r / 8);
-				bMod = true;
-				return this;
+				e->setSubExp1(new Unary(opAddrOf,
+				                        new Binary(opMemberAccess,
+				                                   l,
+				                                   new Const(strdup(nam)))));
+				kSub2->setInt(r / 8);
+				mod = true;
+				return e;
 			}
 		}
 	}
@@ -2608,9 +2688,9 @@ Binary::polySimplify(bool &bMod)
 	// check for exp + x where exp is a pointer to an array
 	// becomes &exp[x / b] + (x % b) where b is the size of the base type in bytes
 	if (op == opPlus
-	 && subExp1->getType()) {
-		auto x = subExp2;
-		auto l = subExp1;
+	 && eSub1->getType()) {
+		auto x = eSub2;
+		auto l = eSub1;
 		auto ty = l->getType();
 		if (ty
 		 && ty->resolvesToPointer()
@@ -2620,18 +2700,18 @@ Binary::polySimplify(bool &bMod)
 			int br = a->getBaseType()->getSize() % 8;
 			assert(br == 0);
 			if (!x->isIntConst() || ((Const *)x)->getInt() >= b || a->getBaseType()->isArray()) {
-				subExp1 = new Unary(opAddrOf,
-				                    new Binary(opArrayIndex,
-				                               Location::memOf(l),
-				                               new Binary(opDiv, x->clone(), new Const(b))));
-				subExp2 = new Binary(opMod, x, new Const(b));
+				e->setSubExp1(new Unary(opAddrOf,
+				                        new Binary(opArrayIndex,
+				                                   Location::memOf(l),
+				                                   new Binary(opDiv, x->clone(), new Const(b)))));
+				e->setSubExp2(new Binary(opMod, x, new Const(b)));
 				if (auto r = dynamic_cast<RefExp *>(l)) {
 					if (auto pa = dynamic_cast<PhiAssign *>(r->getDef())) {
 						LOG << "argh: " << *pa->getAt(1).def << "\n";
 					}
 				}
-				bMod = true;
-				return this;
+				mod = true;
+				return e;
 			}
 		}
 	}
@@ -2639,67 +2719,67 @@ Binary::polySimplify(bool &bMod)
 
 	// Check for 0.0 - x, becomes -x
 	if (op == opFMinus
-	 && subExp1->isFltConst()
-	 && ((Const *)subExp1)->getFlt() == 0.0) {
-		subExp2 = new Unary(opFNeg, subExp2);
-		bMod = true;
-		return swapSubExp2(nullptr);
+	 && eSub1->isFltConst()
+	 && kSub1->getFlt() == 0.0) {
+		mod = true;
+		eSub2 = e->swapSubExp2(nullptr);
+		delete e;
+		return new Unary(opFNeg, eSub2);
 	}
 
 	// Check for (x * k) + k, becomes (x + 1) * k
 	if ((op == opPlus || op == opMinus)
 	 && (opSub1 == opMults || opSub1 == opMult)
-	 && subExp2->isIntConst()
-	 && b1->subExp2->isIntConst()) {
-		auto n1 = ((Const *)subExp2)->getInt();
-		auto n2 = ((Const *)b1->subExp2)->getInt();
-		if (n1 == n2) {
-			((Const *)b1->subExp2)->setInt(1);
-			b1->setOper(op);
-			setOper(opSub1);
-			bMod = true;
-			return this;
+	 && eSub2->isIntConst()
+	 && bSub1->getSubExp2()->isIntConst()) {
+		auto k = (Const *)bSub1->getSubExp2();
+		if (k->getInt() == kSub2->getInt()) {
+			auto x = bSub1->swapSubExp1(e);
+			e->setSubExp1(x);
+			kSub2->setInt(1);
+			mod = true;
+			return e;
 		}
 	}
 
 	// Check for (x + (y * k)) + k, becomes x + ((y + 1) * k)
 	if ((op == opPlus || op == opMinus)
 	 && opSub1 == opPlus
-	 && subExp2->isIntConst()
-	 && (b1->subExp2->getOper() == opMults || b1->subExp2->getOper() == opMult)
-	 && ((Binary *)b1->subExp2)->getSubExp2()->isIntConst()) {
-		auto n1 = ((Const *)subExp2)->getInt();
-		auto n2 = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
-		if (n1 == n2) {
-			((Const *)((Binary *)b1->subExp2)->getSubExp2())->setInt(1);
-			b1->setOper(b1->subExp2->getOper());  // (x * (y * 1)) + k
-			b1->subExp2->setOper(op);             // (x * (y + 1)) + k
-			setOper(opPlus);                      // (x * (y + 1)) + k
-			subExp2 = b1->swapSubExp1(subExp2);   // (k * (y + 1)) + x
-			std::swap(b1->subExp1, b1->subExp2);  // ((y + 1) * k) + x
-			std::swap(subExp1, subExp2);          // x + ((y + 1) * k)
-			bMod = true;
-			return this;
+	 && eSub2->isIntConst()
+	 && (bSub1->getSubExp2()->getOper() == opMults || bSub1->getSubExp2()->getOper() == opMult)
+	 && ((Binary *)bSub1->getSubExp2())->getSubExp2()->isIntConst()) {
+		auto bSub1Sub2 = (Binary *)bSub1->getSubExp2();
+		auto k = (Const *)bSub1Sub2->getSubExp2();
+		if (k->getInt() == kSub2->getInt()) {
+			auto y = bSub1Sub2->swapSubExp1(e);
+			e->setSubExp1(y);
+			kSub2->setInt(1);
+			mod = true;
+			return bSub1;
 		}
 	}
 
 	// check for ((x * a) + (y * b)) / c where a, b and c are all integers and a and b divide evenly by c
 	// becomes: (x * a/c) + (y * b/c)
 	if (op == opDiv
-	 && subExp1->getOper() == opPlus
-	 && subExp2->isIntConst()
-	 && b1->subExp1->getOper() == opMult
-	 && b1->subExp2->getOper() == opMult
-	 && ((Binary *)b1->subExp1)->getSubExp2()->isIntConst()
-	 && ((Binary *)b1->subExp2)->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)((Binary *)b1->subExp1)->getSubExp2())->getInt();
-		auto b = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
-		auto c = ((Const *)subExp2)->getInt();
+	 && eSub1->getOper() == opPlus
+	 && eSub2->isIntConst()
+	 && bSub1->getSubExp1()->getOper() == opMult
+	 && bSub1->getSubExp2()->getOper() == opMult
+	 && ((Binary *)bSub1->getSubExp1())->getSubExp2()->isIntConst()
+	 && ((Binary *)bSub1->getSubExp2())->getSubExp2()->isIntConst()) {
+		auto ka = (Const *)((Binary *)bSub1->getSubExp1())->getSubExp2();
+		auto kb = (Const *)((Binary *)bSub1->getSubExp2())->getSubExp2();
+		auto a = ka->getInt();
+		auto b = kb->getInt();
+		auto c = kSub2->getInt();
 		if ((a % c) == 0 && (b % c) == 0) {
-			((Const *)((Binary *)b1->subExp1)->getSubExp2())->setInt(a / c);
-			((Const *)((Binary *)b1->subExp2)->getSubExp2())->setInt(b / c);
-			bMod = true;
-			return swapSubExp1(nullptr);
+			ka->setInt(a / c);
+			kb->setInt(b / c);
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			delete e;
+			return eSub1;
 		}
 	}
 
@@ -2708,258 +2788,284 @@ Binary::polySimplify(bool &bMod)
 	// becomes: (x * a) % c if b divides evenly by c
 	// becomes: 0           if both a and b divide evenly by c
 	if (op == opMod
-	 && subExp1->getOper() == opPlus
-	 && subExp2->isIntConst()
-	 && b1->subExp1->getOper() == opMult
-	 && b1->subExp2->getOper() == opMult
-	 && b1->subExp1->getSubExp2()->isIntConst()
-	 && b1->subExp2->getSubExp2()->isIntConst()) {
-		auto a = ((Const *)((Binary *)b1->subExp1)->getSubExp2())->getInt();
-		auto b = ((Const *)((Binary *)b1->subExp2)->getSubExp2())->getInt();
-		auto c = ((Const *)subExp2)->getInt();
-		if ((a % c) == 0) {
-			delete b1->subExp1;
-			b1->subExp1 = nullptr;
+	 && eSub1->getOper() == opPlus
+	 && eSub2->isIntConst()
+	 && bSub1->getSubExp1()->getOper() == opMult
+	 && bSub1->getSubExp2()->getOper() == opMult
+	 && bSub1->getSubExp1()->getSubExp2()->isIntConst()
+	 && bSub1->getSubExp2()->getSubExp2()->isIntConst()) {
+		auto ka = (Const *)((Binary *)bSub1->getSubExp1())->getSubExp2();
+		auto kb = (Const *)((Binary *)bSub1->getSubExp2())->getSubExp2();
+		auto a = ka->getInt();
+		auto b = kb->getInt();
+		auto c = kSub2->getInt();
+		a %= c;
+		b %= c;
+		if (a == 0) {
+			delete bSub1->swapSubExp1(nullptr);
 		}
-		if ((b % c) == 0) {
-			delete b1->subExp2;
-			b1->subExp2 = nullptr;
+		if (b == 0) {
+			delete bSub1->swapSubExp2(nullptr);
 		}
-		if (!b1->subExp1 && !b1->subExp2) {
-			((Const *)subExp2)->setInt(0);
-			bMod = true;
-			return swapSubExp2(nullptr);
+		if (a == 0 && b == 0) {
+			kSub2->setInt(0);
+			mod = true;
+			eSub2 = e->swapSubExp2(nullptr);
+			delete e;
+			return eSub2;
 		}
-		if (!b1->subExp1) {
-			subExp1 = b1->swapSubExp2(nullptr);
-			delete b1;
-			bMod = true;
-			return this;
+		if (a == 0) {
+			delete e->swapSubExp1(bSub1->swapSubExp2(nullptr));
+			mod = true;
+			return e;
 		}
-		if (!b1->subExp2) {
-			subExp1 = b1->swapSubExp1(nullptr);
-			delete b1;
-			bMod = true;
-			return this;
+		if (b == 0) {
+			delete e->swapSubExp1(bSub1->swapSubExp1(nullptr));
+			mod = true;
+			return e;
 		}
 	}
 
 	// Check for 0 - (0 <u exp1) & exp2 => exp2
 	if (op == opBitAnd
 	 && opSub1 == opMinus) {
-		auto leftOfMinus = b1->subExp1;
-		auto rightOfMinus = b1->subExp2;
+		auto leftOfMinus = bSub1->getSubExp1();
+		auto rightOfMinus = bSub1->getSubExp2();
 		if (leftOfMinus->isIntConst()
 		 && ((Const *)leftOfMinus)->getInt() == 0
 		 && rightOfMinus->getOper() == opLessUns) {
 			auto leftOfLess = ((Binary *)rightOfMinus)->getSubExp1();
 			if (leftOfLess->isIntConst()
 			 && ((Const *)leftOfLess)->getInt() == 0) {
-				bMod = true;
-				return swapSubExp2(nullptr);
+				mod = true;
+				eSub2 = e->swapSubExp2(nullptr);
+				delete e;
+				return eSub2;
 			}
 		}
 	}
 
 	// Replace opSize(n, loc) with loc and set the type if needed
 	if (op == opSize
-	 && dynamic_cast<Location *>(subExp2)) {
+	 && dynamic_cast<Location *>(eSub2)) {
 #if 0  // FIXME: ADHOC TA assumed here
-		Location *loc = (Location *)subExp2;
-		unsigned n = (unsigned)((Const *)subExp1)->getInt();
+		auto loc = (Location *)eSub2;
+		auto n = (unsigned)kSub1->getInt();
 		Type *ty = loc->getType();
 		if (!ty)
 			loc->setType(new SizeType(n));
 		else if (ty->getSize() != n)
 			ty->setSize(n);
 #endif
-		bMod = true;
-		return swapSubExp2(nullptr);
+		mod = true;
+		eSub2 = e->swapSubExp2(nullptr);
+		delete e;
+		return eSub2;
 	}
 
-	return this;
+	return e;
 }
 
 Exp *
-Ternary::polySimplify(bool &bMod)
+PolySimplifier::postVisit(Ternary *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
-	subExp2 = subExp2->polySimplify(bMod);
-	subExp3 = subExp3->polySimplify(bMod);
+	auto op = e->getOper();
+	auto eSub1 = e->getSubExp1();
+	auto eSub2 = e->getSubExp2();
+	auto eSub3 = e->getSubExp3();
+	auto opSub1 = eSub1->getOper();
+	auto opSub2 = eSub2->getOper();
+	auto opSub3 = eSub3->getOper();
 
 	// p ? 1 : 0 -> p
 	if (op == opTern
-	 && subExp2->isIntConst()
-	 && subExp3->isIntConst()) {
-		Const *s2 = (Const *)subExp2;
-		Const *s3 = (Const *)subExp3;
-
-		if (s2->getInt() == 1 && s3->getInt() == 0) {
-			bMod = true;
-			return swapSubExp1(nullptr);
+	 && eSub2->isIntConst()
+	 && eSub3->isIntConst()) {
+		auto k2 = (Const *)eSub2;
+		auto k3 = (Const *)eSub3;
+		if (k2->getInt() == 1 && k3->getInt() == 0) {
+			mod = true;
+			eSub1 = e->swapSubExp1(nullptr);
+			delete e;
+			return eSub1;
 		}
 	}
 
 	// 1 ? x : y -> x
 	if (op == opTern
-	 && subExp1->isTrue()) {
-		bMod = true;
-		return swapSubExp2(nullptr);
+	 && eSub1->isTrue()) {
+		mod = true;
+		eSub2 = e->swapSubExp2(nullptr);
+		delete e;
+		return eSub2;
 	}
 
 	// 0 ? x : y -> y
 	if (op == opTern
-	 && subExp1->isFalse()) {
-		bMod = true;
-		return swapSubExp3(nullptr);
+	 && eSub1->isFalse()) {
+		mod = true;
+		eSub3 = e->swapSubExp3(nullptr);
+		delete e;
+		return eSub3;
 	}
 
 	if ((op == opSgnEx || op == opZfill)
-	 && subExp3->isIntConst()) {
-		bMod = true;
-		return swapSubExp3(nullptr);
+	 && eSub3->isIntConst()) {
+		mod = true;
+		eSub3 = e->swapSubExp3(nullptr);
+		delete e;
+		return eSub3;
 	}
 
 	if (op == opFsize
-	 && subExp3->getOper() == opItof
-	 && *subExp1 == *subExp3->getSubExp2()
-	 && *subExp2 == *subExp3->getSubExp1()) {
-		bMod = true;
-		return swapSubExp3(nullptr);
+	 && opSub3 == opItof
+	 && *eSub1 == *eSub3->getSubExp2()
+	 && *eSub2 == *eSub3->getSubExp1()) {
+		mod = true;
+		eSub3 = e->swapSubExp3(nullptr);
+		delete e;
+		return eSub3;
 	}
 
 	if (op == opFsize
-	 && subExp3->isFltConst()) {
-		bMod = true;
-		return swapSubExp3(nullptr);
+	 && eSub3->isFltConst()) {
+		mod = true;
+		eSub3 = e->swapSubExp3(nullptr);
+		delete e;
+		return eSub3;
 	}
 
 	if (op == opItof
-	 && subExp3->isIntConst()
-	 && subExp2->isIntConst()
-	 && ((Const *)subExp2)->getInt() == 32) {
-		unsigned n = ((Const *)subExp3)->getInt();
-		bMod = true;
+	 && eSub3->isIntConst()
+	 && eSub2->isIntConst()
+	 && ((Const *)eSub2)->getInt() == 32) {
+		mod = true;
+		unsigned n = ((Const *)eSub3)->getInt();
+		delete e;
 		return new Const(*(float *)&n);
 	}
 
 	if (op == opFsize
-	 && subExp3->isMemOfK()) {
-		auto l = static_cast<Location *>(subExp3);
+	 && eSub3->isMemOfK()) {
+		auto l = static_cast<Location *>(eSub3);
 		unsigned u = ((Const *)l->getSubExp1())->getInt();
 		if (auto p = l->getProc()) {
 			Prog *prog = p->getProg();
 			bool ok;
-			double d = prog->getFloatConstant(u, ok, ((Const *)subExp1)->getInt());
+			double d = prog->getFloatConstant(u, ok, ((Const *)eSub1)->getInt());
 			if (ok) {
-				if (VERBOSE)
-					LOG << "replacing " << *subExp3 << " with " << d << " in " << *this << "\n";
-				delete subExp3;
-				subExp3 = new Const(d);
-				bMod = true;
-				return this;
+				mod = true;
+				eSub3 = e->swapSubExp3(new Const(d));
+				delete eSub3;
+				return e;
 			}
 		}
 	}
 
 	if (op == opTruncu
-	 && subExp3->isIntConst()) {
-		int from         = ((Const *)subExp1)->getInt();
-		int to           = ((Const *)subExp2)->getInt();
-		unsigned int val = ((Const *)subExp3)->getInt();
+	 && eSub3->isIntConst()) {
+		int from         = ((Const *)eSub1)->getInt();
+		int to           = ((Const *)eSub2)->getInt();
+		unsigned int val = ((Const *)eSub3)->getInt();
 		if (from == 32) {
 			if (to == 16) {
-				bMod = true;
-				return new Const(val & 0xffff);
+				mod = true;
+				((Const *)eSub3)->setInt(val & 0xffff);
+				eSub3 = e->swapSubExp3(nullptr);
+				delete e;
+				return eSub3;
 			}
 			if (to == 8) {
-				bMod = true;
-				return new Const(val & 0xff);
+				mod = true;
+				((Const *)eSub3)->setInt(val & 0xff);
+				eSub3 = e->swapSubExp3(nullptr);
+				delete e;
+				return eSub3;
 			}
 		}
 	}
 
 	if (op == opTruncs
-	 && subExp3->isIntConst()) {
-		int from = ((Const *)subExp1)->getInt();
-		int to   = ((Const *)subExp2)->getInt();
-		int val  = ((Const *)subExp3)->getInt();
+	 && eSub3->isIntConst()) {
+		int from = ((Const *)eSub1)->getInt();
+		int to   = ((Const *)eSub2)->getInt();
+		int val  = ((Const *)eSub3)->getInt();
 		if (from == 32) {
 			if (to == 16) {
-				bMod = true;
-				return new Const(val & 0xffff);
+				mod = true;
+				((Const *)eSub3)->setInt(val & 0xffff);
+				eSub3 = e->swapSubExp3(nullptr);
+				delete e;
+				return eSub3;
 			}
 			if (to == 8) {
-				bMod = true;
-				return new Const(val & 0xff);
+				mod = true;
+				((Const *)eSub3)->setInt(val & 0xff);
+				eSub3 = e->swapSubExp3(nullptr);
+				delete e;
+				return eSub3;
 			}
 		}
 	}
 
-	return this;
+	return e;
 }
 
 Exp *
-TypedExp::polySimplify(bool &bMod)
+PolySimplifier::postVisit(TypedExp *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
-
-	if (subExp1->isRegOf()) {
+	if (e->getSubExp1()->isRegOf()) {
 		// type cast on a reg of.. hmm.. let's remove this
-		bMod = true;
-		return swapSubExp1(nullptr);
+		mod = true;
+		auto eSub1 = e->swapSubExp1(nullptr);
+		delete e;
+		return eSub1;
 	}
 
-	return this;
+	return e;
 }
 
 Exp *
-RefExp::polySimplify(bool &bMod)
+PolySimplifier::postVisit(RefExp *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
-
 	/* This is a nasty hack.  We assume that %DF{0} is 0.  This happens when string instructions are used without first
-	 * clearing the direction flag.  By convention, the direction flag is assumed to be clear on entry to a procedure.
-	 */
-	if (subExp1->getOper() == opDF && !def) {
-		bMod = true;
+	 * clearing the direction flag.  By convention, the direction flag is assumed to be clear on entry to a procedure. */
+	if (e->getSubExp1()->getOper() == opDF && !e->getDef()) {
+		mod = true;
+		delete e;
 		return new Const(0);
 	}
 
 	// another hack, this time for aliasing
 	// FIXME: do we really want this now? Pentium specific, and only handles ax/eax (not al or ah)
-	auto as = dynamic_cast<Assign *>(def);
-	if (subExp1->isRegN(0)  // r0 (ax)
+	auto as = dynamic_cast<Assign *>(e->getDef());
+	if (e->getSubExp1()->isRegN(0)  // r0 (ax)
 	 && as
 	 && as->getLeft()->isRegN(24)) {  // r24 (eax)
-		bMod = true;
-		return new TypedExp(new IntegerType(16), new RefExp(Location::regOf(24), as));
+		mod = true;
+		auto r = (Location *)e->getSubExp1();
+		auto N = (Const *)r->getSubExp1();
+		N->setInt(24);
+		return new TypedExp(new IntegerType(16), e);
 	}
 
 	// Was code here for bypassing phi statements that are now redundant
 
-	return this;
+	return e;
 }
 
 Exp *
-Location::polySimplify(bool &bMod)
+PolySimplifier::postVisit(Location *e)
 {
-	subExp1 = subExp1->polySimplify(bMod);
-
-	if (isMemOf() || isRegOf()) {
-		// The below IS bad now. It undoes the simplification of
-		// m[r29 + -4] to m[r29 - 4]
-		// If really needed, do another polySimplify, or swap the order
-		// FIXME: Re-evaluate this, both appear to simplify to m[r29 - 4].
-		//subExp1 = subExp1->simplifyArith();  // probably bad
+	// m[a[x]] becomes x
+	if (e->isMemOf() && e->getSubExp1()->isAddrOf()) {
+		mod = true;
+		auto x = ((Unary *)e->getSubExp1())->swapSubExp1(nullptr);
+		delete e;
+		return x;
 	}
 
-	if (isMemOf() && subExp1->isAddrOf()) {
-		bMod = true;
-		return ((Unary *)subExp1)->swapSubExp1(nullptr);
-	}
-
-	return this;
+	return e;
 }
 
 /**
