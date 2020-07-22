@@ -909,15 +909,16 @@ ExpTest::testParen()
 void
 ExpTest::testFixSuccessor()
 {
+	Exp *e;
 	// Trivial test (should not affect)
-	auto b = new Binary(opMinus, m_99->clone(), m_rof2->clone());
-	Exp *e = b->fixSuccessor();
+	e = new Binary(opMinus, m_99->clone(), m_rof2->clone());
+	e = e->fixSuccessor();
 	std::string expected("99 - r2");
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
 	delete e;
 
-	auto u = new Unary(opSuccessor, Location::regOf(2));
-	e = u->fixSuccessor();
+	e = new Unary(opSuccessor, Location::regOf(2));
+	e = e->fixSuccessor();
 	expected = "r3";
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
 	delete e;

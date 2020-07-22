@@ -3119,6 +3119,26 @@ operator <<(std::ostream &os, const Exp &p)
 	return os;
 }
 
+class SuccessorFixer : public ExpModifier {
+public:
+	Exp *postVisit(Unary *) override;
+};
+
+Exp *
+SuccessorFixer::postVisit(Unary *e)
+{
+	if (e->getOper() == opSuccessor
+	 && e->getSubExp1()->isRegOfK()) {
+		auto r = (Location *)e->swapSubExp1(nullptr);
+		auto k = (Const *)r->getSubExp1();
+		k->setInt(k->getInt() + 1);
+		mod = true;
+		delete e;
+		return r;
+	}
+	return e;
+}
+
 /**
  * Replace succ(r[k]) by r[k+1].
  * Example:  succ(r2) -> r3.
@@ -3130,23 +3150,8 @@ operator <<(std::ostream &os, const Exp &p)
 Exp *
 Exp::fixSuccessor()
 {
-	bool change;
-	Exp *result;
-	// Assume only one successor function in any 1 expression
-	if (search(new Unary(opSuccessor, new Terminal(opWildRegOf)), result)) {
-		// Result has the matching expression, i.e. succ(r[K])
-		auto sub1 = ((Unary *)result)->getSubExp1();
-		assert(sub1->isRegOfK());
-		// result    sub1   sub2
-		// succ(      r[   Const K  ])
-		// Note: we need to clone the r[K] part, since it will be ;//deleted as
-		// part of the searchReplace below
-		auto replace = (Location *)sub1->clone();
-		auto c = (Const *)replace->getSubExp1();
-		c->setInt(c->getInt() + 1);  // Do the increment
-		return searchReplace(result, replace, change);
-	}
-	return this;
+	SuccessorFixer sf;
+	return accept(sf);
 }
 
 static Ternary srch1(opZfill, new Terminal(opWild), new Terminal(opWild), new Terminal(opWild));
