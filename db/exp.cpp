@@ -1855,7 +1855,7 @@ Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, st
 		p2->partitionTerms(positives, negatives, integers, !negate);
 		break;
 	case opTypedExp:
-		p1 = ((Binary *)this)->getSubExp1();
+		p1 = ((TypedExp *)this)->getSubExp1();
 		p1->partitionTerms(positives, negatives, integers, negate);
 		break;
 	case opIntConst:
@@ -1874,8 +1874,15 @@ Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, st
 }
 
 /**
- * \fn Exp *Exp::simplifyArith()
- *
+ * \note Previously did not recurse into any arity-1 Exps other than opMemOf,
+ * opRegOf, opAddrOf, and opSubscript.
+ */
+class ArithSimplifier : public ExpModifier {
+public:
+	Exp *postVisit(Binary *) override;
+};
+
+/**
  * This method simplifies an expression consisting of + and - at the top
  * level.  For example, (\%sp + 100) - (\%sp + 92) will be simplified to 8.
  *
@@ -1885,40 +1892,27 @@ Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, st
  * \returns Ptr to the simplified expression.
  */
 Exp *
-Unary::simplifyArith()
+Exp::simplifyArith()
 {
-	if (op == opMemOf || op == opRegOf || op == opAddrOf || op == opSubscript) {
-		// assume we want to simplify the subexpression
-		subExp1 = subExp1->simplifyArith();
-	}
-	return this;  // Else, do nothing
+	ArithSimplifier as;
+	return accept(as);
 }
 
 Exp *
-Ternary::simplifyArith()
+ArithSimplifier::postVisit(Binary *e)
 {
-	subExp1 = subExp1->simplifyArith();
-	subExp2 = subExp2->simplifyArith();
-	subExp3 = subExp3->simplifyArith();
-	return this;
-}
-
-Exp *
-Binary::simplifyArith()
-{
-	subExp1 = subExp1->simplifyArith();
-	subExp2 = subExp2->simplifyArith();
+	auto op = e->getOper();
 	if ((op != opPlus) && (op != opMinus))
-		return this;
+		return e;
 
-	// TODO: return this if parent is opPlus or opMinus, let parent do the simplification
+	// TODO: return e if parent is opPlus or opMinus, let parent do the simplification
 
 	// Partition this expression into positive non-integer terms, negative
 	// non-integer terms and integer terms.
 	std::list<Exp *> positives;
 	std::list<Exp *> negatives;
 	std::vector<int> integers;
-	partitionTerms(positives, negatives, integers, false);
+	e->partitionTerms(positives, negatives, integers, false);
 
 	// Now reduce these lists by cancelling pairs
 	// Note: can't improve this algorithm using multisets, since can't instantiate multisets of type Exp (only Exp*).
@@ -1960,7 +1954,7 @@ Binary::simplifyArith()
 	if (sum == 0)
 		return pos;
 
-	OPER op = opPlus;
+	op = opPlus;
 	if (sum < 0) {
 		op = opMinus;
 		sum = -sum;

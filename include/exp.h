@@ -234,7 +234,7 @@ public:
 	 * \{
 	 */
 	        void        partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate);
-	virtual Exp        *simplifyArith() { return this; }
+	        Exp        *simplifyArith();
 	static  Exp        *Accumulate(std::list<Exp *> &);
 	        Exp        *simplify();
 	        Exp        *simplifyAddr();
@@ -458,9 +458,6 @@ public:
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
-	// Do the work of simplifying this expression
-	Exp        *simplifyArith() override;
-
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;
 
@@ -521,9 +518,6 @@ public:
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
-	// Do the work of simplifying this expression
-	Exp        *simplifyArith() override;
-
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;
 
@@ -582,8 +576,6 @@ public:
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
-
-	Exp        *simplifyArith() override;
 
 	// Type analysis
 	Exp        *genConstraints(Exp *restrictTo) override;
