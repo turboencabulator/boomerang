@@ -3154,8 +3154,24 @@ Exp::fixSuccessor()
 	return accept(sf);
 }
 
-static Ternary srch1(opZfill, new Terminal(opWild), new Terminal(opWild), new Terminal(opWild));
-static Ternary srch2(opSgnEx, new Terminal(opWild), new Terminal(opWild), new Terminal(opWild));
+class KillFiller : public ExpModifier {
+public:
+	Exp *postVisit(Ternary *) override;
+};
+
+Exp *
+KillFiller::postVisit(Ternary *e)
+{
+	auto op = e->getOper();
+	if (op == opZfill || op == opSgnEx) {
+		auto x = e->swapSubExp3(nullptr);
+		mod = true;
+		delete e;
+		return x;
+	}
+	return e;
+}
+
 /**
  * \brief Kill any zero fill, sign extend, or truncates.
  *
@@ -3169,15 +3185,8 @@ static Ternary srch2(opSgnEx, new Terminal(opWild), new Terminal(opWild), new Te
 Exp *
 Exp::killFill()
 {
-	Exp *res = this;
-	std::list<Exp **> result;
-	doSearch(&srch1, res, result, false);
-	doSearch(&srch2, res, result, false);
-	for (const auto &pp : result) {
-		// Kill the sign extend bits
-		*pp = ((Ternary *)(*pp))->getSubExp3();
-	}
-	return res;
+	KillFiller kf;
+	return accept(kf);
 }
 
 bool

@@ -930,32 +930,32 @@ ExpTest::testFixSuccessor()
 void
 ExpTest::testKillFill()
 {
+	Exp *e;
 	// r18 + sgnex(16,32,m[r16 + 16])
-	Binary e(opPlus,
-	         Location::regOf(18),
-	         new Ternary(opSgnEx,
-	                     new Const(16),
-	                     new Const(32),
-	                     Location::memOf(new Binary(opPlus,
-	                                                Location::regOf(16),
-	                                                new Const(16)))));
-	Exp *res = e.killFill();
+	e = new Binary(opPlus,
+	               Location::regOf(18),
+	               new Ternary(opSgnEx,
+	                           new Const(16),
+	                           new Const(32),
+	                           Location::memOf(new Binary(opPlus,
+	                                                      Location::regOf(16),
+	                                                      new Const(16)))));
+	e = e->killFill();
 	std::string expected("r18 + m[r16 + 16]");
-	CPPUNIT_ASSERT_EQUAL(expected, res->prints());
+	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
+	delete e;
 
-	// Note: e2 has to be a pointer, not a local Ternary, because it
-	// gets changed at the top level (and so would die in its destructor)
-	auto e2 = new Ternary(opZfill,
-	                      new Const(16),
-	                      new Const(32),
-	                      Location::memOf(new Binary(opPlus,
-	                                                 Location::regOf(16),
-	                                                 new Const(16))));
 	// Try again but at top level
-	res = e2->killFill();
+	e = new Ternary(opZfill,
+	                new Const(16),
+	                new Const(32),
+	                Location::memOf(new Binary(opPlus,
+	                                           Location::regOf(16),
+	                                           new Const(16))));
+	e = e->killFill();
 	expected = "m[r16 + 16]";
-	CPPUNIT_ASSERT_EQUAL(expected, res->prints());
-	delete res;
+	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
+	delete e;
 }
 
 /**
