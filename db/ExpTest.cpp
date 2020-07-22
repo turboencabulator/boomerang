@@ -368,62 +368,61 @@ ExpTest::testAccumulate()
 {
 	Location rof2(opRegOf, new Const(2), nullptr);
 	Const nineNine(99);
+	Terminal afp(opAFP);
+
 	// Zero terms
 	std::list<Exp *> le;
-	Exp *res = Exp::Accumulate(le);
-	CPPUNIT_ASSERT(!res);
+	auto e = Exp::Accumulate(le);
+	CPPUNIT_ASSERT(!e);
 	CPPUNIT_ASSERT(le.empty());
-	delete res;
+	delete e;
 
 	// One term
-	le.push_back(&rof2);
-	res = Exp::Accumulate(le);
-	CPPUNIT_ASSERT(*res == rof2);
+	le.push_back(rof2.clone());
+	e = Exp::Accumulate(le);
+	CPPUNIT_ASSERT(*e == rof2);
 	CPPUNIT_ASSERT(le.empty());
-	delete res;
+	delete e;
 
 	// Two terms
-	Exp *nn = nineNine.clone();
-	le.push_back(&rof2);
-	le.push_back(nn);
-	res = Exp::Accumulate(le);
+	le.push_back(rof2.clone());
+	le.push_back(nineNine.clone());
+	e = Exp::Accumulate(le);
 	Binary expected2(opPlus, rof2.clone(), nineNine.clone());
-	CPPUNIT_ASSERT(*res == expected2);
+	CPPUNIT_ASSERT(*e == expected2);
 	CPPUNIT_ASSERT(le.empty());
-	delete res;
+	delete e;
 
 	// Three terms, one repeated
-	le.push_back(&rof2);
-	le.push_back(nn);
-	le.push_back(&nineNine);
-	res = Exp::Accumulate(le);
+	le.push_back(rof2.clone());
+	le.push_back(nineNine.clone());
+	le.push_back(nineNine.clone());
+	e = Exp::Accumulate(le);
 	Binary expected3(opPlus,
 	                 rof2.clone(),
 	                 new Binary(opPlus,
 	                            nineNine.clone(),
 	                            nineNine.clone()));
-	CPPUNIT_ASSERT(*res == expected3);
+	CPPUNIT_ASSERT(*e == expected3);
 	CPPUNIT_ASSERT(le.empty());
-	delete res;
+	delete e;
 
 	// Four terms, one repeated
-	Terminal afp(opAFP);
-	le.push_back(&rof2);
-	le.push_back(nn);
-	le.push_back(&nineNine);
-	le.push_back(&afp);
-	res = Exp::Accumulate(le);
+	le.push_back(rof2.clone());
+	le.push_back(nineNine.clone());
+	le.push_back(nineNine.clone());
+	le.push_back(afp.clone());
+	e = Exp::Accumulate(le);
 	Binary expected4(opPlus,
 	                 rof2.clone(),
 	                 new Binary(opPlus,
 	                            nineNine.clone(),
 	                            new Binary(opPlus,
 	                                       nineNine.clone(),
-	                                       new Terminal(opAFP))));
-	CPPUNIT_ASSERT(*res == expected4);
+	                                       afp.clone())));
+	CPPUNIT_ASSERT(*e == expected4);
 	CPPUNIT_ASSERT(le.empty());
-	delete res;
-	delete nn;
+	delete e;
 }
 
 /**
@@ -432,34 +431,35 @@ ExpTest::testAccumulate()
 void
 ExpTest::testPartitionTerms()
 {
+	Exp *e;
 	// afp + 108 + n - (afp + 92)
-	Binary e(opMinus,
-	         new Binary(opPlus,
-	                    new Binary(opPlus,
-	                               new Terminal(opAFP),
-	                               new Const(108)),
-	                    new Unary(opVar, new Const("n"))),
-	         new Binary(opPlus,
-	                    new Terminal(opAFP),
-	                    new Const(92)));
+	e = new Binary(opMinus,
+	               new Binary(opPlus,
+	                          new Binary(opPlus,
+	                                     new Terminal(opAFP),
+	                                     new Const(108)),
+	                          new Unary(opVar, new Const("n"))),
+	               new Binary(opPlus,
+	                          new Terminal(opAFP),
+	                          new Const(92)));
 	std::list<Exp *> positives, negatives;
 	std::vector<int> integers;
-	e.partitionTerms(positives, negatives, integers, false);
-	Exp *res = Exp::Accumulate(positives);
+	Exp::partitionTerms(e, positives, negatives, integers, false);
+	e = Exp::Accumulate(positives);
 	Binary expected1(opPlus,
 	                 new Terminal(opAFP),
 	                 new Unary(opVar, new Const("n")));
-	CPPUNIT_ASSERT(*res == expected1);
-	delete res;
+	CPPUNIT_ASSERT(*e == expected1);
+	delete e;
 
-	res = Exp::Accumulate(negatives);
+	e = Exp::Accumulate(negatives);
 	Terminal expected2(opAFP);
-	CPPUNIT_ASSERT(*res == expected2);
+	CPPUNIT_ASSERT(*e == expected2);
 	int size = integers.size();
 	CPPUNIT_ASSERT_EQUAL(2, size);
 	CPPUNIT_ASSERT_EQUAL(108, integers.front());
 	CPPUNIT_ASSERT_EQUAL(-92, integers.back());
-	delete res;
+	delete e;
 }
 
 /**
@@ -468,44 +468,45 @@ ExpTest::testPartitionTerms()
 void
 ExpTest::testSimplifyArith()
 {
+	Exp *e;
 	// afp + 108 + n - (afp + 92)
-	Exp *e = new Binary(opMinus,
-	                    new Binary(opPlus,
-	                               new Binary(opPlus,
-	                                          new Terminal(opAFP),
-	                                          new Const(108)),
-	                               new Unary(opVar, new Const("n"))),
-	                    new Binary(opPlus,
-	                               new Terminal(opAFP),
-	                               new Const(92)));
+	e = new Binary(opMinus,
+	               new Binary(opPlus,
+	                          new Binary(opPlus,
+	                                     new Terminal(opAFP),
+	                                     new Const(108)),
+	                          new Unary(opVar, new Const("n"))),
+	               new Binary(opPlus,
+	                          new Terminal(opAFP),
+	                          new Const(92)));
 	e = e->simplifyArith();
 	std::string expected("v[n] + 16");
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
 	delete e;
 
 	// m[(r28 + -4) + 8]
-	Exp *mm = Location::memOf(new Binary(opPlus,
-	                                     new Binary(opPlus,
-	                                                Location::regOf(28),
-	                                                new Const(-4)),
-	                                     new Const(8)));
-	mm = mm->simplifyArith();
+	e = Location::memOf(new Binary(opPlus,
+	                               new Binary(opPlus,
+	                                          Location::regOf(28),
+	                                          new Const(-4)),
+	                               new Const(8)));
+	e = e->simplifyArith();
 	expected = "m[r28 + 4]";
-	CPPUNIT_ASSERT_EQUAL(expected, mm->prints());
-	delete mm;
+	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
+	delete e;
 
 	// r24 + m[(r28 - 4) - 4]
-	mm = new Binary(opPlus,
-	                Location::regOf(24),
-	                Location::memOf(new Binary(opMinus,
-	                                           new Binary(opMinus,
-	                                                      Location::regOf(28),
-	                                                      new Const(4)),
-	                                           new Const(4))));
-	mm = mm->simplifyArith();
+	e = new Binary(opPlus,
+	               Location::regOf(24),
+	               Location::memOf(new Binary(opMinus,
+	                                          new Binary(opMinus,
+	                                                     Location::regOf(28),
+	                                                     new Const(4)),
+	                                          new Const(4))));
+	e = e->simplifyArith();
 	expected = "r24 + m[r28 - 8]";
-	CPPUNIT_ASSERT_EQUAL(expected, mm->prints());
-	delete mm;
+	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
+	delete e;
 }
 
 /**
@@ -962,31 +963,32 @@ ExpTest::testKillFill()
 void
 ExpTest::testAssociativity()
 {
+	Exp *e1, *e2;
 	// (r8 + m[m[r8 + 12] + -12]) + 12
-	Binary e1(opPlus,
-	          new Binary(opPlus,
-	                     Location::regOf(8),
-	                     Location::memOf(new Binary(opPlus,
-	                                                Location::memOf(new Binary(opPlus,
-	                                                                           Location::regOf(8),
-	                                                                           new Const(12))),
-	                                                new Const(-12)))),
-	          new Const(12));
+	e1 = new Binary (opPlus,
+	                 new Binary(opPlus,
+	                            Location::regOf(8),
+	                            Location::memOf(new Binary(opPlus,
+	                                                       Location::memOf(new Binary(opPlus,
+	                                                                                  Location::regOf(8),
+	                                                                                  new Const(12))),
+	                                                       new Const(-12)))),
+	                 new Const(12));
 	// (r8 + 12) + m[m[r8 + 12] + -12]
-	Binary e2(opPlus,
-	          new Binary(opPlus,
-	                     Location::regOf(8),
-	                     new Const(12)),
-	          Location::memOf(new Binary(opPlus,
-	                                     Location::memOf(new Binary(opPlus,
-	                                                                Location::regOf(8),
-	                                                                new Const(12))),
-	                                     new Const(-12))));
+	e2 = new Binary(opPlus,
+	                new Binary(opPlus,
+	                           Location::regOf(8),
+	                           new Const(12)),
+	                Location::memOf(new Binary(opPlus,
+	                                           Location::memOf(new Binary(opPlus,
+	                                                                      Location::regOf(8),
+	                                                                      new Const(12))),
+	                                           new Const(-12))));
 	// Note: at one stage, simplifyArith was part of simplify().
 	// Now call implifyArith() explicitly only where needed
-	Exp *p1 = e1.simplify()->simplifyArith();
-	Exp *p2 = e2.simplify()->simplifyArith();
-	CPPUNIT_ASSERT_EQUAL(p1->prints(), p2->prints());
+	e1 = e1->simplify()->simplifyArith();
+	e2 = e2->simplify()->simplifyArith();
+	CPPUNIT_ASSERT_EQUAL(e1->prints(), e2->prints());
 }
 
 /**

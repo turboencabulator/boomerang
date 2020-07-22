@@ -233,9 +233,9 @@ public:
 	 * \name Expression simplification
 	 * \{
 	 */
-	        void        partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate);
-	        Exp        *simplifyArith();
+	static  void        partitionTerms(Exp *, std::list<Exp *> &, std::list<Exp *> &, std::vector<int> &, bool);
 	static  Exp        *Accumulate(std::list<Exp *> &);
+	        Exp        *simplifyArith();
 	        Exp        *simplify();
 	        Exp        *simplifyAddr();
 	        Exp        *simplifyConstraint();

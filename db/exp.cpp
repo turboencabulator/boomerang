@@ -1813,8 +1813,6 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 	return !li.empty();
 }
 
-// These simplifying functions don't really belong in class Exp, but they know too much about how Exps work
-// They can't go into util.so, since then util.so and db.so would co-depend on each other for testing at least
 /**
  * Takes an expression consisting of only + and - operators and partitions its
  * terms into positive non-integer fixed terms, negative non-integer fixed
@@ -1828,9 +1826,10 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
  *     integers  = { 108, -92 }
  *
  * \note integers is a vector so we can use the accumulate func.
- * \note Expressions are NOT cloned.  Therefore, do not delete the expressions
- *       in positives or negatives.
  *
+ * \param e          Expression to partition.  This object is either added to
+ *                   one of the lists, or is destroyed and its subexpressions
+ *                   are recursively partitioned.
  * \param positives  The list of positive terms.
  * \param negatives  The list of negative terms.
  * \param integers   The vector of integer terms.
@@ -1838,39 +1837,58 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
  *                   i.e. we are on the RHS of an opMinus.
  */
 void
-Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate)
+Exp::partitionTerms(Exp *e, std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate)
 {
-	Exp *p1, *p2;
-	switch (op) {
+	switch (e->getOper()) {
 	case opPlus:
-		p1 = ((Binary *)this)->getSubExp1();
-		p2 = ((Binary *)this)->getSubExp2();
-		p1->partitionTerms(positives, negatives, integers, negate);
-		p2->partitionTerms(positives, negatives, integers, negate);
+		Exp::partitionTerms(((Binary *)e)->swapSubExp1(nullptr), positives, negatives, integers, negate);
+		Exp::partitionTerms(((Binary *)e)->swapSubExp2(nullptr), positives, negatives, integers, negate);
+		delete e;
 		break;
 	case opMinus:
-		p1 = ((Binary *)this)->getSubExp1();
-		p2 = ((Binary *)this)->getSubExp2();
-		p1->partitionTerms(positives, negatives, integers, negate);
-		p2->partitionTerms(positives, negatives, integers, !negate);
+		Exp::partitionTerms(((Binary *)e)->swapSubExp1(nullptr), positives, negatives, integers, negate);
+		Exp::partitionTerms(((Binary *)e)->swapSubExp2(nullptr), positives, negatives, integers, !negate);
+		delete e;
 		break;
 	case opTypedExp:
-		p1 = ((TypedExp *)this)->getSubExp1();
-		p1->partitionTerms(positives, negatives, integers, negate);
+		Exp::partitionTerms(((TypedExp *)e)->swapSubExp1(nullptr), positives, negatives, integers, negate);
+		delete e;
 		break;
 	case opIntConst:
 		{
-			int k = ((Const *)this)->getInt();
+			int k = ((Const *)e)->getInt();
 			integers.push_back(negate ? -k : k);
 		}
+		delete e;
 		break;
 	default:
 		// These can be any other expression tree
 		if (negate)
-			negatives.push_back(this);
+			negatives.push_back(e);
 		else
-			positives.push_back(this);
+			positives.push_back(e);
 	}
+}
+
+/**
+ * This method creates an expression that is the sum of all expressions in a
+ * list.  E.g. given the list <4,r[8],m[14]> the resulting expression is
+ * (4+(r[8]+m[14])).
+ *
+ * \param exprs  A list of expressions.  This list is cleared upon return.
+ * \returns      A new Exp with the accumulation.
+ */
+Exp *
+Exp::Accumulate(std::list<Exp *> &exprs)
+{
+	if (exprs.empty())
+		return nullptr;
+
+	auto res = exprs.front();
+	exprs.pop_front();
+	if (!exprs.empty())
+		res = new Binary(opPlus, res, Accumulate(exprs));
+	return res;
 }
 
 /**
@@ -1881,22 +1899,6 @@ class ArithSimplifier : public ExpModifier {
 public:
 	Exp *postVisit(Binary *) override;
 };
-
-/**
- * This method simplifies an expression consisting of + and - at the top
- * level.  For example, (\%sp + 100) - (\%sp + 92) will be simplified to 8.
- *
- * \note Any expression can be so simplified.
- * \note User must ;//delete result.
- *
- * \returns Ptr to the simplified expression.
- */
-Exp *
-Exp::simplifyArith()
-{
-	ArithSimplifier as;
-	return accept(as);
-}
 
 Exp *
 ArithSimplifier::postVisit(Binary *e)
@@ -1912,7 +1914,7 @@ ArithSimplifier::postVisit(Binary *e)
 	std::list<Exp *> positives;
 	std::list<Exp *> negatives;
 	std::vector<int> integers;
-	e->partitionTerms(positives, negatives, integers, false);
+	Exp::partitionTerms(e, positives, negatives, integers, false);
 
 	// Now reduce these lists by cancelling pairs
 	// Note: can't improve this algorithm using multisets, since can't instantiate multisets of type Exp (only Exp*).
@@ -1925,7 +1927,9 @@ ArithSimplifier::postVisit(Binary *e)
 		while (nn != negatives.end()) {
 			if (**pp == **nn) {
 				// A positive and a negative that are equal; therefore they cancel
-				pp = positives.erase(pp);  // Erase the pointers, not the Exps
+				delete *pp;
+				delete *nn;
+				pp = positives.erase(pp);
 				nn = negatives.erase(nn);
 				inc = false;  // Don't increment pp now
 				break;
@@ -1963,27 +1967,18 @@ ArithSimplifier::postVisit(Binary *e)
 }
 
 /**
- * This method creates an expression that is the sum of all expressions in a
- * list.  E.g. given the list <4,r[8],m[14]> the resulting expression is
- * (4+(r[8]+m[14])).
+ * This method simplifies an expression consisting of + and - at the top
+ * level.  For example, (\%sp + 100) - (\%sp + 92) will be simplified to 8.
  *
- * \note Static (non instance) function.
- * \note Exps ARE cloned.
+ * \note Any expression can be so simplified.
  *
- * \param exprs  A list of expressions.  This list is cleared upon return.
- * \returns      A new Exp with the accumulation.
+ * \returns Ptr to the simplified expression.
  */
 Exp *
-Exp::Accumulate(std::list<Exp *> &exprs)
+Exp::simplifyArith()
 {
-	if (exprs.empty())
-		return nullptr;
-
-	auto res = exprs.front()->clone();
-	exprs.pop_front();
-	if (!exprs.empty())
-		res = new Binary(opPlus, res, Accumulate(exprs));
-	return res;
+	ArithSimplifier as;
+	return accept(as);
 }
 
 /**
