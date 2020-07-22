@@ -1993,27 +1993,24 @@ Binary::simplifyArith()
 /**
  * This method creates an expression that is the sum of all expressions in a
  * list.  E.g. given the list <4,r[8],m[14]> the resulting expression is
- * 4+r[8]+m[14].
+ * (4+(r[8]+m[14])).
  *
  * \note Static (non instance) function.
  * \note Exps ARE cloned.
  *
- * \param exprs  A list of expressions.
+ * \param exprs  A list of expressions.  This list is cleared upon return.
  * \returns      A new Exp with the accumulation.
  */
 Exp *
-Exp::Accumulate(std::list<Exp *> exprs)
+Exp::Accumulate(std::list<Exp *> &exprs)
 {
-	int n = exprs.size();
-	if (n == 0)
+	if (exprs.empty())
 		return new Const(0);
-	if (n == 1)
-		return exprs.front()->clone();
 
-	Exp *first = exprs.front()->clone();
+	auto res = exprs.front()->clone();
 	exprs.pop_front();
-	auto res = new Binary(opPlus, first, Accumulate(exprs));
-	exprs.push_front(first);
+	if (!exprs.empty())
+		res = new Binary(opPlus, res, Accumulate(exprs));
 	return res;
 }
 

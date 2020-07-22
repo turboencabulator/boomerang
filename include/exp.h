@@ -235,7 +235,7 @@ public:
 	 */
 	        void        partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate);
 	virtual Exp        *simplifyArith() { return this; }
-	static  Exp        *Accumulate(std::list<Exp *> exprs);
+	static  Exp        *Accumulate(std::list<Exp *> &);
 	        Exp        *simplify();
 	        Exp        *simplifyAddr();
 	        Exp        *simplifyConstraint();

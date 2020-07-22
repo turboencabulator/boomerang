@@ -373,23 +373,29 @@ ExpTest::testAccumulate()
 	Exp *res = Exp::Accumulate(le);
 	Const zero(0);
 	CPPUNIT_ASSERT(*res == zero);
+	CPPUNIT_ASSERT(le.empty());
 	delete res;
 
 	// One term
 	le.push_back(&rof2);
 	res = Exp::Accumulate(le);
 	CPPUNIT_ASSERT(*res == rof2);
+	CPPUNIT_ASSERT(le.empty());
 	delete res;
 
 	// Two terms
 	Exp *nn = nineNine.clone();
+	le.push_back(&rof2);
 	le.push_back(nn);
 	res = Exp::Accumulate(le);
 	Binary expected2(opPlus, rof2.clone(), nineNine.clone());
 	CPPUNIT_ASSERT(*res == expected2);
+	CPPUNIT_ASSERT(le.empty());
 	delete res;
 
 	// Three terms, one repeated
+	le.push_back(&rof2);
+	le.push_back(nn);
 	le.push_back(&nineNine);
 	res = Exp::Accumulate(le);
 	Binary expected3(opPlus,
@@ -398,10 +404,14 @@ ExpTest::testAccumulate()
 	                            nineNine.clone(),
 	                            nineNine.clone()));
 	CPPUNIT_ASSERT(*res == expected3);
+	CPPUNIT_ASSERT(le.empty());
 	delete res;
 
 	// Four terms, one repeated
 	Terminal afp(opAFP);
+	le.push_back(&rof2);
+	le.push_back(nn);
+	le.push_back(&nineNine);
 	le.push_back(&afp);
 	res = Exp::Accumulate(le);
 	Binary expected4(opPlus,
@@ -412,6 +422,7 @@ ExpTest::testAccumulate()
 	                                       nineNine.clone(),
 	                                       new Terminal(opAFP))));
 	CPPUNIT_ASSERT(*res == expected4);
+	CPPUNIT_ASSERT(le.empty());
 	delete res;
 	delete nn;
 }
