@@ -371,8 +371,7 @@ ExpTest::testAccumulate()
 	// Zero terms
 	std::list<Exp *> le;
 	Exp *res = Exp::Accumulate(le);
-	Const zero(0);
-	CPPUNIT_ASSERT(*res == zero);
+	CPPUNIT_ASSERT(!res);
 	CPPUNIT_ASSERT(le.empty());
 	delete res;
 

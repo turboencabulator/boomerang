@@ -1906,11 +1906,12 @@ Ternary::simplifyArith()
 Exp *
 Binary::simplifyArith()
 {
-	assert(subExp1 && subExp2);
-	subExp1 = subExp1->simplifyArith();  // FIXME: does this make sense?
-	subExp2 = subExp2->simplifyArith();  // FIXME: ditto
+	subExp1 = subExp1->simplifyArith();
+	subExp2 = subExp2->simplifyArith();
 	if ((op != opPlus) && (op != opMinus))
 		return this;
+
+	// TODO: return this if parent is opPlus or opMinus, let parent do the simplification
 
 	// Partition this expression into positive non-integer terms, negative
 	// non-integer terms and integer terms.
@@ -1943,51 +1944,28 @@ Binary::simplifyArith()
 
 	// Summarise the set of integers to a single number.
 	int sum = std::accumulate(integers.begin(), integers.end(), 0);
+	auto pos = Exp::Accumulate(positives);
+	auto neg = Exp::Accumulate(negatives);
 
 	// Now put all these elements back together and return the result
-	if (positives.empty()) {
-		if (negatives.empty())
-			return new Const(sum);
-		else
-			// No positives, some negatives. sum - Acc
-			return new Binary(opMinus,
-			                  new Const(sum),
-			                  Exp::Accumulate(negatives));
+	if (neg) {
+		if (!pos)
+			return new Binary(opMinus, new Const(sum), neg);
+		// Both positives and negatives, convert to only positives
+		pos = new Binary(opMinus, pos, neg);
 	}
-	if (negatives.empty()) {
-		// Positives + sum
-		if (sum == 0) {
-			// Just positives
-			return Exp::Accumulate(positives);
-		} else {
-			OPER op = opPlus;
-			if (sum < 0) {
-				op = opMinus;
-				sum = -sum;
-			}
-			return new Binary(op,
-			                  Exp::Accumulate(positives),
-			                  new Const(sum));
-		}
-	}
-	// Some positives, some negatives
-	if (sum == 0) {
-		// positives - negatives
-		return new Binary(opMinus,
-		                  Exp::Accumulate(positives),
-		                  Exp::Accumulate(negatives));
-	}
-	// General case: some positives, some negatives, a sum
+
+	if (!pos)
+		return new Const(sum);
+	if (sum == 0)
+		return pos;
+
 	OPER op = opPlus;
 	if (sum < 0) {
-		op = opMinus;  // Return (pos - negs) - sum
+		op = opMinus;
 		sum = -sum;
 	}
-	return new Binary(op,
-	                  new Binary(opMinus,
-	                             Exp::Accumulate(positives),
-	                             Exp::Accumulate(negatives)),
-	                  new Const(sum));
+	return new Binary(op, pos, new Const(sum));
 }
 
 /**
@@ -2005,7 +1983,7 @@ Exp *
 Exp::Accumulate(std::list<Exp *> &exprs)
 {
 	if (exprs.empty())
-		return new Const(0);
+		return nullptr;
 
 	auto res = exprs.front()->clone();
 	exprs.pop_front();
