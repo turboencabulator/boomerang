@@ -1712,11 +1712,25 @@ Assign::swapRight(Exp *e)
 static bool
 condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 {
-	OPER condOp = pCond->getOper();
+	auto condOp = pCond->getOper();
 	if (condOp == opFlagCall && strncmp(((Const *)pCond->getSubExp1())->getStr(), "SUBFLAGS", 8) == 0) {
-		OPER op = opWild;
 		// Special for PPC unsigned compares; may be other cases in the future
 		bool makeUns = strncmp(((Const *)pCond->getSubExp1())->getStr(), "SUBFLAGSNL", 10) == 0;
+
+		/*   pCond
+		     /    \
+		Const      opList
+		"SUBFLAGS"  /   \
+		           P1   opList
+		                 /   \
+		                P2  opList
+		                     /   \
+		                    P3   opNil */
+		auto e  = (Binary *)pCond;
+		auto l1 = (Binary *)e->getSubExp2();
+		auto l2 = (Binary *)l1->getSubExp2();
+		auto l3 = (Binary *)l2->getSubExp2();
+		auto op = opWild;
 		switch (jtCond) {
 		case BRANCH_JE:   op = opEqual;    break;
 		case BRANCH_JNE:  op = opNotEqual; break;
@@ -1729,23 +1743,12 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		case BRANCH_JUGE: op = opGtrEqUns;  break;
 		case BRANCH_JUG:  op = opGtrUns;    break;
 		case BRANCH_JMI:
-			/*   pCond
-			     /    \
-			Const      opList
-			"SUBFLAGS"  /   \
-			           P1   opList
-			                 /   \
-			                P2  opList
-			                     /   \
-			                    P3   opNil */
-			pCond = new Binary(opLess,  // P3 < 0
-			                   pCond->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1()->clone(),
-			                   new Const(0));
+			pCond = new Binary(opLess, l3->swapSubExp1(nullptr), new Const(0));  // P3 < 0
+			delete e;
 			break;
 		case BRANCH_JPOS:
-			pCond = new Binary(opGtrEq,  // P3 >= 0
-			                   pCond->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1()->clone(),
-			                   new Const(0));
+			pCond = new Binary(opGtrEq, l3->swapSubExp1(nullptr), new Const(0));  // P3 >= 0
+			delete e;
 			break;
 		case BRANCH_JOF:
 		case BRANCH_JNOF:
@@ -1753,13 +1756,13 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 			break;
 		}
 		if (op != opWild) {
-			pCond = new Binary(op,
-			                   pCond->getSubExp2()->getSubExp1()->clone(),                 // P1
-			                   pCond->getSubExp2()->getSubExp2()->getSubExp1()->clone());  // P2
+			pCond = new Binary(op, l1->swapSubExp1(nullptr), l2->swapSubExp1(nullptr));  // P1 op P2
+			delete e;
 		}
 	} else if (condOp == opFlagCall && strncmp(((Const *)pCond->getSubExp1())->getStr(), "LOGICALFLAGS", 12) == 0) {
-		// Exp *e = pCond;
-		OPER op = opWild;
+		auto e  = (Binary *)pCond;
+		auto l1 = (Binary *)e->getSubExp2();
+		auto op = opWild;
 		switch (jtCond) {
 		case BRANCH_JE:   op = opEqual; break;
 		case BRANCH_JNE:  op = opNotEqual; break;
@@ -1796,15 +1799,15 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				                    /   \
 				                    P2  opNil
 				*/
-				Exp *flagsParam = ((Binary *)((Binary *)pCond)->getSubExp2())->getSubExp1();
-				Exp *test = flagsParam;
+				auto flagsParam = l1->getSubExp1();
+				auto test = flagsParam;
 				if (auto re = dynamic_cast<RefExp *>(test))
 					test = re->getSubExp1();
 				if (test->isTemp())
 					return false;  // Just not propagated yet
 				int mask = 0;
 				if (flagsParam->getOper() == opBitAnd) {
-					Exp *setFlagsParam = ((Binary *)flagsParam)->getSubExp2();
+					auto setFlagsParam = ((Binary *)flagsParam)->getSubExp2();
 					if (setFlagsParam->isIntConst())
 						mask = ((Const *)setFlagsParam)->getInt();
 				}
@@ -1812,7 +1815,6 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				// the branch is for any one of the (one or two) bits being on. For example, if the mask is 0x41, we
 				// are branching of less (0x1) or equal (0x41).
 				mask &= 0x41;
-				OPER op = opWild;
 				switch (mask) {
 				case 0:
 					LOG << "WARNING: unhandled pentium branch if parity with pCond = " << *pCond << "\n";
@@ -1829,22 +1831,25 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				default:
 					break;  // Not possible, but avoid a compiler warning
 				}
-				pCond = new Binary(op,
-				                   flagsParam->getSubExp1()->getSubExp2()->getSubExp1()->clone(),
-				                   flagsParam->getSubExp1()->getSubExp2()->getSubExp2()->getSubExp1()->clone());
+				auto fc = (Binary *)flagsParam->getSubExp1();
+				auto l2 = (Binary *)fc->getSubExp2();
+				auto l3 = (Binary *)l2->getSubExp2();
+				pCond = new Binary(op, l2->swapSubExp1(nullptr), l3->swapSubExp1(nullptr));  // P1 op P2
+				delete e;
 				return true;  // This is a floating point comparison
 			}
 		default:
 			break;
 		}
 		if (op != opWild) {
-			pCond = new Binary(op,
-			                   pCond->getSubExp2()->getSubExp1()->clone(),
-			                   new Const(0));
+			pCond = new Binary(op, l1->swapSubExp1(nullptr), new Const(0));
+			delete e;
 		}
 	} else if (condOp == opFlagCall && strncmp(((Const *)pCond->getSubExp1())->getStr(), "SETFFLAGS", 9) == 0) {
-		// Exp *e = pCond;
-		OPER op = opWild;
+		auto e  = (Binary *)pCond;
+		auto l1 = (Binary *)e->getSubExp2();
+		auto l2 = (Binary *)l1->getSubExp2();
+		auto op = opWild;
 		switch (jtCond) {
 		case BRANCH_JE:   op = opEqual; break;
 		case BRANCH_JNE:  op = opNotEqual; break;
@@ -1858,9 +1863,8 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 			break;
 		}
 		if (op != opWild) {
-			pCond = new Binary(op,
-			                   pCond->getSubExp2()->getSubExp1()->clone(),
-			                   pCond->getSubExp2()->getSubExp2()->getSubExp1()->clone());
+			pCond = new Binary(op, l1->swapSubExp1(nullptr), l2->swapSubExp1(nullptr));
+			delete e;
 		}
 	}
 	// ICK! This is all PENTIUM SPECIFIC... needs to go somewhere else.
@@ -1875,8 +1879,9 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 	// left = SETFFLAGS(...) & 1
 	// left1 = SETFFLAGS(...) left2 = int 1, k = 0, mask = 1
 	else if (condOp == opEqual || condOp == opNotEqual) {
-		Exp *left  = ((Binary *)pCond)->getSubExp1();
-		Exp *right = ((Binary *)pCond)->getSubExp2();
+		auto e = (Binary *)pCond;
+		auto left  = e->getSubExp1();
+		auto right = e->getSubExp2();
 		bool hasXor40 = false;
 		if (left->getOper() == opBitXor && right->isIntConst()) {
 			Exp *r2 = ((Binary *)left)->getSubExp2();
@@ -1889,8 +1894,8 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 			}
 		}
 		if (left->getOper() == opBitAnd && right->isIntConst()) {
-			Exp *left1 = ((Binary *)left)->getSubExp1();
-			Exp *left2 = ((Binary *)left)->getSubExp2();
+			auto left1 = ((Binary *)left)->getSubExp1();
+			auto left2 = ((Binary *)left)->getSubExp2();
 			int k = ((Const *)right)->getInt();
 			// Only interested in 40, 1
 			k &= 0x41;
@@ -1898,7 +1903,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				int mask = ((Const *)left2)->getInt();
 				// Only interested in 1, 40
 				mask &= 0x41;
-				OPER op = opWild;
+				auto op = opWild;
 				if (hasXor40) {
 					assert(k == 0);
 					op = condOp;
@@ -1932,9 +1937,11 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 					}
 				}
 				if (op != opWild) {
-					pCond = new Binary(op,
-					                   left1->getSubExp2()->getSubExp1()->clone(),
-					                   left1->getSubExp2()->getSubExp2()->getSubExp1()->clone());
+					auto fc = (Binary *)left1;
+					auto l1 = (Binary *)fc->getSubExp2();
+					auto l2 = (Binary *)l1->getSubExp2();
+					pCond = new Binary(op, l1->swapSubExp1(nullptr), l2->swapSubExp1(nullptr));
+					delete e;
 					return true;  // This is now a float comparison
 				}
 			}
