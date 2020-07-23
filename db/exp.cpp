@@ -869,10 +869,6 @@ Unary::print(std::ostream &os, bool html) const
 		if (subExp1->isIntConst()) {
 			os << "r" << ((Const *)subExp1)->getInt();
 			break;
-		} else if (subExp1->isTemp()) {
-			// Just print the temp {   // balance }s
-			subExp1->print(os, html);
-			break;
 		}
 		// Else fall through
 	case opMemOf:
@@ -3189,16 +3185,6 @@ Exp::killFill()
 {
 	KillFiller kf;
 	return accept(kf);
-}
-
-bool
-Exp::isTemp() const
-{
-	if (op == opTemp) return true;
-	if (!isRegOf()) return false;
-	// Some old code has r[tmpb] instead of just tmpb
-	const Exp *sub = ((const Location *)this)->getSubExp1();
-	return sub->op == opTemp;
 }
 
 /**

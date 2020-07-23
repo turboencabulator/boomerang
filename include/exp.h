@@ -149,7 +149,7 @@ public:
 	// True if this is a struct member access
 	        bool        isMemberOf() const { return op == opMemberAccess; }
 	// True if this is a temporary. Note some old code still has r[tmp]
-	        bool        isTemp() const;
+	        bool        isTemp() const { return op == opTemp; }
 	// True if this is the Nil Terminal (terminates lists; "NOP" expression)
 	        bool        isNil() const { return op == opNil; }
 	// True if this is %pc

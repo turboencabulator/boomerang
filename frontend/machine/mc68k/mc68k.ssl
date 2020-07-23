@@ -238,19 +238,19 @@ COMMONFLAGS32(result) {
 };
 
 ADDXB src, dst
-	*8* r[tmp1] := dst{8}
+	*8* tmp1 := dst{8}
 	*8* dst := dst + src + %CF
-	ADDFLAGS8(r[tmp1], src, dst);
+	ADDFLAGS8(tmp1, src, dst);
 
 ADDXW src, dst
-	*16* r[tmp1] := dst{16}
+	*16* tmp1 := dst{16}
 	*16* dst := dst + src + %CF
-	ADDFLAGS16(r[tmp1], src, dst);
+	ADDFLAGS16(tmp1, src, dst);
 
 ADDXL src, dst
-	*32* r[tmp1] := dst{32}
+	*32* tmp1 := dst{32}
 	*32* dst := dst + src + %CF
-	ADDFLAGS32(r[tmp1], src, dst);
+	ADDFLAGS32(tmp1, src, dst);
 
 ARITH := { "ADD", "SUB" };
 LOGIC := { "AND", "OR", "EOR" };
@@ -258,35 +258,35 @@ ALU   := { $ARITH, $LOGIC };
 OP1   := { +, -, &, |, ^ };
 
 ARITH[IDX]"b" src, dst
-	*8* r[tmp1] := dst{8};
+	*8* tmp1 := dst{8};
 ALU[IDX]"b" src, dst
 	*8* dst := dst{8} OP1[IDX] src{8};
 ARITH[0]"b" src, dst
-	ADDFLAGS8(r[tmp1], src, dst);
+	ADDFLAGS8(tmp1, src, dst);
 ARITH[1]"b" src, dst
-	SUBFLAGS8(r[tmp1], src, dst);
+	SUBFLAGS8(tmp1, src, dst);
 LOGIC[IDX]"b" src, dst
 	LOGICALFLAGS8(dst);
 
 ARITH[IDX]"w" src, dst
-	*16* r[tmp1] := dst{16};
+	*16* tmp1 := dst{16};
 ALU[IDX]"w" src, dst
 	*16* dst := dst{16} OP1[IDX] src{16};
 ARITH[0]"w" src, dst
-	ADDFLAGS16(r[tmp1], src, dst);
+	ADDFLAGS16(tmp1, src, dst);
 ARITH[1]"w" src, dst
-	SUBFLAGS16(r[tmp1], src, dst);
+	SUBFLAGS16(tmp1, src, dst);
 LOGIC[IDX]"w" src, dst
 	LOGICALFLAGS16(dst);
 
 ARITH[IDX]"l" src, dst
-	*32* r[tmp1] := dst{32};
+	*32* tmp1 := dst{32};
 ALU[IDX]"l" src, dst
 	*32* dst := dst{32} OP1[IDX] src{32};
 ARITH[0]"l" src, dst
-	ADDFLAGS32(r[tmp1], src, dst);
+	ADDFLAGS32(tmp1, src, dst);
 ARITH[1]"l" src, dst
-	SUBFLAGS32(r[tmp1], src, dst);
+	SUBFLAGS32(tmp1, src, dst);
 LOGIC[IDX]"l" src, dst
 	LOGICALFLAGS32(dst);
 
@@ -297,35 +297,35 @@ OP2 := { *!,     *      };
 MUL := { "MULS", "MULU" };
 
 MUL[IDX]"w" src, dst
-	*32* r[tmp1] := dst{16}
+	*32* tmp1 := dst{16}
 	*32* dst := dst{16} OP2[IDX] src{16}
-	COMPLEXARITHFLAGS32(r[tmp1], src, dst);
+	COMPLEXARITHFLAGS32(tmp1, src, dst);
 
 DIVSw src, dst
-	*32* r[tmp1] := dst{32}
-	*16* r[tmp2] := dst{32} /! src{16}
-	*16* r[tmp3] := dst{32} %! src{16}
-	*32* dst := r[tmp2] + (r[tmp3] << 16)
-	COMPLEXARITHFLAGS32(r[tmp1], src, dst);
+	*32* tmp1 := dst{32}
+	*16* tmp2 := dst{32} /! src{16}
+	*16* tmp3 := dst{32} %! src{16}
+	*32* dst := tmp2 + (tmp3 << 16)
+	COMPLEXARITHFLAGS32(tmp1, src, dst);
 
 DIVUw src, dst
-	*32* r[tmp1] := dst{32}
-	*16* r[tmp2] := dst{32} / src{16}
-	*16* r[tmp3] := dst{32} % src{16}
-	*32* dst := r[tmp2] + (r[tmp3] << 16)
-	COMPLEXARITHFLAGS32(r[tmp1], src, dst);
+	*32* tmp1 := dst{32}
+	*16* tmp2 := dst{32} / src{16}
+	*16* tmp3 := dst{32} % src{16}
+	*32* dst := tmp2 + (tmp3 << 16)
+	COMPLEXARITHFLAGS32(tmp1, src, dst);
 
 CMPb src, dst
-	*8* r[tmp1] := dst - src
-	SUBFLAGS8(dst, src, r[tmp1]);
+	*8* tmp1 := dst - src
+	SUBFLAGS8(dst, src, tmp1);
 
 CMPw src, dst
-	*16* r[tmp1] := dst - src
-	SUBFLAGS16(dst, src, r[tmp1]);
+	*16* tmp1 := dst - src
+	SUBFLAGS16(dst, src, tmp1);
 
 CMPl src, dst
-	*32* r[tmp1] := dst - src
-	SUBFLAGS32(dst, src, r[tmp1]);
+	*32* tmp1 := dst - src
+	SUBFLAGS32(dst, src, tmp1);
 
 ASHIFTS := { "ASR" };
 LSHIFTS := { "LSL", "LSR", "ROL", "ROR", "ROXL", "ROXR" };
@@ -333,28 +333,28 @@ SHIFTS  := { $ASHIFTS, $LSHIFTS };
 OP3     := { >>A, <<, >>, rl, rr, rlc, rrc };
 
 SHIFTS[IDX]"b" cnt, dst
-	*8* r[tmp1] := dst{8}
+	*8* tmp1 := dst{8}
 	*8* dst := dst{8} OP3[IDX] cnt{8};
 ASHIFTS[IDX]"b" cnt, dst
-	ARITHSHIFTFLAGS8(dst, r[tmp1], cnt);
+	ARITHSHIFTFLAGS8(dst, tmp1, cnt);
 LSHIFTS[IDX]"b" cnt, dst
-	LOGSHIFTFLAGS8(dst, r[tmp1], cnt);
+	LOGSHIFTFLAGS8(dst, tmp1, cnt);
 
 SHIFTS[IDX]"w" cnt, dst
-	*16* r[tmp1] := dst{16}
+	*16* tmp1 := dst{16}
 	*16* dst := dst{16} OP3[IDX] cnt{16};
 ASHIFTS[IDX]"w" cnt, dst
-	ARITHSHIFTFLAGS16(dst, r[tmp1], cnt);
+	ARITHSHIFTFLAGS16(dst, tmp1, cnt);
 LSHIFTS[IDX]"w"   cnt, dst
-	LOGSHIFTFLAGS16(dst, r[tmp1], cnt);
+	LOGSHIFTFLAGS16(dst, tmp1, cnt);
 
 SHIFTS[IDX]"l" cnt, dst
-	*32* r[tmp1] := dst{32}
+	*32* tmp1 := dst{32}
 	*32* dst := dst{32} OP3[IDX] cnt{32};
 ASHIFTS[IDX]"l" cnt, dst
-	ARITHSHIFTFLAGS32(dst, r[tmp1], cnt);
+	ARITHSHIFTFLAGS32(dst, tmp1, cnt);
 LSHIFTS[IDX]"l" cnt, dst
-	LOGSHIFTFLAGS32(dst, r[tmp1], cnt);
+	LOGSHIFTFLAGS32(dst, tmp1, cnt);
 
 COND := {
 	~(%CF | %ZF),         %CF | %ZF,
@@ -442,34 +442,34 @@ CLRl dst
 	CLEARFLAGS();
 
 NEGb dst
-	*8* r[tmp1] := dst
+	*8* tmp1 := dst
 	*8* dst := 0 - dst{8}
-	NEGFLAGS8(dst, r[tmp1]);
+	NEGFLAGS8(dst, tmp1);
 
 NEGw dst
-	*16* r[tmp1] := dst
+	*16* tmp1 := dst
 	*16* dst := 0 - dst{16}
-	NEGFLAGS16(dst, r[tmp1]);
+	NEGFLAGS16(dst, tmp1);
 
 NEGl dst
-	*32* r[tmp1] := dst
+	*32* tmp1 := dst
 	*32* dst := 0 - dst{32}
-	NEGFLAGS32(dst, r[tmp1]);
+	NEGFLAGS32(dst, tmp1);
 
 NEGXb dst
-	*8* r[tmp1] := dst
+	*8* tmp1 := dst
 	*8* dst := 0 - dst{8} - %CF
-	NEGXFLAGS8(dst, r[tmp1]);
+	NEGXFLAGS8(dst, tmp1);
 
 NEGXw dst
-	*16* r[tmp1] := dst
+	*16* tmp1 := dst
 	*16* dst := 0 - dst{16} - %CF
-	NEGXFLAGS16(dst, r[tmp1]);
+	NEGXFLAGS16(dst, tmp1);
 
 NEGXl dst
-	*32* r[tmp1] := dst
+	*32* tmp1 := dst
 	*32* dst := 0 - dst{32} - %CF
-	NEGXFLAGS32(dst, r[tmp1]);
+	NEGXFLAGS32(dst, tmp1);
 
 NOTb dst
 	*8* dst := ~dst{8}
@@ -484,26 +484,26 @@ NOTl dst
 	COMMONFLAGS32(dst);
 
 TSTb dst
-	*8* r[tmp1] := dst{8}
-	LOGICALFLAGS8(r[tmp1]);
+	*8* tmp1 := dst{8}
+	LOGICALFLAGS8(tmp1);
 
 TSTw dst
-	*16* r[tmp1] := dst{16}
-	LOGICALFLAGS16(r[tmp1]);
+	*16* tmp1 := dst{16}
+	LOGICALFLAGS16(tmp1);
 
 TSTl dst
-	*32* r[tmp1] := dst{32}
-	LOGICALFLAGS32(r[tmp1]);
+	*32* tmp1 := dst{32}
+	LOGICALFLAGS32(tmp1);
 
 TAS dst
-	*8* r[tmp1] := dst{8}
+	*8* tmp1 := dst{8}
 	*1* dst@[7] := 1
-	COMMONFLAGS8(r[tmp1]);
+	COMMONFLAGS8(tmp1);
 
 EXG rx, ry
-	*32* r[tmp1] := rx
+	*32* tmp1 := rx
 	*32* rx := ry
-	*32* ry := r[tmp1];
+	*32* ry := tmp1;
 
 EXTw dst
 	*16* dst := dst{8}!
@@ -531,17 +531,17 @@ RTR
 	_;
 
 RTS
-	*32* r[tmp1] := m[r[SP]]
+	*32* tmp1 := m[r[SP]]
 	*32* r[SP] := r[SP] + 4
-	*32* %pc := r[tmp1];
+	*32* %pc := tmp1;
 
 JMP dst
 	*32* %pc := dst;
 
 PEA dst
-	*32* r[tmp1] := addr(dst)
+	*32* tmp1 := addr(dst)
 	*32* r[SP] := r[SP] - 4
-	*32* m[r[SP]] := r[tmp1];
+	*32* m[r[SP]] := tmp1;
 
 LEA src, an
 	*32* an := addr(src);
@@ -724,9 +724,9 @@ STOREMl an, mask
 	*32* r[0] := [mask@[0]  ? m[an]{32} : r[15]];
 
 SUBX src, dst
-	*32* r[tmp1] := dst
+	*32* tmp1 := dst
 	*32* dst := dst - src - %CF
-	SUBXFLAGS32(dst, r[tmp1], src);
+	SUBXFLAGS32(dst, tmp1, src);
 
 UNLK an
 	*32* r[SP] := an
