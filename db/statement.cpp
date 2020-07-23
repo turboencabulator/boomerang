@@ -1712,12 +1712,6 @@ Assign::swapRight(Exp *e)
 static bool
 condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 {
-	pCond = pCond->simplifyArith()->simplify();
-
-	std::stringstream os;
-	pCond->print(os);
-	std::string s = os.str();
-
 	OPER condOp = pCond->getOper();
 	if (condOp == opFlagCall && strncmp(((Const *)pCond->getSubExp1())->getStr(), "SUBFLAGS", 8) == 0) {
 		OPER op = opWild;
@@ -1958,15 +1952,14 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 void
 GotoStatement::simplify()
 {
-	if (isComputed()) {
-		pDest = pDest->simplifyArith();
-		pDest = pDest->simplify();
-	}
+	if (isComputed())
+		pDest = pDest->simplifyArith()->simplify();
 }
 void
 BranchStatement::simplify()
 {
 	if (pCond) {
+		pCond = pCond->simplifyArith()->simplify();
 		if (condToRelational(pCond, jtCond))
 			bFloat = true;
 	}
@@ -1999,8 +1992,10 @@ ReturnStatement::simplify()
 void
 BoolAssign::simplify()
 {
-	if (pCond)
+	if (pCond) {
+		pCond = pCond->simplifyArith()->simplify();
 		condToRelational(pCond, jtCond);
+	}
 }
 void
 Assign::simplify()
@@ -2012,21 +2007,16 @@ Assign::simplify()
 			return;
 	}
 
-	lhs = lhs->simplifyArith();
-	rhs = rhs->simplifyArith();
-	if (guard) guard = guard->simplifyArith();
-	// simplify the resultant expression
-	lhs = lhs->simplify();
-	rhs = rhs->simplify();
-	if (guard) guard = guard->simplify();
+	lhs = lhs->simplifyArith()->simplify();
+	rhs = rhs->simplifyArith()->simplify();
+	if (guard) guard = guard->simplifyArith()->simplify();
 
 	// Perhaps the guard can go away
 	if (guard && guard->isTrue())
 		guard = nullptr;  // No longer a guarded assignment
 
-	if (lhs->isMemOf()) {
-		lhs->setSubExp1(lhs->getSubExp1()->simplifyArith());
-	}
+	if (lhs->isMemOf())
+		lhs = lhs->simplifyArith();
 
 	// this hack finds address constants.. it should go away when Mike writes some decent type analysis.
 #if 0
