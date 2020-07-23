@@ -873,39 +873,32 @@ INT3
 	_;      # Not expected to be seen in correct code, but decode anyway
 
 JCOND := {
-	~%CF & ~%ZF,          %CF |  %ZF,
-	 %CF |  %ZF,         ~%CF & ~%ZF,
-	 %CF,                ~%CF,
-	~%CF,                 %CF,
-	~(%NF ^ %OF) & ~%ZF,  (%NF ^ %ZF) |  %ZF,
-	 (%NF ^ %OF) |  %ZF, ~(%NF ^ %OF) & ~%ZF,
-	  %NF ^ %OF,         ~(%NF ^ %OF),
-	~(%NF ^ %OF),          %NF ^ %OF,
-	%ZF,                 ~%ZF,
-	%ZF,                 ~%ZF,
-	%CF,                 ~%CF,
-	%OF,                 ~%OF,
-	%NF,                 ~%NF,
-	%PF,                 ~%PF,
-	%PF,                 ~%PF,
+	%OF,               ~(%OF),
+	%CF,               ~(%CF),
+	%CF,               ~(%CF),
+	%CF,               ~(%CF),
+	%ZF,               ~(%ZF),
+	%ZF,               ~(%ZF),
+	%CF | %ZF,         ~(%CF | %ZF),
+	%CF | %ZF,         ~(%CF | %ZF),
+	%NF,               ~(%NF),
+	%PF,               ~(%PF),
+	%PF,               ~(%PF),
+	%NF ^ %OF,         ~(%NF ^ %OF),
+	%NF ^ %OF,         ~(%NF ^ %OF),
+	(%NF ^ %OF) | %ZF, ~((%NF ^ %OF) | %ZF),
+	(%NF ^ %OF) | %ZF, ~((%NF ^ %OF) | %ZF),
 	~%cx
 };
 JUMPS := {
-	"A",  "NA",
-	"BE", "NBE",
-	"B",  "NB",
-	"AE", "NAE",
-	"G",  "NG",
-	"LE", "NLE",
-	"L",  "NL",
-	"GE", "NGE",
-	"E",  "NE",
-	"Z",  "NZ",
-	"C",  "NC",
 	"O",  "NO",
+	"B",  "NB",   "NAE", "AE",  "C", "NC",
+	"Z",  "NZ",   "E",   "NE",
+	"BE", "NBE",  "NA",  "A",
 	"S",  "NS",
-	"P",  "NP",
-	"PE", "PO",
+	"P",  "NP",   "PE",  "PO",
+	"L",  "NL",   "NGE", "GE",
+	"LE", "NLE",  "NG",  "G",
 	"CXZ"
 };
 
@@ -1286,53 +1279,29 @@ SEG.GS
 SEG.SS
 	_;
 
-SETB.B modrm
-	*8* modrm := [%CF ? 1 : 0];
+COND := {
+	%OF,               ~(%OF),
+	%CF,               ~(%CF),
+	%ZF,               ~(%ZF),
+	%CF | %ZF,         ~(%CF | %ZF),
+	%NF,               ~(%NF),
+	%PF,               ~(%PF),
+	%NF ^ %OF,         ~(%NF ^ %OF),
+        (%NF ^ %OF) | %ZF, ~((%NF ^ %OF) | %ZF)
+};
+CC := {
+	"O",  "NO",
+	"B",  "NB",
+	"Z",  "NZ",
+	"BE", "NBE",
+	"S",  "NS",
+	"P",  "NP",
+	"L",  "NL",
+	"LE", "NLE"
+};
 
-SETB.NB modrm
-	*8* modrm := [~%CF ? 1 : 0];
-
-SETB.BE modrm
-	*8* modrm := [%CF | %ZF ? 1 : 0];
-
-SETB.NBE modrm
-	*8* modrm := [~%CF & ~%ZF ? 1 : 0];
-
-SETB.L modrm
-	*8* modrm := [%NF! = %OF ? 1 : 0];
-
-SETB.NL modrm
-	*8* modrm := [%NF = %OF ? 1 : 0];
-
-SETB.O modrm
-	*8* modrm := [%OF ? 1 : 0];
-
-SETB.NO modrm
-	*8* modrm := [~%OF ? 1 : 0];
-
-SETB.P modrm
-	*8* modrm := [%PF ? 1 : 0];
-
-SETB.NP modrm
-	*8* modrm := [~%PF = 0 ? 1 : 0];
-
-SETB.S modrm
-	*8* modrm := [%NF ? 1 : 0];
-
-SETB.NS modrm
-	*8* modrm := [~%NF ? 1 : 0];
-
-SETB.Z modrm
-	*8* modrm := [%ZF ? 1 : 0];
-
-SETB.NZ modrm
-	*8* modrm := [~%ZF ? 1 : 0];
-
-SETB.LE modrm
-	*8* modrm := [%ZF | (%NF ~= %OF) ? 1 : 0];
-
-SETB.NLE modrm
-	*8* modrm := [~%ZF & (%NF = %OF) ? 1 : 0];
+"SETB"CC[IDX] modrm
+	*8* modrm := [COND[IDX] ? 1 : 0];
 
 SHIFT_OP := { <<,       >>,    >>A   };
 SHIFT    := { "SHLSAL", "SHR", "SAR" };

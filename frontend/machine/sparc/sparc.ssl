@@ -514,7 +514,7 @@ RETURN addr
 
 COND := {
 	%ZF,               ~(%ZF),
-	%ZF | (%NF ^ %OF), ~(%ZF | (%NF ^ %OF)),
+	(%NF ^ %OF) | %ZF, ~((%NF ^ %OF) | %ZF),
 	%NF ^ %OF,         ~(%NF ^ %OF),
 	%CF | %ZF,         ~(%CF | %ZF),
 	%CF,               ~(%CF),

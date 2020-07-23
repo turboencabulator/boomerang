@@ -358,10 +358,10 @@ LSHIFTS[IDX]"l" cnt, dst
 
 COND := {
 	~(%CF | %ZF),         %CF | %ZF,
-	~%CF,                 %CF,
-	~%ZF,                 %ZF,
-	~%OF,                 %OF,
-	~%NF,                 %NF,
+	~(%CF),               %CF,
+	~(%ZF),               %ZF,
+	~(%OF),               %OF,
+	~(%NF),               %NF,
 	~(%NF ^ %OF),         %NF ^ %OF,
 	~((%NF ^ %OF) | %ZF), (%NF ^ %OF) | %ZF,
 	1,                    0
