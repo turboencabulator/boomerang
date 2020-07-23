@@ -1437,6 +1437,7 @@ TypeVal::match(const Exp *pattern) const
 }
 #endif
 
+#if 0 // Cruft?
 #define ISVARIABLE(x) (strspn((x), "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") == strlen((x)))
 //#define DEBUG_MATCH
 
@@ -1636,6 +1637,7 @@ Location::match(const char *pattern, std::map<std::string, const Exp *> &binding
 	}
 	return false;
 }
+#endif
 
 /**
  * Search for the given subexpression.

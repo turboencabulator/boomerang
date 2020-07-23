@@ -213,7 +213,7 @@ public:
 
 	// FIXME: are these used?
 	virtual Exp        *match(const Exp *pattern) const;
-	virtual bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const;
+	//virtual bool        match(const char *, std::map<std::string, const Exp *> &) const;
 
 	/**
 	 * \name Search and replace
@@ -366,7 +366,7 @@ public:
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
 
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 
 	int         getConscript() const { return conscript; }
 	void        setConscript(int cs) { conscript = cs; }
@@ -406,7 +406,7 @@ public:
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 };
 
 /**
@@ -453,7 +453,7 @@ public:
 	Exp        *getSubExp1() const override;
 
 	Exp        *match(const Exp *pattern) const override;
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
@@ -513,7 +513,7 @@ public:
 	Exp        *getSubExp2() const override;
 
 	Exp        *match(const Exp *pattern) const override;
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
@@ -584,7 +584,7 @@ public:
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
 
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -694,7 +694,7 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 	bool        references(Statement *s) { return def == s; }
 	Exp        *match(const Exp *pattern) const override;
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 
 	bool        isImplicitDef() const;
 
@@ -767,7 +767,7 @@ public:
 	// Visitation
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
-	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
+	//bool        match(const char *, std::map<std::string, const Exp *> &) const override;
 };
 
 #endif
