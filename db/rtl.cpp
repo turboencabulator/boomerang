@@ -24,7 +24,6 @@
 #include "boomerang.h"
 #include "exp.h"
 #include "statement.h"
-#include "type.h"
 #include "types.h"
 #include "visitor.h"
 
@@ -352,26 +351,6 @@ void
 RTL::clear()
 {
 	stmtList.clear();
-}
-
-/**
- * \brief Return type of first Assign.
- *
- * Get the "type" for this RTL. Just gets the type of the first assignment
- * Exp.
- *
- * \note The type of the first assign may not be the type that you want!
- *
- * \returns A pointer to the type.
- */
-Type *
-RTL::getType() const
-{
-	for (const auto &stmt : stmtList) {
-		if (auto as = dynamic_cast<Assign *>(stmt))
-			return as->getType();
-	}
-	return new IntegerType();  // Default to 32 bit integer if no assignments
 }
 
 /**

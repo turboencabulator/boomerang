@@ -35,7 +35,6 @@ class Exp;
 class HLLCode;
 class Statement;
 class StmtVisitor;
-class Type;
 
 /**
  * Describes low level register transfer lists (actually lists of statements).
@@ -66,7 +65,6 @@ public:
 	 */
 	        ADDRESS     getAddress() const { return nativeAddr; }  ///< Return RTL's native address.
 	        void        setAddress(ADDRESS a) { nativeAddr = a; }  ///< Set the address.
-	        Type       *getType() const;
 	        bool        areFlagsAffected() const;
 	/** \} */
 
