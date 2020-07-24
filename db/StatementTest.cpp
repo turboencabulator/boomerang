@@ -816,28 +816,27 @@ void
 StatementTest::testIsFlagAssgn()
 {
 	std::ostringstream ost;
-	// FLAG addFlags(r2 , 99)
-	Assign fc(new Terminal(opFlags),
-	          new Binary(opFlagCall,
-	                     new Const("addFlags"),
-	                     new Binary(opList,
-	                                Location::regOf(2),
-	                                new Const(99))));
-	auto call = new CallStatement;
-	auto br = new BranchStatement;
-	auto as = new Assign(Location::regOf(9),
-	                     new Binary(opPlus,
-	                                Location::regOf(10),
-	                                new Const(4)));
+	// %flags := addFlags(r2, 99)
+	auto fc = Assign(new Terminal(opFlags),
+	                 new Binary(opFlagCall,
+	                            new Const("addFlags"),
+	                            new Binary(opList,
+	                                       Location::regOf(2),
+	                                       new Const(99))));
+	auto call = CallStatement();
+	auto br = BranchStatement();
+	auto as = Assign(Location::regOf(9),
+	                 new Binary(opPlus,
+	                            Location::regOf(10),
+	                            new Const(4)));
 	fc.print(ost);
 	std::string expected("   0 *v* %flags := addFlags(r2, 99)");
 	std::string actual(ost.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
-	CPPUNIT_ASSERT (    fc.isFlagAssgn());
-	CPPUNIT_ASSERT (!call->isFlagAssgn());
-	CPPUNIT_ASSERT (!  br->isFlagAssgn());
-	CPPUNIT_ASSERT (!  as->isFlagAssgn());
-	delete call; delete br;
+	CPPUNIT_ASSERT (   fc.isFlagAssgn());
+	CPPUNIT_ASSERT (!call.isFlagAssgn());
+	CPPUNIT_ASSERT (!  br.isFlagAssgn());
+	CPPUNIT_ASSERT (!  as.isFlagAssgn());
 }
 
 /**

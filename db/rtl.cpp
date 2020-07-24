@@ -114,23 +114,15 @@ RTL::accept(StmtVisitor &v)
 /**
  * \brief Add s to end of RTL.
  *
- * Append the given Statement at the end of this RTL.
- *
- * \note Exception: Leaves any flag call at the end (so may push exp to second
- * last position, instead of last).
+ * Append the given Statement to the end of this RTL.
  *
  * \note stmt is NOT copied. This is different to how UQBT was!
  *
- * \param s  Pointer to Statement to append.
+ * \param s  Statement to append.
  */
 void
 RTL::appendStmt(Statement *s)
 {
-	if (areFlagsAffected()) {
-		auto it = stmtList.end();
-		stmtList.insert(--it, s);
-		return;
-	}
 	stmtList.push_back(s);
 }
 
@@ -311,17 +303,16 @@ RTL::clear()
 /**
  * \brief True if flags are affected.
  *
- * Return true if this RTL affects the condition codes.
- *
- * \note Assumes that if there is a flag call Exp, then it is the last.
- *
- * \returns Boolean as above.
+ * \returns true if this RTL affects the condition codes.
  */
 bool
 RTL::areFlagsAffected() const
 {
-	// If it is a flag call, then the CCs are affected
-	return !stmtList.empty() && stmtList.back()->isFlagAssgn();
+	for (const auto &stmt : stmtList)
+		// If it is a flag call, then the CCs are affected
+		if (stmt->isFlagAssgn())
+			return true;
+	return false;
 }
 
 /**

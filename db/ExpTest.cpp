@@ -1288,11 +1288,10 @@ ExpTest::testSubscriptVars()
 void
 ExpTest::testVisitors()
 {
-	Assign s7(new Terminal(opNil), new Terminal(opNil));
+	auto s7 = Assign(new Terminal(opNil), new Terminal(opNil));
 	// m[SETTFLAGS(m[1000], r8)]{7}
 	s7.setNumber(7);
-	FlagsFinder ff;
-	Exp *e1 = new RefExp(Location::memOf(new Binary(opFlagCall,
+	auto e1 = new RefExp(Location::memOf(new Binary(opFlagCall,
 	                                                new Const("SETFFLAGS"),
 	                                                new Binary(opList,
 	                                                           Location::memOf(new Const(0x1000)),  // A bare memof
@@ -1302,10 +1301,10 @@ ExpTest::testVisitors()
 	                     &s7);
 
 	// m[0x2000]
-	Exp *e2 = Location::memOf(new Const(0x2000));
+	auto e2 = Location::memOf(new Const(0x2000));
 
 	// r1+m[1000]{7}*4
-	Exp *e3 = new Binary(opPlus,
+	auto e3 = new Binary(opPlus,
 	                     Location::regOf(1),
 	                     new Binary(opMult,
 	                                new RefExp(Location::memOf(new Const(1000)), &s7),
@@ -1326,4 +1325,8 @@ ExpTest::testVisitors()
 	res = e3->containsBareMemof();
 	CPPUNIT_ASSERT_EQUAL(0, res);
 #endif
+
+	delete e1;
+	delete e2;
+	delete e3;
 }
