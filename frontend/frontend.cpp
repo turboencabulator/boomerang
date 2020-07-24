@@ -1077,7 +1077,7 @@ FrontEnd::createReturnBlock(std::list<RTL *> *BB_rtls, UserProc *proc)
 	auto retAddr = retRTL->getAddress();
 	if (retRTL->getList().size() == 1)
 		// ret node has no semantics, clearly we need to keep ours
-		rtl->deleteLastStmt();
+		rtl->deleteStmt(--rtl->end());
 	else
 		rtl->clear();
 	rtl->appendStmt(new GotoStatement(retAddr));

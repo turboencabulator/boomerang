@@ -182,26 +182,6 @@ RTL::deleteStmt(const_iterator it)
 }
 
 /**
- * \brief Delete the last statement.
- */
-void
-RTL::deleteLastStmt()
-{
-	assert(!stmtList.empty());
-	stmtList.pop_back();
-}
-
-/**
- * \brief Replace the last Statement.
- */
-void
-RTL::replaceLastStmt(Statement *repl)
-{
-	assert(!stmtList.empty());
-	stmtList.back() = repl;
-}
-
-/**
  * \brief Print RTL to a stream.
  *
  * Prints this object to a stream in text form.

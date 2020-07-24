@@ -89,8 +89,6 @@ public:
 	        void        appendStmt(Statement *s);
 	        iterator    insertStmt(const_iterator, Statement *);
 	        iterator    deleteStmt(const_iterator);
-	        void        deleteLastStmt();
-	        void        replaceLastStmt(Statement *repl);
 	        void        clear();
 	        void        splice(std::list<Statement *> &);
 	        void        splice(RTL &);
