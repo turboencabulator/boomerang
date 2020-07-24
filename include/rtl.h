@@ -87,10 +87,8 @@ public:
 	 * \{
 	 */
 	        void        appendStmt(Statement *s);
-	        void        prependStmt(Statement *s);
 	        iterator    insertStmt(const_iterator, Statement *);
 	        iterator    deleteStmt(const_iterator);
-	        void        deleteFirstStmt();
 	        void        deleteLastStmt();
 	        void        replaceLastStmt(Statement *repl);
 	        void        clear();

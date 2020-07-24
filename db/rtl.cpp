@@ -135,21 +135,6 @@ RTL::appendStmt(Statement *s)
 }
 
 /**
- * \brief Add s to start of RTL.
- *
- * Prepend the given Statement at the start of this RTL.
- *
- * \note No clone of the statement is made. This is different to how UQBT was.
- *
- * \param s  Ptr to Statement to prepend.
- */
-void
-RTL::prependStmt(Statement *s)
-{
-	stmtList.push_front(s);
-}
-
-/**
  * \brief Transfers Statements from a list to the end of this RTL.
  *
  * \param l  List of Statements to move.
@@ -194,16 +179,6 @@ RTL::iterator
 RTL::deleteStmt(const_iterator it)
 {
 	return stmtList.erase(it);
-}
-
-/**
- * \brief Delete the first statement.
- */
-void
-RTL::deleteFirstStmt()
-{
-	assert(!stmtList.empty());
-	stmtList.pop_front();
 }
 
 /**

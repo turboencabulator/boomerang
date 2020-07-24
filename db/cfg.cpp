@@ -1388,7 +1388,8 @@ Cfg::addJunctionStatements()
 			assert(bb->getRTLs());
 			auto j = new JunctionStatement();
 			j->setBB(bb);
-			bb->getRTLs()->front()->prependStmt(j);
+			auto rtl = bb->getRTLs()->front();
+			rtl->insertStmt(rtl->begin(), j);
 		}
 	}
 }
@@ -1399,7 +1400,8 @@ Cfg::removeJunctionStatements()
 	for (const auto &bb : m_listBB) {
 		if (dynamic_cast<JunctionStatement *>(bb->getFirstStmt())) {
 			assert(bb->getRTLs());
-			bb->getRTLs()->front()->deleteFirstStmt();
+			auto rtl = bb->getRTLs()->front();
+			rtl->deleteStmt(rtl->begin());  // FIXME: Assumes this is the same Statement as bb->getFirstStmt()
 		}
 	}
 }
