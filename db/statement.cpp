@@ -1882,67 +1882,69 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		auto e = (Binary *)pCond;
 		auto left  = e->getSubExp1();
 		auto right = e->getSubExp2();
-		bool hasXor40 = false;
-		if (left->getOper() == opBitXor && right->isIntConst()) {
-			Exp *r2 = ((Binary *)left)->getSubExp2();
-			if (r2->isIntConst()) {
-				int k2 = ((Const *)r2)->getInt();
-				if (k2 == 0x40) {
-					hasXor40 = true;
-					left = ((Binary *)left)->getSubExp1();
-				}
-			}
-		}
-		if (left->getOper() == opBitAnd && right->isIntConst()) {
-			auto left1 = ((Binary *)left)->getSubExp1();
-			auto left2 = ((Binary *)left)->getSubExp2();
+		if (right->isIntConst()) {
 			int k = ((Const *)right)->getInt();
 			// Only interested in 40, 1
 			k &= 0x41;
-			if (left1->isFlagCall() && left2->isIntConst()) {
-				int mask = ((Const *)left2)->getInt();
-				// Only interested in 1, 40
-				mask &= 0x41;
-				auto op = opWild;
-				if (hasXor40) {
-					assert(k == 0);
-					op = condOp;
-				} else {
-					switch (mask) {
-					case 1:
-						op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 1)) ? opGtrEq : opLess;
-						break;
-					case 0x40:
-						op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 0x40)) ? opNotEqual : opEqual;
-						break;
-					case 0x41:
-						switch (k) {
-						case 0:
-							op = (condOp == opEqual) ? opGtr : opLessEq;
-							break;
-						case 1:
-							op = (condOp == opEqual) ? opLess : opGtrEq;
-							break;
-						case 0x40:
-							op = (condOp == opEqual) ? opEqual : opNotEqual;
-							break;
-						default:
-							std::cerr << "BranchStatement::simplify: k is " << std::hex << k << std::dec << "\n";
-							assert(0);
-						}
-						break;
-					default:
-						std::cerr << "BranchStatement::simplify: Mask is " << std::hex << mask << std::dec << "\n";
-						assert(0);
+			bool hasXor40 = false;
+			if (left->getOper() == opBitXor) {
+				auto r2 = ((Binary *)left)->getSubExp2();
+				if (r2->isIntConst()) {
+					int k2 = ((Const *)r2)->getInt();
+					if (k2 == 0x40) {
+						hasXor40 = true;
+						left = ((Binary *)left)->getSubExp1();
 					}
 				}
-				if (op != opWild) {
-					auto fc = (Binary *)left1;
-					auto l1 = (Binary *)fc->getSubExp2();
-					auto l2 = (Binary *)l1->getSubExp2();
-					pCond = new Binary(op, l1->swapSubExp1(nullptr), l2->swapSubExp1(nullptr));
-					delete e;
-					return true;  // This is now a float comparison
+			}
+			if (left->getOper() == opBitAnd) {
+				auto left1 = ((Binary *)left)->getSubExp1();
+				auto left2 = ((Binary *)left)->getSubExp2();
+				if (left1->isFlagCall() && left2->isIntConst()) {
+					int mask = ((Const *)left2)->getInt();
+					// Only interested in 1, 40
+					mask &= 0x41;
+					auto op = opWild;
+					if (hasXor40) {
+						assert(k == 0);
+						op = condOp;
+					} else {
+						switch (mask) {
+						case 1:
+							op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 1)) ? opGtrEq : opLess;
+							break;
+						case 0x40:
+							op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 0x40)) ? opNotEqual : opEqual;
+							break;
+						case 0x41:
+							switch (k) {
+							case 0:
+								op = (condOp == opEqual) ? opGtr : opLessEq;
+								break;
+							case 1:
+								op = (condOp == opEqual) ? opLess : opGtrEq;
+								break;
+							case 0x40:
+								op = (condOp == opEqual) ? opEqual : opNotEqual;
+								break;
+							default:
+								std::cerr << "BranchStatement::simplify: k is " << std::hex << k << std::dec << "\n";
+								assert(0);
+							}
+							break;
+						default:
+							std::cerr << "BranchStatement::simplify: Mask is " << std::hex << mask << std::dec << "\n";
+							assert(0);
+						}
+					}
+					if (op != opWild) {
+						auto fc = (Binary *)left1;
+						auto l1 = (Binary *)fc->getSubExp2();
+						auto l2 = (Binary *)l1->getSubExp2();
+						pCond = new Binary(op, l1->swapSubExp1(nullptr), l2->swapSubExp1(nullptr));
+						delete e;
+						return true;  // This is now a float comparison
+					}
 				}
 			}
 		}
@@ -3070,49 +3072,52 @@ Statement::replaceRef(RefExp *e, bool &convert)
 	auto def = dynamic_cast<Assign *>(e->getDef());
 	assert(def);
 
-	Exp *rhs = def->getRight();
+	auto rhs = def->getRight();
 	assert(rhs);
 
-	Exp *base = e->getSubExp1();
+	auto base = e->getSubExp1();
 	// Could be propagating %flags into %CF
-	Exp *lhs = def->getLeft();
-	if (base->getOper() == opCF && lhs->isFlags()) {
+	auto lhs = def->getLeft();
+	if (lhs->isFlags()) {
 		if (!rhs->isFlagCall())
 			return false;
-		const char *str = ((Const *)((Binary *)rhs)->getSubExp1())->getStr();
+		auto fc = (Binary *)rhs;
+		auto str = ((Const *)fc->getSubExp1())->getStr();
 		if (strncmp("SUBFLAGS", str, 8) == 0) {
-			/* When the carry flag is used bare, and was defined in a subtract of the form lhs - rhs, then CF has
-			   the value (lhs <u rhs).  lhs and rhs are the first and second parameters of the flagcall.
-			   Note: the flagcall is a binary, with a Const (the name) and a list of expressions:
-			     defRhs
-			     /    \
-			Const      opList
-			"SUBFLAGS"  /   \
-			           P1   opList
-			                 /   \
-			                P2  opList
-			                     /   \
-			                    P3   opNil
-			*/
-			Exp *relExp = new Binary(opLessUns,
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp1()->clone(),
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp1()->clone());
-			searchAndReplace(new RefExp(new Terminal(opCF), def), relExp, true);
-			return true;
-		}
-	}
-	// need something similar for %ZF
-	if (base->getOper() == opZF && lhs->isFlags()) {
-		if (!rhs->isFlagCall())
-			return false;
-		const char *str = ((Const *)((Binary *)rhs)->getSubExp1())->getStr();
-		if (strncmp("SUBFLAGS", str, 8) == 0) {
-			// for zf we're only interested in if the result part of the subflags is equal to zero
-			Exp *relExp = new Binary(opEqual,
-			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1()->clone(),
-			                         new Const(0));
-			searchAndReplace(new RefExp(new Terminal(opZF), def), relExp, true);
-			return true;
+			if (base->getOper() == opCF) {
+				/* When the carry flag is used bare, and was defined in a subtract of the form lhs - rhs, then CF has
+				   the value (lhs <u rhs).  lhs and rhs are the first and second parameters of the flagcall.
+				   Note: the flagcall is a binary, with a Const (the name) and a list of expressions:
+				     defRhs
+				     /    \
+				Const      opList
+				"SUBFLAGS"  /   \
+				           P1   opList
+				                 /   \
+				                P2  opList
+				                     /   \
+				                    P3   opNil
+				*/
+				auto l1 = (Binary *)fc->getSubExp2();
+				auto l2 = (Binary *)l1->getSubExp2();
+				auto relExp = new Binary(opLessUns,
+				                         l1->getSubExp1()->clone(),
+				                         l2->getSubExp1()->clone());
+				searchAndReplace(e, relExp, true);
+				return true;
+			}
+			// need something similar for %ZF
+			if (base->getOper() == opZF) {
+				// for zf we're only interested in if the result part of the subflags is equal to zero
+				auto l1 = (Binary *)fc->getSubExp2();
+				auto l2 = (Binary *)l1->getSubExp2();
+				auto l3 = (Binary *)l2->getSubExp2();
+				auto relExp = new Binary(opEqual,
+				                         l3->getSubExp1()->clone(),
+				                         new Const(0));
+				searchAndReplace(e, relExp, true);
+				return true;
+			}
 		}
 	}
 
