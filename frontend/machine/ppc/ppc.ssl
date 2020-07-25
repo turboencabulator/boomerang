@@ -198,12 +198,14 @@ ADDI    rd, rs, simm
 	*32* rd := rs + simm;
 
 ADDIC   rd, rs, simm
-	*32* rd := rs + simm
-	ADDFLAGSX(rd, rs, simm);    # Set carry
+	*32* tmp := rs + simm
+	ADDFLAGSX(tmp, rs, simm)    # Set carry
+	*32* rd := tmp;
 
 ADDICq  rd, rs, simm
-	*32* rd := rs + simm
-	ADDFLAGSX0(rd, rs, simm);   # Set carry and CR0
+	*32* tmp := rs + simm
+	ADDFLAGSX0(tmp, rs, simm)   # Set carry and CR0
+	*32* rd := tmp;
 
 ADDIS   rd, rs, simm
 	*32* rd := rs + (simm << 16);
@@ -245,19 +247,22 @@ SUBFE   rd, ra, rb
 	*32* rd := rb + %XERCA - ra;
 
 SUBFIC  rd, ra, simm
-	*32* rd := simm - ra
-	SUBFLAGSX(rd, simm, ra);
+	*32* tmp := simm - ra
+	SUBFLAGSX(tmp, simm, ra)
+	*32* rd := tmp;
 
 SUBFC'O''Q'  rd, ra, rb
-	*32* rd := rb - ra;
+	*32* tmp := rb - ra;
 SUBFC   rd, ra, rb
-	SUBFLAGSX(rd, rb, ra);
+	SUBFLAGSX(tmp, rb, ra);
 SUBFCQ  rd, ra, rb
-	SUBFLAGSX0(rd);
+	SUBFLAGSX0(tmp, rb, ra);
 SUBFCO  rd, ra, rb
-	SUBFLAGSX(rd, rb, ra);      # Also supposed to set overflow bits
+	SUBFLAGSX(tmp, rb, ra);      # Also supposed to set overflow bits
 SUBFCOQ rd, ra, rb
-	SUBFLAGSX0(rd, rb, ra);     # Also supposed to set overflow bits
+	SUBFLAGSX0(tmp, rb, ra);     # Also supposed to set overflow bits
+SUBFC'O''Q'  rd, ra, rb
+	*32* rd := tmp;
 
 NOP
 	_;
@@ -544,12 +549,12 @@ MTSPR spr, rs
 ROT_AND := { "RLWINM", "RLWIMI" };
 
 ROT_AND[IDX]'q'  ra, rs, uimm, beg, end
-	*32* tmp_mask := (1 << (32 - beg)) - (1 << (31 - end));
+	*32* tmp_mask := (1 << (32 - beg)) - (1 << (31 - end))
+	*32* tmp_r := (rs rl uimm) & tmp_mask;  # TODO: Try using bit extraction to do this
 RLWINM'q'  ra, rs, uimm, beg, end
-	*32* ra := rs rl uimm & tmp_mask;   # rl = rotate left
+	*32* ra := tmp_r;
 RLWIMI'q'  ra, rs, uimm, beg, end
-	*32* tmp_r := rs rl uimm & tmp_mask
-	*32* ra := rs | (ra & ~tmp_mask);
+	*32* ra := tmp_r | (ra & ~tmp_mask);
 ROT_AND[IDX]"q"  ra, rs, uimm, beg, end
 	SETFLAGS0(ra);
 
