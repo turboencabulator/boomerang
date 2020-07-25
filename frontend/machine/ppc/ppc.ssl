@@ -49,13 +49,13 @@ SETXER(value) {
 	*1*  %XERSO := %XER@[31]
 };
 
-ADDFLAGSX(result, op1, op2) {
+ADDFLAGSX(op1, op2, result) {
 	*1*  %XERCA :=                 (op1@[31] & op2@[31])
 	             | (~result@[31] & (op1@[31] | op2@[31]))
 	*1*  %XER@[29] := %XERCA
 };
 
-ADDFLAGSX0(result, op1, op2) {
+ADDFLAGSX0(op1, op2, result) {
 	*1*  %XERCA :=                 (op1@[31] & op2@[31])
 	             | (~result@[31] & (op1@[31] | op2@[31]))
 	*1*  %XER@[29] := %XERCA
@@ -65,7 +65,7 @@ ADDFLAGSX0(result, op1, op2) {
 	*1*  %CR0@[3] := [result < 0 ? 1 : 0]
 };
 
-SUBFLAGSX(result, op1, op2) {
+SUBFLAGSX(op1, op2, result) {
 	*1*  %XERCA :=                (~op1@[31] & op2@[31])
 	             | (result@[31] & (~op1@[31] | op2@[31]))
 	*1*  %XER@[29] := %XERCA
@@ -78,7 +78,7 @@ SUBFLAGS0(result) {
 	*1*  %CR0@[3] := [result < 0 ? 1 : 0]
 };
 
-SUBFLAGSX0(result, op1, op2) {
+SUBFLAGSX0(op1, op2, result) {
 	*1*  %XERCA :=                (~op1@[31] & op2@[31])
 	             | (result@[31] & (~op1@[31] | op2@[31]))
 	*1*  %XER@[29] := %XERCA
@@ -199,12 +199,12 @@ ADDI    rd, rs, simm
 
 ADDIC   rd, rs, simm
 	*32* tmp := rs + simm
-	ADDFLAGSX(tmp, rs, simm)    # Set carry
+	ADDFLAGSX(rs, simm, tmp)    # Set carry
 	*32* rd := tmp;
 
 ADDICq  rd, rs, simm
 	*32* tmp := rs + simm
-	ADDFLAGSX0(tmp, rs, simm)   # Set carry and CR0
+	ADDFLAGSX0(rs, simm, tmp)   # Set carry and CR0
 	*32* rd := tmp;
 
 ADDIS   rd, rs, simm
@@ -248,19 +248,19 @@ SUBFE   rd, ra, rb
 
 SUBFIC  rd, ra, simm
 	*32* tmp := simm - ra
-	SUBFLAGSX(tmp, simm, ra)
+	SUBFLAGSX(simm, ra, tmp)
 	*32* rd := tmp;
 
 SUBFC'O''Q'  rd, ra, rb
 	*32* tmp := rb - ra;
 SUBFC   rd, ra, rb
-	SUBFLAGSX(tmp, rb, ra);
+	SUBFLAGSX(rb, ra, tmp);
 SUBFCQ  rd, ra, rb
-	SUBFLAGSX0(tmp, rb, ra);
+	SUBFLAGSX0(rb, ra, tmp);
 SUBFCO  rd, ra, rb
-	SUBFLAGSX(tmp, rb, ra);      # Also supposed to set overflow bits
+	SUBFLAGSX(rb, ra, tmp);      # Also supposed to set overflow bits
 SUBFCOQ rd, ra, rb
-	SUBFLAGSX0(tmp, rb, ra);     # Also supposed to set overflow bits
+	SUBFLAGSX0(rb, ra, tmp);     # Also supposed to set overflow bits
 SUBFC'O''Q'  rd, ra, rb
 	*32* rd := tmp;
 
