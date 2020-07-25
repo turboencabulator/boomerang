@@ -494,18 +494,16 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 
 	// First pass: Scan for post-variables and usages of their referents
 	for (const auto &rt : rtl) {
-		// ss appears to be a list of expressions to be searched
-		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
-		Binary *ss;
+		auto ss = std::list<Exp *>();
 		if (auto as = dynamic_cast<Assign *>(rt)) {
-			Exp *lhs = as->getLeft();
-			Exp *rhs = as->getRight();
+			auto lhs = as->getLeft();
+			auto rhs = as->getRight();
 
 			// Look for assignments to post-variables
 			if (lhs && lhs->isPostVar()) {
 				if (!vars.count(lhs)) {
 					// Add a record in the map for this postvar
-					transPost &el = vars[lhs];
+					auto &el = vars[lhs];
 					el.used = false;
 					el.type = as->getType();
 
@@ -530,18 +528,8 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 			}
 			// For an assignment, the two expressions to search are the left and right hand sides (could just put the
 			// whole assignment on, I suppose)
-			ss = new Binary(opList,
-			                lhs->clone(),
-			                new Binary(opList,
-			                           rhs->clone(),
-			                           new Terminal(opNil)));
-#if 0  // FIXME:  Can't get here, FlagAssign is an Assign.  Also can't cast from Statement to Binary.
-		} else if (rt->isFlagAssgn()) {
-			// An opFlagCall is assumed to be a Binary with a string and an opList of parameters
-			ss = (Binary *)((Binary *)rt)->getSubExp2();
-#endif
-		} else {
-			ss = nullptr;
+			ss.push_back(lhs->clone());
+			ss.push_back(rhs->clone());
 		}
 
 		/* Look for usages of post-variables' referents
@@ -560,9 +548,7 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 			}
 			if (sr.second.used)
 				continue;  // Don't bother; already know it's used
-			for (Binary *cur = ss; !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
-				Exp *s = cur->getSubExp1();
-				if (!s) continue;
+			for (const auto &s : ss) {
 				if (*s == *sr.second.base) {
 					sr.second.used = true;
 					break;
