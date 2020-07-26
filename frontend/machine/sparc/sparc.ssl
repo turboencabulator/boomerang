@@ -273,9 +273,9 @@ LDSTUB eaddr, rd
 # Swap using temp register
 #SWAPS := { SWAP_, SWAPA_ }
 SWAP eaddr, rd
-	*32* tmp1 := rd
+	*32* tmp := rd
 	*32* rd := m[eaddr]
-	*32* m[eaddr] := tmp1;
+	*32* m[eaddr] := tmp;
 
 # Logical operators - use OP1 (table) to map the correct operator.
 
@@ -828,24 +828,24 @@ RET_IMM_VAL rs1, imm
 # Note: the (possibly) redundant moves here will make it appear that the call
 # uses all 6 register parameters, unless the live-ins are considered as well
 DLY_RST_REG rs1, rs2, rd
-	*32* tmp1 := rs1 + rs2
+	*32* tmp := rs1 + rs2
 	*32* %o0 := %i0
 	*32* %o1 := %i1
 	*32* %o2 := %i2
 	*32* %o3 := %i3
 	*32* %o4 := %i4
 	*32* %o5 := %i5
-	*32* rd := tmp1;
+	*32* rd := tmp;
 # Same as above but for immediates
 DLY_RST_IMM rs1, imm, rd
-	*32* tmp1 := rs1 + imm
+	*32* tmp := rs1 + imm
 	*32* %o0 := %i0
 	*32* %o1 := %i1
 	*32* %o2 := %i2
 	*32* %o3 := %i3
 	*32* %o4 := %i4
 	*32* %o5 := %i5
-	*32* rd := tmp1;
+	*32* rd := tmp;
 
 # Semantics for the standard return, i.e. ret/restore. The effect is to copy
 # i0 to o0, so o0 is the real return location (for integers) for all types of

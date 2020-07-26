@@ -18,7 +18,7 @@ double f2to3;   // this is evil
 
 // temps
 int tmp, tmp1, tmp2, tmp3, tmp4;
-double tmpD9;
+double tmpF9;
 
 
 // target endianness, change if you're not on a little endian machine
@@ -42,7 +42,7 @@ int target_endianness = 0;
 
 #define ADDR(x) ((unsigned int)(x) >= start_data &&  \
 				 (unsigned int)(x) < start_data + data_size ?  \
-				 	(unsigned int)(x) - start_data + (unsigned int)data :  \
+				 (unsigned int)(x) - start_data + (unsigned int)data :  \
 				 (unsigned int)(x) >= start_rodata && \
 				 (unsigned int)(x) < start_rodata + rodata_size ? \
 				 (unsigned int)(x) - start_rodata + (unsigned int)rodata : \

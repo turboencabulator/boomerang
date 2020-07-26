@@ -263,7 +263,7 @@ PentiumFrontEnd::processFloatCode(Cfg *cfg)
 				if (stmt->isFpush()) {
 					sit = rtl->deleteStmt(sit);
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::tempOf(new Const("tmpD9")),
+					                                      Location::tempOf(new Const("tmpF9")),
 					                                      Location::regOf(39)));
 					++sit;
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
@@ -296,11 +296,11 @@ PentiumFrontEnd::processFloatCode(Cfg *cfg)
 					++sit;
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
 					                                      Location::regOf(32),
-					                                      Location::tempOf(new Const("tmpD9"))));
+					                                      Location::tempOf(new Const("tmpF9"))));
 				} else if (stmt->isFpop()) {
 					sit = rtl->deleteStmt(sit);
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::tempOf(new Const("tmpD9")),
+					                                      Location::tempOf(new Const("tmpF9")),
 					                                      Location::regOf(32)));
 					++sit;
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
@@ -333,7 +333,7 @@ PentiumFrontEnd::processFloatCode(Cfg *cfg)
 					++sit;
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
 					                                      Location::regOf(39),
-					                                      Location::tempOf(new Const("tmpD9"))));
+					                                      Location::tempOf(new Const("tmpF9"))));
 				}
 			}
 		}
