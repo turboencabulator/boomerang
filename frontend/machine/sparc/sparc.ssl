@@ -317,41 +317,40 @@ OP3   := { +,     -,     +,       -,       +,        -        };
 ARITH := { "ADD", "SUB", "ADDCC", "SUBCC", "TADDCC", "TSUBCC" };
 
 ARITH[IDX] rs1, reg_or_imm, rd
-	*32* tmp := rs1
-	*32* rd  := rs1 OP3[IDX] reg_or_imm;
-
+	*32* tmp := rs1 OP3[IDX] reg_or_imm;
 ADDCC rs1, reg_or_imm, rd
-	ADDFLAGS(tmp, reg_or_imm, rd);
-
+	ADDFLAGS(rs1, reg_or_imm, tmp);
 SUBCC rs1, reg_or_imm, rd
-	SUBFLAGS(tmp, reg_or_imm, rd);
-
+	SUBFLAGS(rs1, reg_or_imm, tmp);
 TADDCC rs1, reg_or_imm, rd
-	TADDFLAGS(tmp, reg_or_imm, rd);
-
+	TADDFLAGS(rs1, reg_or_imm, tmp);
 TSUBCC rs1, reg_or_imm, rd
-	TSUBFLAGS(tmp, reg_or_imm, rd);
+	TSUBFLAGS(rs1, reg_or_imm, tmp);
+ARITH[IDX] rs1, reg_or_imm, rd
+	*32* rd := tmp;
 
 OP4     := { +,      -      };
 ARITH_C := { "ADDX", "SUBX" };
 
 ARITH_C[idx]'CC' rs1, reg_or_imm, rd
-	*32* tmp := rs1
-	*32* rd  := rs1 OP4[idx] reg_or_imm OP4[idx] zfill(1, 32, %CF);
+	*32* tmp := rs1 OP4[idx] reg_or_imm OP4[idx] zfill(1, 32, %CF);
 ADDXCC rs1, reg_or_imm, rd
-	ADDFLAGS(tmp, reg_or_imm, rd);
+	ADDFLAGS(rs1, reg_or_imm, tmp);
 SUBXCC rs1, reg_or_imm, rd
-	SUBFLAGS(tmp, reg_or_imm, rd);
+	SUBFLAGS(rs1, reg_or_imm, tmp);
+ARITH_C[idx]'CC' rs1, reg_or_imm, rd
+	*32* rd := tmp;
 
 # Unsigned Multiplication - uses the Y register to store top 32 bits treats  Y
 #  and rd as 64 bit register
 UMUL'CC' rs1, reg_or_imm, rd
-	*32* tmp := rs1
 	*64* tmpl := zfill(32, 64, rs1) * zfill(32, 64, reg_or_imm)
-	*32* rd := truncs(64, 32, tmpl)
+	*32* tmp := truncs(64, 32, tmpl)
 	*32* %Y := tmpl@[32:63];
 UMULCC rs1, reg_or_imm, rd
-	MULTFLAGS(tmp, reg_or_imm, rd);
+	MULTFLAGS(rs1, reg_or_imm, tmp);
+UMUL'CC' rs1, reg_or_imm, rd
+	*32* rd := tmp;
 
 
 MULSCC rs1, reg_or_imm, rd
@@ -365,12 +364,13 @@ MULSCC rs1, reg_or_imm, rd
 # Signed Multiplication - uses the Y register to store top 32 bits treats  Y
 # and rd as 64 bit register
 SMUL'CC' rs1, reg_or_imm, rd
-	*32* tmp := rs1
 	*64* tmpl := sgnex(32, 64, rs1) *! sgnex(32, 64, reg_or_imm)
-	*32* rd := truncs(64, 32, tmpl)
+	*32* tmp := truncs(64, 32, tmpl)
 	*32* %Y := tmpl@[32:63];
 SMULCC rs1, reg_or_imm, rd
-	MULTFLAGS(tmp, reg_or_imm, rd);
+	MULTFLAGS(rs1, reg_or_imm, tmp);
+SMUL'CC' rs1, reg_or_imm, rd
+	*32* rd := tmp;
 
 # Unsigned Multiplication Quick - 32 x 32 -> 32 bits
 UMUL'CC'"Q" rs1, reg_or_imm, rd

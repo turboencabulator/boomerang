@@ -83,9 +83,9 @@ FrontPentTest::test2()
 	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
 
 	fe->decodeInstruction(inst, 0x8048345);
-	expected = std::string("08048345    0 *32* tmpi := r28\n"
-	                       "            0 *32* r28 := r28 + 16\n"
-	                       "            0 *v* %flags := ADDFLAGS32(tmpi, 16, r28)\n");
+	expected = std::string("08048345    0 *32* tmpi := r28 + 16\n"
+	                       "            0 *v* %flags := ADDFLAGS32(r28, 16, tmpi)\n"
+	                       "            0 *32* r28 := tmpi\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	fe->decodeInstruction(inst, 0x8048348);

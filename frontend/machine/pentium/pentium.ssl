@@ -297,116 +297,130 @@ ARITH_OP := { +,     -     };
 ARITH    := { "ADD", "SUB" };
 
 ARITH[IDX]"IAL" i8
-	*8* tmpb := %al
-	*8* %al := %al ARITH_OP[IDX] i8;
+	*8* tmpb := %al ARITH_OP[IDX] i8;
 ADD.IAL i8
-	ADDFLAGS8(tmpb, i8, %al);
+	ADDFLAGS8(%al, i8, tmpb);
 SUB.IAL i8
-	SUBFLAGS8(tmpb, i8, %al);
+	SUBFLAGS8(%al, i8, tmpb);
+ARITH[IDX]"IAL" i8
+	*8* %al := tmpb;
 
 ARITH[IDX]"IAX" i16
-	*16* tmph := %ax
-	*16* %ax := %ax ARITH_OP[IDX] i16;
+	*16* tmph := %ax ARITH_OP[IDX] i16;
 ADD.IAX i16
-	ADDFLAGS16(tmph, i16, %ax);
+	ADDFLAGS16(%ax, i16, tmph);
 SUB.IAX i16
-	SUBFLAGS16(tmph, i16, %ax);
+	SUBFLAGS16(%ax, i16, tmph);
+ARITH[IDX]"IAX" i16
+	*16* %ax := tmph;
 
 ARITH[IDX]"IEAX" i32
-	*32* tmpi := %eax
-	*32* %eax := %eax ARITH_OP[IDX] i32;
+	*32* tmpi := %eax ARITH_OP[IDX] i32;
 ADD.IEAX i32
-	ADDFLAGS32(tmpi, i32, %eax);
+	ADDFLAGS32(%eax, i32, tmpi);
 SUB.IEAX i32
-	SUBFLAGS32(tmpi, i32, %eax);
+	SUBFLAGS32(%eax, i32, tmpi);
+ARITH[IDX]"IEAX" i32
+	*32* %eax := tmpi;
 
 ARITH[IDX]"ID" modrm, i32
-	*32* tmpi := modrm
-	*32* modrm := modrm ARITH_OP[IDX] i32;
+	*32* tmpi := modrm ARITH_OP[IDX] i32;
 ADD.ID modrm, i32
-	ADDFLAGS32(tmpi, i32, modrm);
+	ADDFLAGS32(modrm, i32, tmpi);
 SUB.ID modrm, i32
-	SUBFLAGS32(tmpi, i32, modrm);
+	SUBFLAGS32(modrm, i32, tmpi);
+ARITH[IDX]"ID" modrm, i32
+	*32* modrm := tmpi;
 
 ARITH[IDX]"IW" modrm, i16
-	*16* tmph := modrm
-	*16* modrm := modrm ARITH_OP[IDX] i16;
+	*16* tmph := modrm ARITH_OP[IDX] i16;
 ADD.IW modrm, i16
-	ADDFLAGS16(tmph, i16, modrm);
+	ADDFLAGS16(modrm, i16, tmph);
 SUB.IW modrm, i16
-	SUBFLAGS16(tmph, i16, modrm);
+	SUBFLAGS16(modrm, i16, tmph);
+ARITH[IDX]"IW" modrm, i16
+	*16* modrm := tmph;
 
 ARITH[IDX]"IB" modrm, i8
-	*8* tmpb := modrm
-	*8* modrm := modrm ARITH_OP[IDX] i8;
+	*8* tmpb := modrm ARITH_OP[IDX] i8;
 ADD.IB modrm, i8
-	ADDFLAGS8(tmpb, i8, modrm);
+	ADDFLAGS8(modrm, i8, tmpb);
 SUB.IB modrm, i8
-	SUBFLAGS8(tmpb, i8, modrm);
+	SUBFLAGS8(modrm, i8, tmpb);
+ARITH[IDX]"IB" modrm, i8
+	*8* modrm := tmpb;
 
 ARITH[IDX]"IOWB" modrm, i8
-	*16* tmph := modrm
-	*16* modrm := modrm ARITH_OP[IDX] i8;
+	*16* tmph := modrm ARITH_OP[IDX] i8;
 ADD.IOWB modrm, i8
-	ADDFLAGS16(tmph, i8, modrm);
+	ADDFLAGS16(modrm, i8, tmph);
 SUB.IOWB modrm, i8
-	SUBFLAGS16(tmph, i8, modrm);
+	SUBFLAGS16(modrm, i8, tmph);
+ARITH[IDX]"IOWB" modrm, i8
+	*16* modrm := tmph;
 
 ARITH[IDX]"IODB" modrm, i8
-	*32* tmpi := modrm
-	*32* modrm := modrm ARITH_OP[IDX] i8;
+	*32* tmpi := modrm ARITH_OP[IDX] i8;
 ADD.IODB modrm, i8
-	ADDFLAGS32(tmpi, i8, modrm);
+	ADDFLAGS32(modrm, i8, tmpi);
 SUB.IODB modrm, i8
-	SUBFLAGS32(tmpi, i8, modrm);
+	SUBFLAGS32(modrm, i8, tmpi);
+ARITH[IDX]"IODB" modrm, i8
+	*32* modrm := tmpi;
 
 ARITH[IDX]"MRB" modrm, reg8
-	*8* tmpb := modrm
-	*8* modrm := modrm ARITH_OP[IDX] reg8;
+	*8* tmpb := modrm ARITH_OP[IDX] reg8;
 ADD.MRB modrm, reg8
-	ADDFLAGS8(tmpb, reg8, modrm);
+	ADDFLAGS8(modrm, reg8, tmpb);
 SUB.MRB modrm, reg8
-	SUBFLAGS8(tmpb, reg8, modrm);
+	SUBFLAGS8(modrm, reg8, tmpb);
+ARITH[IDX]"MRB" modrm, reg8
+	*8* modrm := tmpb;
 
 ARITH[IDX]"MROW" modrm, reg16
-	*16* tmph := modrm
-	*16* modrm := modrm ARITH_OP[IDX] reg16;
+	*16* tmph := modrm ARITH_OP[IDX] reg16;
 ADD.MROW modrm, reg16
-	ADDFLAGS16(tmph, reg16, modrm);
+	ADDFLAGS16(modrm, reg16, tmph);
 SUB.MROW modrm, reg16
-	SUBFLAGS16(tmph, reg16, modrm);
+	SUBFLAGS16(modrm, reg16, tmph);
+ARITH[IDX]"MROW" modrm, reg16
+	*16* modrm := tmph;
 
 ARITH[IDX]"MROD" modrm, reg32
-	*32* tmpi := modrm
-	*32* modrm := modrm ARITH_OP[IDX] reg32;
+	*32* tmpi := modrm ARITH_OP[IDX] reg32;
 ADD.MROD modrm, reg32
-	ADDFLAGS32(tmpi, reg32, modrm);
+	ADDFLAGS32(modrm, reg32, tmpi);
 SUB.MROD modrm, reg32
-	SUBFLAGS32(tmpi, reg32, modrm);
+	SUBFLAGS32(modrm, reg32, tmpi);
+ARITH[IDX]"MROD" modrm, reg32
+	*32* modrm := tmpi;
 
 ARITH[IDX]"RMB" reg8, modrm
-	*8* tmpb := reg8
-	*8* reg8 := reg8 ARITH_OP[IDX] modrm{8};
+	*8* tmpb := reg8 ARITH_OP[IDX] modrm{8};
 ADD.RMB reg8, modrm
-	ADDFLAGS8(tmpb, modrm{8}, reg8);
+	ADDFLAGS8(reg8, modrm{8}, tmpb);
 SUB.RMB reg8, modrm
-	SUBFLAGS8(tmpb, modrm{8}, reg8);
+	SUBFLAGS8(reg8, modrm{8}, tmpb);
+ARITH[IDX]"RMB" reg8, modrm
+	*8* reg8 := tmpb;
 
 ARITH[IDX]"RMOW" reg16, modrm
-	*16* tmph := reg16
-	*16* reg16 := reg16 ARITH_OP[IDX] modrm{16};
+	*16* tmph := reg16 ARITH_OP[IDX] modrm{16};
 ADD.RMOW reg16, modrm
-	ADDFLAGS16(tmph, modrm{16}, reg16);
+	ADDFLAGS16(reg16, modrm{16}, tmph);
 SUB.RMOW reg16, modrm
-	SUBFLAGS16(tmph, modrm{16}, reg16);
+	SUBFLAGS16(reg16, modrm{16}, tmph);
+ARITH[IDX]"RMOW" reg16, modrm
+	*16* reg16 := tmph;
 
 ARITH[IDX]"RMOD" reg32, modrm
-	*32* tmpi := reg32
-	*32* reg32 := reg32 ARITH_OP[IDX] modrm;
+	*32* tmpi := reg32 ARITH_OP[IDX] modrm;
 ADD.RMOD reg32, modrm
-	ADDFLAGS32(tmpi, modrm, reg32);
+	ADDFLAGS32(reg32, modrm, tmpi);
 SUB.RMOD reg32, modrm
-	SUBFLAGS32(tmpi, modrm, reg32);
+	SUBFLAGS32(reg32, modrm, tmpi);
+ARITH[IDX]"RMOD" reg32, modrm
+	*32* reg32 := tmpi;
 
 BSWAP reg32
 	*32* tmpi1 := zfill(8, 32, reg32@[24:31])
@@ -533,110 +547,121 @@ LOGIC[IDX]"RMOD" reg32, modrm
 ARITH_C := { "ADC", "SBB" };
 
 ARITH_C[IDX]"IAL" i8
-	*8* tmpb := %al
-	*8* %al := %al ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
+	*8* tmpb := %al ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
 ADC.IAL i8
-	ADDFLAGS8(tmpb, i8, %al);
+	ADDFLAGS8(%al, i8, tmpb);
 SBB.IAL i8
-	SUBFLAGS8(tmpb, i8, %al);
+	SUBFLAGS8(%al, i8, tmpb);
 ARITH_C[IDX]"IAL" i8
-	_;
+	*8* %al := tmpb;
 
 ARITH_C[IDX]"IAX" i16
-	*16* tmph := %ax
-	*16* %ax := %ax ARITH_OP[IDX] i16 ARITH_OP[IDX] %CF;
+	*16* tmph := %ax ARITH_OP[IDX] i16 ARITH_OP[IDX] %CF;
 ADC.IAX i16
-	ADDFLAGS16(tmph, i16, %ax);
+	ADDFLAGS16(%ax, i16, tmph);
 SBB.IAX i16
-	SUBFLAGS16(tmph, i16, %ax);
+	SUBFLAGS16(%ax, i16, tmph);
+ARITH_C[IDX]"IAX" i16
+	*16* %ax := tmph;
 
 ARITH_C[IDX]"IEAX" i32
-	*32* tmpi := %eax
-	*32* %eax := %eax ARITH_OP[IDX] i32 ARITH_OP[IDX] %CF;
+	*32* tmpi := %eax ARITH_OP[IDX] i32 ARITH_OP[IDX] %CF;
 ADC.IEAX i32
-	ADDFLAGS32(tmpi, i32, %eax);
+	ADDFLAGS32(%eax, i32, tmpi);
 SBB.IEAX i32
-	SUBFLAGS32(tmpi, i32, %eax);
+	SUBFLAGS32(%eax, i32, tmpi);
+ARITH_C[IDX]"IEAX" i32
+	*32* %eax := tmpi;
 
 ARITH_C[IDX]"ID" reg32, i32
-	*32* tmpi := reg32
-	*32* reg32 := reg32 ARITH_OP[IDX] i32 ARITH_OP[IDX] %CF;
+	*32* tmpi := reg32 ARITH_OP[IDX] i32 ARITH_OP[IDX] %CF;
 ADC.ID reg32, i32
-	ADDFLAGS32(tmpi, i32, reg32);
+	ADDFLAGS32(reg32, i32, tmpi);
 SBB.ID reg32, i32
-	SUBFLAGS32(tmpi, i32, reg32);
+	SUBFLAGS32(reg32, i32, tmpi);
+ARITH_C[IDX]"ID" reg32, i32
+	*32* reg32 := tmpi;
 
 ARITH_C[IDX]"IW" reg16, i16
-	*16* tmph := reg16
-	*16* reg16 := reg16 ARITH_OP[IDX] i16 ARITH_OP[IDX] %CF;
+	*16* tmph := reg16 ARITH_OP[IDX] i16 ARITH_OP[IDX] %CF;
 ADC.IW reg16, i16
-	ADDFLAGS16(tmph, i16, reg16);
+	ADDFLAGS16(reg16, i16, tmph);
 SBB.IW reg16, i16
-	SUBFLAGS16(tmph, i16, reg16);
+	SUBFLAGS16(reg16, i16, tmph);
+ARITH_C[IDX]"IW" reg16, i16
+	*16* reg16 := tmph;
 
 ARITH_C[IDX]"IB" reg8, i8
-	*8* tmpb := reg8
-	*8* reg8 := reg8 ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
+	*8* tmpb := reg8 ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
 ADC.IB reg8, i8
-	ADDFLAGS8(tmpb, i8, reg8);
+	ADDFLAGS8(reg8, i8, tmpb);
 SBB.IB reg8, i8
-	SUBFLAGS8(tmpb, i8, reg8);
+	SUBFLAGS8(reg8, i8, tmpb);
+ARITH_C[IDX]"IB" reg8, i8
+	*8* reg8 := tmpb;
 
 ARITH_C[IDX]"IODB" reg32, i8
-	*32* tmpi := reg32
-	*32* reg32 := reg32 ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
+	*32* tmpi := reg32 ARITH_OP[IDX] i8 ARITH_OP[IDX] %CF;
 ADC.IODB reg32, i8
-	ADDFLAGS32(tmpi, i8, reg32);
+	ADDFLAGS32(reg32, i8, tmpi);
 SBB.IODB reg32, i8
-	SUBFLAGS32(tmpi, i8, reg32);
+	SUBFLAGS32(reg32, i8, tmpi);
+ARITH_C[IDX]"IODB" reg32, i8
+	*32* reg32 := tmpi;
 
 ARITH_C[IDX]"MRB" modrm, reg8
-	*8* tmpb := modrm
-	*8* modrm := modrm ARITH_OP[IDX] reg8 ARITH_OP[IDX] %CF;
+	*8* tmpb := modrm ARITH_OP[IDX] reg8 ARITH_OP[IDX] %CF;
 ADC.MRB modrm, reg8
-	ADDFLAGS8(tmpb, reg8, modrm);
+	ADDFLAGS8(modrm, reg8, tmpb);
 SBB.MRB modrm, reg8
-	SUBFLAGS8(tmpb, reg8, modrm);
+	SUBFLAGS8(modrm, reg8, tmpb);
+ARITH_C[IDX]"MRB" modrm, reg8
+	*8* modrm := tmpb;
 
 ARITH_C[IDX]"MROW" modrm, reg16
-	*16* tmph := modrm{16}
-	*16* modrm := modrm ARITH_OP[IDX] reg16 ARITH_OP[IDX] %CF;
+	*16* tmph := modrm ARITH_OP[IDX] reg16 ARITH_OP[IDX] %CF;
 ADC.MROW modrm, reg16
-	ADDFLAGS16(tmph, reg16, modrm{16});
+	ADDFLAGS16(modrm{16}, reg16, tmph);
 SBB.MROW modrm, reg16
-	SUBFLAGS16(tmph, reg16, modrm{16});
+	SUBFLAGS16(modrm{16}, reg16, tmph);
+ARITH_C[IDX]"MROW" modrm, reg16
+	*16* modrm := tmph;
 
 ARITH_C[IDX]"MROD" modrm, reg32
-	*32* tmpi := modrm
-	*32* modrm := modrm ARITH_OP[IDX] reg32 ARITH_OP[IDX] %CF;
+	*32* tmpi := modrm ARITH_OP[IDX] reg32 ARITH_OP[IDX] %CF;
 ADC.MROD modrm, reg32
-	ADDFLAGS32(tmpi, reg32, modrm);
+	ADDFLAGS32(modrm, reg32, tmpi);
 SBB.MROD modrm, reg32
-	SUBFLAGS32(tmpi, reg32, modrm);
+	SUBFLAGS32(modrm, reg32, tmpi);
+ARITH_C[IDX]"MROD" modrm, reg32
+	*32* modrm := tmpi;
 
 ARITH_C[IDX]"RMB" reg8, modrm
-	*8* tmpb := reg8
-	*8* reg8 := reg8 ARITH_OP[IDX] modrm{8} ARITH_OP[IDX] %CF;
+	*8* tmpb := reg8 ARITH_OP[IDX] modrm{8} ARITH_OP[IDX] %CF;
 ADC.RMB reg8, modrm
-	ADDFLAGS8(tmpb, modrm{8}, reg8);
+	ADDFLAGS8(reg8, modrm{8}, tmpb);
 SBB.RMB reg8, modrm
-	SUBFLAGS8(tmpb, modrm{8}, reg8);
+	SUBFLAGS8(reg8, modrm{8}, tmpb);
+ARITH_C[IDX]"RMB" reg8, modrm
+	*8* reg8 := tmpb;
 
 ARITH_C[IDX]"RMOW" reg16, modrm
-	*16* tmph := reg16
-	*16* reg16 := reg16 ARITH_OP[IDX] modrm{16} ARITH_OP[IDX] %CF;
+	*16* tmph := reg16 ARITH_OP[IDX] modrm{16} ARITH_OP[IDX] %CF;
 ADC.RMOW reg16, modrm
-	ADDFLAGS16(tmph, modrm{16}, reg16);
+	ADDFLAGS16(reg16, modrm{16}, tmph);
 SBB.RMOW reg16, modrm
-	SUBFLAGS16(tmph, modrm{16}, reg16);
+	SUBFLAGS16(reg16, modrm{16}, tmph);
+ARITH_C[IDX]"RMOW" reg16, modrm
+	*16* reg16 := tmph;
 
 ARITH_C[IDX]"RMOD" reg32, modrm
-	*32* tmpi := reg32
-	*32* reg32 := reg32 ARITH_OP[IDX] modrm ARITH_OP[IDX] %CF;
+	*32* tmpi := reg32 ARITH_OP[IDX] modrm ARITH_OP[IDX] %CF;
 ADC.RMOD reg32, modrm
-	ADDFLAGS32(tmpi, modrm, reg32);
+	ADDFLAGS32(reg32, modrm, tmpi);
 SBB.RMOD reg32, modrm
-	SUBFLAGS32(tmpi, modrm, reg32);
+	SUBFLAGS32(reg32, modrm, tmpi);
+ARITH_C[IDX]"RMOD" reg32, modrm
+	*32* reg32 := tmpi;
 
 BT.od modrm, reg32
 	*1* %CF := modrm@[reg32];
@@ -1046,19 +1071,19 @@ MUL.AXOD modrm
 	MULTFLAGS32(tmpl);
 
 NEG.B modrm
-	*8* tmpb := modrm{8}
-	*8* modrm := 0 - modrm{8}
-	SUBFLAGS8(0, tmpb, modrm{8});
+	*8* tmpb := 0 - modrm{8}
+	SUBFLAGS8(0, modrm{8}, tmpb)
+	*8* modrm := tmpb;
 
 NEG.OW modrm
-	*16* tmph := modrm{16}
-	*16* modrm := 0 - modrm{16}
-	SUBFLAGS16(0, tmph, modrm);
+	*16* tmph := 0 - modrm{16}
+	SUBFLAGS16(0, modrm{16}, tmph)
+	*16* modrm := tmph;
 
 NEG.OD modrm
-	*32* tmpi := modrm{32}
-	*32* modrm := 0 - modrm{32}
-	SUBFLAGS32(0, tmpi, modrm);
+	*32* tmpi := 0 - modrm{32}
+	SUBFLAGS32(0, modrm{32}, tmpi)
+	*32* modrm := tmpi;
 
 NOP
 	_;
@@ -1171,85 +1196,85 @@ ROLS := { "RCL", "ROL" };
 RORS := { "RCR", "ROR" };
 
 ROT[IDX].B.EB.1 modrm
-	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := tmpb1 ROT_OP[IDX] 1
-	*8* modrm := tmpb2;
+	*8* tmpb := modrm{8} ROT_OP[IDX] 1;
 ROLS[IDX].B.EB.1 modrm
-	ROLFLAGS8(tmpb2, tmpb1, 1);
+	ROLFLAGS8(tmpb, modrm{8}, 1);
 RORS[IDX].B.EB.1 modrm
-	RORFLAGS8(tmpb2, tmpb1, 1);
+	RORFLAGS8(tmpb, modrm{8}, 1);
+ROT[IDX].B.EB.1 modrm
+	*8* modrm := tmpb;
 
 ROT[IDX].B.EV.1OW modrm
-	*16* tmph1 := modrm{16}
-	*16* tmph2 := tmph1 ROT_OP[IDX] 1
-	*16* modrm := tmph2;
+	*16* tmph := modrm{16} ROT_OP[IDX] 1;
 ROLS[IDX].B.EV.1OW modrm
-	ROLFLAGS16(tmph2, tmph1, 1);
+	ROLFLAGS16(tmph, modrm{16}, 1);
 RORS[IDX].B.EV.1OW modrm
-	RORFLAGS16(tmph2, tmph1, 1);
+	RORFLAGS16(tmph, modrm{16}, 1);
+ROT[IDX].B.EV.1OW modrm
+	*16* modrm := tmph;
 
 ROT[IDX].B.EV.1OD modrm
-	*32* tmpi1 := modrm{32}
-	*32* tmpi2 := tmpi1 ROT_OP[IDX] 1
-	*32* modrm := tmpi2;
+	*32* tmpi := modrm{32} ROT_OP[IDX] 1;
 ROLS[IDX].B.EV.1OD modrm
-	ROLFLAGS32(tmpi2, tmpi1, 1);
+	ROLFLAGS32(tmpi, modrm{32}, 1);
 RORS[IDX].B.EV.1OD modrm
-	RORFLAGS32(tmpi2, tmpi1, 1);
+	RORFLAGS32(tmpi, modrm{32}, 1);
+ROT[IDX].B.EV.1OD modrm
+	*32* modrm := tmpi;
 
 ROT[IDX].B.EB.CL modrm
-	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := tmpb1 ROT_OP[IDX] %cl
-	*8* modrm := tmpb2;
+	*8* tmpb := modrm{8} ROT_OP[IDX] %cl;
 ROLS[IDX].B.EB.CL modrm
-	ROLFLAGS8(tmpb2, tmpb1, %cl);
+	ROLFLAGS8(tmpb, modrm{8}, %cl);
 RORS[IDX].B.EB.CL modrm
-	RORFLAGS8(tmpb2, tmpb1, %cl);
+	RORFLAGS8(tmpb, modrm{8}, %cl);
+ROT[IDX].B.EB.CL modrm
+	*8* modrm := tmpb;
 
 ROT[IDX].B.EV.CLOW modrm
-	*16* tmph1 := modrm{16}
-	*16* tmph2 := tmph1 ROT_OP[IDX] %cl
-	*16* modrm := tmph2;
+	*16* tmph := modrm{16} ROT_OP[IDX] %cl;
 ROLS[IDX].B.EV.CLOW modrm
-	ROLFLAGS16(tmph2, tmph1, %cl);
+	ROLFLAGS16(tmph, modrm{16}, %cl);
 RORS[IDX].B.EV.CLOW modrm
-	RORFLAGS16(tmph2, tmph1, %cl);
+	RORFLAGS16(tmph, modrm{16}, %cl);
+ROT[IDX].B.EV.CLOW modrm
+	*16* modrm := tmph;
 
 ROT[IDX].B.EV.CLOD modrm
-	*32* tmpi1 := modrm{32}
-	*32* tmpi2 := tmpi1 ROT_OP[IDX] %cl
-	*32* modrm := tmpi2;
+	*32* tmpi := modrm{32} ROT_OP[IDX] %cl;
 ROLS[IDX].B.EV.CLOD modrm
-	ROLFLAGS32(tmpi2, tmpi1, %cl);
+	ROLFLAGS32(tmpi, modrm{32}, %cl);
 RORS[IDX].B.EV.CLOD modrm
-	RORFLAGS32(tmpi2, tmpi1, %cl);
+	RORFLAGS32(tmpi, modrm{32}, %cl);
+ROT[IDX].B.EV.CLOD modrm
+	*32* modrm := tmpi;
 
 ROT[IDX].B.EB.IB modrm, i8
-	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := tmpb1 ROT_OP[IDX] i8
-	*8* modrm := tmpb2;
+	*8* tmpb := modrm{8} ROT_OP[IDX] i8;
 ROLS[IDX].B.EB.IB modrm, i8
-	ROLFLAGS8(tmpb2, tmpb1, i8);
+	ROLFLAGS8(tmpb, modrm{8}, i8);
 RORS[IDX].B.EB.IB modrm, i8
-	RORFLAGS8(tmpb2, tmpb1, i8);
+	RORFLAGS8(tmpb, modrm{8}, i8);
+ROT[IDX].B.EB.IB modrm, i8
+	*8* modrm := tmpb;
 
 ROT[IDX].B.EV.IBOW modrm, i8
-	*16* tmph1 := modrm{16}
-	*16* tmph2 := tmph1 ROT_OP[IDX] sgnex(8, 16, i8)
-	*16* modrm := tmph2;
+	*16* tmph := modrm{16} ROT_OP[IDX] sgnex(8, 16, i8);
 ROLS[IDX].B.EV.IBOW modrm, i8
-	ROLFLAGS16(tmph2, tmph1, i8);
+	ROLFLAGS16(tmph, modrm{16}, i8);
 RORS[IDX].B.EV.IBOW modrm, i8
-	RORFLAGS16(tmph2, tmph1, i8);
+	RORFLAGS16(tmph, modrm{16}, i8);
+ROT[IDX].B.EV.IBOW modrm, i8
+	*16* modrm := tmph;
 
 ROT[IDX].B.EV.IBOD modrm, i8
-	*32* tmpi1 := modrm{8}
-	*32* tmpi2 := tmpi1 ROT_OP[IDX] i8
-	*32* modrm := tmpi2;
+	*32* tmpi := modrm{8} ROT_OP[IDX] i8;
 ROLS[IDX].B.EV.IBOD modrm, i8
-	ROLFLAGS32(tmpi2, tmpi1, i8);
+	ROLFLAGS32(tmpi, modrm{8}, i8);
 RORS[IDX].B.EV.IBOD modrm, i8
-	RORFLAGS32(tmpi2, tmpi1, i8);
+	RORFLAGS32(tmpi, modrm{8}, i8);
+ROT[IDX].B.EV.IBOD modrm, i8
+	*32* modrm := tmpi;
 
 RET
 	*32* %pc := m[%esp]{32}
@@ -1307,94 +1332,103 @@ SHIFT_OP := { <<,       >>,    >>A   };
 SHIFT    := { "SHLSAL", "SHR", "SAR" };
 
 SHIFT[IDX].B.EB.1 modrm
-	*8* tmpb := modrm{8}
-	*8* modrm := modrm{8} SHIFT_OP[IDX] 1;
+	*8* tmpb := modrm{8} SHIFT_OP[IDX] 1;
 SHLSAL.B.EB.1 modrm
-	SALFLAGS8(modrm{8}, tmpb, 1);
+	SALFLAGS8(tmpb{8}, modrm{8}, 1);
 SHR.B.EB.1 modrm
-	SHRFLAGS8(modrm{8}, tmpb, 1);
+	SHRFLAGS8(tmpb{8}, modrm{8}, 1);
 SAR.B.EB.1 modrm
-	SARFLAGS(modrm{8}, tmpb, 1);
+	SARFLAGS(tmpb{8}, modrm{8}, 1);
+SHIFT[IDX].B.EB.1 modrm
+	*8* modrm := tmpb;
 
 SHIFT[IDX].B.EV.1OW modrm
-	*16* tmph := modrm{16}
-	*16* modrm := modrm{16} SHIFT_OP[IDX] 1;
+	*16* tmph := modrm{16} SHIFT_OP[IDX] 1;
 SHLSAL.B.EV.1OW modrm
-	SALFLAGS16(modrm{16}, tmph, 1);
+	SALFLAGS16(tmph{16}, modrm{16}, 1);
 SHR.B.EV.1OW modrm
-	SHRFLAGS16(modrm{16}, tmph, 1);
+	SHRFLAGS16(tmph{16}, modrm{16}, 1);
 SAR.B.EV.1OW modrm
-	SARFLAGS(modrm{16}, tmph, 1);
+	SARFLAGS(tmph{16}, modrm{16}, 1);
+SHIFT[IDX].B.EV.1OW modrm
+	*16* modrm := tmph;
 
 SHIFT[IDX].B.EV.1OD modrm
-	*32* tmpi := modrm{32}
-	*32* modrm := modrm{32} SHIFT_OP[IDX] 1;
+	*32* tmpi := modrm{32} SHIFT_OP[IDX] 1;
 SHLSAL.B.EV.1OD modrm
-	SALFLAGS32(modrm, tmpi, 1);
+	SALFLAGS32(tmpi, modrm{32}, 1);
 SHR.B.EV.1OD modrm
-	SHRFLAGS32(modrm, tmpi, 1);
+	SHRFLAGS32(tmpi, modrm{32}, 1);
 SAR.B.EV.1OD modrm
-	SARFLAGS(modrm, tmpi, 1);
+	SARFLAGS(tmpi, modrm{32}, 1);
+SHIFT[IDX].B.EV.1OD modrm
+	*32* modrm := tmpi;
 
 SHIFT[IDX].B.EB.CL modrm
-	*8* tmpb := modrm{8}
-	*8* modrm := modrm{8} SHIFT_OP[IDX] %cl;
+	*8* tmpb := modrm{8} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EB.CL modrm
-	SALFLAGS8(modrm{8}, tmpb, %cl);
+	SALFLAGS8(tmpb{8}, modrm{8}, %cl);
 SHR.B.EB.CL modrm
-	SHRFLAGS8(modrm{8}, tmpb, %cl);
+	SHRFLAGS8(tmpb{8}, modrm{8}, %cl);
 SAR.B.EB.CL modrm
-	SARFLAGS(modrm{8}, tmpb, %cl);
+	SARFLAGS(tmpb{8}, modrm{8}, %cl);
+SHIFT[IDX].B.EB.CL modrm
+	*8* modrm := tmpb;
 
 SHIFT[IDX].B.EV.CLOW modrm
-	*16* tmph := modrm{16}
-	*16* modrm := modrm{16} SHIFT_OP[IDX] %cl;
+	*16* tmph := modrm{16} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EV.CLOW modrm
-	SALFLAGS16(modrm{16}, tmph, %cl);
+	SALFLAGS16(tmph{16}, modrm{16}, %cl);
 SHR.B.EV.CLOW modrm
-	SHRFLAGS16(modrm{16}, tmph, %cl);
+	SHRFLAGS16(tmph{16}, modrm{16}, %cl);
 SAR.B.EV.CLOW modrm
-	SARFLAGS(modrm{16}, tmph, %cl);
+	SARFLAGS(tmph{16}, modrm{16}, %cl);
+SHIFT[IDX].B.EV.CLOW modrm
+	*16* modrm := tmph;
 
 SHIFT[IDX].B.EV.CLOD modrm
-	*32* tmpi := modrm{32}
-	*32* modrm := modrm{32} SHIFT_OP[IDX] %cl;
+	*32* tmpi := modrm{32} SHIFT_OP[IDX] %cl;
 SHLSAL.B.EV.CLOD modrm
-	SALFLAGS32(modrm, tmpi, %cl);
+	SALFLAGS32(tmpi, modrm{32}, %cl);
 SHR.B.EV.CLOD modrm
-	SHRFLAGS32(modrm, tmpi, %cl);
+	SHRFLAGS32(tmpi, modrm{32}, %cl);
 SAR.B.EV.CLOD modrm
-	SARFLAGS(modrm, tmpi, %cl);
+	SARFLAGS(tmpi, modrm{32}, %cl);
+SHIFT[IDX].B.EV.CLOD modrm
+	*32* modrm := tmpi;
 
 SHIFT[IDX].B.EB.IB modrm, i8
-	*8* tmpb := modrm{8}
-	*8* modrm := modrm{8} SHIFT_OP[IDX] i8;
+	*8* tmpb := modrm{8} SHIFT_OP[IDX] i8;
 SHLSAL.B.EB.IB modrm, i8
-	SALFLAGS8(modrm{8}, tmpb, i8);
+	SALFLAGS8(tmpb{8}, modrm{8}, i8);
 SHR.B.EB.IB modrm, i8
-	SHRFLAGS8(modrm{8}, tmpb, i8);
+	SHRFLAGS8(tmpb{8}, modrm{8}, i8);
 SAR.B.EB.IB modrm, i8
-	SARFLAGS(modrm{8}, tmpb, i8);
+	SARFLAGS(tmpb{8}, modrm{8}, i8);
+SHIFT[IDX].B.EB.IB modrm, i8
+	*8* modrm := tmpb;
 
 SHIFT[IDX].B.EV.IBOW modrm, i8
-	*16* tmph := modrm{16}
-	*16* modrm := modrm{16} SHIFT_OP[IDX] i8;
+	*16* tmph := modrm{16} SHIFT_OP[IDX] i8;
 SHLSAL.B.EV.IBOW modrm, i8
-	SALFLAGS16(modrm{16}, tmph, i8);
+	SALFLAGS16(tmph{16}, modrm{16}, i8);
 SHR.B.EV.IBOW modrm, i8
-	SHRFLAGS16(modrm{16}, tmph, i8);
+	SHRFLAGS16(tmph{16}, modrm{16}, i8);
 SAR.B.EV.IBOW modrm, i8
-	SARFLAGS(modrm{16}, tmph, i8);
+	SARFLAGS(tmph{16}, modrm{16}, i8);
+SHIFT[IDX].B.EV.IBOW modrm, i8
+	*16* modrm := tmph;
 
 SHIFT[IDX].B.EV.IBOD modrm, i8
-	*32* tmpi := modrm{32}
-	*32* modrm := modrm{32} SHIFT_OP[IDX] i8;
+	*32* tmpi := modrm{32} SHIFT_OP[IDX] i8;
 SHLSAL.B.EV.IBOD modrm, i8
-	SALFLAGS32(modrm, tmpi, i8);
+	SALFLAGS32(tmpi, modrm{32}, i8);
 SHR.B.EV.IBOD modrm, i8
-	SHRFLAGS32(modrm, tmpi, i8);
+	SHRFLAGS32(tmpi, modrm{32}, i8);
 SAR.B.EV.IBOD modrm, i8
-	SARFLAGS(modrm, tmpi, i8);
+	SARFLAGS(tmpi, modrm{32}, i8);
+SHIFT[IDX].B.EV.IBOD modrm, i8
+	*32* modrm := tmpi;
 
 SHIFTD := { "SHLD", "SHRD" };
 
@@ -1594,25 +1628,22 @@ WAIT
 	_;
 
 XADD.EV.GB modrm, reg8
-	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := reg8
-	*8* modrm := tmpb1 + reg8
-	*8* reg8 := tmpb1
-	ADDFLAGS8(tmpb1, tmpb2, modrm);
+	*8* tmpb := modrm{8} + reg8
+	ADDFLAGS8(modrm{8}, reg8, tmpb)
+	*8* reg8 := modrm{8}
+	*8* modrm := tmpb;
 
 XADD.EV.GVOW modrm, reg16
-	*16* tmph1 := modrm{16}
-	*16* tmph2 := reg16
-	*16* modrm := tmph1 + reg16
-	*16* reg16 := tmph1
-	ADDFLAGS16(tmph1, tmph2, modrm);
+	*16* tmph := modrm{16} + reg16
+	ADDFLAGS16(modrm{16}, reg16, tmph)
+	*16* reg16 := modrm{16}
+	*16* modrm := tmph;
 
 XADD.EV.GVOD modrm, reg32
-	*32* tmpi1 := modrm{32}
-	*32* tmpi2 := reg32
-	*32* modrm := tmpi1 + reg32
-	*32* reg32 := tmpi1
-	ADDFLAGS32(tmpi1, tmpi2, modrm);
+	*32* tmpi := modrm{32} + reg32
+	ADDFLAGS32(modrm{32}, reg32, tmpi)
+	*32* reg32 := modrm{32}
+	*32* modrm := tmpi;
 
 XCHG.EAXOD reg32
 	*32* tmpi := reg32
