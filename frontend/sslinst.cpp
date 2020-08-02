@@ -175,21 +175,23 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
  * Add a new register definition to the dictionary.
  */
 void
-RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt)
+RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt, int mappedIndex, int mappedOffset)
 {
 	RegMap[name] = id;
 	if (id == -1) {
-		SpecialRegMap[name].s_name(name);
-		SpecialRegMap[name].s_size(size);
-		SpecialRegMap[name].s_float(flt);
-		SpecialRegMap[name].s_mappedIndex(-1);
-		SpecialRegMap[name].s_mappedOffset(-1);
+		auto &reg = SpecialRegMap[name];
+		reg.s_name(name);
+		reg.s_size(size);
+		reg.s_float(flt);
+		reg.s_mappedIndex(mappedIndex);
+		reg.s_mappedOffset(mappedOffset);
 	} else {
-		DetRegMap[id].s_name(name);
-		DetRegMap[id].s_size(size);
-		DetRegMap[id].s_float(flt);
-		DetRegMap[id].s_mappedIndex(-1);
-		DetRegMap[id].s_mappedOffset(-1);
+		auto &reg = DetRegMap[id];
+		reg.s_name(name);
+		reg.s_size(size);
+		reg.s_float(flt);
+		reg.s_mappedIndex(mappedIndex);
+		reg.s_mappedOffset(mappedOffset);
 	}
 }
 

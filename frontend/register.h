@@ -29,42 +29,52 @@ class Type;
  */
 class Register {
 public:
-
 	bool operator ==(const Register &r2) const;
 	bool operator <(const Register &r2) const;
 
-	// access and set functins
+	// access and set functions
 	void s_name(const std::string &s) { name = s; }
 	void s_size(int s) { size = s; }
 	void s_float(bool f) { flt = f; }
+	void s_mappedIndex(int i) { mappedIndex = i; }
+	void s_mappedOffset(int i) { mappedOffset = i; }
 
 	/* These are only used in the interpreter */
 	const std::string &g_name() const { return name; }
 	int g_size() const { return size; }
 	bool g_float() const { return flt; }
+	int g_mappedIndex() const { return mappedIndex; }
+	int g_mappedOffset() const { return mappedOffset; }
 
 	Type *g_type() const;
 
-	/* Set the mapped index. For COVERS registers, this is the lower register
-	 * of the set that this register covers. For example, if the current register
-	 * is f28to31, i would be the index for register f28
-	 * For SHARES registers, this is the "parent" register, e.g. if the current
-	 * register is %al, the parent is %ax (note: not %eax)
-	 */
-	void s_mappedIndex(int i) { mappedIndex = i; }
-	/* Set the mapped offset. This is the bit number where this register starts,
-	   e.g. for register %ah, this is 8. For COVERS regisers, this is 0 */
-	void s_mappedOffset(int i) { mappedOffset = i; }
-	/* Get the mapped index (see above) */
-	int g_mappedIndex() const { return mappedIndex; }
-	/* Get the mapped offset (see above) */
-	int g_mappedOffset() const { return mappedOffset; }
-
 private:
 	std::string name;
+
+	/**
+	 * Register size, in bits.
+	 */
 	short size;
-	bool flt = false;  // True if this is a floating point register
+
+	/**
+	 * True if this is a floating point register.
+	 */
+	bool flt = false;
+
+	/**
+	 * For COVERS registers, this is the lower register of the set that
+	 * this register covers.  For example, if the current register is
+	 * f28to31, it would be the index for register f28.
+	 *
+	 * For SHARES registers, this is the "parent" register, e.g. if the
+	 * current register is \%al, the parent is \%ax (note: not \%eax).
+	 */
 	int mappedIndex = -1;
+
+	/**
+	 * This is the bit number where this register starts, e.g. for
+	 * register \%ah, this is 8.  For COVERS registers, this is 0.
+	 */
 	int mappedOffset = -1;
 };
 

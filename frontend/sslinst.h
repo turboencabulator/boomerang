@@ -99,7 +99,7 @@ struct RTLInstDict {
 
 	void print(std::ostream &os = std::cout) const;
 
-	void addRegister(const std::string &name, int id, int size, bool flt);
+	void addRegister(const std::string &name, int id, int size, bool flt, int mappedIndex = -1, int mappedOffset = -1);
 
 	bool partialType(Exp *exp, Type &ty);
 

@@ -25,14 +25,14 @@ INTEGER
 	  %cr16, %cr17, %cr18, %cr19, %cr20, %cr21, %cr22, %cr23,
 	  %cr24, %cr25, %cr26, %cr27, %cr28, %cr29, %cr30, %cr31 ][32] -> 256..287,
 
-	%sp[32] -> 30,          # Aliases
-	%rp[32] -> 2,           # Return value register
-	%dp[32] -> 27,          # Global data pointer
+	%sp -> 30,          # Aliases
+	%rp -> 2,           # Return value register
+	%dp -> 27,          # Global data pointer
 
 	[ %ZF, %CF, %OF, %NF ][1] -> -1,    # We really don't want %ZF etc, only %CF
 	%pc [32] -> -1,
 	%npc[32] -> -1,
-	%sar[32] -> 267;         # Shift amount register (%cr11)
+	%sar -> 267;         # Shift amount register (%cr11)
 
 FLOAT
 # Floating point quad registers
