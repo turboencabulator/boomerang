@@ -738,9 +738,8 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		auto as = dynamic_cast<Assignment *>(stmt);
 		if (!as) continue;
 		auto lhs = as->getLeft();
-		if (!lhs->isRegOf()) continue;
+		if (!lhs->isRegOfK()) continue;
 		auto c = (Const *)((Location *)lhs)->getSubExp1();
-		assert(c->isIntConst());
 		int r = c->getInt();
 		int off = r & 3;        // Offset into the array of 4 registers
 		int off_mod8 = r & 7;   // Offset into the array of 8 registers; for ebp, esi, edi
@@ -783,15 +782,14 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 
 		case 0: case 1: case 2: case 3:
 		//  ax      cx      dx      bx
-			// Emit *32* r<24+off> := r<24+off>@[16:31] | zfill(16, 32, r<off>)
+			// Emit *32* r<24+off> := (r<24+off> & ~0xFFFF) | zfill(16, 32, r<off>)
 			if (usedRegs.count(24 + off)) {
 				auto a = new Assign(new IntegerType(32),
 				                    Location::regOf(24 + off),
 				                    new Binary(opBitOr,
-				                               new Ternary(opAt,
-				                                           Location::regOf(24 + off),
-				                                           new Const(16),
-				                                           new Const(31)),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(24 + off),
+				                                          new Unary(opNot, new Const(0xFFFF))),
 				                               new Ternary(opZfill,
 				                                           new Const(16),
 				                                           new Const(32),
@@ -824,15 +822,14 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 
 		case 8: case 9: case 10: case 11:
 		//  al      cl       dl       bl
-			// Emit *32* r<24+off> := r<24+off>@[8:31] | zfill(8, 32, r<8+off>)
+			// Emit *32* r<24+off> := (r<24+off> & ~0xFF) | zfill(8, 32, r<8+off>)
 			if (usedRegs.count(24 + off)) {
 				auto a = new Assign(new IntegerType(32),
 				                    Location::regOf(24 + off),
 				                    new Binary(opBitOr,
-				                               new Ternary(opAt,
-				                                           Location::regOf(24 + off),
-				                                           new Const(8),
-				                                           new Const(31)),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(24 + off),
+				                                          new Unary(opNot, new Const(0xFF))),
 				                               new Ternary(opZfill,
 				                                           new Const(8),
 				                                           new Const(32),
@@ -840,15 +837,14 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				proc->insertStatementAfter(as, a);
 			}
 
-			// Emit *16* r<off> := r<off>@[8:15] | zfill(8, 16, r<8+off>)
+			// Emit *16* r<off> := (r<off> & ~0xFF) | zfill(8, 16, r<8+off>)
 			if (usedRegs.count(off)) {
 				auto a = new Assign(new IntegerType(16),
 				                    Location::regOf(off),
 				                    new Binary(opBitOr,
-				                               new Ternary(opAt,
-				                                           Location::regOf(off),
-				                                           new Const(8),
-				                                           new Const(15)),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(off),
+				                                          new Unary(opNot, new Const(0xFF))),
 				                               new Ternary(opZfill,
 				                                           new Const(8),
 				                                           new Const(16),
@@ -859,56 +855,45 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 
 		case 12: case 13: case 14: case 15:
 		//   ah       ch       dh       bh
-			// Emit *32* r<24+off> := r<24+off> & 0xFFFF00FF
-			//      *32* r<24+off> := r<24+off> | r<12+off> << 8
+			// Emit *32* r<24+off> := (r<24+off> & ~0xFF00) | (r<12+off> << 8)
 			if (usedRegs.count(24 + off)) {
 				auto a = new Assign(new IntegerType(32),
 				                    Location::regOf(24 + off),
 				                    new Binary(opBitOr,
-				                               Location::regOf(24 + off),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(24 + off),
+				                                          new Unary(opNot, new Const(0xFF00))),
 				                               new Binary(opShiftL,
 				                                          Location::regOf(12 + off),
 				                                          new Const(8))));
 				proc->insertStatementAfter(as, a);
-				a = new Assign(new IntegerType(32),
-				               Location::regOf(24 + off),
-				               new Binary(opBitAnd,
-				                          Location::regOf(24 + off),
-				                          new Const(0xFFFF00FF)));
-				proc->insertStatementAfter(as, a);
 			}
 
-			// Emit *16* r<off> := r<off> & 0x00FF
-			//      *16* r<off> := r<off> | r<12+off> << 8
+			// Emit *16* r<off> := (r<off> & ~0xFF00) | (r<12+off> << 8)
 			if (usedRegs.count(off)) {
 				auto a = new Assign(new IntegerType(16),
 				                    Location::regOf(off),
 				                    new Binary(opBitOr,
-				                               Location::regOf(off),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(off),
+				                                          new Unary(opNot, new Const(0xFF00))),
 				                               new Binary(opShiftL,
 				                                          Location::regOf(12 + off),
 				                                          new Const(8))));
-				proc->insertStatementAfter(as, a);
-				a = new Assign(new IntegerType(16),
-				               Location::regOf(off),
-				               new Binary(opBitAnd,
-				                          Location::regOf(off),
-				                          new Const(0x00FF)));
 				proc->insertStatementAfter(as, a);
 			}
 			break;
 
 		case 5: case 6: case 7:
 		//  bp      si      di
-			// Emit *32* r<24+off_mod8> := r<24+off_mod8>@[16:31] | zfill(16, 32, r<off_mod8>)
+			// Emit *32* r<24+off_mod8> := (r<24+off_mod8> & ~0xFFFF) | zfill(16, 32, r<off_mod8>)
 			if (usedRegs.count(24 + off_mod8)) {
 				auto a = new Assign(new IntegerType(32),
 				                    Location::regOf(24 + off_mod8),
 				                    new Binary(opBitOr,
-				                               new Ternary(opAt,
-				                                           Location::regOf(24 + off_mod8),
-				                                           new Const(16),
-				                                           new Const(31)),
+				                               new Binary(opBitAnd,
+				                                          Location::regOf(24 + off_mod8),
+				                                          new Unary(opNot, new Const(0xFFFF))),
 				                               new Ternary(opZfill,
 				                                           new Const(16),
 				                                           new Const(32),
