@@ -36,7 +36,7 @@ class Proc;
 #define DIS_REG32   (dis_Reg(reg + 24))
 #define DIS_SR16    (dis_Reg(sr16 + 16))
 #define DIS_IDX     (dis_Reg(idx + 32))
-#define DIS_IDXP1   (dis_Reg((idx + 1) % 7 + 32))
+#define DIS_IDXP1   (dis_Reg(((idx + 1) & 7) + 32))
 #define DIS_BASE    (dis_Reg(base + 24))
 #define DIS_INDEX   (new Binary(opMult, dis_Reg(index + 24), new Const(1 << ss)))
 

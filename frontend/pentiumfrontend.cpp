@@ -157,11 +157,11 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 	// subexpression (in some odd cases)
 	Exp::doSearch(new Terminal(opWildRegOf), exp, li, false);
 	for (const auto &sub : li) {
-		int reg = ((Const *)((Unary *)*sub)->getSubExp1())->getInt();
+		auto K = (Const *)((Unary *)*sub)->getSubExp1();
+		int reg = K->getInt();
 		if (min <= reg && reg <= max) {
 			// Replace the K in r[ K] with a new K
 			// *sub is a reg[K]
-			auto K = (Const *)((Unary *)*sub)->getSubExp1();
 			K->setInt(min + ((reg - min + delta) & mask));
 		}
 	}
@@ -263,77 +263,29 @@ PentiumFrontEnd::processFloatCode(Cfg *cfg)
 				if (stmt->isFpush()) {
 					sit = rtl->deleteStmt(sit);
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::tempOf(new Const("tmpF9")),
-					                                      Location::regOf(39)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(39),
-					                                      Location::regOf(38)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(38),
-					                                      Location::regOf(37)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(37),
-					                                      Location::regOf(36)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(36),
-					                                      Location::regOf(35)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(35),
-					                                      Location::regOf(34)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(34),
-					                                      Location::regOf(33)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(33),
-					                                      Location::regOf(32)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
 					                                      Location::regOf(32),
 					                                      Location::tempOf(new Const("tmpF9"))));
+					for (int i = 32; i < 39; ++i) {
+						sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+						                                      Location::regOf(i + 1),
+						                                      Location::regOf(i)));
+					}
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::tempOf(new Const("tmpF9")),
+					                                      Location::regOf(39)));
 				} else if (stmt->isFpop()) {
 					sit = rtl->deleteStmt(sit);
 					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::tempOf(new Const("tmpF9")),
-					                                      Location::regOf(32)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(32),
-					                                      Location::regOf(33)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(33),
-					                                      Location::regOf(34)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(34),
-					                                      Location::regOf(35)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(35),
-					                                      Location::regOf(36)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(36),
-					                                      Location::regOf(37)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(37),
-					                                      Location::regOf(38)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
-					                                      Location::regOf(38),
-					                                      Location::regOf(39)));
-					++sit;
-					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
 					                                      Location::regOf(39),
 					                                      Location::tempOf(new Const("tmpF9"))));
+					for (int i = 39; i > 32; --i) {
+						sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+						                                      Location::regOf(i - 1),
+						                                      Location::regOf(i)));
+					}
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::tempOf(new Const("tmpF9")),
+					                                      Location::regOf(32)));
 				}
 			}
 		}
@@ -408,7 +360,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *bb, int &tos, Cfg *cfg)
 						int K = c->getInt();  // Old register number
 						// Change to new register number, if in range
 						if (32 <= K && K <= 39)
-							s->setSubExp1(new Const(32 + ((K - 32 + tos) & 7)));
+							c->setInt(32 + ((K + tos) & 7));
 					}
 				}
 				// Else we are interested in either FPUSH/FPOP, or r[32..39] appearing in either the left or right hand
