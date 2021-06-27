@@ -99,7 +99,7 @@ struct RTLInstDict {
 
 	void print(std::ostream &os = std::cout) const;
 
-	void addRegister(const std::string &name, int id, int size, bool flt, int mappedIndex = -1, int mappedOffset = -1);
+	void addRegister(const std::string &name, int id, int size, int mappedIndex = -1, int mappedOffset = -1);
 
 	bool partialType(Exp *exp, Type &ty);
 
@@ -155,12 +155,19 @@ struct RTLInstDict {
 	/**
 	 * An RTL describing the machine's basic fetch-execute cycle.
 	 */
-	RTL *fetchExecCycle;
+	RTL *fetchExecCycle = nullptr;
 
 	/**
 	 * True if this source is big endian.
 	 */
-	bool bigEndian;
+	bool bigEndian = false;
+
+	/**
+	 * Controls whether addRegister adds a floating point or integer
+	 * register.  Value is determined by the most recent FLOAT or INTEGER
+	 * keyword in the SSL grammar.
+	 */
+	bool floatReg = false;
 };
 
 #endif

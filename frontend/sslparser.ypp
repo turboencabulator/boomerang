@@ -47,12 +47,6 @@
 		bool trace = false;
 
 		/*
-		 * true when FLOAT keyword seen;
-		 * false when INTEGER keyword seen (in @REGISTER section)
-		 */
-		bool floatreg = false;
-
-		/*
 		 * Maps SSL constants to their values.
 		 */
 		std::map<std::string, int>                       ConstTable;
@@ -197,8 +191,8 @@ parts
 	| FAST fastentries
 
 	/* Definitions of registers (with overlaps, etc) */
-	| TOK_INTEGER { drv.floatreg = false; } reglists
-	| TOK_FLOAT   { drv.floatreg = true;  } reglists
+	| TOK_INTEGER { dict.floatReg = false; } reglists
+	| TOK_FLOAT   { dict.floatReg = true;  } reglists
 
 	/* Declaration of "flag functions". These describe the detailed flag setting semantics for instructions */
 	| flag_fnc
@@ -264,7 +258,7 @@ reglist
 	| REG_ID '[' NUM ']' INDEX NUM {
 		if (dict.RegMap.count(*$1))
 			yyerror("Name reglist declared twice");
-		dict.addRegister(*$1, $6, $3, drv.floatreg);
+		dict.addRegister(*$1, $6, $3);
 		delete $1;
 	  }
 
@@ -295,7 +289,7 @@ reglist
 			yyerror("Undefined range");
 		}
 
-		dict.addRegister(*$1, $6, $3, drv.floatreg, i1->second, 0);
+		dict.addRegister(*$1, $6, $3, i1->second, 0);
 		delete $1;
 		delete $8;
 		delete $10;
@@ -322,7 +316,7 @@ reglist
 			yyerror("Undefined range");
 		}
 
-		dict.addRegister(*$1, $6, $3, drv.floatreg, i1->second, $11);
+		dict.addRegister(*$1, $6, $3, i1->second, $11);
 		delete $1;
 		delete $8;
 	  }
@@ -333,7 +327,7 @@ reglist
 		for (const auto &loc : *$2) {
 			if (dict.RegMap.count(loc))
 				yyerror("Name reglist declared twice");
-			dict.addRegister(loc, $8++, $5, drv.floatreg);
+			dict.addRegister(loc, $8++, $5);
 		}
 		delete $2;
 	  }
@@ -342,7 +336,7 @@ reglist
 		for (const auto &loc : *$2) {
 			if (dict.RegMap.count(loc))
 				yyerror("Name reglist declared twice");
-			dict.addRegister(loc, $8, $5, drv.floatreg);
+			dict.addRegister(loc, $8, $5);
 		}
 		delete $2;
 	  }

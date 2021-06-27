@@ -140,8 +140,8 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	// Clear all state
 	reset();
 
-	addRegister("%CTI", -1, 1, false);
-	addRegister("%NEXT", -1, 32, false);
+	addRegister("%CTI", -1, 1);
+	addRegister("%NEXT", -1, 32);
 
 	// Attempt to parse the SSL file
 	std::ifstream ssl(SSLFileName);
@@ -173,23 +173,27 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
  * \brief Add a new register to the machine.
  *
  * Add a new register definition to the dictionary.
+ *
+ * \note The type of register to be added (FLOAT/INTEGER) is controlled by the
+ * current value of RTLInstDict::floatReg, to align with the SSL grammar.  Be
+ * aware of its value if calling this method outside of the SSL parser.
  */
 void
-RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt, int mappedIndex, int mappedOffset)
+RTLInstDict::addRegister(const std::string &name, int id, int size, int mappedIndex, int mappedOffset)
 {
 	RegMap[name] = id;
 	if (id == -1) {
 		auto &reg = SpecialRegMap[name];
 		reg.s_name(name);
 		reg.s_size(size);
-		reg.s_float(flt);
+		reg.s_float(floatReg);
 		reg.s_mappedIndex(mappedIndex);
 		reg.s_mappedOffset(mappedOffset);
 	} else {
 		auto &reg = DetRegMap[id];
 		reg.s_name(name);
 		reg.s_size(size);
-		reg.s_float(flt);
+		reg.s_float(floatReg);
 		reg.s_mappedIndex(mappedIndex);
 		reg.s_mappedOffset(mappedOffset);
 	}
@@ -617,4 +621,5 @@ RTLInstDict::reset()
 	idict.clear();
 	fetchExecCycle = nullptr;
 	bigEndian = false;
+	floatReg = false;
 }
