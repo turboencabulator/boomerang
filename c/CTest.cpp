@@ -23,11 +23,11 @@
 void
 CTest::testSignature()
 {
-	std::istringstream os("int printf(char *fmt, ...);");
-	AnsiCParser p(os, false);
-	p.yyparse(PLAT_PENTIUM, CONV_C);
-	CPPUNIT_ASSERT_EQUAL(1, (int)p.signatures.size());
-	Signature *sig = p.signatures.front();
+	std::istringstream is("int printf(char *fmt, ...);");
+	auto c = AnsiCDriver();
+	c.parse(is, PLAT_PENTIUM, CONV_C);
+	CPPUNIT_ASSERT_EQUAL(1, (int)c.signatures.size());
+	Signature *sig = c.signatures.front();
 	CPPUNIT_ASSERT_EQUAL(std::string("printf"), sig->getName());
 	CPPUNIT_ASSERT(sig->getReturnType(0)->resolvesToInteger());
 	Type *t = new PointerType(new CharType());

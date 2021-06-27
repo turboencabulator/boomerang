@@ -151,11 +151,11 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	}
 
 #ifdef DEBUG_SSLPARSER
-	SSLParser theParser(ssl, true);
+	auto d = SSLDriver(true);
 #else
-	SSLParser theParser(ssl, false);
+	auto d = SSLDriver();
 #endif
-	theParser.yyparse(*this);
+	d.parse(ssl, *this);
 	ssl.close();
 
 	//fixupParams();

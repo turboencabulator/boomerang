@@ -23,24 +23,19 @@
 	#include <list>
 	#include <string>
 
-	class AnsiCScanner;
-
-	class TypeIdent {
-	public:
+	struct TypeIdent {
 		Type *ty;
 		std::string nam;
 
 		TypeIdent(Type *ty, const std::string &nam) : ty(ty), nam(nam) { }
 	};
 
-	class SymbolMods {
-	public:
+	struct SymbolMods {
 		bool noDecode = false;
 		bool incomplete = false;
 	};
 
-	class Symbol {
-	public:
+	struct Symbol {
 		ADDRESS addr;
 		std::string nam;
 		Type *ty = nullptr;
@@ -50,27 +45,42 @@
 		Symbol(ADDRESS a) : addr(a) { }
 	};
 
-	class CustomOptions {
-	public:
+	struct CustomOptions {
 		Exp *exp = nullptr;
 		int sp = 0;
 	};
 
-	class SymbolRef {
-	public:
+	struct SymbolRef {
 		ADDRESS addr;
 		std::string nam;
 
 		SymbolRef(ADDRESS a, const std::string &nam) : addr(a), nam(nam) { }
 	};
 
-	class Bound {
-	public:
+	struct Bound {
 		int kind;
 		std::string nam;
 
 		Bound(int kind, const std::string &nam) : kind(kind), nam(nam) { }
 	};
+
+	/**
+	 * Driver for ANSI C parser/scanner.  Public members will contain the
+	 * parsed data after parsing.
+	 */
+	class AnsiCDriver {
+		bool trace = false;
+
+	public:
+		std::list<Signature *> signatures;
+		std::list<Symbol *> symbols;
+		std::list<SymbolRef *> refs;
+
+		AnsiCDriver(bool trace = false) : trace(trace) { }
+		int parse(std::istream &, platform, callconv);
+	};
+
+	class AnsiCScanner;
 %}
 
 %union {
@@ -91,24 +101,20 @@
 }
 
 %{
-#include "ansi-c-scanner.h"
+	#include "ansi-c-scanner.h"
 %}
 
 %define DEBUG 1
 
 %define MEMBERS \
 	private: \
-		AnsiCScanner *theScanner; \
-	public: \
-		std::list<Signature *> signatures; \
-		std::list<Symbol *> symbols; \
-		std::list<SymbolRef *> refs; \
-		virtual ~AnsiCParser();
+		AnsiCDriver &drv; \
+		AnsiCScanner &scn;
 
 %define CONSTRUCTOR_PARAM \
-	std::istream &in, bool trace
+	AnsiCDriver &driver, AnsiCScanner &scanner, bool trace
 %define CONSTRUCTOR_INIT \
-	: theScanner(new AnsiCScanner(in, trace))
+	: drv(driver), scn(scanner)
 %define CONSTRUCTOR_CODE \
 	if (trace) yydebug = 1; else yydebug = 0;
 
@@ -193,8 +199,8 @@ num_list
 param_list
 	: param_list ',' param_exp { $$ = $1; $$->push_back($3); }
 	| param_exp    { $$ = new std::list<Parameter *>(1, $1); }
-	| VOID         { $$ = new std::list<Parameter *> }
-	| /* empty */  { $$ = new std::list<Parameter *> }
+	| VOID         { $$ = new std::list<Parameter *>; }
+	| /* empty */  { $$ = new std::list<Parameter *>; }
 	;
 
 param_exp
@@ -306,7 +312,7 @@ type_decl
 
 func_decl
 	: signature ';' {
-		signatures.push_back($1);
+		drv.signatures.push_back($1);
 	  }
 	| signature PREFER type_ident '(' num_list ')' ';' {
 		$1->setPreferedReturn($3->ty);
@@ -316,7 +322,7 @@ func_decl
 			$1->addPreferedParameter(num - 1);
 		}
 		delete $5;
-		signatures.push_back($1);
+		drv.signatures.push_back($1);
 	  }
 	;
 
@@ -377,7 +383,7 @@ symbol_ref_decl
 	: SYMBOLREF CONSTANT IDENTIFIER ';' {
 		auto ref = new SymbolRef($2, *$3);
 		delete $3;
-		refs.push_back(ref);
+		drv.refs.push_back(ref);
 	  }
 	;
 
@@ -386,7 +392,7 @@ symbol_decl
 		auto sym = new Symbol($1);
 		sym->nam = $2->nam;
 		sym->ty = $2->ty;
-		symbols.push_back(sym);
+		drv.symbols.push_back(sym);
 		delete $2;
 	  }
 	/*
@@ -400,7 +406,7 @@ symbol_decl
 		auto sym = new Symbol($1);
 		sym->sig = $3;
 		sym->mods = $2;
-		symbols.push_back(sym);
+		drv.symbols.push_back(sym);
 	  }
 	;
 
@@ -491,20 +497,32 @@ type
 int
 AnsiCParser::yylex()
 {
-	int token = theScanner->yylex(yylval);
-	return token;
+	return scn.yylex(yylval);
 }
 
 void
 AnsiCParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
-	fprintf(stderr, "%s on line %i\n", s, theScanner->theLine);
-	fprintf(stderr, "%s\n", theScanner->lineBuf.c_str());
-	fprintf(stderr, "%*s\n", theScanner->column, "^");
+	fprintf(stderr, "%s on line %i\n", s, scn.theLine);
+	fprintf(stderr, "%s\n", scn.lineBuf.c_str());
+	fprintf(stderr, "%*s\n", scn.column, "^");
 }
 
-AnsiCParser::~AnsiCParser()
+/**
+ * \brief Create and run the parser/scanner pair.
+ *
+ * \param in    ANSI C file.
+ * \param plat  Argument to Signature::instantiate.
+ * \param cc    Argument to Signature::instantiate.
+ *
+ * \returns Unmodified result from the parser,
+ *          in general 0 for success, 1 for invalid input.
+ */
+int
+AnsiCDriver::parse(std::istream &in, platform plat, callconv cc)
 {
-	delete theScanner;
+	auto scanner = AnsiCScanner(in, trace);
+	auto parser = AnsiCParser(*this, scanner, trace);
+	return parser.yyparse(plat, cc);
 }

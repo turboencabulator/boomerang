@@ -20,6 +20,17 @@
 	#include "generic.h"
 	#include "type.h"
 
+	/**
+	 * Driver for transformation language parser/scanner.
+	 */
+	class TransformationDriver {
+		bool trace = false;
+
+	public:
+		TransformationDriver(bool trace = false) : trace(trace) { }
+		int parse(std::istream &);
+	};
+
 	class TransformationScanner;
 %}
 
@@ -38,14 +49,12 @@
 
 %define MEMBERS \
 	private: \
-		TransformationScanner *theScanner; \
-	public: \
-		virtual ~TransformationParser();
+		TransformationScanner &scn;
 
 %define CONSTRUCTOR_PARAM \
-	std::istream &in, bool trace
+	TransformationScanner &scanner, bool trace
 %define CONSTRUCTOR_INIT \
-	: theScanner(new TransformationScanner(in, trace))
+	: scn(scanner)
 %define CONSTRUCTOR_CODE \
 	if (trace) yydebug = 1; else yydebug = 0;
 
@@ -144,20 +153,30 @@ type
 int
 TransformationParser::yylex()
 {
-	int token = theScanner->yylex(yylval);
-	return token;
+	return scn.yylex(yylval);
 }
 
 void
 TransformationParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
-	fprintf(stderr, "%s on line %i\n", s, theScanner->theLine);
-	fprintf(stderr, "%s\n", theScanner->lineBuf.c_str());
-	fprintf(stderr, "%*s\n", theScanner->column, "^");
+	fprintf(stderr, "%s on line %i\n", s, scn.theLine);
+	fprintf(stderr, "%s\n", scn.lineBuf.c_str());
+	fprintf(stderr, "%*s\n", scn.column, "^");
 }
 
-TransformationParser::~TransformationParser()
+/**
+ * \brief Create and run the parser/scanner pair.
+ *
+ * \param in  Transformation language file.
+ *
+ * \returns Unmodified result from the parser,
+ *          in general 0 for success, 1 for invalid input.
+ */
+int
+TransformationDriver::parse(std::istream &in)
 {
-	delete theScanner;
+	auto scanner = TransformationScanner(in, trace);
+	auto parser = TransformationParser(scanner, trace);
+	return parser.yyparse();
 }

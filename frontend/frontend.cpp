@@ -516,12 +516,12 @@ FrontEnd::readLibrarySignatures(const std::string &path, callconv cc)
 		exit(1);
 	}
 
-	AnsiCParser p(ifs, false);
 	platform plat = getFrontEndId();
-	p.yyparse(plat, cc);
+	auto c = AnsiCDriver();
+	c.parse(ifs, plat, cc);
 	ifs.close();
 
-	for (const auto &sig : p.signatures) {
+	for (const auto &sig : c.signatures) {
 #if 0
 		std::cerr << "readLibrarySignatures from " << path << ": " << sig->getName() << "\n";
 #endif

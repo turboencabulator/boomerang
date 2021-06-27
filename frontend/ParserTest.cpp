@@ -40,9 +40,9 @@ parseStmt(const std::string &str)
 {
 	std::string s("OPCODE " + str);
 	std::istringstream ss(s);
-	SSLParser p(ss, false);  // Second arg true for debugging
+	auto p = SSLDriver();
 	RTLInstDict d;
-	p.yyparse(d);
+	p.parse(ss, d);
 	CPPUNIT_ASSERT(d.idict.count("OPCODE"));
 	TableEntry &t = d.idict["OPCODE"];
 	CPPUNIT_ASSERT(!t.rtl.getList().empty());

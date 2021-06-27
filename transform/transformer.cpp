@@ -106,8 +106,8 @@ ExpTransformer::loadAll()
 			exit(1);
 		}
 
-		TransformationParser p(ifs1, false);
-		p.yyparse();
+		auto t = TransformationDriver();
+		t.parse(ifs1);
 		ifs1.close();
 	}
 	ifs.close();

@@ -1446,14 +1446,14 @@ Prog::readSymbolFile(const std::string &fname)
 		exit(1);
 	}
 
-	AnsiCParser par(ifs, false);
 	platform plat = getFrontEndId();
 	callconv cc = CONV_C;
 	if (isWin32()) cc = CONV_PASCAL;
-	par.yyparse(plat, cc);
+	auto c = AnsiCDriver();
+	c.parse(ifs, plat, cc);
 	ifs.close();
 
-	for (const auto &sym : par.symbols) {
+	for (const auto &sym : c.symbols) {
 		if (sym->sig) {
 			Proc *p = newProc(sym->sig->getName(), sym->addr,
 			                  pBF->isDynamicLinkedProcPointer(sym->addr)
@@ -1477,7 +1477,7 @@ Prog::readSymbolFile(const std::string &fname)
 		}
 	}
 
-	for (const auto &ref : par.refs) {
+	for (const auto &ref : c.refs) {
 		pFE->addRefHint(ref->addr, ref->nam);
 	}
 }
