@@ -37,7 +37,7 @@
 
 %define CONSTRUCTOR_PARAM std::istream &ins
 %define CONSTRUCTOR_INIT
-#define CONSTRUCTOR_CODE yyin = &ins;
+%define CONSTRUCTOR_CODE yyin = &ins;
 
 %define LEX_PARAM YY_TransformationParser_STYPE &yylval
 
