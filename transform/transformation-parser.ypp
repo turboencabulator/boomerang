@@ -146,10 +146,6 @@ type
 
 %%
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-
 int
 TransformationParser::yylex()
 {
@@ -160,9 +156,11 @@ void
 TransformationParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
-	fprintf(stderr, "%s on line %i\n", s, scn.theLine);
-	fprintf(stderr, "%s\n", scn.lineBuf.c_str());
-	fprintf(stderr, "%*s\n", scn.column, "^");
+	std::cerr << s << " on line " << scn.theLine << "\n"
+	          << scn.lineBuf << "\n";
+	// Assume defaults not tampered with:  right-aligned, ' ' fill char
+	std::cerr.width(scn.column);
+	std::cerr << "^" << "\n";
 }
 
 /**
