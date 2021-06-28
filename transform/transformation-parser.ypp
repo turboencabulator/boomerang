@@ -174,7 +174,7 @@ TransformationParser::yyerror(const char *s)
 int
 TransformationDriver::parse(std::istream &in)
 {
-	auto scanner = TransformationScanner(in, trace);
+	auto scanner = TransformationScanner(in);
 	auto parser = TransformationParser(scanner, trace);
 	return parser.yyparse();
 }

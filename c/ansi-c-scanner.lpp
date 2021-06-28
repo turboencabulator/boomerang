@@ -32,13 +32,12 @@
 		std::string lineBuf; /* the current line */ \
 		int theLine = 1;     /* the current line number */ \
 		int column = 0; \
-		bool traceLines;     /* echo each lines as it is scanned */ \
 	private: \
 		void count(); \
 		int check_type();
 
-%define CONSTRUCTOR_PARAM std::istream &ins, bool trace
-%define CONSTRUCTOR_INIT : traceLines(trace)
+%define CONSTRUCTOR_PARAM std::istream &ins
+%define CONSTRUCTOR_INIT
 %define CONSTRUCTOR_CODE yyin = &ins;
 
 %define LEX_PARAM YY_AnsiCParser_STYPE &yylval

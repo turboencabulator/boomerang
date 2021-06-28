@@ -522,7 +522,7 @@ AnsiCParser::yyerror(const char *s)
 int
 AnsiCDriver::parse(std::istream &in, platform plat, callconv cc)
 {
-	auto scanner = AnsiCScanner(in, trace);
+	auto scanner = AnsiCScanner(in);
 	auto parser = AnsiCParser(*this, scanner, trace);
 	return parser.yyparse(plat, cc);
 }
