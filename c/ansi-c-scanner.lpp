@@ -26,6 +26,7 @@
 %}
 
 %define IOSTREAM
+%define DEBUG 1
 
 %define MEMBERS \
 	public: \
@@ -36,9 +37,9 @@
 		void count(); \
 		int check_type();
 
-%define CONSTRUCTOR_PARAM std::istream &ins
+%define CONSTRUCTOR_PARAM std::istream &ins, bool trace
 %define CONSTRUCTOR_INIT
-%define CONSTRUCTOR_CODE yyin = &ins;
+%define CONSTRUCTOR_CODE yyin = &ins; yy_flex_debug = trace;
 
 %define LEX_PARAM YY_AnsiCParser_STYPE &yylval
 

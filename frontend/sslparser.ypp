@@ -120,7 +120,7 @@
 %define CONSTRUCTOR_INIT \
 	: drv(driver), scn(scanner)
 %define CONSTRUCTOR_CODE \
-	if (trace) yydebug = 1; else yydebug = 0;
+	yydebug = trace;
 
 %define PARSE_PARAM RTLInstDict &dict
 
@@ -1074,7 +1074,7 @@ SSLDriver::expandTables(InsNameElem &iname, const std::list<std::string> &params
 int
 SSLDriver::parse(std::istream &in, RTLInstDict &dict)
 {
-	auto scanner = SSLScanner(in);
+	auto scanner = SSLScanner(in, trace);
 	auto parser = SSLParser(*this, scanner, trace);
 	return parser.yyparse(dict);
 }

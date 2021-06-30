@@ -56,7 +56,7 @@
 %define CONSTRUCTOR_INIT \
 	: scn(scanner)
 %define CONSTRUCTOR_CODE \
-	if (trace) yydebug = 1; else yydebug = 0;
+	yydebug = trace;
 
 %define PARSE_PARAM
 
@@ -174,7 +174,7 @@ TransformationParser::yyerror(const char *s)
 int
 TransformationDriver::parse(std::istream &in)
 {
-	auto scanner = TransformationScanner(in);
+	auto scanner = TransformationScanner(in, trace);
 	auto parser = TransformationParser(scanner, trace);
 	return parser.yyparse();
 }

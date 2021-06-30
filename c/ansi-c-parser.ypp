@@ -116,7 +116,7 @@
 %define CONSTRUCTOR_INIT \
 	: drv(driver), scn(scanner)
 %define CONSTRUCTOR_CODE \
-	if (trace) yydebug = 1; else yydebug = 0;
+	yydebug = trace;
 
 %define PARSE_PARAM platform plat, callconv cc
 
@@ -522,7 +522,7 @@ AnsiCParser::yyerror(const char *s)
 int
 AnsiCDriver::parse(std::istream &in, platform plat, callconv cc)
 {
-	auto scanner = AnsiCScanner(in);
+	auto scanner = AnsiCScanner(in, trace);
 	auto parser = AnsiCParser(*this, scanner, trace);
 	return parser.yyparse(plat, cc);
 }
