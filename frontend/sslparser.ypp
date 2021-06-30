@@ -1074,7 +1074,7 @@ SSLDriver::expandTables(InsNameElem &iname, const std::list<std::string> &params
 int
 SSLDriver::parse(std::istream &in, RTLInstDict &dict)
 {
-	auto scanner = SSLScanner(in, trace);
+	auto scanner = SSLScanner(in);
 	auto parser = SSLParser(*this, scanner, trace);
 	return parser.yyparse(dict);
 }

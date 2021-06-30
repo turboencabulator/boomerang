@@ -25,7 +25,6 @@
 
 %header{
 	#include "sslparser.h"
-	#define MAX_LINE 1024      // the longest SSL spec line
 %}
 
 %{
@@ -37,17 +36,18 @@
 
 %define MEMBERS \
 	public: \
-		int theLine = 1;        /* the current line number */ \
-		char lineBuf[MAX_LINE]; /* the current line */ \
-		bool traceLines;        /* echo each lines as it is scanned */ \
+		int theLine = 1;        /* the current line number */
 
-%define CONSTRUCTOR_PARAM std::istream &ins, bool trace
-%define CONSTRUCTOR_INIT : traceLines(trace)
+%define CONSTRUCTOR_PARAM std::istream &ins
+%define CONSTRUCTOR_INIT
 %define CONSTRUCTOR_CODE yyin = &ins;
 
 %define LEX_PARAM YY_SSLParser_STYPE &yylval
 
 %%
+	/* Quell unused variable warnings */
+	(void)yy_last_accepting_state;
+	(void)yy_last_accepting_cpos;
 
 "INTEGER"    |
 "integer"    { return SSLParser::TOK_INTEGER; }
@@ -190,26 +190,7 @@ _?[A-Za-z][A-Za-z0-9_]*    { yylval.str = new std::string(yytext, yyleng); retur
 
 [ \t]+  ;
 #.*$    ; /* comment */
+\n      { ++theLine; }
 .       ;
-\n.*    { // funky print-next-line-for-debug token
-	if (yyleng > MAX_LINE) {
-		std::cerr << theLine + 1 << ": line too long.\n";
-		exit(1);
-	}
-	// saves the next line
-	strcpy(lineBuf, yytext + 1);
-	++theLine;
-	// reparse from char 1
-	// give back all but the \n to rescan
-	yyless(1);
-
-	// echo the line if line tracing is turned on
-	if (traceLines)
-	std::cerr << lineBuf << std::endl;
-
-	// Quell a warning
-	yy_last_accepting_state = 0;
-	yy_last_accepting_cpos = 0;
-}
 
 %%
