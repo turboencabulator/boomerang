@@ -101,11 +101,13 @@
 }
 
 %define DEBUG 1
+%define LSP_NEEDED
 
 %define MEMBERS \
 	public: \
 		typedef YY_AnsiCParser_ENUM_TOKEN token_type; \
 		typedef YY_AnsiCParser_STYPE semantic_type; \
+		typedef YY_AnsiCParser_LTYPE location_type; \
 	private: \
 		AnsiCDriver &drv; \
 		AnsiCScanner &scn;
@@ -496,14 +498,14 @@ type
 int
 AnsiCParser::yylex()
 {
-	return scn.yylex(yylval);
+	return scn.yylex(yylval, yylloc);
 }
 
 void
 AnsiCParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
-	std::cerr << s << " on line " << scn.theLine << "\n"
+	std::cerr << s << " on line " << scn.line << "\n"
 	          << scn.lineBuf << "\n";
 	// Assume defaults not tampered with:  right-aligned, ' ' fill char
 	std::cerr.width(scn.column);

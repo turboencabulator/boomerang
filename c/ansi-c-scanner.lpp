@@ -22,7 +22,7 @@
 
 %{
 	#define YY_USER_ACTION \
-		count();
+		count(yylloc);
 %}
 
 %define IOSTREAM
@@ -32,18 +32,19 @@
 	public: \
 		typedef AnsiCParser::token_type token_type; \
 		typedef AnsiCParser::semantic_type semantic_type; \
+		typedef AnsiCParser::location_type location_type; \
 		std::string lineBuf; /* the current line */ \
-		int theLine = 1;     /* the current line number */ \
-		int column = 0; \
+		int line = 1; \
+		int column = 1; \
 	private: \
-		void count(); \
+		void count(location_type &); \
 		int check_type();
 
 %define CONSTRUCTOR_PARAM std::istream &ins, bool trace
 %define CONSTRUCTOR_INIT
 %define CONSTRUCTOR_CODE yyin = &ins; yy_flex_debug = trace;
 
-%define LEX_PARAM AnsiCParser::semantic_type &yylval
+%define LEX_PARAM AnsiCParser::semantic_type &yylval, AnsiCParser::location_type &yylloc
 
 D                       [0-9]
 /* Allow ? and @ in identifiers, so we can use mangled names */
@@ -183,21 +184,26 @@ L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return t
 %%
 
 void
-AnsiCScanner::count()
+AnsiCScanner::count(location_type &yylloc)
 {
+	yylloc.first_line = line;
+	yylloc.first_column = column;
 	for (size_t i = 0; yytext[i]; ++i) {
 		if (yytext[i] == '\n') {
 			lineBuf.clear();
-			++theLine;
-			column = 0;
+			++line;
+			column = 1;
 		} else {
 			lineBuf.push_back(yytext[i]);
-			if (yytext[i] == '\t')
+			if (yytext[i] == '\t' && (column % 8))
 				column += 8 - (column % 8);
-			else
-				++column;
+			++column;
 		}
 	}
+	/* Last position is 1 column past the end,
+	 * or next line, column 1 if yytext ends with '\n'. */
+	yylloc.last_line = line;
+	yylloc.last_column = column;
 }
 
 int

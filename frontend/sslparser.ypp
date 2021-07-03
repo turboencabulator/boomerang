@@ -102,6 +102,7 @@
 %}
 
 %define DEBUG 1
+%define LSP_NEEDED
 
 // %define INHERIT : public gc  // This is how to force the parser class to be declared as derived from class gc
 
@@ -109,6 +110,7 @@
 	public: \
 		typedef YY_SSLParser_ENUM_TOKEN token_type; \
 		typedef YY_SSLParser_STYPE semantic_type; \
+		typedef YY_SSLParser_LTYPE location_type; \
 	private: \
 		SSLDriver &drv; \
 		SSLScanner &scn;
@@ -894,7 +896,7 @@ fastentry
 int
 SSLParser::yylex()
 {
-	return scn.yylex(yylval);
+	return scn.yylex(yylval, yylloc);
 }
 
 /**
@@ -906,7 +908,7 @@ void
 SSLParser::yyerror(const char *msg)
 {
 	// TODO:  Replace "ssl" with the filename.
-	std::cerr << "ssl:" << scn.theLine << ": " << msg << "\n";
+	std::cerr << "ssl:" << scn.line << ": " << msg << "\n";
 }
 
 static OPER
