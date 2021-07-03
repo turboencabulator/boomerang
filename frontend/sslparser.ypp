@@ -89,17 +89,12 @@
 }
 
 %{
-	#include "sslscanner.h"
-	#include "visitor.h"
-
 	#ifdef GARBAGE_COLLECTOR
 	#include <gc/gc.h>
 	#endif
 
 	#include <sstream>
 	#include <string>
-
-	#include <cassert>
 
 	static OPER strToTerm(const char *s);                       // Convert string to a Terminal (if possible)
 	static Exp *listExpToExp(const std::list<Exp *> &le);       // Convert a STL list of Exp* to opList
@@ -111,6 +106,9 @@
 // %define INHERIT : public gc  // This is how to force the parser class to be declared as derived from class gc
 
 %define MEMBERS \
+	public: \
+		typedef YY_SSLParser_ENUM_TOKEN token_type; \
+		typedef YY_SSLParser_STYPE semantic_type; \
 	private: \
 		SSLDriver &drv; \
 		SSLScanner &scn;
@@ -887,6 +885,18 @@ fastentry
 
 %%
 
+#include "sslscanner.h"
+
+/**
+ * \brief The scanner driver than returns the next token.
+ * \returns  The next token.
+ */
+int
+SSLParser::yylex()
+{
+	return scn.yylex(yylval);
+}
+
 /**
  * \brief Display an error message and exit.
  *
@@ -897,16 +907,6 @@ SSLParser::yyerror(const char *msg)
 {
 	// TODO:  Replace "ssl" with the filename.
 	std::cerr << "ssl:" << scn.theLine << ": " << msg << "\n";
-}
-
-/**
- * \brief The scanner driver than returns the next token.
- * \returns  The next token.
- */
-int
-SSLParser::yylex()
-{
-	return scn.yylex(yylval);
 }
 
 static OPER
@@ -969,6 +969,8 @@ listStrToExp(const std::list<std::string> &ls)
 	return e;
 }
 
+#include "visitor.h"
+#include <cassert>
 
 class ExpTableExpander : public ExpModifier {
 	typedef std::map<std::string, std::deque<Exp *> *> TABLES;

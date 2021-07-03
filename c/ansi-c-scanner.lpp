@@ -30,6 +30,8 @@
 
 %define MEMBERS \
 	public: \
+		typedef AnsiCParser::token_type token_type; \
+		typedef AnsiCParser::semantic_type semantic_type; \
 		std::string lineBuf; /* the current line */ \
 		int theLine = 1;     /* the current line number */ \
 		int column = 0; \
@@ -41,7 +43,7 @@
 %define CONSTRUCTOR_INIT
 %define CONSTRUCTOR_CODE yyin = &ins; yy_flex_debug = trace;
 
-%define LEX_PARAM YY_AnsiCParser_STYPE &yylval
+%define LEX_PARAM AnsiCParser::semantic_type &yylval
 
 D                       [0-9]
 /* Allow ? and @ in identifiers, so we can use mangled names */
@@ -55,12 +57,12 @@ IS                      (u|U|l|L)*
 
 %%
 
-^#include               { return AnsiCParser::PREINCLUDE; }
-^#define                { return AnsiCParser::PREDEFINE; }
-^#if                    { return AnsiCParser::PREIF; }
-^#ifdef                 { return AnsiCParser::PREIFDEF; }
-^#endif                 { return AnsiCParser::PREENDIF; }
-^#line                  { return AnsiCParser::PRELINE; }
+^#include               { return token_type::PREINCLUDE; }
+^#define                { return token_type::PREDEFINE; }
+^#if                    { return token_type::PREIF; }
+^#ifdef                 { return token_type::PREIFDEF; }
+^#endif                 { return token_type::PREENDIF; }
+^#line                  { return token_type::PRELINE; }
 
 "//".*                  ;
 "/*"                    { BEGIN(COMMENT); }
@@ -69,87 +71,87 @@ IS                      (u|U|l|L)*
 <COMMENT>"*"            ;
 <COMMENT>\n             ;
 
-"auto"                  { return AnsiCParser::AUTO; }
-"break"                 { return AnsiCParser::BREAK; }
-"case"                  { return AnsiCParser::CASE; }
-"char"                  { return AnsiCParser::CHAR; }
-"const"                 { return AnsiCParser::CONST; }
-"continue"              { return AnsiCParser::CONTINUE; }
-"default"               { return AnsiCParser::DEFAULT; }
-"do"                    { return AnsiCParser::DO; }
-"double"                { return AnsiCParser::DOUBLE; }
-"else"                  { return AnsiCParser::ELSE; }
-"enum"                  { return AnsiCParser::ENUM; }
-"extern"                { return AnsiCParser::EXTERN; }
-"float"                 { return AnsiCParser::FLOAT; }
-"for"                   { return AnsiCParser::FOR; }
-"goto"                  { return AnsiCParser::GOTO; }
-"if"                    { return AnsiCParser::IF; }
-"int"                   { return AnsiCParser::INT; }
-"long"                  { return AnsiCParser::LONG; }
-"register"              { return AnsiCParser::REGISTER; }
-"return"                { return AnsiCParser::RETURN; }
-"short"                 { return AnsiCParser::SHORT; }
-"signed"                { return AnsiCParser::SIGNED; }
-"sizeof"                { return AnsiCParser::SIZEOF; }
-"__nodecode"            { return AnsiCParser::NODECODE; }
-"__incomplete"          { return AnsiCParser::INCOMPLETE; }
-"__cdecl"               { return AnsiCParser::CDECL; }
-"__pascal"              { return AnsiCParser::PASCAL; }
-"__stdcall"             { return AnsiCParser::PASCAL; }
-"__custom"              { return AnsiCParser::CUSTOM; }
-"__thiscall"            { return AnsiCParser::THISCALL; }
-"PREFER"                { return AnsiCParser::PREFER; }
-"__withstack("          { return AnsiCParser::WITHSTACK; }
-"__symref"              { return AnsiCParser::SYMBOLREF; }
-"static"                { return AnsiCParser::STATIC; }
-"struct"                { return AnsiCParser::STRUCT; }
-"switch"                { return AnsiCParser::SWITCH; }
-"typedef"               { return AnsiCParser::TYPEDEF; }
-"union"                 { return AnsiCParser::UNION; }
-"unsigned"              { return AnsiCParser::UNSIGNED; }
-"void"                  { return AnsiCParser::VOID; }
-"volatile"              { return AnsiCParser::VOLATILE; }
-"while"                 { return AnsiCParser::WHILE; }
-"r["                    { return AnsiCParser::REGOF; }
-"m["                    { return AnsiCParser::MEMOF; }
-"@max("                 { return AnsiCParser::MAXBOUND; }
+"auto"                  { return token_type::AUTO; }
+"break"                 { return token_type::BREAK; }
+"case"                  { return token_type::CASE; }
+"char"                  { return token_type::CHAR; }
+"const"                 { return token_type::CONST; }
+"continue"              { return token_type::CONTINUE; }
+"default"               { return token_type::DEFAULT; }
+"do"                    { return token_type::DO; }
+"double"                { return token_type::DOUBLE; }
+"else"                  { return token_type::ELSE; }
+"enum"                  { return token_type::ENUM; }
+"extern"                { return token_type::EXTERN; }
+"float"                 { return token_type::FLOAT; }
+"for"                   { return token_type::FOR; }
+"goto"                  { return token_type::GOTO; }
+"if"                    { return token_type::IF; }
+"int"                   { return token_type::INT; }
+"long"                  { return token_type::LONG; }
+"register"              { return token_type::REGISTER; }
+"return"                { return token_type::RETURN; }
+"short"                 { return token_type::SHORT; }
+"signed"                { return token_type::SIGNED; }
+"sizeof"                { return token_type::SIZEOF; }
+"__nodecode"            { return token_type::NODECODE; }
+"__incomplete"          { return token_type::INCOMPLETE; }
+"__cdecl"               { return token_type::CDECL; }
+"__pascal"              { return token_type::PASCAL; }
+"__stdcall"             { return token_type::PASCAL; }
+"__custom"              { return token_type::CUSTOM; }
+"__thiscall"            { return token_type::THISCALL; }
+"PREFER"                { return token_type::PREFER; }
+"__withstack("          { return token_type::WITHSTACK; }
+"__symref"              { return token_type::SYMBOLREF; }
+"static"                { return token_type::STATIC; }
+"struct"                { return token_type::STRUCT; }
+"switch"                { return token_type::SWITCH; }
+"typedef"               { return token_type::TYPEDEF; }
+"union"                 { return token_type::UNION; }
+"unsigned"              { return token_type::UNSIGNED; }
+"void"                  { return token_type::VOID; }
+"volatile"              { return token_type::VOLATILE; }
+"while"                 { return token_type::WHILE; }
+"r["                    { return token_type::REGOF; }
+"m["                    { return token_type::MEMOF; }
+"@max("                 { return token_type::MAXBOUND; }
 
 {L}({L}|{D})*           { yylval.str = new std::string(yytext, yyleng); return check_type(); }
 
 0[xX]{H}+{IS}?          |
 0{D}+{IS}?              |
-{D}+{IS}?               { yylval.ival = strtol(yytext, nullptr, 0); return AnsiCParser::CONSTANT; }
-L?'(\\.|[^\\'])+'       { return AnsiCParser::CONSTANT; }
+{D}+{IS}?               { yylval.ival = strtol(yytext, nullptr, 0); return token_type::CONSTANT; }
+L?'(\\.|[^\\'])+'       { return token_type::CONSTANT; }
 
 {D}+{E}{FS}?            |
 {D}*"."{D}+({E})?{FS}?  |
-{D}+"."{D}*({E})?{FS}?  { return AnsiCParser::CONSTANT; }
+{D}+"."{D}*({E})?{FS}?  { return token_type::CONSTANT; }
 
-L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return AnsiCParser::STRING_LITERAL; }
+L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return token_type::STRING_LITERAL; }
 
-"..."                   { return AnsiCParser::ELLIPSIS; }
-">>="                   { return AnsiCParser::RIGHT_ASSIGN; }
-"<<="                   { return AnsiCParser::LEFT_ASSIGN; }
-"+="                    { return AnsiCParser::ADD_ASSIGN; }
-"-="                    { return AnsiCParser::SUB_ASSIGN; }
-"*="                    { return AnsiCParser::MUL_ASSIGN; }
-"/="                    { return AnsiCParser::DIV_ASSIGN; }
-"%="                    { return AnsiCParser::MOD_ASSIGN; }
-"&="                    { return AnsiCParser::AND_ASSIGN; }
-"^="                    { return AnsiCParser::XOR_ASSIGN; }
-"|="                    { return AnsiCParser::OR_ASSIGN; }
-">>"                    { return AnsiCParser::RIGHT_OP; }
-"<<"                    { return AnsiCParser::LEFT_OP; }
-"++"                    { return AnsiCParser::INC_OP; }
-"--"                    { return AnsiCParser::DEC_OP; }
-"->"                    { return AnsiCParser::PTR_OP; }
-"&&"                    { return AnsiCParser::AND_OP; }
-"||"                    { return AnsiCParser::OR_OP; }
-"<="                    { return AnsiCParser::LE_OP; }
-">="                    { return AnsiCParser::GE_OP; }
-"=="                    { return AnsiCParser::EQ_OP; }
-"!="                    { return AnsiCParser::NE_OP; }
+"..."                   { return token_type::ELLIPSIS; }
+">>="                   { return token_type::RIGHT_ASSIGN; }
+"<<="                   { return token_type::LEFT_ASSIGN; }
+"+="                    { return token_type::ADD_ASSIGN; }
+"-="                    { return token_type::SUB_ASSIGN; }
+"*="                    { return token_type::MUL_ASSIGN; }
+"/="                    { return token_type::DIV_ASSIGN; }
+"%="                    { return token_type::MOD_ASSIGN; }
+"&="                    { return token_type::AND_ASSIGN; }
+"^="                    { return token_type::XOR_ASSIGN; }
+"|="                    { return token_type::OR_ASSIGN; }
+">>"                    { return token_type::RIGHT_OP; }
+"<<"                    { return token_type::LEFT_OP; }
+"++"                    { return token_type::INC_OP; }
+"--"                    { return token_type::DEC_OP; }
+"->"                    { return token_type::PTR_OP; }
+"&&"                    { return token_type::AND_OP; }
+"||"                    { return token_type::OR_OP; }
+"<="                    { return token_type::LE_OP; }
+">="                    { return token_type::GE_OP; }
+"=="                    { return token_type::EQ_OP; }
+"!="                    { return token_type::NE_OP; }
 ";"                     |
 "{"                     |
 "}"                     |
@@ -203,9 +205,9 @@ AnsiCScanner::check_type()
 {
 #if 0 // pseudo code --- this is what it should check
 	if (yytext == type_name)
-		return AnsiCParser::TYPE_NAME;
-	return AnsiCParser::IDENTIFIER;
+		return token_type::TYPE_NAME;
+	return token_type::IDENTIFIER;
 #else // it actually will only return IDENTIFIER
-	return AnsiCParser::IDENTIFIER;
+	return token_type::IDENTIFIER;
 #endif
 }

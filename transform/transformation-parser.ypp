@@ -41,13 +41,12 @@
 	Exp *exp;
 }
 
-%{
-	#include "transformation-scanner.h"
-%}
-
 %define DEBUG 1
 
 %define MEMBERS \
+	public: \
+		typedef YY_TransformationParser_ENUM_TOKEN token_type; \
+		typedef YY_TransformationParser_STYPE semantic_type; \
 	private: \
 		TransformationScanner &scn;
 
@@ -145,6 +144,8 @@ type
 	;
 
 %%
+
+#include "transformation-scanner.h"
 
 int
 TransformationParser::yylex()

@@ -30,6 +30,8 @@
 
 %define MEMBERS \
 	public: \
+		typedef TransformationParser::token_type token_type; \
+		typedef TransformationParser::semantic_type semantic_type; \
 		std::string lineBuf; /* the current line */ \
 		int theLine = 1;     /* the current line number */ \
 		int column = 0; \
@@ -40,8 +42,7 @@
 %define CONSTRUCTOR_INIT
 %define CONSTRUCTOR_CODE yyin = &ins; yy_flex_debug = trace;
 
-%define LEX_PARAM YY_TransformationParser_STYPE &yylval
-
+%define LEX_PARAM TransformationParser::semantic_type &yylval
 
 D                       [0-9]
 /* Allow ? and @ in identifiers, so we can use mangled names */
@@ -61,56 +62,56 @@ IS                      (u|U|l|L)*
 <COMMENT>"*"            ;
 <COMMENT>\n             ;
 
-"sizeof"                { return TransformationParser::SIZEOF; }
-"where"                 { return TransformationParser::WHERE; }
-"becomes"               { return TransformationParser::BECOMES; }
-"kind("                 { return TransformationParser::KIND; }
-"type("                 { return TransformationParser::TYPE; }
-"pointer("              { return TransformationParser::POINTER; }
-"compound"              { return TransformationParser::COMPOUND; }
-"array"                 { return TransformationParser::ARRAY; }
-"r["                    { return TransformationParser::REGOF; }
-"m["                    { return TransformationParser::MEMOF; }
-"a["                    { return TransformationParser::ADDROF; }
-"true"                  { return TransformationParser::BOOL_TRUE; }
-"false"                 { return TransformationParser::BOOL_FALSE; }
-{L}({L}|{D})*\(         { yylval.str = new std::string(yytext, yyleng - 1); return TransformationParser::FUNC; }
+"sizeof"                { return token_type::SIZEOF; }
+"where"                 { return token_type::WHERE; }
+"becomes"               { return token_type::BECOMES; }
+"kind("                 { return token_type::KIND; }
+"type("                 { return token_type::TYPE; }
+"pointer("              { return token_type::POINTER; }
+"compound"              { return token_type::COMPOUND; }
+"array"                 { return token_type::ARRAY; }
+"r["                    { return token_type::REGOF; }
+"m["                    { return token_type::MEMOF; }
+"a["                    { return token_type::ADDROF; }
+"true"                  { return token_type::BOOL_TRUE; }
+"false"                 { return token_type::BOOL_FALSE; }
+{L}({L}|{D})*\(         { yylval.str = new std::string(yytext, yyleng - 1); return token_type::FUNC; }
 
-{L}({L}|{D})*           { yylval.str = new std::string(yytext, yyleng); return TransformationParser::IDENTIFIER; }
+{L}({L}|{D})*           { yylval.str = new std::string(yytext, yyleng); return token_type::IDENTIFIER; }
 
 0[xX]{H}+{IS}?          |
 0{D}+{IS}?              |
-{D}+{IS}?               { yylval.ival = strtol(yytext, nullptr, 0); return TransformationParser::CONSTANT; }
-L?'(\\.|[^\\'])+'       { return TransformationParser::CONSTANT; }
+{D}+{IS}?               { yylval.ival = strtol(yytext, nullptr, 0); return token_type::CONSTANT; }
+L?'(\\.|[^\\'])+'       { return token_type::CONSTANT; }
 
 {D}+{E}{FS}?            |
 {D}*"."{D}+({E})?{FS}?  |
-{D}+"."{D}*({E})?{FS}?  { return TransformationParser::CONSTANT; }
+{D}+"."{D}*({E})?{FS}?  { return token_type::CONSTANT; }
 
-L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return TransformationParser::STRING_LITERAL; }
+L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return token_type::STRING_LITERAL; }
 
-"..."                   { return TransformationParser::ELLIPSIS; }
-">>="                   { return TransformationParser::RIGHT_ASSIGN; }
-"<<="                   { return TransformationParser::LEFT_ASSIGN; }
-"+="                    { return TransformationParser::ADD_ASSIGN; }
-"-="                    { return TransformationParser::SUB_ASSIGN; }
-"*="                    { return TransformationParser::MUL_ASSIGN; }
-"/="                    { return TransformationParser::DIV_ASSIGN; }
-"%="                    { return TransformationParser::MOD_ASSIGN; }
-"&="                    { return TransformationParser::AND_ASSIGN; }
-"^="                    { return TransformationParser::XOR_ASSIGN; }
-"|="                    { return TransformationParser::OR_ASSIGN; }
-">>"                    { return TransformationParser::RIGHT_OP; }
-"<<"                    { return TransformationParser::LEFT_OP; }
-"++"                    { return TransformationParser::INC_OP; }
-"--"                    { return TransformationParser::DEC_OP; }
-"->"                    { return TransformationParser::PTR_OP; }
-"&&"                    { return TransformationParser::AND_OP; }
-"||"                    { return TransformationParser::OR_OP; }
-"<="                    { return TransformationParser::LE_OP; }
-">="                    { return TransformationParser::GE_OP; }
-"=="                    { return TransformationParser::EQ_OP; }
-"!="                    { return TransformationParser::NE_OP; }
+"..."                   { return token_type::ELLIPSIS; }
+">>="                   { return token_type::RIGHT_ASSIGN; }
+"<<="                   { return token_type::LEFT_ASSIGN; }
+"+="                    { return token_type::ADD_ASSIGN; }
+"-="                    { return token_type::SUB_ASSIGN; }
+"*="                    { return token_type::MUL_ASSIGN; }
+"/="                    { return token_type::DIV_ASSIGN; }
+"%="                    { return token_type::MOD_ASSIGN; }
+"&="                    { return token_type::AND_ASSIGN; }
+"^="                    { return token_type::XOR_ASSIGN; }
+"|="                    { return token_type::OR_ASSIGN; }
+">>"                    { return token_type::RIGHT_OP; }
+"<<"                    { return token_type::LEFT_OP; }
+"++"                    { return token_type::INC_OP; }
+"--"                    { return token_type::DEC_OP; }
+"->"                    { return token_type::PTR_OP; }
+"&&"                    { return token_type::AND_OP; }
+"||"                    { return token_type::OR_OP; }
+"<="                    { return token_type::LE_OP; }
+">="                    { return token_type::GE_OP; }
+"=="                    { return token_type::EQ_OP; }
+"!="                    { return token_type::NE_OP; }
 ";"                     |
 "{"                     |
 "}"                     |
