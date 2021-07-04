@@ -198,10 +198,9 @@ _?[A-Za-z][A-Za-z0-9_]*    { yylval.str = new std::string(yytext, yyleng); retur
 	return token_type::NUM;
 }
 
-[ \t]+  ;
-#.*$    ; /* comment */
-\n      ;
-.       ;
+#.*$            | /* comment */
+[ \t\n\v\f\r]+  |
+.               ;
 
 %%
 

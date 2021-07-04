@@ -59,8 +59,8 @@ IS                      (u|U|l|L)*
 
 "/*"                    { BEGIN(COMMENT); }
 <COMMENT>"*/"           { BEGIN(INITIAL); }
-<COMMENT>[^*\n]+        ;
-<COMMENT>"*"            ;
+<COMMENT>[^*\n]+        |
+<COMMENT>"*"            |
 <COMMENT>\n             ;
 
 "sizeof"                { return token_type::SIZEOF; }
@@ -138,7 +138,7 @@ L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return t
 "|"                     |
 "?"                     { return yytext[0]; }
 
-[ \t\v\n\f]+            ;
+[ \t\n\v\f\r]+          |
 .                       ; /* ignore bad characters */
 
 %%
