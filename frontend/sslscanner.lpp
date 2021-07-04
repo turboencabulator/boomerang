@@ -43,9 +43,9 @@
 		typedef SSLParser::token_type token_type; \
 		typedef SSLParser::semantic_type semantic_type; \
 		typedef SSLParser::location_type location_type; \
+	private: \
 		int line = 1; \
 		int column = 1; \
-	private: \
 		void count(location_type &);
 
 %define CONSTRUCTOR_PARAM std::istream &ins, bool trace

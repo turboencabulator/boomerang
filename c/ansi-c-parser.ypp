@@ -502,14 +502,9 @@ AnsiCParser::yylex()
 }
 
 void
-AnsiCParser::yyerror(const char *s)
+AnsiCParser::yyerror(const char *msg)
 {
-	// TODO:  Print the filename.
-	std::cerr << s << " on line " << scn.line << "\n"
-	          << scn.lineBuf << "\n";
-	// Assume defaults not tampered with:  right-aligned, ' ' fill char
-	std::cerr.width(scn.column);
-	std::cerr << "^" << "\n";
+	std::cerr << msg << "\n";
 }
 
 /**

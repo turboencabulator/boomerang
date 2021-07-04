@@ -17,7 +17,6 @@
 
 %header{
 	#include "ansi-c-parser.h"
-	#include <string>
 %}
 
 %{
@@ -33,10 +32,9 @@
 		typedef AnsiCParser::token_type token_type; \
 		typedef AnsiCParser::semantic_type semantic_type; \
 		typedef AnsiCParser::location_type location_type; \
-		std::string lineBuf; /* the current line */ \
+	private: \
 		int line = 1; \
 		int column = 1; \
-	private: \
 		void count(location_type &); \
 		int check_type();
 
@@ -190,11 +188,9 @@ AnsiCScanner::count(location_type &yylloc)
 	yylloc.first_column = column;
 	for (size_t i = 0; yytext[i]; ++i) {
 		if (yytext[i] == '\n') {
-			lineBuf.clear();
 			++line;
 			column = 1;
 		} else {
-			lineBuf.push_back(yytext[i]);
 			if (yytext[i] == '\t' && (column % 8))
 				column += 8 - (column % 8);
 			++column;
