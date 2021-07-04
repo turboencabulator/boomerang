@@ -90,7 +90,7 @@
 
 translation_unit
 	: /* empty */
-	| transformation translation_unit
+	| translation_unit transformation
 	;
 
 transformation

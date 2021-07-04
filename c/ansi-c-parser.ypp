@@ -174,7 +174,7 @@ translation_unit
 	;
 
 decls
-	: decl decls
+	: decls decl
 	| /* empty */
 	;
 
