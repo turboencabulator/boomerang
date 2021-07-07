@@ -3,4 +3,4 @@ exp + n where (type(exp) == pointer(ty))
            && (kind(n) == opIntConst)
            && (m == memberAtOffset(ty, n))
            && (r == n - offsetToMember(ty, m))
-        becomes a[m[exp].m] + r
+        becomes a[m[exp].m] + r;

@@ -107,7 +107,7 @@ translation_unit
 	;
 
 transformation
-	: exp optional_where_clause BECOMES exp { new GenericExpTransformer($1, $2, $4); }
+	: exp optional_where_clause BECOMES exp ';' { new GenericExpTransformer($1, $2, $4); }
 	;
 
 optional_where_clause
