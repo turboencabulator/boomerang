@@ -73,12 +73,25 @@
 %token ADDROF
 %token<ival> CONSTANT
 %token<str> IDENTIFIER STRING_LITERAL
-%token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
-%token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
-%token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
-%token XOR_ASSIGN OR_ASSIGN TYPE_NAME
+%token INC_OP DEC_OP
+%token TYPE_NAME
 %token STRUCT UNION ENUM ELLIPSIS
 %token BOOL_TRUE BOOL_FALSE
+
+%left ','
+%right '=' MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN XOR_ASSIGN OR_ASSIGN
+%left OR_OP
+%left AND_OP
+%left '|'
+%left '^'
+%left '&'
+%left EQ_OP NE_OP
+%left '<' '>' LE_OP GE_OP
+%left LEFT_OP RIGHT_OP
+%left '+' '-'
+%left '*' '/' '%'
+%right PREFIX_OP
+%left POSTFIX_OP '.' PTR_OP
 
 %type<exp> exp
 %type<exp> optional_where_clause
@@ -131,8 +144,8 @@ exp
 	| '(' exp ')'        { $$ = $2; }
 	| KIND exp ')'       { $$ = new Unary(opKindOf, $2); }
 	| TYPE exp ')'       { $$ = new Unary(opTypeOf, $2); }
-	| '-' exp            { $$ = new Unary(opNeg, $2); }
-	| '!' exp            { $$ = new Unary(opLNot, $2); }
+	| '-' exp %prec PREFIX_OP { $$ = new Unary(opNeg, $2); }
+	| '!' exp %prec PREFIX_OP { $$ = new Unary(opLNot, $2); }
 	| type               { $$ = new TypeVal($1); }
 	| exp ',' exp        { $$ = new Binary(opList, $1, new Binary(opList, $3, new Terminal(opNil))); }
 	| BOOL_TRUE          { $$ = new Terminal(opTrue); }
