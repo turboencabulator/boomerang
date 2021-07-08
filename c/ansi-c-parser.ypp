@@ -448,21 +448,38 @@ type_ident_list
 	;
 
 type
-	: CHAR                  { $$ = new CharType(); }
-	| SHORT                 { $$ = new IntegerType(16, 1); }
-	| INT                   { $$ = new IntegerType(32, 1); }
-	| LONG                  { $$ = new IntegerType(32, 1); }
-	| LONG LONG             { $$ = new IntegerType(64, 1); }
-	| UNSIGNED CHAR         { $$ = new IntegerType(8, 0); }
-	| UNSIGNED SHORT        { $$ = new IntegerType(16, 0); }
-	| UNSIGNED              { $$ = new IntegerType(32, 0); }
-	| UNSIGNED INT          { $$ = new IntegerType(32, 0); }
-	| UNSIGNED LONG         { $$ = new IntegerType(32, 0); }
-	| UNSIGNED LONG LONG    { $$ = new IntegerType(64, 0); }
-	| FLOAT                 { $$ = new FloatType(32); }
-	| DOUBLE                { $$ = new FloatType(64); }
-	| VOID                  { $$ = new VoidType(); }
-	| type '*'              { $$ = new PointerType($1); }
+	/* TODO: Make the widths depend on the targeted machine/ABI */
+	: CHAR                   { $$ = new CharType(); }
+	| SHORT                  { $$ = new IntegerType(16, 1); }
+	| SHORT INT              { $$ = new IntegerType(16, 1); }
+	| INT                    { $$ = new IntegerType(32, 1); }
+	| LONG                   { $$ = new IntegerType(32, 1); }
+	| LONG INT               { $$ = new IntegerType(32, 1); }
+	| LONG LONG              { $$ = new IntegerType(64, 1); }
+	| LONG LONG INT          { $$ = new IntegerType(64, 1); }
+	| SIGNED CHAR            { $$ = new IntegerType(8, 1); }
+	| SIGNED SHORT           { $$ = new IntegerType(16, 1); }
+	| SIGNED SHORT INT       { $$ = new IntegerType(16, 1); }
+	| SIGNED                 { $$ = new IntegerType(32, 1); }
+	| SIGNED INT             { $$ = new IntegerType(32, 1); }
+	| SIGNED LONG            { $$ = new IntegerType(32, 1); }
+	| SIGNED LONG INT        { $$ = new IntegerType(32, 1); }
+	| SIGNED LONG LONG       { $$ = new IntegerType(64, 1); }
+	| SIGNED LONG LONG INT   { $$ = new IntegerType(64, 1); }
+	| UNSIGNED CHAR          { $$ = new IntegerType(8, 0); }
+	| UNSIGNED SHORT         { $$ = new IntegerType(16, 0); }
+	| UNSIGNED SHORT INT     { $$ = new IntegerType(16, 0); }
+	| UNSIGNED               { $$ = new IntegerType(32, 0); }
+	| UNSIGNED INT           { $$ = new IntegerType(32, 0); }
+	| UNSIGNED LONG          { $$ = new IntegerType(32, 0); }
+	| UNSIGNED LONG INT      { $$ = new IntegerType(32, 0); }
+	| UNSIGNED LONG LONG     { $$ = new IntegerType(64, 0); }
+	| UNSIGNED LONG LONG INT { $$ = new IntegerType(64, 0); }
+	| FLOAT                  { $$ = new FloatType(32); }
+	| DOUBLE                 { $$ = new FloatType(64); }
+	| LONG DOUBLE            { $$ = new FloatType(80); }
+	| VOID                   { $$ = new VoidType(); }
+	| type '*'               { $$ = new PointerType($1); }
 
 	/* This isn't C, but it makes defining pointers to arrays easier */
 	| type '[' CONSTANT ']' { $$ = new ArrayType($1, $3); }
