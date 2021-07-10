@@ -129,7 +129,7 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		os << "block";
 	os << "\"];\n";
 	if (pbb) {
-		for (int i = 0; i < pbb->getOutEdges().size(); ++i) {
+		for (unsigned i = 0; i < pbb->getOutEdges().size(); ++i) {
 			BasicBlock *out = pbb->getOutEdge(i);
 			const SyntaxNode *to = root->findNodeFor(out);
 			assert(to);

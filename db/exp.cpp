@@ -2835,8 +2835,6 @@ PolySimplifier::postVisit(Ternary *e)
 	auto eSub1 = e->getSubExp1();
 	auto eSub2 = e->getSubExp2();
 	auto eSub3 = e->getSubExp3();
-	auto opSub1 = eSub1->getOper();
-	auto opSub2 = eSub2->getOper();
 	auto opSub3 = eSub3->getOper();
 
 	// p ? 1 : 0 -> p

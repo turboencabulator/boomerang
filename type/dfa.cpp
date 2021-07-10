@@ -1424,11 +1424,11 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 				// First find out if we already have struct information
 				if (l1Type->asPointer()->resolvesToCompound()) {
 					CompoundType *ct = l1Type->asPointer()->asCompound();
-					if (ct->isGeneric())
+					if (ct->isGeneric()) {
 						ct->updateGenericMember(K, parentType, ch);
-					else
+					} else {
 						// would like to force a simplify here; I guess it will happen soon enough
-						;
+					}
 				} else {
 					// Need to create a generic stuct with a least one member at offset K
 					auto ct = new CompoundType(true);
@@ -1455,6 +1455,8 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 			prog->setGlobalType(name, ty);
 		}
 		break;
+	default:
+		break;
 	}
 }
 
@@ -1473,6 +1475,8 @@ Ternary::descendType(Type *parentType, bool &ch, Statement *s)
 			fromType = Type::newIntegerLikeType(fromSize, op == opZfill ? -1 : 1);
 			subExp3->descendType(fromType, ch, s);
 		}
+		break;
+	default:
 		break;
 	}
 }
