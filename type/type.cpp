@@ -1167,8 +1167,14 @@ Type::isCString()
 	return p->resolvesToChar();
 }
 
+/**
+ * Dictionary of user-defined types (typedefs).
+ */
 std::map<std::string, Type *> Type::namedTypes;
 
+/**
+ * Adds a named type to the dictionary.  Takes ownership of the Type object.
+ */
 void
 Type::addNamedType(const std::string &name, Type *type)
 {
@@ -1180,17 +1186,22 @@ Type::addNamedType(const std::string &name, Type *type)
 		// we then need to define b as int
 		// we create clones to keep the GC happy
 		auto it = namedTypes.find(type->getCtype());
-		if (it != namedTypes.end())
-			type = it->second;
-		namedTypes[name] = type->clone();
-	} else if (*type != *prev) {
-		//LOG << "addNamedType: name " << name
-		//    << " type " << type->getCtype()
-		//    << " != " << prev->getCtype() << "\n";
-		std::cerr << "Warning: Type::addNamedType: Redefinition of type " << name << "\n"
-		          << " type     = " << type->prints() << "\n"
-		          << " previous = " << prev->prints() << "\n";
-		*type = *prev;
+		if (it != namedTypes.end()) {
+			delete type;
+			type = it->second->clone();
+		}
+		namedTypes[name] = type;
+	} else {
+		// Already exists.  Complain if different, then discard.
+		if (*type != *prev) {
+			//LOG << "addNamedType: name " << name
+			//    << " type " << type->getCtype()
+			//    << " != " << prev->getCtype() << "\n";
+			std::cerr << "Warning: Type::addNamedType: Attempted redefinition of type " << name << "\n"
+			          << " type     = " << type->prints() << "\n"
+			          << " previous = " << prev->prints() << "\n";
+		}
+		delete type;
 	}
 }
 
