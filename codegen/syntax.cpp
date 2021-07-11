@@ -129,24 +129,27 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		os << "block";
 	os << "\"];\n";
 	if (pbb) {
-		for (unsigned i = 0; i < pbb->getOutEdges().size(); ++i) {
-			BasicBlock *out = pbb->getOutEdge(i);
+		const auto &outedges = pbb->getOutEdges();
+		unsigned i = 0;
+		for (const auto &out : outedges) {
 			const SyntaxNode *to = root->findNodeFor(out);
 			assert(to);
 			os << "\t" << nodenum
 			   << " -> " << to->getNumber()
 			   << " [style=dotted";
-			if (pbb->getOutEdges().size() > 1)
+			if (outedges.size() > 1)
 				os << ",label=\"" << i << "\"";
 			os << "];\n";
+			++i;
 		}
 	} else {
-		for (unsigned i = 0; i < statements.size(); ++i)
-			statements[i]->printAST(root, os);
-		for (unsigned i = 0; i < statements.size(); ++i)
+		for (const auto &stmt : statements)
+			stmt->printAST(root, os);
+		unsigned i = 0;
+		for (const auto &stmt : statements)
 			os << "\t" << nodenum
-			   << " -> " << statements[i]->getNumber()
-			   << " [label=\"" << i << "\"];\n";
+			   << " -> " << stmt->getNumber()
+			   << " [label=\"" << i++ << "\"];\n";
 	}
 }
 
