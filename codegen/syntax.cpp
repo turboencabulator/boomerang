@@ -179,10 +179,10 @@ BlockSyntaxNode::evaluate(const SyntaxNode *root) const
 			n += 30;
 		}
 	}
-	for (unsigned i = 0; i < statements.size(); ++i) {
-		n += statements[i]->evaluate(root);
-		if (statements[i]->isGoto()) {
-			if (i != statements.size() - 1) {
+	for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
+		n += it[0]->evaluate(root);
+		if (it[0]->isGoto()) {
+			if (it + 1 != statements.cend()) {
 #if DEBUG_EVAL
 				std::cerr << "add 100" << std::endl;
 #endif
@@ -193,20 +193,20 @@ BlockSyntaxNode::evaluate(const SyntaxNode *root) const
 #endif
 				n += 50;
 			}
-		} else if (statements[i]->isBranch()) {
+		} else if (it[0]->isBranch()) {
 			const SyntaxNode *loop = root->getEnclosingLoop(this);
-			std::cerr << "branch " << statements[i]->getNumber()
+			std::cerr << "branch " << it[0]->getNumber()
 			          << " not in loop" << std::endl;
 			if (loop) {
-				std::cerr << "branch " << statements[i]->getNumber()
+				std::cerr << "branch " << it[0]->getNumber()
 				          << " in loop " << loop->getNumber() << std::endl;
 				// this is a bit C specific
 				const SyntaxNode *out = loop->getOutEdge(root, 0);
-				if (out && statements[i]->getOutEdge(root, 0) == out) {
+				if (out && it[0]->getOutEdge(root, 0) == out) {
 					std::cerr << "found break" << std::endl;
 					n += 10;
 				}
-				if (statements[i]->getOutEdge(root, 0) == loop) {
+				if (it[0]->getOutEdge(root, 0) == loop) {
 					std::cerr << "found continue" << std::endl;
 					n += 10;
 				}
@@ -216,13 +216,13 @@ BlockSyntaxNode::evaluate(const SyntaxNode *root) const
 #endif
 				n += 50;
 			}
-		} else if (i < statements.size() - 1
-		        && statements[i]->getOutEdge(root, 0) != statements[i + 1]) {
+		} else if (it + 1 != statements.cend()
+		        && it[0]->getOutEdge(root, 0) != it[1]) {
 #if DEBUG_EVAL
 			std::cerr << "add 25" << std::endl;
-			std::cerr << statements[i]->getNumber() << " -> "
-			          << statements[i]->getOutEdge(root, 0)->getNumber()
-			          << " not " << statements[i + 1]->getNumber() << std::endl;
+			std::cerr << it[0]->getNumber() << " -> "
+			          << it[0]->getOutEdge(root, 0)->getNumber()
+			          << " not " << it[1]->getNumber() << std::endl;
 #endif
 			n += 25;
 		}
