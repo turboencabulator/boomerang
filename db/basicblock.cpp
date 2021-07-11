@@ -2083,7 +2083,6 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 				} else
 					swi->iLower = 0;
 				swi->pSwitchVar = expr;
-				lastStmt->setDest((Exp *)nullptr);
 				lastStmt->setSwitchInfo(swi);
 				return swi->iNumTable != 0;
 			}
@@ -2109,7 +2108,6 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 						swi->iNumTable = n;
 						swi->iLower = 1;  // Not used, except to compute
 						swi->iUpper = n;  // the number of options
-						lastStmt->setDest((Exp *)nullptr);
 						lastStmt->setSwitchInfo(swi);
 						return true;
 					}

@@ -3455,11 +3455,12 @@ CaseStatement::getSwitchInfo() const
 }
 
 /**
- * \brief Set a pointer to a SWITCH_INFO struct.
+ * \brief Replace the destination Exp with a SWITCH_INFO struct.
  */
 void
 CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
 {
+	pDest = nullptr;
 	pSwitchInfo = psi;
 }
 

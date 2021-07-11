@@ -896,11 +896,11 @@ StatementTest::testAddUsedLocsCase()
 	LocationSet l;
 	auto c = new CaseStatement;
 	c->setDest(Location::memOf(Location::regOf(26)));
-	SWITCH_INFO si;
-	si.pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
-	c->setSwitchInfo(&si);
+	auto si = new SWITCH_INFO;
+	si->pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
+	c->setSwitchInfo(si);
 	c->addUsedLocs(l);
-	std::string expected("r26,\tr28,\tm[r28 - 12],\tm[r26]");
+	std::string expected("r28,\tm[r28 - 12]");
 	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
@@ -1045,22 +1045,21 @@ StatementTest::testSubscriptVars()
 
 	// CaseStatement with pDest = m[r26], switchVar = m[r28 - 12]
 	auto c = new CaseStatement;
-	c->setDest(Location::memOf(Location::regOf(26)));
-	SWITCH_INFO si;
-	si.pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
-	c->setSwitchInfo(&si);
-	std::ostringstream ost4;
+	auto si = new SWITCH_INFO;
+	si->pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
+	c->setSwitchInfo(si);
 	c->subscriptVar(srch, &s9);
+	std::ostringstream ost4;
 	ost4 << *c;
 	expected = "   0 SWITCH(m[r28{9} - 12])\n";
 	actual = ost4.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// CaseStatement (before recog) with pDest = r28, switchVar is nullptr
-	c->setDest(Location::regOf(28));
 	c->setSwitchInfo(nullptr);
-	std::ostringstream ost4a;
+	c->setDest(Location::regOf(28));
 	c->subscriptVar(srch, &s9);
+	std::ostringstream ost4a;
 	ost4a << *c;
 	expected = "   0 CASE [r28{9}]";
 	actual = ost4a.str();
