@@ -1836,10 +1836,17 @@ static Location *vfc_none = Location::memOf(
 
 static Exp *hlVfc[] = { vfc_funcptr, vfc_both, vfc_vto, vfc_vfo, vfc_none };
 
-static void
-findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
+/**
+ * Extract information from a switch's destination Exp.  Supports the switch
+ * forms in hlForms/chForms; select the form beforehand using si.chForm.
+ * Populates si.uTable.  Returns the table index Exp.
+ */
+static Exp *
+findSwParams(Exp *e, SWITCH_INFO &si)
 {
-	switch (form) {
+	Exp *expr;
+	ADDRESS T;
+	switch (si.chForm) {
 	case 'a':
 		{
 			// Pattern: <base>{}[<index>]{}
@@ -1921,7 +1928,10 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 	default:
 		expr = nullptr;
 		T = NO_ADDRESS;
+		break;
 	}
+	si.uTable = T;
+	return expr;
 }
 
 /**
@@ -2049,11 +2059,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		if (form) {
 			auto swi = new SWITCH_INFO;
 			swi->chForm = form;
-			ADDRESS T;
-			Exp *expr;
-			findSwParams(form, e, expr, T);
-			if (expr) {
-				swi->uTable = T;
+			if (auto expr = findSwParams(e, *swi)) {
 				swi->iNumTable = findNumCases();
 #if 1
 				// TMN: Added actual control of the array members, to possibly truncate what findNumCases()
@@ -2075,13 +2081,13 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 				}
 				assert(swi->iNumTable > 0);
 #endif
+				swi->iLower = 0;
 				swi->iUpper = swi->iNumTable - 1;
 				if (expr->getOper() == opMinus && ((Binary *)expr)->getSubExp2()->isIntConst()) {
 					swi->iLower = ((Const *)((Binary *)expr)->getSubExp2())->getInt();
 					swi->iUpper += swi->iLower;
 					expr = ((Binary *)expr)->getSubExp1();
-				} else
-					swi->iLower = 0;
+				}
 				swi->pSwitchVar = expr;
 				lastStmt->setSwitchInfo(swi);
 				return swi->iNumTable != 0;
