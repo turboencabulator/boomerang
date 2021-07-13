@@ -1857,13 +1857,14 @@ static Exp *hlVfc[] = { vfc_funcptr, vfc_both, vfc_vto, vfc_vfo, vfc_none };
 /**
  * Extract information from a switch's destination Exp.  Supports the switch
  * forms in hlForms/chForms; select the form beforehand using si.chForm.
- * Populates si.uTable.  Returns the table index Exp.
+ * Populates si.uTable and si.iOffset.  Returns the table index Exp.
  */
 static Exp *
 findSwParams(Exp *e, SWITCH_INFO &si)
 {
 	Exp *expr;
 	ADDRESS T;
+	si.iOffset = 0;
 	switch (si.chForm) {
 	case 'a':  // Pattern: <base>{}[<index>]{}
 		{
@@ -1906,6 +1907,7 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 		break;
 	case 'R':  // Pattern: %pc + m[%pc + (<expr> * 4) + k]
 		{
+			// Was: uTable = <RTL's native address> + 8 (possibly SPARC-specific)
 			T = 0;  // ?
 			// l = m[%pc  + (<expr> * 4) + k]:
 			Exp *l = ((Binary *)e)->getSubExp2();
@@ -1914,6 +1916,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			Binary *b = (Binary *)((Location *)l)->getSubExp1();
 			// b = (<expr> * 4) + k:
 			b = (Binary *)b->getSubExp2();
+			Const *k = (Const *)b->getSubExp2();
+			si.iOffset = k->getInt();
 			// b = <expr> * 4:
 			b = (Binary *)b->getSubExp1();
 			// expr = <expr>:
@@ -1923,6 +1927,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 	case 'r':  // Pattern: %pc + m[%pc + ((<expr> * 4) - k)] - k
 		// TODO: Check associativity, was %pc + (m[] - k), now (%pc + m[]) - k
 		{
+			// Was: uTable = uCopyPC - k, where both k's are equal
+			// and uCopyPC is address of an RTL with %pc on the RHS of an assignment
 			T = 0;  // ?
 			// b = %pc + m[%pc + ((<expr> * 4) - k)]:
 			Binary *b = (Binary *)((Binary *)e)->getSubExp1();
