@@ -1682,6 +1682,41 @@ BasicBlock::whichPred(BasicBlock *pred) const
 //                                              //
 //  //  //  //  //  //  //  //  //  //  //  //  //
 
+/*
+ *  Switch statements are generally one of the following three
+ *  forms, when reduced to high level representation, where var is the
+ *  switch variable, numl and numu are the lower and upper bounds of that
+ *  variable that are handled by the switch, and T is the address of the
+ *  jump table. Out represents a label after the switch statement.
+ *  Each has this pattern to establish the upper bound:
+ *      jcond (var > numu) out
+ *  Most have a subtract (or add) to establish the lower bound; some (e.g.
+ *  epc) have a compare and branch if lower to establish the lower bound;
+ *  if this is the case, the table address needs to be altered
+ * Here are the 4 types discovered so far; size of an address is 4:
+ *  A) jmp m[<expr> * 4 + T]
+ *  O) jmp m[<expr> * 4 + T] + T
+ *  H) jmp m[(((<expr> & mask) * 8) + T) + 4]
+ *  R) jmp %pc + m[%pc + ((<expr> * 4) + k)]        // O1
+ *  r) jmp %pc + m[%pc + ((<expr> * 4) - k)] - k    // O2
+ *  where for forms A, O, R, r <expr> is one of
+ *      r[v]                            // numl == 0
+ *      r[v] - numl                     // usual case, switch var is int
+ *      ((r[v] - numl) << 24) >>A 24)   // switch var is char in lower byte
+ *      etc
+ * or in form H, <expr> is something like
+ *      ((r[v] - numl) >> 4) + (r[v] - numl)
+ *      ((r[v] - numl) >> 8) + ((r[v] - numl) >> 2) + (r[v] - numl)
+ *      etc.
+ *  Forms A and H have a table of pointers to code handling the switch
+ *  values; forms O and r have a table of offsets from the start of the
+ *  table itself (i.e. all values are the same as with form A, except
+ *  that T is subtracted from each entry.) Form R has offsets relative
+ *  to the CALL statement that defines "%pc".
+ *  Form H tables are actually (<value>, <address>) pairs, and there are
+ *  potentially more items in the table than the range of the switch var.
+ */
+
 // Switch High Level patterns
 
 /**
@@ -1847,9 +1882,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 	Exp *expr;
 	ADDRESS T;
 	switch (si.chForm) {
-	case 'a':
+	case 'a':  // Pattern: <base>{}[<index>]{}
 		{
-			// Pattern: <base>{}[<index>]{}
 			e = ((RefExp *)e)->getSubExp1();
 			Exp *base = ((Binary *)e)->getSubExp1();
 			if (auto re = dynamic_cast<RefExp *>(base))
@@ -1862,9 +1896,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			expr = ((Binary *)e)->getSubExp2();
 		}
 		break;
-	case 'A':
+	case 'A':  // Pattern: m[<expr> * 4 + T ]
 		{
-			// Pattern: m[<expr> * 4 + T ]
 			if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();
 			// b will be (<expr> * 4) + T
 			Binary *b = (Binary *)((Location *)e)->getSubExp1();
@@ -1874,9 +1907,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			expr = b->getSubExp1();
 		}
 		break;
-	case 'O':
+	case 'O':  // Pattern: m[<expr> * 4 + T ] + T
 		{
-			// Pattern: m[<expr> * 4 + T ] + T
 			T = ((Const *)((Binary *)e)->getSubExp2())->getInt();
 			// l = m[<expr> * 4 + T ]:
 			Exp *l = ((Binary *)e)->getSubExp1();
@@ -1889,9 +1921,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			expr = b->getSubExp1();
 		}
 		break;
-	case 'R':
+	case 'R':  // Pattern: %pc + m[%pc + (<expr> * 4) + k]
 		{
-			// Pattern: %pc + m[%pc + (<expr> * 4) + k]
 			T = 0;  // ?
 			// l = m[%pc  + (<expr> * 4) + k]:
 			Exp *l = ((Binary *)e)->getSubExp2();
@@ -1906,9 +1937,8 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			expr = b->getSubExp1();
 		}
 		break;
-	case 'r':
+	case 'r':  // Pattern: %pc + m[%pc + ((<expr> * 4) - k)] - k
 		{
-			// Pattern: %pc + m[%pc + ((<expr> * 4) - k)] - k
 			T = 0;  // ?
 			// b = %pc + m[%pc + ((<expr> * 4) - k)]:
 			Binary *b = (Binary *)((Binary *)e)->getSubExp1();

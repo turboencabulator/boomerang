@@ -1150,11 +1150,11 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 	for (int i = 0; i < iNum; ++i) {
 		ADDRESS uSwitch;
 		// Get the destination address from the switch table.
-		if (si->chForm == 'H') {
-			int iValue = pBF->readNative4(si->uTable + i*2);
+		if (si->chForm == 'H') {  // Hash table
+			int iValue = pBF->readNative4(si->uTable + i*8);
 			if (iValue == -1) continue;
 			uSwitch = pBF->readNative4(si->uTable + i*8 + 4);
-		} else if (si->chForm == 'F') {
+		} else if (si->chForm == 'F') {  // "Fortran" form
 			uSwitch = ((int *)si->uTable)[i];
 		} else {
 			uSwitch = pBF->readNative4(si->uTable + i*4);
