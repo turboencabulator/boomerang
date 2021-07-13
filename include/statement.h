@@ -788,7 +788,8 @@ struct SWITCH_INFO {
 	char        chForm;         // Switch form: 'A', 'O', 'R', 'H', or 'F' etc
 	int         iLower;         // Lower bound of the switch variable
 	int         iUpper;         // Upper bound for the switch variable
-	ADDRESS     uTable;         // Native address of the table, or ptr to array of values for form F
+	ADDRESS     uTable;         // Native address of the table
+	std::vector<ADDRESS> dests; // Destination addresses (form F only)
 	int         iNumTable;      // Number of entries in the table (form H only)
 	int         iOffset;        // Distance from jump to table (form R only)
 	//int         delta;          // Host address - Native address

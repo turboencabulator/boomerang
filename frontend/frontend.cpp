@@ -1123,7 +1123,7 @@ void
 FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 {
 	auto lastStmt = (CaseStatement *)newBB->getLastRtl()->getHlStmt();
-	SWITCH_INFO *si = lastStmt->getSwitchInfo();
+	auto si = lastStmt->getSwitchInfo();
 
 	if (DEBUG_SWITCH) {
 		LOG << "processing switch statement type " << si->chForm << " with table at 0x" << std::hex << si->uTable << std::dec << ", ";
@@ -1155,7 +1155,7 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 			if (iValue == -1) continue;
 			uSwitch = pBF->readNative4(si->uTable + i*8 + 4);
 		} else if (si->chForm == 'F') {  // "Fortran" form
-			uSwitch = ((int *)si->uTable)[i];
+			uSwitch = si->dests[i];
 		} else {
 			uSwitch = pBF->readNative4(si->uTable + i*4);
 		}

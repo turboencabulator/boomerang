@@ -1199,8 +1199,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 					// FIXME: Not valid for all switch types
 					Const caseVal(0);
 					if (psi->chForm == 'F')  // "Fortran" style?
-						caseVal.setInt(((int *)psi->uTable)[i]);  // Yes, use the table value itself
-						                                          // Note that uTable has the address of an int array
+						caseVal.setInt(psi->dests[i]);  // Yes, use the table value itself
 					else
 						caseVal.setInt((int)(psi->iLower + i));
 					hll->AddCaseCondOption(indLevel, &caseVal);
@@ -1990,7 +1989,7 @@ BasicBlock::findNumCases()
  * be assigned with.
  */
 static void
-findConstantValues(Statement *s, std::list<int> &dests)
+findConstantValues(Statement *s, std::vector<ADDRESS> &dests)
 {
 	if (auto pa = dynamic_cast<PhiAssign *>(s)) {
 		// For each definition, recurse
@@ -2108,22 +2107,16 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			if (auto re = dynamic_cast<RefExp *>(e)) {
 				if (dynamic_cast<Location *>(re->getSubExp1())) {
 					// Yes, we have <location>{ref}. Follow the tree and store the constant values that <location>
-					// could be assigned to in dests
-					std::list<int> dests;
-					findConstantValues(re->getDef(), dests);
-					// The switch info wants an array of native addresses
-					if (int n = dests.size()) {
-						auto destArray = new int[n];
-						auto ii = dests.begin();
-						for (int i = 0; i < n; ++i)
-							destArray[i] = *ii++;
-						auto swi = new SWITCH_INFO;
-						swi->chForm = 'F';  // The "Fortran" form
+					// could be assigned to in swi->dests
+					auto swi = new SWITCH_INFO;
+					swi->chForm = 'F';  // The "Fortran" form
+					findConstantValues(re->getDef(), swi->dests);
+					if (!swi->dests.empty()) {
 						swi->pSwitchVar = re;
-						swi->uTable = (ADDRESS)destArray;  // Abuse the uTable member as a pointer
-						swi->iNumTable = n;
-						swi->iLower = 1;  // Not used, except to compute
-						swi->iUpper = n;  // the number of options
+						swi->iNumTable = swi->dests.size();
+						swi->iLower = 1;               // Not used, except to compute
+						swi->iUpper = swi->iNumTable;  // the number of options
+						swi->uTable = NO_ADDRESS;      // or for debug output
 						lastStmt->setSwitchInfo(swi);
 						return true;
 					}
