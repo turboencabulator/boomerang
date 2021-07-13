@@ -1880,6 +1880,10 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			expr = ((Binary *)e)->getSubExp2();
 		}
 		break;
+	case 'O':  // Pattern: m[<expr> * 4 + T ] + T
+		// Assume T's are equal, discard 2nd T
+		e = ((Binary *)e)->getSubExp1();
+		// Fall through to 'A'
 	case 'A':  // Pattern: m[<expr> * 4 + T ]
 		{
 			if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();
@@ -1888,20 +1892,6 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 			Const *TT = (Const *)b->getSubExp2();
 			T = (ADDRESS)TT->getInt();
 			b = (Binary *)b->getSubExp1();  // b is now <expr> * 4
-			expr = b->getSubExp1();
-		}
-		break;
-	case 'O':  // Pattern: m[<expr> * 4 + T ] + T
-		{
-			T = ((Const *)((Binary *)e)->getSubExp2())->getInt();
-			// l = m[<expr> * 4 + T ]:
-			Exp *l = ((Binary *)e)->getSubExp1();
-			if (auto re = dynamic_cast<RefExp *>(l)) l = re->getSubExp1();
-			// b = <expr> * 4 + T:
-			Binary *b = (Binary *)((Location *)l)->getSubExp1();
-			// b = <expr> * 4:
-			b = (Binary *)b->getSubExp1();
-			// expr = <expr>:
 			expr = b->getSubExp1();
 		}
 		break;
