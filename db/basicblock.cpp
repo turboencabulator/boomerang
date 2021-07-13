@@ -1777,15 +1777,17 @@ static Exp *formR = new Binary(opPlus,
  *
  * where k is a smallish constant, e.g. 288 (/usr/bin/vi 2.6, 0c4233c).
  */
-static Exp *formr = new Binary(opPlus,
-    new Terminal(opPC),
-    Location::memOf(new Binary(opPlus,
+static Exp *formr = new Binary(opMinus,
+    new Binary(opPlus,
         new Terminal(opPC),
-        new Binary(opMinus,
-            new Binary(opMult,
-                new Terminal(opWild),
-                new Const(4)),
-            new Terminal(opWildIntConst)))));
+        Location::memOf(new Binary(opPlus,
+            new Terminal(opPC),
+            new Binary(opMinus,
+                new Binary(opMult,
+                    new Terminal(opWild),
+                    new Const(4)),
+                new Terminal(opWildIntConst))))),
+    new Terminal(opWildIntConst));
 
 static Exp *hlForms[] = { forma, formA, formO, formR, formr };
 static char chForms[] = {   'a',   'A',   'O',   'R',   'r' };
@@ -1919,6 +1921,7 @@ findSwParams(Exp *e, SWITCH_INFO &si)
 		}
 		break;
 	case 'r':  // Pattern: %pc + m[%pc + ((<expr> * 4) - k)] - k
+		// TODO: Check associativity, was %pc + (m[] - k), now (%pc + m[]) - k
 		{
 			T = 0;  // ?
 			// b = %pc + m[%pc + ((<expr> * 4) - k)]:
