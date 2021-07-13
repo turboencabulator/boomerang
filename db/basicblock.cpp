@@ -1746,24 +1746,6 @@ static Exp *formA = Location::memOf(
         new Terminal(opWildIntConst)));
 
 /**
- * With array processing, we get a new form, call it form 'o' (don't confuse
- * with form 'O'):
- *
- * Pattern: \<base\>{}[\<index\>]{}
- *
- * where \<index\> could be \<var\> - \<Kmin\>
- *
- * NOT COMPLETED YET!
- */
-static Exp *formo = new RefExp(
-    new Binary(opArrayIndex,
-        new RefExp(
-            new Terminal(opWild),
-            (Statement *)-1),
-        new Terminal(opWild)),
-    (Statement *)-1);
-
-/**
  * Pattern: m[ \<expr\> * 4 + T ] + T
  */
 static Exp *formO = new Binary(opPlus,
@@ -1805,20 +1787,19 @@ static Exp *formr = new Binary(opPlus,
                 new Const(4)),
             new Terminal(opWildIntConst)))));
 
-static Exp *hlForms[] = { forma, formA, formo, formO, formR, formr };
-static char chForms[] = {   'a',   'A',   'o',   'O',   'R',   'r' };
+static Exp *hlForms[] = { forma, formA, formO, formR, formr };
+static char chForms[] = {   'a',   'A',   'O',   'R',   'r' };
 
 #ifdef GARBAGE_COLLECTOR
 void
 init_basicblock()
 {
-	Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(6 * sizeof *gc_pointers);
+	Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(5 * sizeof *gc_pointers);
 	gc_pointers[0] = forma;
 	gc_pointers[1] = formA;
-	gc_pointers[2] = formo;
-	gc_pointers[3] = formO;
-	gc_pointers[4] = formR;
-	gc_pointers[5] = formr;
+	gc_pointers[2] = formO;
+	gc_pointers[3] = formR;
+	gc_pointers[4] = formr;
 }
 #endif
 
