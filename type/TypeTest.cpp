@@ -284,8 +284,8 @@ TypeTest::testDataIntervalOverlaps()
 
 	dim.addItem(0xFF8, "newArray3", &at);  // Should fail
 	pdie = dim.find(0xFF8);
-	unsigned ue = 0;  // Expect NULL
-	unsigned ua = (unsigned)pdie;
+	uintptr_t ue = 0;  // Expect NULL
+	uintptr_t ua = (uintptr_t)pdie;
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
 	delete prog;
 }

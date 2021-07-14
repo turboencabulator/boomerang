@@ -53,7 +53,7 @@ LoaderTest::testSparcLoad()
 	CPPUNIT_ASSERT(bf);
 
 	auto n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(29u, n);
+	CPPUNIT_ASSERT_EQUAL(size_t(29), n);
 
 	// Just use the first (real one) and last sections
 	std::ostringstream actual;
@@ -76,7 +76,7 @@ LoaderTest::testPentiumLoad()
 	CPPUNIT_ASSERT(bf);
 
 	auto n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(34u, n);
+	CPPUNIT_ASSERT_EQUAL(size_t(34), n);
 
 	std::ostringstream actual;
 	actual << bf->getSectionInfo(1)->name << "\n";
@@ -99,7 +99,7 @@ LoaderTest::testHppaLoad()
 	CPPUNIT_ASSERT(bf);
 
 	auto n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(4u, n);
+	CPPUNIT_ASSERT_EQUAL(size_t(4), n);
 
 	std::ostringstream actual;
 	for (size_t i = 0; i < n; ++i) {
@@ -122,7 +122,7 @@ LoaderTest::testPalmLoad()
 	CPPUNIT_ASSERT(bf);
 
 	auto n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(8u, n);
+	CPPUNIT_ASSERT_EQUAL(size_t(8), n);
 
 	std::ostringstream actual;
 	for (size_t i = 0; i < n; ++i)
@@ -147,7 +147,7 @@ LoaderTest::testWinLoad()
 		CPPUNIT_ASSERT(bf);
 
 		auto n = bf->getNumSections();
-		CPPUNIT_ASSERT_EQUAL(5u, n);
+		CPPUNIT_ASSERT_EQUAL(size_t(5), n);
 
 		{
 			std::ostringstream actual;
@@ -517,14 +517,14 @@ LoaderTest::testMicroDis1()
 		size_t size = microX86Dis(p);
 		if (size >= 0x40) {
 			std::cout << "Not handled instruction at offset 0x" << std::hex
-			          << (ADDRESS)p - (ADDRESS)pent_hello_text << std::dec << std::endl;
+			          << p - pent_hello_text << std::dec << std::endl;
 			CPPUNIT_ASSERT(size != 0x40);
 			return;
 		}
 		size_t expected = lengths[i++];
 		if (expected != size) {
 			std::cout << "At offset 0x" << std::hex
-			          << (ADDRESS)p - (ADDRESS)pent_hello_text << " ("
+			          << p - pent_hello_text << " ("
 			          << (int)*(p)     << " "
 			          << (int)*(p + 1) << " "
 			          << (int)*(p + 2) << " "
@@ -549,9 +549,9 @@ LoaderTest::testMicroDis2()
 	const unsigned char movsbl[3] = { 0x0f, 0xbe, 0x00 };
 	const unsigned char movswl[3] = { 0x0f, 0xbf, 0x00 };
 	size_t size = microX86Dis(movsbl);
-	CPPUNIT_ASSERT_EQUAL((size_t)3, size);
+	CPPUNIT_ASSERT_EQUAL(size_t(3), size);
 	size = microX86Dis(movswl);
-	CPPUNIT_ASSERT_EQUAL((size_t)3, size);
+	CPPUNIT_ASSERT_EQUAL(size_t(3), size);
 }
 /** \} */
 

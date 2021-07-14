@@ -545,7 +545,7 @@ StatementTest::testLocationSet()
 	ls.insert(rof.clone());                         // ls has r8 r12 r24 r31
 	theReg.setInt(12);
 	ls.insert(rof.clone());                         // Note: r12 already inserted
-	CPPUNIT_ASSERT_EQUAL(4u, ls.size());
+	CPPUNIT_ASSERT_EQUAL(size_t(4), ls.size());
 	theReg.setInt(8);
 	auto ii = ls.begin();
 	CPPUNIT_ASSERT(rof == **ii);                    // First element should be r8
@@ -559,13 +559,13 @@ StatementTest::testLocationSet()
 	Location mof(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(4)), nullptr);  // m[r14 + 4]
 	ls.insert(mof.clone());                         // ls should be r8 r12 r24 r31 m[r14 + 4]
 	ls.insert(mof.clone());
-	CPPUNIT_ASSERT_EQUAL(5u, ls.size());            // Should have 5 elements
+	CPPUNIT_ASSERT_EQUAL(size_t(5), ls.size());     // Should have 5 elements
 	ii = --ls.end();
 	CPPUNIT_ASSERT(mof == **ii);                    // Last element should be m[r14 + 4] now
 	LocationSet ls2 = ls;
 	Exp *e2 = *ls2.begin();
 	CPPUNIT_ASSERT(!(e2 == *ls.begin()));           // Must be cloned
-	CPPUNIT_ASSERT_EQUAL(5u, ls2.size());
+	CPPUNIT_ASSERT_EQUAL(size_t(5), ls2.size());
 	theReg.setInt(8);
 	CPPUNIT_ASSERT(rof == **ls2.begin());           // First elements should compare equal
 	theReg.setInt(12);
@@ -577,7 +577,7 @@ StatementTest::testLocationSet()
 	auto r1 = new RefExp(Location::regOf(8), &s10);
 	auto r2 = new RefExp(Location::regOf(8), &s20);
 	ls.insert(r1);  // ls now m[r14 + 4] r8 r12 r24 r31 r8{10} (not sure where r8{10} appears)
-	CPPUNIT_ASSERT_EQUAL(6u, ls.size());
+	CPPUNIT_ASSERT_EQUAL(size_t(6), ls.size());
 	Exp *dummy;
 	CPPUNIT_ASSERT(!ls.findDifferentRef(r1, dummy));
 	CPPUNIT_ASSERT( ls.findDifferentRef(r2, dummy));
