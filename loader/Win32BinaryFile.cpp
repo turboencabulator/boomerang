@@ -574,7 +574,7 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 	const SectionInfo *sec = getSectionInfoByName(".text");
 	if (!sec) sec = getSectionInfoByName("CODE");
 	assert(sec);
-	while (cnt < 0x60) {  // Max of 0x60 bytes without a match
+	while (curr >= sec->uNativeAddr + 2 && cnt < 0x60) {  // Max of 0x60 bytes without a match
 		curr -= 2;  // Has to be on 2-byte boundary
 		cnt += 2;
 		if (LH16(&sec->uHostAddr[curr - sec->uNativeAddr]) != 0xFF + (0x25 << 8)) continue;
